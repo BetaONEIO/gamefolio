@@ -2,9 +2,12 @@
 import { SVG } from "@/assets/SVG";
 import { leagueGothic } from "@/font/font";
 import Image from "next/image";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import axios from "axios";
 import ProgressBar from "@ramonak/react-progress-bar";
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
+import { ToastContainer } from "react-toastify";
+import { toastSuccess } from "../Toast/Toast";
 
 interface FileUploadState {
   fileName: string;
@@ -15,6 +18,7 @@ interface AddVideoProps {
 }
 
 function AddVideo({ handleCloseModal }: AddVideoProps) {
+  const [video, setVideo] = useState<string | null>(null);
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedOptionMusic, setSelectedOptionMusic] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -82,7 +86,9 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
             },
           }
         );
-        console.log(response.data);
+        console.log("RESPONSE ADDVIDEO: ", response.data);
+        setVideo(response.data.videoURL);
+        toastSuccess(response.data.message);
       } catch (error) {
         console.error("Error uploading file:", error);
       }
@@ -108,6 +114,46 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
     backgroundColor: "rgba(0, 0, 0, 0.6)",
     backdropFilter: "blur(8px)",
   };
+
+  // const renderTime = ({ remainingTime }: any) => {
+  //   const currentTime = useRef(remainingTime);
+  //   const prevTime = useRef(null);
+  //   const isNewTimeFirstTick = useRef(false);
+  //   const [, setOneLastRerender] = useState(0);
+
+  //   if (currentTime.current !== remainingTime) {
+  //     isNewTimeFirstTick.current = true;
+  //     prevTime.current = currentTime.current;
+  //     currentTime.current = remainingTime;
+  //   } else {
+  //     isNewTimeFirstTick.current = false;
+  //   }
+
+  //   // force one last re-render when the time is over to tirgger the last animation
+  //   if (remainingTime === 0) {
+  //     setTimeout(() => {
+  //       setOneLastRerender((val) => val + 1);
+  //     }, 20);
+  //   }
+
+  //   const isTimeUp = isNewTimeFirstTick.current;
+
+  //   return (
+  //     <div className="time-wrapper">
+  //       <div key={remainingTime} className={`time ${isTimeUp ? "up" : ""}`}>
+  //         {remainingTime}
+  //       </div>
+  //       {prevTime.current !== null && (
+  //         <div
+  //           key={prevTime.current}
+  //           className={`time ${!isTimeUp ? "down" : ""}`}
+  //         >
+  //           {prevTime.current}
+  //         </div>
+  //       )}
+  //     </div>
+  //   );
+  // };
 
   return (
     <>
@@ -161,20 +207,39 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
                       />
                     </label>
                   ) : (
-                    <div className="w-full h-full ">
-                      <p>{fileUpload.fileName}</p>
-                      <ProgressBar
+                    <div className="w-full h-full flex items-center justify-center ">
+                      {/* <p>{fileUpload.fileName}</p> */}
+                      {/* <ProgressBar 
                         completed={fileUpload.percentCompleted}
                         bgColor="#0766ea"
-                      />
-                      {/* <video
-                        className="w-full h-full"
-                        src={URL.createObjectURL(selectedVideo)}
-                        controls
-                        width="100%"
-                        height="100%"
-                        autoPlay
                       /> */}
+                      {video ? (
+                        <video
+                          className="w-full h-full"
+                          src={video}
+                          controls
+                          width="100%"
+                          height="100%"
+                          autoPlay
+                        />
+                      ) : (
+                        <CountdownCircleTimer
+                          isPlaying
+                          duration={60}
+                          size={240}
+                          colors={["#37C535", "#F7B801", "#A30000", "#A30000"]}
+                          colorsTime={[10, 6, 3, 0]}
+                        >
+                          {({ remainingTime }) => {
+                            return (
+                              <div className="flex flex-col justify-center items-center ">
+                                <span className="text-xs">Estimated Time</span>
+                                {remainingTime}
+                              </div>
+                            );
+                          }}
+                        </CountdownCircleTimer>
+                      )}
                       {/* <div className="w-full bg-[#37C535] h-3 rounded-lg mt-2">
                         <div
                           style={{ width: `${uploadProgress}%` }}
@@ -339,6 +404,18 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
           </div>
         </div>
       </div>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </>
   );
 }

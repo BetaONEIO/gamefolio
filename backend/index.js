@@ -178,7 +178,12 @@ app.post("/uploadfile", upload.single("file"), (req, res) => {
         throw err;
       }
       console.log(`File uploaded successfully. ${data.Location}`);
-      return res.status(201).json({ message: "File uploaded successfully" });
+      return res
+        .status(201)
+        .json({
+          message: "File uploaded successfully",
+          videoURL: data.Location,
+        });
     });
   };
 
