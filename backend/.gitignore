@@ -11,6 +11,14 @@ npm-debug.*
 web-build/
 
 .env
+# Ignore .mp3 files
+*.mp3
+
+# Ignore .mp4 files
+*.mp4
+
+# Ignore the uploads folder and its contents
+uploads/
 
 # macOS
 .DS_Store

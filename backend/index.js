@@ -19,6 +19,8 @@ const multer = require("multer");
 const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
 const ffmpeg = require("fluent-ffmpeg");
 ffmpeg.setFfmpegPath(ffmpegPath);
+var ffprobe = require("ffprobe-static");
+ffmpeg.setFfprobePath(ffprobe.path);
 const upload = multer({ dest: "uploads/" });
 
 const app = express();
@@ -180,11 +182,12 @@ app.post("/uploadfile", upload.single("file"), (req, res) => {
     });
   };
 
-  const addAudioToVideo = (videoPath, audioPath, outputPath) => {
+  const addAudioToVideo = (videoPath, audioPath, outputPath, videoDuration) => {
     ffmpeg()
       .input(videoPath)
       .input(audioPath)
       .audioCodec("aac")
+      .duration(videoDuration) // Set the duration dynamically
       .output(outputPath)
       .on("end", () => {
         console.log("Audio added to video successfully.");
@@ -197,13 +200,34 @@ app.post("/uploadfile", upload.single("file"), (req, res) => {
       .run();
   };
 
-  // Specify the path to your custom audio file
-  const customAudioPath = "audio/song.mp3";
+  // // Specify the path to your custom audio file
+  // const customAudioPath = "audio/song.mp3";
 
-  // Specify the output path for the video with added audio
-  const outputVideoPath = `output/${file.originalname}`;
+  // // Specify the output path for the video with added audio
+  // const outputVideoPath = `output/${file.originalname}`;
 
-  addAudioToVideo(file.path, customAudioPath, outputVideoPath);
+  // addAudioToVideo(file.path, customAudioPath, outputVideoPath);
+
+  const videoFile = req.file;
+  const videoPath = videoFile.path;
+
+  // Use ffprobe to get the duration of the video
+  ffmpeg.ffprobe(videoPath, (err, videoInfo) => {
+    if (err) {
+      console.error("Error getting video duration:", err);
+      return res.status(500).json({ message: "Error processing video" });
+    }
+
+    const videoDuration = videoInfo.format.duration;
+
+    // Now you can use videoDuration in your code as needed
+
+    // For example, you can pass it to the addAudioToVideo function
+    const customAudioPath = "audio/song.mp3";
+    const outputVideoPath = `output/${videoFile.originalname}`;
+
+    addAudioToVideo(videoPath, customAudioPath, outputVideoPath, videoDuration);
+  });
 });
 
 app.get("/", (req, res) => {
