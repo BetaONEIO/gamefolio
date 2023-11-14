@@ -224,25 +224,24 @@ function SideBar() {
           </div>
 
           <div>
-            <Link
-              href="/chat"
-              className="flex flex-col items-center justify-center gap-3"
-            >
-              <button className="flex w-full sm:w-52 bg-[#1C2C2E] text-white py-[10px] px-[20px] rounded-full ">
-                <div className="flex self-center justify-between ">
-                  <Image
-                    width={20}
-                    height={20}
-                    src={SVG.Message}
-                    alt="Message"
-                    className=""
-                  />
-                  <div>
-                    <p className="mx-4">Messages</p>
+            <div className="flex flex-col items-center justify-center gap-3">
+              <Link href="/chat">
+                <button className="flex w-full sm:w-52 bg-[#1C2C2E] text-white py-[10px] px-[20px] rounded-full ">
+                  <div className="flex self-center justify-between ">
+                    <Image
+                      width={20}
+                      height={20}
+                      src={SVG.Message}
+                      alt="Message"
+                      className=""
+                    />
+                    <div>
+                      <p className="mx-4">Messages</p>
+                    </div>
+                    <p className="px-2 rounded-xl bg-[#586769]">2</p>
                   </div>
-                  <p className="px-2 rounded-xl bg-[#586769]">2</p>
-                </div>
-              </button>
+                </button>
+              </Link>
 
               <button
                 className="flex items-center w-full sm:w-52 bg-[#37C535] text-white py-[10px] px-[20px] rounded-full mb-3 gap-4"
@@ -257,7 +256,7 @@ function SideBar() {
                 />
                 <p className="font-bold">Add New</p>
               </button>
-            </Link>
+            </div>
 
             <div className="flex flex-col items-center justify-center p-3 bg-gray-100 rounded-lg border border-gray-200 dark:bg-[#1C2C2E] dark:border-gray-600">
               <Image
