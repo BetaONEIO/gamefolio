@@ -4,12 +4,17 @@ const postSchema = new mongoose.Schema({
   userID: {
     type: String,
   },
-  title: {
+  description: {
+    type: String,
+  },
+  game: {
+    type: String,
+  },
+  music: {
     type: String,
   },
   video: {
     type: String,
-    unique: true,
   },
   reactions: [
     {

@@ -61,7 +61,7 @@ export const slice = createSlice({
 
 export const { startLoading, stopLoading, getCredits } = slice.actions;
 
-export function createPost(params: ActionParams) {
+export function postVideo(params: ActionParams) {
   return async () => {
     const {
       successCallback = () => {},

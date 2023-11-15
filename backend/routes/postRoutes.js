@@ -2,11 +2,11 @@ const express = require("express");
 const router = express.Router();
 const postController = require("../controller/postController.js");
 
-// Create a new post
-router.post("/create", postController.createPost);
+// Create a new post video
+router.post("/video/create", postController.postVideo);
 
 // Get all posts
-router.get("/get", postController.getAllPosts);
+router.get("/video/get", postController.getAllPosts);
 
 // Get a single post by ID
 router.get("/get/:id", postController.getPostById);

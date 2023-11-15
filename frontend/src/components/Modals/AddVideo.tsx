@@ -7,7 +7,9 @@ import axios from "axios";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import { ToastContainer } from "react-toastify";
-import { toastSuccess } from "../Toast/Toast";
+import { toastError, toastSuccess } from "../Toast/Toast";
+import { postVideo } from "@/store/slices/postSlice";
+import { dispatch, useSelector } from "@/store";
 
 interface FileUploadState {
   fileName: string;
@@ -18,7 +20,10 @@ interface AddVideoProps {
 }
 
 function AddVideo({ handleCloseModal }: AddVideoProps) {
+  const authState = useSelector((state: any) => state.auth.userData) || [];
   const [video, setVideo] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [description, setDescription] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedOptionMusic, setSelectedOptionMusic] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -60,13 +65,21 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
   };
 
   const handleVideoSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("selectedOptionMusic: ", selectedOptionMusic);
+
     const file = e.target.files ? e.target.files[0] : null;
     if (file) {
       setSelectedVideo(file);
-
+      if (selectedOptionMusic.trim() === "") {
+        setError("Please select music");
+        return toastSuccess("Please select music");
+      } else {
+        setError(null);
+      }
       try {
         const formData = new FormData();
         formData.append("file", file);
+        formData.append("music", selectedOptionMusic);
 
         const response = await axios.post(
           "http://localhost:4000/uploadfile",
@@ -92,21 +105,6 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
       } catch (error) {
         console.error("Error uploading file:", error);
       }
-
-      // setUploadProgress(0);
-
-      // Simulate video processing
-      // setTimeout(() => {
-      //   let progress = 0;
-      //   const interval = setInterval(() => {
-      //     progress += 10;
-      //     setUploadProgress(progress);
-      //     if (progress >= 100) {
-      //       clearInterval(interval);
-      //       // You can add logic for processing completion here
-      //     }
-      //   }, 1000);
-      // }, 1000);
     }
   };
 
@@ -155,6 +153,35 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
   //   );
   // };
 
+  const handleSubmitVideo = async () => {
+    const payload = {
+      userID: authState._id,
+      description: description.trim(),
+      game: selectedOption.trim(),
+      music: selectedOptionMusic.trim(),
+      video: video,
+    };
+
+    console.log("My Payload ADDVIDEO: ", payload);
+
+    const successCallback = (response: any) => {
+      console.log("RESPONSE ADDVIDEO: ", response);
+      toastSuccess(response);
+    };
+
+    const errorCallback = (error: string) => {
+      toastError(error);
+    };
+
+    const params = {
+      payload,
+      successCallback,
+      errorCallback,
+    };
+
+    dispatch(postVideo(params));
+  };
+
   return (
     <>
       <div
@@ -185,7 +212,7 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
               <div className="w-full sm:w-1/2 sm:mr-2 sm:ml-6 px-8 sm:px-0">
                 {/* Add your story block content here */}
                 <div className="lg:h-[33.9rem] md:h-[33.9rem] h-[8rem] w-full md:w-[22rem] lg:w-full flex flex-col sm:justify-center justify-center items-center rounded-lg dark:bg-[#091619] border-2 border-[#1C2C2E] md:mr-20">
-                  {!selectedVideo ? (
+                  {!selectedVideo || error ? (
                     <label htmlFor="dropzone-file">
                       <div className="flex flex-col items-center">
                         <Image
@@ -326,6 +353,8 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
                     rows={5}
                     className="w-full md:w-72 sm:w-96 p-2 text-gray-900 sm:text-sm outline-none rounded-lg dark:bg-[#1C2C2E] dark:text-white"
                     placeholder="Type here..."
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
                   ></textarea>
                 </div>
 
@@ -392,7 +421,10 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
                 </div>
 
                 <div className="flex justify-between items-center my-3 sm:mt-10 sm:ml-7 w-full md:w-72 sm:w-96 ml-2">
-                  <button className="font-bold w-full sm:w-40 py-2 lg:py-3 bg-[#37C535] text-white text-center px-[5px] sm:px-[40px] rounded-tl-[20px] sm:rounded-tl-[20px] rounded-br-[20px] sm:rounded-br-[20px] rounded-tr-[5px] sm:rounded-tr-[5px] rounded-bl-[5px] sm:rounded-bl-[5px]">
+                  <button
+                    className="font-bold w-full sm:w-40 py-2 lg:py-3 bg-[#37C535] text-white text-center px-[5px] sm:px-[40px] rounded-tl-[20px] sm:rounded-tl-[20px] rounded-br-[20px] sm:rounded-br-[20px] rounded-tr-[5px] sm:rounded-tr-[5px] rounded-bl-[5px] sm:rounded-bl-[5px]"
+                    onClick={handleSubmitVideo}
+                  >
                     Submit
                   </button>
                   <button className="font-bold w-full sm:w-40 py-1 lg:py-3 text-white text-center sm:py-[10px] px-[30px] sm:px-[30px] rounded-tl-[20px] sm:rounded-tl-[20px] rounded-br-[20px] sm:rounded-br-[20px] rounded-tr-[5px] sm:rounded-tr-[5px] rounded-bl-[5px] sm:rounded-bl-[5px]">

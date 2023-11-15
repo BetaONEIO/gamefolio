@@ -153,6 +153,7 @@ app.post("/uploadfile", upload.single("file"), (req, res) => {
   }
 
   var file = req.file;
+  console.log("req: ", req.body.music);
 
   const uploadVideo = (file) => {
     const fileStream = fs.createReadStream(file.path);
@@ -178,12 +179,10 @@ app.post("/uploadfile", upload.single("file"), (req, res) => {
         throw err;
       }
       console.log(`File uploaded successfully. ${data.Location}`);
-      return res
-        .status(201)
-        .json({
-          message: "File uploaded successfully",
-          videoURL: data.Location,
-        });
+      return res.status(201).json({
+        message: "File uploaded successfully",
+        videoURL: data.Location,
+      });
     });
   };
 
@@ -228,7 +227,7 @@ app.post("/uploadfile", upload.single("file"), (req, res) => {
     // Now you can use videoDuration in your code as needed
 
     // For example, you can pass it to the addAudioToVideo function
-    const customAudioPath = "audio/song.mp3";
+    const customAudioPath = "audio/when-you-smile-151423.mp3"; // dynamic
     const outputVideoPath = `output/${videoFile.originalname}`;
 
     addAudioToVideo(videoPath, customAudioPath, outputVideoPath, videoDuration);

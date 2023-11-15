@@ -24,6 +24,6 @@ export const PATH = {
     root: "design",
   },
   post:{
-    create: "post/create",
+    create: "post/video/create",
   }
 };
