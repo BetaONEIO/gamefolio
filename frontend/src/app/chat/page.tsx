@@ -2,7 +2,7 @@
 import React from "react";
 import Messages from "@/components/Chat/Messages";
 import "@/components/Chat/ChatLayout.css";
-import Chat from "@/components/Chat/ChatLayout";
+import Chat from "@/components/Chat/Chat";
 import ChatHeader from "@/components/ChatHeader/ChatHeader";
 import Layout from "@/components/CustomLayout/layout";
 
