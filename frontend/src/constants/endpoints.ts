@@ -25,5 +25,8 @@ export const PATH = {
   },
   post:{
     create: "post/video/create",
+  },
+  music: {
+    getAllMusic: "music/get/all"
   }
 };

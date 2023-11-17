@@ -18,12 +18,10 @@ const postVideo = async (req, res) => {
     res.status(201).json({ data: post, message: "Post created successfully" });
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({
-        message: "Could not create the post.",
-        error: "Could not create the post.",
-      });
+    res.status(500).json({
+      message: "Could not create the post.",
+      error: "Could not create the post.",
+    });
   }
 };
 

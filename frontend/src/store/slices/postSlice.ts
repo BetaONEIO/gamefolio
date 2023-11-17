@@ -17,6 +17,7 @@ export type InitialState = {
   token: string;
   userCredits: Credit | null;
   gallery: ImageResponse[] | null;
+  allMusic: Array<any>;
 };
 
 const initialState: InitialState = {
@@ -26,6 +27,7 @@ const initialState: InitialState = {
   token: "",
   userCredits: null,
   gallery: null,
+  allMusic: [],
 };
 
 export const slice = createSlice({
@@ -55,6 +57,9 @@ export const slice = createSlice({
     },
     getGallery(state, action) {
       state.gallery = action.payload;
+    },
+    getAllMusic(state, action) {
+      state.allMusic = action.payload;
     },
   },
 });
@@ -90,6 +95,30 @@ export function postVideo(params: ActionParams) {
     } catch (error) {
       console.log("error", error);
       errorCallback();
+    } finally {
+      dispatch(slice.actions.stopLoading());
+    }
+  };
+}
+
+export function getAllMusic() {
+  return async () => {
+  
+    dispatch(slice.actions.startLoading());
+
+    const options: APIParams = {
+      method: "GET",
+      endpoint: PATH.music.getAllMusic,
+      payload: {},
+      isToken: false,
+    };
+
+    try {
+      const [ok, response] = await API(options)
+
+      dispatch(slice.actions.getAllMusic(response.data));
+    } catch (error) {
+      console.log(error);
     } finally {
       dispatch(slice.actions.stopLoading());
     }

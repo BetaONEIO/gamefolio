@@ -2,13 +2,13 @@
 import { SVG } from "@/assets/SVG";
 import { leagueGothic } from "@/font/font";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import { ToastContainer } from "react-toastify";
 import { toastError, toastSuccess } from "../Toast/Toast";
-import { postVideo } from "@/store/slices/postSlice";
+import { getAllMusic, postVideo } from "@/store/slices/postSlice";
 import { dispatch, useSelector } from "@/store";
 
 interface FileUploadState {
@@ -21,6 +21,7 @@ interface AddVideoProps {
 
 function AddVideo({ handleCloseModal }: AddVideoProps) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
+  const musicState = useSelector((state: any) => state.post.allMusic) || [];
   const [video, setVideo] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [description, setDescription] = useState("");
@@ -33,6 +34,12 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
     fileName: "",
     percentCompleted: 0,
   });
+
+  useEffect(() => {
+    dispatch(getAllMusic());
+  }, []);
+
+  console.log("musicState: ", musicState);
 
   const optionsForGame = [
     { value: "game1", label: "Game 1" },
@@ -49,11 +56,11 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
     setIsDropdownOpenMusic(!isDropdownOpenMusic);
   };
 
-  const optionsForMusic = [
-    { value: "music1", label: "music 1" },
-    { value: "music2", label: "music 2" },
-    { value: "music3", label: "music 3" },
-  ];
+  // const musicState = [
+  //   { value: "music1", label: "music 1" },
+  //   { value: "music2", label: "music 2" },
+  //   { value: "music3", label: "music 3" },
+  // ];
 
   const handleSelect = (value: any) => {
     setSelectedOption(value);
@@ -384,26 +391,26 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
                     </div>
 
                     {isDropdownOpenMusic && (
-                      <div className="absolute z-50 mt-2 w-full rounded-md shadow-lg">
-                        <ul className="py-1 bg-white  dark:bg-[#1C2C2E]  dark:text-white  dark:rounded-b-lg">
-                          {optionsForMusic.map((option) => (
+                      <div className="absolute overflow-y-auto h-40 z-50 mt-2 w-full rounded-md shadow-lg">
+                        <ul className="py-1 bg-white   dark:bg-[#1C2C2E]  dark:text-white  dark:rounded-b-lg">
+                          {musicState.map((option: any) => (
                             <li
                               key={option.value}
-                              onClick={() => handleSelectMusic(option.value)}
+                              onClick={() => handleSelectMusic(option)}
                               className="cursor-pointer select-none outline-none relative px-4 py-3 text-gray-200"
                               role="option"
                               aria-selected={false}
                             >
                               <span
                                 className={`${
-                                  option.value === selectedOptionMusic
+                                  option === selectedOptionMusic
                                     ? "font-semibold"
                                     : ""
                                 } block truncate`}
                               >
-                                {option.label}
+                                {option}
                               </span>
-                              {option.value === selectedOptionMusic && (
+                              {option === selectedOptionMusic && (
                                 <Image
                                   className="absolute w-5 h-5 text-green-500 right-3 top-2/4 transform -translate-y-2/4"
                                   src={SVG.Tick}

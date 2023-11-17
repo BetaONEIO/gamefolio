@@ -7,6 +7,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 const userRoutes = require("./routes/userRoutes");
 const postRoutes = require("./routes/postRoutes");
+const musicRoutes = require("./routes/musicRoutes");
 const { myDbConnection } = require("./db/connection");
 const generateToken = require("./utils/generateToken");
 const authMiddleware = require("./middleware/authMiddleware");
@@ -130,6 +131,9 @@ app.use("/api/user", userRoutes);
 
 // Post API
 app.use("/api/post", postRoutes);
+
+// Music API
+app.use("/api/music", musicRoutes);
 
 app.get("/api/user/protected", authMiddleware, (req, res) => {
   // Access protected resource
