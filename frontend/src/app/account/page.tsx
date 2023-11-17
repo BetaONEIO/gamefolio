@@ -15,9 +15,6 @@ import Link from "next/link";
 import { Suspense, useState } from "react";
 import Loading from "./loading";
 
-export const dynamic = "force-dynamic";
-export const fetchCache = "force-no-store";
-
 const USERDATA = [
   {
     userID: "123",

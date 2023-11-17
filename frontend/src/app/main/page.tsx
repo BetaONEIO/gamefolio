@@ -14,9 +14,6 @@ import Loading from "@/app/main/loading";
 import { useSelector } from "react-redux";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 
-export const dynamic = "force-dynamic";
-export const fetchCache = "force-no-store";
-
 function Main() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
 

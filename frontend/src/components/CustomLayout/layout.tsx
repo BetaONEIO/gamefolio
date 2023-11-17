@@ -6,27 +6,26 @@ import { userSession } from "@/store/slices/authSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import { useRouter } from "next/navigation";
 import React, { ReactNode, Suspense, useEffect } from "react";
-export const dynamic = "force-dynamic";
 
 const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const router = useRouter();
 
   // if(router.isFallback) return <div>Loading...</div>
 
-  // const cookies = getCookieValue("gfoliotoken");
-  // const payload = {
-  //   userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
-  // };
-  // const params = {
-  //   payload,
-  // };
-  // useEffect(() => {
-  //   if (getFromLocal("@token") || cookies) {
-  //     dispatch(userSession(params));
-  //   } else {
-  //     router.replace(ROUTES.login);
-  //   }
-  // }, []);
+  const cookies = getCookieValue("gfoliotoken");
+  const payload = {
+    userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
+  };
+  const params = {
+    payload,
+  };
+  useEffect(() => {
+    if (getFromLocal("@token") || cookies) {
+      dispatch(userSession(params));
+    } else {
+      router.replace(ROUTES.login);
+    }
+  }, []);
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
