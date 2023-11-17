@@ -1,4 +1,3 @@
-"use client";
 import { IMAGES } from "@/assets/images";
 import Layout from "@/components/CustomLayout/layout";
 import ExploreHeader from "@/components/ExploreHeader/ExploreHeader";

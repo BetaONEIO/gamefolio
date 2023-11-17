@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import Messages from "@/components/Chat/Messages";
 import "@/components/Chat/ChatLayout.css";

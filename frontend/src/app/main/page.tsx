@@ -21,15 +21,15 @@ function Main() {
   //   const value = authState[key];
   //   console.log(key, value);
   // });
-  // const payload = {
-  //   userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
-  // };
-  // const params = {
-  //   payload,
-  // };
-  // useEffect(() => {
-  //   dispatch(userSession(params));
-  // }, []);
+  const payload = {
+    userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
+  };
+  const params = {
+    payload,
+  };
+  useEffect(() => {
+    dispatch(userSession(params));
+  }, []);
   console.log("authState MAIN", authState);
 
   const [modalState, setModalState] = useState({
