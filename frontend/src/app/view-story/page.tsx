@@ -3,7 +3,7 @@ import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import Image from "next/image";
 import ReactInstaStories from "react-insta-stories";
-import Layout from "../../components/CustomLayout/layout";
+import Layout from "@/components/CustomLayout/layout";
 
 function ViewStory() {
   const customStoryLayout = () => {

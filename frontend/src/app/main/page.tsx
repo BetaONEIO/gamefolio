@@ -7,12 +7,15 @@ import VideoDetails from "@/components/Modals/VideoDetails";
 import AllStories from "@/components/story/AllStories";
 import Image from "next/image";
 import { Suspense, useEffect, useState } from "react";
-import Layout from "../../components/CustomLayout/layout";
+import Layout from "@/components/CustomLayout/layout";
 import { dispatch } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
-import Loading from "./loading";
+import Loading from "@/app/main/loading";
 import { useSelector } from "react-redux";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
+
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
 
 function Main() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
