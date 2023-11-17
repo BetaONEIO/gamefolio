@@ -2,26 +2,31 @@ export type Key = "@token" | "@userData" | "@msgId";
 
 export const setToLocal = (key: Key, value: string | Object) => {
   try {
-    if (typeof document !== "undefined") {
+    if (typeof window !== "undefined") {
     localStorage.setItem(key, JSON.stringify(value));
   }} catch (e) {
     console.log(`❌ ERR [(setToLocal${key})] =====> `, e);
   }
 };
-
 export const getFromLocal = (key: Key) => {
   try {
-    if (typeof document !== "undefined") {
-    const value = localStorage.getItem(key);
-    return value ? JSON.parse(value) : null;
-  }} catch (e) {
+    if (typeof window !== "undefined") {
+      const value = localStorage.getItem(key);
+      if (value !== null) {
+        return JSON.parse(value);
+      } else {
+        return null; // or handle the absence of the key as needed
+      }
+    }
+  } catch (e) {
     console.log(`❌ ERR [getFromLocal(${key})] =====> `, e);
   }
 };
 
+
 export const removeFromLocal = (key: Key) => {
   try {
-    if (typeof document !== "undefined") {
+    if (typeof window !== "undefined") {
     localStorage.removeItem(key);
     }
   } catch (e) {
@@ -31,7 +36,7 @@ export const removeFromLocal = (key: Key) => {
 
 export const removeAllFromLocal = () => {
   try {
-    if (typeof document !== "undefined") {
+    if (typeof window !== "undefined") {
     const keys = localStorage.getAllKeys();
     keys.forEach((key: string) => {
       localStorage.removeItem(key);
