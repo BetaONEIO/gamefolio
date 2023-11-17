@@ -1,5 +1,5 @@
 interface MessageCardProps {
-  message: any; // Use 'any' type for message
+  message: any; // Use 'any' type for messags
 }
 
 const MessageCard: React.FC<MessageCardProps> = ({ message }) => {
