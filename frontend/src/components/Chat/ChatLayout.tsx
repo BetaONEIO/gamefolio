@@ -49,7 +49,7 @@ const ChatMessages = [
   },
 ];
 
-function Chat() {
+function ChatLayout() {
   return (
     <>
       <div className="hideScrollBar hidden  w-full flex-col bg-[#091619] gap-4 overflow-auto border-r  md:hidden lg:block">
@@ -165,4 +165,4 @@ function Chat() {
   );
 }
 
-export default Chat;
+export default ChatLayout;

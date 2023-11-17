@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
-import Messages from "./Messages";
-import "./ChatLayout.css";
-import Chat from "@/app/chat/Chat";
+import Messages from "@/components/Chat/Messages";
+import "@/components/Chat/ChatLayout.css";
+import Chat from "@/components/Chat/ChatLayout";
 import ChatHeader from "@/components/ChatHeader/ChatHeader";
 import Layout from "@/components/CustomLayout/layout";
 
