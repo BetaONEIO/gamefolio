@@ -28,18 +28,16 @@ const postVideo = async (req, res) => {
 // Get all posts
 const getAllPostVideos = async (req, res) => {
   try {
-    const posts = await Posts.find();
+    const posts = await Posts.find().populate("userID");
     res
       .status(201)
       .json({ data: posts, message: "Successfully Retrieve Post Videos" });
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({
-        error: "Could not retrieve posts.",
-        message: "Could not retrieve posts.",
-      });
+    res.status(500).json({
+      error: "Could not retrieve posts.",
+      message: "Could not retrieve posts.",
+    });
   }
 };
 

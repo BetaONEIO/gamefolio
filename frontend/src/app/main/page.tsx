@@ -100,7 +100,7 @@ function Main() {
                     <div className="flex items-center gap-4">
                       <Image
                         className="w-12 h-12 rounded-lg"
-                        src={post?.profilePicture}
+                        src={post?.userID?.profilePicture}
                         alt="Profile"
                         width={50}
                         height={50}
@@ -108,10 +108,10 @@ function Main() {
                       />
                       <div>
                         <h1 className="text-xs sm:text-lg font-bold text-gray-900 md:text-xl dark:text-white hover:opacity-80">
-                          {post?.name}
+                          {post?.userID?.name}
                         </h1>
                         <p className="text-base font-light text-gray-600 dark:text-gray-400">
-                          {post?.email}
+                          {post?.userID?.email}
                         </p>
                       </div>
                     </div>
