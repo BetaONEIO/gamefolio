@@ -17,6 +17,7 @@ export type InitialState = {
   token: string;
   userCredits: Credit | null;
   gallery: ImageResponse[] | null;
+  videos: Array<any>;
   allMusic: Array<any>;
 };
 
@@ -27,6 +28,7 @@ const initialState: InitialState = {
   token: "",
   userCredits: null,
   gallery: null,
+  videos: [],
   allMusic: [],
 };
 
@@ -57,6 +59,9 @@ export const slice = createSlice({
     },
     getGallery(state, action) {
       state.gallery = action.payload;
+    },
+    getAllPostVideos(state, action) {
+      state.videos = action.payload;
     },
     getAllMusic(state, action) {
       state.allMusic = action.payload;
@@ -101,6 +106,30 @@ export function postVideo(params: ActionParams) {
   };
 }
 
+export function getAllPostVideos() {
+  return async () => {
+  
+    dispatch(slice.actions.startLoading());
+
+    const options: APIParams = {
+      method: "GET",
+      endpoint: PATH.post.get,
+      payload: {},
+      isToken: false,
+    };
+
+    try {
+      const [ok, response] = await API(options)
+
+
+      dispatch(slice.actions.getAllPostVideos(response.data));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(slice.actions.stopLoading());
+    }
+  };
+}
 export function getAllMusic() {
   return async () => {
   

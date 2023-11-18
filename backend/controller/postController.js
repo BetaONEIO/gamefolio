@@ -26,13 +26,20 @@ const postVideo = async (req, res) => {
 };
 
 // Get all posts
-const getAllPosts = async (req, res) => {
+const getAllPostVideos = async (req, res) => {
   try {
     const posts = await Posts.find();
-    res.status(200).json(posts);
+    res
+      .status(201)
+      .json({ data: posts, message: "Successfully Retrieve Post Videos" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Could not retrieve posts." });
+    res
+      .status(500)
+      .json({
+        error: "Could not retrieve posts.",
+        message: "Could not retrieve posts.",
+      });
   }
 };
 
@@ -361,7 +368,7 @@ const updateShare = async (req, res) => {
 
 module.exports = {
   postVideo,
-  getAllPosts,
+  getAllPostVideos,
   getPostById,
   updatePost,
   deletePost,

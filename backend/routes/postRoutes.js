@@ -6,7 +6,7 @@ const postController = require("../controller/postController.js");
 router.post("/video/create", postController.postVideo);
 
 // Get all posts
-router.get("/video/get", postController.getAllPosts);
+router.get("/video/get", postController.getAllPostVideos);
 
 // Get a single post by ID
 router.get("/get/:id", postController.getPostById);
