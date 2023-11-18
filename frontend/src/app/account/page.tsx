@@ -162,221 +162,204 @@ function Page() {
         {/* Main  */}
         <div className="flex justify-center items-center pt-4">
           {/* Profile */}
-          {USERDATA.map((user) => (
+          <div
+            key={authState?.userID}
+            className="lg:w-8/12 md:w-10/12 w-full flex flex-col gap-4"
+          >
+            <div className="flex flex-col items-center lg:flex-row lg:justify-center  w-full gap-4 ">
+              <div className="w-40 h-40">
+                <Image
+                  className="rounded-xl w-40 h-40 object-cover"
+                  src={authState?.profilePicture}
+                  width={10}
+                  height={10}
+                  sizes="100vw"
+                  alt="Account Profile"
+                />
+              </div>
+              <div className="flex flex-1 flex-col gap-2 flex-wrap justify-center text-center lg:justify-start lg:text-start p-2 ">
+                <span>{authState?.name}</span>
+                <div className="flex items-center gap-6 justify-center lg:justify-between">
+                  <div className="flex items-center">
+                    <p>({authState.username})</p>
+                    <Image
+                      src={SVG.AccountCopyUsername}
+                      width={16}
+                      height={16}
+                      alt="Copy Username"
+                    />
+                  </div>
+                  <div
+                    className="hover:opacity-80"
+                    onClick={() => handleModalToggle("isShareModalOpen")}
+                  >
+                    <Image src={SVG.Share} width={16} height={16} alt="Share" />
+                  </div>
+                </div>
+                <span className="text-gray-400">{authState?.bio}</span>
+                <div className="flex h-8 items-center justify-center md:gap-8">
+                  <div className="flex items-center gap-2 ">
+                    <span
+                      className={`${leagueGothic.className} text-lg md:text-2xl font-normal`}
+                    >
+                      {authState?.posts}
+                    </span>
+                    <span className="md:text-lg text-gray-400">Posts</span>
+                  </div>
+                  {/* Vertical divider */}
+                  <div className="border-r border-gray-700 h-full rounded-full mx-2"></div>
+                  <div
+                    className="flex items-center gap-2 hover:opacity-80 cursor-pointer"
+                    onClick={() => handleModalToggle("isFollowerModalOpen")}
+                  >
+                    <span
+                      className={`${leagueGothic.className} text-lg md:text-2xl font-normal`}
+                    >
+                      {authState?.followers}
+                    </span>
+                    <span className="md:text-lg text-gray-400">Followers</span>
+                  </div>
+                  {/* Vertical divider */}
+                  <div className="border-r border-gray-700 h-full  rounded-full mx-2"></div>
+
+                  <div
+                    className="flex items-center gap-2 hover:opacity-80 cursor-pointer"
+                    onClick={() => handleModalToggle("isFollowingModalOpen")}
+                  >
+                    <span
+                      className={`${leagueGothic.className} text-lg md:text-2xl font-normal`}
+                    >
+                      {authState?.following}
+                    </span>
+                    <span className="md:text-lg text-gray-400">Following</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div
-              key={user.userID}
-              className="lg:w-8/12 md:w-10/12 w-full flex flex-col gap-4"
+              className="bg-gray-800 py-4 w-full rounded-xl flex items-center hover:opacity-80 cursor-pointer"
+              onClick={() => handleModalToggle("isBadgeModalOpen")}
             >
-              <div className="flex flex-col items-center lg:flex-row lg:justify-center  w-full gap-4 ">
-                <div className="w-40 h-40">
+              <div className="flex justify-between flex-1  items-center px-4 ">
+                Current Badge
+                <div className="flex items-center gap-2">
                   <Image
-                    className="rounded-xl w-40 h-40 object-cover"
-                    src={user.profilePicture}
-                    width={10}
-                    height={10}
+                    className="w-12 h-12"
+                    src={IMAGES.AccountCurrentBadgeIcon}
+                    alt="Current Badge"
+                    width={0}
+                    height={0}
                     sizes="100vw"
-                    alt="Account Profile"
+                  />
+                  <Image
+                    className="w-8 h-8 opacity-50"
+                    src={IMAGES.AccountNextBadgeIcon}
+                    alt="Next Badge"
+                    width={0}
+                    height={0}
+                    sizes="100vw"
+                  />
+                  <Image
+                    className="w-8 h-8"
+                    src={SVG.ShowNext}
+                    alt="Next"
+                    width={0}
+                    height={0}
+                    sizes="100vw"
                   />
                 </div>
-                <div className="flex flex-1 flex-col gap-2 flex-wrap justify-center text-center lg:justify-start lg:text-start p-2 ">
-                  <span>{user.name}</span>
-                  <div className="flex items-center gap-6 justify-center lg:justify-between">
-                    <div className="flex items-center">
-                      <p>({user.username})</p>
-                      <Image
-                        src={SVG.AccountCopyUsername}
-                        width={16}
-                        height={16}
-                        alt="Copy Username"
-                      />
-                    </div>
-                    <div
-                      className="hover:opacity-80"
-                      onClick={() => handleModalToggle("isShareModalOpen")}
-                    >
-                      <Image
-                        src={SVG.Share}
-                        width={16}
-                        height={16}
-                        alt="Share"
-                      />
-                    </div>
-                  </div>
-                  <span className="text-gray-400">{user.bio}</span>
-                  <div className="flex h-8 items-center justify-center md:gap-8">
-                    <div className="flex items-center gap-2 ">
-                      <span
-                        className={`${leagueGothic.className} text-lg md:text-2xl font-normal`}
-                      >
-                        {user.posts}
-                      </span>
-                      <span className="md:text-lg text-gray-400">Posts</span>
-                    </div>
-                    {/* Vertical divider */}
-                    <div className="border-r border-gray-700 h-full rounded-full mx-2"></div>
-                    <div
-                      className="flex items-center gap-2 hover:opacity-80 cursor-pointer"
-                      onClick={() => handleModalToggle("isFollowerModalOpen")}
-                    >
-                      <span
-                        className={`${leagueGothic.className} text-lg md:text-2xl font-normal`}
-                      >
-                        {user.followers}
-                      </span>
-                      <span className="md:text-lg text-gray-400">
-                        Followers
-                      </span>
-                    </div>
-                    {/* Vertical divider */}
-                    <div className="border-r border-gray-700 h-full  rounded-full mx-2"></div>
+              </div>
+            </div>
 
-                    <div
-                      className="flex items-center gap-2 hover:opacity-80 cursor-pointer"
-                      onClick={() => handleModalToggle("isFollowingModalOpen")}
-                    >
-                      <span
-                        className={`${leagueGothic.className} text-lg md:text-2xl font-normal`}
-                      >
-                        {user.following}
-                      </span>
-                      <span className="md:text-lg text-gray-400">
-                        Following
-                      </span>
-                    </div>
-                  </div>
-                </div>
+            <AllStories />
+            {/* Top Bar */}
+            <div className=" h-10 w-full flex justify-around items-center">
+              <div
+                className={`flex gap-2 items-center cursor-pointer ${
+                  selectedSection === "videos" ? "text-white" : "text-gray-500"
+                }`}
+                onClick={() => setSelectedSection("videos")}
+              >
+                <Image
+                  className={`${
+                    selectedSection !== "videos" ? "opacity-40" : "opacity-100"
+                  }`}
+                  src={SVG.AccountMyVideos}
+                  alt="My Videos"
+                  width={24}
+                  height={24}
+                />
+                <span className="text-xs md:text-base">My Videos</span>
               </div>
 
               <div
-                className="bg-gray-800 py-4 w-full rounded-xl flex items-center hover:opacity-80 cursor-pointer"
-                onClick={() => handleModalToggle("isBadgeModalOpen")}
+                className={`flex gap-2 items-center cursor-pointer ${
+                  selectedSection === "bookmarked"
+                    ? "text-white"
+                    : "text-gray-500"
+                }`}
+                onClick={() => setSelectedSection("bookmarked")}
               >
-                <div className="flex justify-between flex-1  items-center px-4 ">
-                  Current Badge
-                  <div className="flex items-center gap-2">
-                    <Image
-                      className="w-12 h-12"
-                      src={IMAGES.AccountCurrentBadgeIcon}
-                      alt="Current Badge"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                    />
-                    <Image
-                      className="w-8 h-8 opacity-50"
-                      src={IMAGES.AccountNextBadgeIcon}
-                      alt="Next Badge"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                    />
-                    <Image
-                      className="w-8 h-8"
-                      src={SVG.ShowNext}
-                      alt="Next"
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <AllStories />
-              {/* Top Bar */}
-              <div className=" h-10 w-full flex justify-around items-center">
-                <div
-                  className={`flex gap-2 items-center cursor-pointer ${
-                    selectedSection === "videos"
-                      ? "text-white"
-                      : "text-gray-500"
+                <Image
+                  className={`${
+                    selectedSection !== "bookmarked"
+                      ? "opacity-40"
+                      : "opacity-100"
                   }`}
-                  onClick={() => setSelectedSection("videos")}
-                >
-                  <Image
-                    className={`${
-                      selectedSection !== "videos"
-                        ? "opacity-40"
-                        : "opacity-100"
-                    }`}
-                    src={SVG.AccountMyVideos}
-                    alt="My Videos"
-                    width={24}
-                    height={24}
-                  />
-                  <span className="text-xs md:text-base">My Videos</span>
-                </div>
-
-                <div
-                  className={`flex gap-2 items-center cursor-pointer ${
-                    selectedSection === "bookmarked"
-                      ? "text-white"
-                      : "text-gray-500"
-                  }`}
-                  onClick={() => setSelectedSection("bookmarked")}
-                >
-                  <Image
-                    className={`${
-                      selectedSection !== "bookmarked"
-                        ? "opacity-40"
-                        : "opacity-100"
-                    }`}
-                    src={SVG.AccountMyBookmarked}
-                    alt="My Bookmarked"
-                    width={22}
-                    height={22}
-                  />
-                  <span className="text-xs md:text-base">My Bookmarked</span>
-                </div>
+                  src={SVG.AccountMyBookmarked}
+                  alt="My Bookmarked"
+                  width={22}
+                  height={22}
+                />
+                <span className="text-xs md:text-base">My Bookmarked</span>
               </div>
-
-              <div>
-                <div
-                  className={`flex ${
-                    selectedSection === "videos"
-                      ? "justify-start"
-                      : "justify-end"
-                  }`}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="169"
-                    height="2"
-                    viewBox="0 0 169 2"
-                    fill="none"
-                  >
-                    <path
-                      d="M1 1H168"
-                      stroke="url(#paint0_linear_133_5406)"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                    />
-                    <defs>
-                      <linearGradient
-                        id="paint0_linear_133_5406"
-                        x1="84.5"
-                        y1="1"
-                        x2="84.5"
-                        y2="2"
-                        gradientUnits="userSpaceOnUse"
-                      >
-                        <stop stopColor="#62C860" />
-                        <stop offset="1" stopColor="#37C535" />
-                      </linearGradient>
-                    </defs>
-                  </svg>
-                </div>
-                <hr className="h-px  bg-gray-200 border-0 dark:bg-gray-700" />
-              </div>
-
-              {/* Content Section */}
-              {selectedSection === "videos" ? (
-                <MyVideosSection data={popular} />
-              ) : (
-                <MyBookmarkSection data={popular} />
-              )}
             </div>
-          ))}
+
+            <div>
+              <div
+                className={`flex ${
+                  selectedSection === "videos" ? "justify-start" : "justify-end"
+                }`}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="169"
+                  height="2"
+                  viewBox="0 0 169 2"
+                  fill="none"
+                >
+                  <path
+                    d="M1 1H168"
+                    stroke="url(#paint0_linear_133_5406)"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                  <defs>
+                    <linearGradient
+                      id="paint0_linear_133_5406"
+                      x1="84.5"
+                      y1="1"
+                      x2="84.5"
+                      y2="2"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stopColor="#62C860" />
+                      <stop offset="1" stopColor="#37C535" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+              <hr className="h-px  bg-gray-200 border-0 dark:bg-gray-700" />
+            </div>
+
+            {/* Content Section */}
+            {selectedSection === "videos" ? (
+              <MyVideosSection data={popular} />
+            ) : (
+              <MyBookmarkSection data={popular} />
+            )}
+          </div>
         </div>
 
         <Modal

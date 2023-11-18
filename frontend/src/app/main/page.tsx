@@ -1,19 +1,18 @@
 "use client";
+import Loading from "@/app/main/loading";
 import { SVG } from "@/assets/SVG";
-import { IMAGES } from "@/assets/images";
+import Layout from "@/components/CustomLayout/layout";
 import Modal from "@/components/Modals/Modal";
 import SharePost from "@/components/Modals/SharePost";
 import VideoDetails from "@/components/Modals/VideoDetails";
 import AllStories from "@/components/story/AllStories";
-import Image from "next/image";
-import { Suspense, useEffect, useState } from "react";
-import Layout from "@/components/CustomLayout/layout";
 import { dispatch } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
-import Loading from "@/app/main/loading";
-import { useSelector } from "react-redux";
-import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import { getAllPostVideos } from "@/store/slices/postSlice";
+import { getCookieValue, getFromLocal } from "@/utils/localStorage";
+import Image from "next/image";
+import { Suspense, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 function Main() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
@@ -116,7 +115,6 @@ function Main() {
                     src={post.video}
                     width={50}
                     height={50}
-                    autoPlay
                     controls
                   />
 
