@@ -19,10 +19,6 @@ function Main() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const postState = useSelector((state: any) => state.post.videos) || [];
 
-  // Object.keys(authState).map((key) => {
-  //   const value = authState[key];
-  //   console.log(key, value);
-  // });
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
   };
@@ -52,34 +48,6 @@ function Main() {
   const sectionStyle = {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
   };
-
-  const USERDATA = [
-    {
-      id: "1",
-      name: "Hannery",
-      profilePicture: IMAGES.Profile,
-      post: IMAGES.Post2,
-      date: "17 sep, 2022",
-      description:
-        "Lorem ipsum dolor sit amet consectetur. Ante duis tellus tincidunt nibh hi hahshhanjnjnijnijnihbibibib",
-      like: 5.4,
-      love: 120,
-      comment: 165,
-    },
-
-    {
-      id: "2",
-      name: "Hannery",
-      profilePicture: IMAGES.Profile,
-      post: IMAGES.Post,
-      date: "17 sep, 2022",
-      description:
-        "Lorem ipsum dolor sit amet consect. Ante duis tellus tincidunt nibh hi hahshhanjnjnijnijnihbibibib",
-      like: 5.4,
-      love: 120,
-      comment: 165,
-    },
-  ];
 
   return (
     <Layout>
@@ -111,7 +79,12 @@ function Main() {
                           {post?.userID?.name}
                         </h1>
                         <p className="text-base font-light text-gray-600 dark:text-gray-400">
-                          {post?.userID?.email}
+                          {post?.date &&
+                            new Date(post.date).toLocaleDateString("en-US", {
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            })}
                         </p>
                       </div>
                     </div>

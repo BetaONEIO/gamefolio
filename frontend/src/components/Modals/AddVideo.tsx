@@ -314,7 +314,7 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
                     </div>
 
                     {isDropdownOpen && (
-                      <div className="absolute z-50 mt-2 w-full rounded-md shadow-lg">
+                      <div className="absolute z-50 mt-2 w-full md:w-72 sm:w-96 rounded-md shadow-lg">
                         <ul className="py-1 bg-white  dark:bg-[#1C2C2E] dark:text-white  dark:rounded-b-lg">
                           {optionsForGame.map((option) => (
                             <li
@@ -391,7 +391,7 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
                     </div>
 
                     {isDropdownOpenMusic && (
-                      <div className="absolute overflow-y-auto h-40 z-50 mt-2 w-full rounded-md shadow-lg">
+                      <div className="absolute overflow-y-auto h-40 z-50 mt-2w-full md:w-72 sm:w-96 rounded-md shadow-lg">
                         <ul className="py-1 bg-white   dark:bg-[#1C2C2E]  dark:text-white  dark:rounded-b-lg">
                           {musicState.map((option: any) => (
                             <li
