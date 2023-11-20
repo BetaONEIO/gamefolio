@@ -1,13 +1,46 @@
+"use client";
 import { leagueGothic } from "@/font/font";
+import { dispatch, useSelector } from "@/store";
+import { toastError, toastSuccess } from "../Toast/Toast";
+import { deleteVideo } from "@/store/slices/postSlice";
+import { ToastContainer } from "react-toastify";
 
 interface DeletePostProps {
   handleCloseModal: () => void;
+  postID?: any;
 }
 
-function DeletePost({ handleCloseModal }: DeletePostProps) {
+function DeletePost({ handleCloseModal, postID }: DeletePostProps) {
+  const authState = useSelector((state: any) => state.auth.userData) || [];
   const myBGStyleModal = {
     backgroundColor: "rgba(0, 0, 0, 0.6)",
     backdropFilter: "blur(8px)",
+  };
+
+  const handleDeletePost = async (postID: any) => {
+    const payload = {
+      userID: authState._id,
+      postID: postID,
+    };
+
+    console.log("My Payload DeletePost: >><> ", payload);
+
+    const successCallback = (response: any) => {
+      console.log("RESPONSE ADDVIDEO: ", response);
+      toastSuccess(response);
+    };
+
+    const errorCallback = (error: string) => {
+      toastError(error);
+    };
+
+    const params = {
+      payload,
+      successCallback,
+      errorCallback,
+    };
+
+    dispatch(deleteVideo(params));
   };
 
   return (
@@ -31,7 +64,10 @@ function DeletePost({ handleCloseModal }: DeletePostProps) {
             </div>
 
             <div className="flex flex-col items-center mb-2 sm:mb-2 ">
-              <button className="w-1/2 h-[50] font-bold bg-[#162423] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3">
+              <button
+                className="w-1/2 h-[50] font-bold bg-[#162423] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3"
+                onClick={() => handleDeletePost(postID)}
+              >
                 Yes
               </button>
               <button
@@ -44,6 +80,18 @@ function DeletePost({ handleCloseModal }: DeletePostProps) {
           </div>
         </div>
       </div>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </>
   );
 }
