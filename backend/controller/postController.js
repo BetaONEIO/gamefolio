@@ -79,13 +79,16 @@ const updatePost = async (req, res) => {
 // Delete a post by ID
 const deletePost = async (req, res) => {
   try {
-    const postId = req.params.id;
-    const post = await Posts.findByIdAndDelete(postId);
+    const { postID } = req.body;
+    console.log("pID: ", postID);
+    const post = await Posts.findByIdAndDelete(postID);
     if (!post) {
-      return res.status(404).json({ error: "Post not found." });
+      return res
+        .status(404)
+        .json({ error: "Post not found.", message: "Post not found." });
     }
 
-    res.status(204).send();
+    res.status(200).json({ data: post, message: "Successfully Video Deleted" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Could not delete the post." });

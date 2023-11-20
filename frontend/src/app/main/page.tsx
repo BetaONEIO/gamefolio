@@ -36,10 +36,16 @@ function Main() {
     isVideoDetailOpen: false,
     isPostDeleteOpen: false,
   });
+
+  const [postID, setPostID] = useState("");
   console.log("#####333333", authState);
   console.log("#####POSTSTATE: ", postState);
 
-  const handleModalToggle = (modalName: keyof typeof modalState) => {
+  const handleModalToggle = (
+    modalName: keyof typeof modalState,
+    postID?: any
+  ) => {
+    setPostID(postID);
     setModalState((prevState) => ({
       ...prevState,
       [modalName]: !prevState[modalName],
@@ -49,6 +55,8 @@ function Main() {
   const sectionStyle = {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
   };
+
+  console.log("POSTIDDDD: ", postID);
 
   return (
     <Layout>
@@ -81,7 +89,9 @@ function Main() {
                         </h1>
                         <p className="text-base font-light text-gray-600 dark:text-gray-400">
                           {post?.date &&
-                            new Date(post.date).toLocaleDateString("en-US", {
+                            new Date(post.date).toLocaleString("en-US", {
+                              hour: "numeric",
+                              minute: "numeric",
                               day: "numeric",
                               month: "short",
                               year: "numeric",
@@ -104,7 +114,9 @@ function Main() {
                         alt="Threedots"
                         width={5}
                         height={5}
-                        onClick={() => handleModalToggle("isPostDeleteOpen")}
+                        onClick={() =>
+                          handleModalToggle("isPostDeleteOpen", post._id)
+                        }
                       />
                     </div>
                   </div>
@@ -223,6 +235,7 @@ function Main() {
         handleClose={() => handleModalToggle("isPostDeleteOpen")}
       >
         <DeletePost
+          postID={postID}
           handleCloseModal={() => handleModalToggle("isPostDeleteOpen")}
         />
       </Modal>

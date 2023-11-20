@@ -8,6 +8,9 @@ router.post("/video/create", postController.postVideo);
 // Get all posts
 router.get("/video/get", postController.getAllPostVideos);
 
+// Delete a video post by ID
+router.post("/video/delete", postController.deletePost);
+
 // Get a single post by ID
 router.get("/get/:id", postController.getPostById);
 
