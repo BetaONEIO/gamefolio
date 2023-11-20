@@ -2,6 +2,7 @@
 import Loading from "@/app/main/loading";
 import { SVG } from "@/assets/SVG";
 import Layout from "@/components/CustomLayout/layout";
+import DeletePost from "@/components/Modals/DeletePost";
 import Modal from "@/components/Modals/Modal";
 import SharePost from "@/components/Modals/SharePost";
 import VideoDetails from "@/components/Modals/VideoDetails";
@@ -33,6 +34,7 @@ function Main() {
   const [modalState, setModalState] = useState({
     isPostShareOpen: false,
     isVideoDetailOpen: false,
+    isPostDeleteOpen: false,
   });
   console.log("#####333333", authState);
   console.log("#####POSTSTATE: ", postState);
@@ -102,6 +104,7 @@ function Main() {
                         alt="Threedots"
                         width={5}
                         height={5}
+                        onClick={() => handleModalToggle("isPostDeleteOpen")}
                       />
                     </div>
                   </div>
@@ -212,6 +215,15 @@ function Main() {
       >
         <VideoDetails
           handleCloseModal={() => handleModalToggle("isVideoDetailOpen")}
+        />
+      </Modal>
+
+      <Modal
+        isOpen={modalState.isPostDeleteOpen}
+        handleClose={() => handleModalToggle("isPostDeleteOpen")}
+      >
+        <DeletePost
+          handleCloseModal={() => handleModalToggle("isPostDeleteOpen")}
         />
       </Modal>
     </Layout>

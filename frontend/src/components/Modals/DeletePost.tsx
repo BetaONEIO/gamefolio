@@ -1,10 +1,10 @@
 import { leagueGothic } from "@/font/font";
 
-// interface DeleteAccountProps {
-//   handleCloseModal: () => void; // Define handleCloseModal as a function
-// }
+interface DeletePostProps {
+  handleCloseModal: () => void;
+}
 
-function DeletePost() {
+function DeletePost({ handleCloseModal }: DeletePostProps) {
   const myBGStyleModal = {
     backgroundColor: "rgba(0, 0, 0, 0.6)",
     backdropFilter: "blur(8px)",
@@ -23,7 +23,7 @@ function DeletePost() {
             <h1
               className={`${leagueGothic.className} text-3xl mb-7  dark:text-white`}
             >
-              DELETE ACCOUNT
+              DELETE POST
             </h1>
 
             <div className="w-full mb-4 sm:mb-5">
@@ -34,7 +34,10 @@ function DeletePost() {
               <button className="w-1/2 h-[50] font-bold bg-[#162423] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3">
                 Yes
               </button>
-              <button className="w-1/2 h-[50] font-bold bg-[#37C535] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] ">
+              <button
+                onClick={handleCloseModal}
+                className="w-1/2 h-[50] font-bold bg-[#37C535] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] "
+              >
                 No
               </button>
             </div>
