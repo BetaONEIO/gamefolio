@@ -19,7 +19,7 @@ const findOrCreate = async (profile, done) => {
       const newUser = new User({
         name: profile.displayName,
         email: profile.emails[0].value,
-        profilePicture: profile.photos[0].value, // Change this to the appropriate field from the Google profile
+        profilePicture: profile.photos[0].value.replace("s96", "s240"), // Change this to the appropriate field from the Google profile
         // Add other user properties here
       });
 
