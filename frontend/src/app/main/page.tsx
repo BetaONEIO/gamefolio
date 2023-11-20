@@ -109,7 +109,7 @@ function Main() {
                     </div>
                   </div>
 
-                  <div className="m-3">
+                  <div className="mx-3 mt-3 mb-2">
                     <p className="text-neutral-300">{post?.description}</p>
                   </div>
 
