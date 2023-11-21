@@ -7,10 +7,15 @@ import { ToastContainer } from "react-toastify";
 
 interface DeletePostProps {
   handleCloseModal: () => void;
+  handlePageRefresh: () => void;
   postID?: any;
 }
 
-function DeletePost({ handleCloseModal, postID }: DeletePostProps) {
+function DeletePost({
+  handleCloseModal,
+  postID,
+  handlePageRefresh,
+}: DeletePostProps) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const myBGStyleModal = {
     backgroundColor: "rgba(0, 0, 0, 0.6)",
@@ -27,7 +32,9 @@ function DeletePost({ handleCloseModal, postID }: DeletePostProps) {
 
     const successCallback = (response: any) => {
       console.log("RESPONSE ADDVIDEO: ", response);
+      handlePageRefresh();
       toastSuccess(response);
+      handleCloseModal();
     };
 
     const errorCallback = (error: string) => {

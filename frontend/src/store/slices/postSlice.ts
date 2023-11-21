@@ -19,6 +19,7 @@ export type InitialState = {
   gallery: ImageResponse[] | null;
   videos: Array<any>;
   allMusic: Array<any>;
+  refresh: boolean;
 };
 
 const initialState: InitialState = {
@@ -30,6 +31,7 @@ const initialState: InitialState = {
   gallery: null,
   videos: [],
   allMusic: [],
+  refresh: false,
 };
 
 export const slice = createSlice({
@@ -66,10 +68,13 @@ export const slice = createSlice({
     getAllMusic(state, action) {
       state.allMusic = action.payload;
     },
+    refreshPage(state) {
+      state.refresh = state.refresh ? false : true;
+    },
   },
 });
 
-export const { startLoading, stopLoading, getCredits } = slice.actions;
+export const { startLoading, stopLoading, getCredits, refreshPage } = slice.actions;
 
 export function postVideo(params: ActionParams) {
   return async () => {
@@ -188,6 +193,44 @@ export function getAllMusic() {
     }
   };
 }
+
+//create reaction
+
+export function createVideoReaction(params: ActionParams) {
+  return async () => {
+    const {
+      successCallback = () => {},
+      errorCallback = () => {},
+      payload,
+    } = params;
+
+    console.log("))) 00: ",payload);
+
+    dispatch(slice.actions.startLoading());
+
+    const options: APIParams = {
+      method: "POST",
+      endpoint: PATH.reaction.create,
+      payload: payload,
+      isToken: false,
+    };
+    try {
+      const [ok, response] = await API(options);
+      console.log(response);
+      if (!ok || !response) return errorCallback(response.message);
+
+      console.log("repsonse:::: ",response)
+
+      successCallback(response.message);
+    } catch (error) {
+      console.log("error", error);
+      errorCallback();
+    } finally {
+      dispatch(slice.actions.stopLoading());
+    }
+  };
+}
+
 
 export function login(params: ActionParams) {
   return async () => {

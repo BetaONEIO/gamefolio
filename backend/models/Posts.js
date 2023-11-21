@@ -21,6 +21,7 @@ const postSchema = new mongoose.Schema({
     {
       userID: {
         type: String,
+        unique: true,
       },
       reactionType: {
         type: String,

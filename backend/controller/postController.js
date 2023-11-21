@@ -96,14 +96,25 @@ const deletePost = async (req, res) => {
 };
 
 // Create a new reaction for a post
-const createReaction = async (req, res) => {
+const createVideoReaction = async (req, res) => {
   try {
-    // const postId = req.params.id;
-    const { postId, userID, reactionType } = req.body;
+    const { postID, userID, reactionType } = req.body;
 
-    const post = await Posts.findById(postId);
+    const post = await Posts.findById(postID);
     if (!post) {
       return res.status(404).json({ error: "Post not found." });
+    }
+
+    // Check if the user has already reacted to the post
+    const existingReaction = post.reactions.find(
+      (reaction) => reaction.userID === userID
+    );
+
+    if (existingReaction) {
+      return res.status(400).json({
+        error: "User has already reacted to this post.",
+        message: "User has already reacted to this post.",
+      });
     }
 
     const newReaction = {
@@ -114,10 +125,16 @@ const createReaction = async (req, res) => {
     post.reactions.push(newReaction);
     const updatedPost = await post.save();
 
-    res.status(201).json(updatedPost);
+    res.status(201).json({
+      data: updatedPost,
+      message: "Successfully Created Reaction",
+    });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Could not create the reaction." });
+    res.status(500).json({
+      error: "Could not create the reaction.",
+      message: "Could not create the reaction.",
+    });
   }
 };
 
@@ -373,7 +390,7 @@ module.exports = {
   getPostById,
   updatePost,
   deletePost,
-  createReaction,
+  createVideoReaction,
   createComment,
   createShare,
   getAllReactions,
