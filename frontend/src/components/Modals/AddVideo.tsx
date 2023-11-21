@@ -8,7 +8,7 @@ import ProgressBar from "@ramonak/react-progress-bar";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import { ToastContainer } from "react-toastify";
 import { toastError, toastSuccess } from "../Toast/Toast";
-import { getAllMusic, postVideo } from "@/store/slices/postSlice";
+import { getAllMusic, postVideo, refreshPage } from "@/store/slices/postSlice";
 import { dispatch, useSelector } from "@/store";
 
 interface FileUploadState {
@@ -173,6 +173,8 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
 
     const successCallback = (response: any) => {
       console.log("RESPONSE ADDVIDEO: ", response);
+      handlePageRefresh();
+      handleCloseModal();
       toastSuccess(response);
     };
 
@@ -187,6 +189,10 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
     };
 
     dispatch(postVideo(params));
+  };
+
+  const handlePageRefresh = () => {
+    dispatch(refreshPage());
   };
 
   return (

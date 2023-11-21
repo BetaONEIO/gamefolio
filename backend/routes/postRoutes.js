@@ -21,7 +21,7 @@ router.put("/update/:id", postController.updatePost);
 router.delete("/delete/:id", postController.deletePost);
 
 // Create a new reaction for a post
-router.post("/reaction/create", postController.createReaction);
+router.post("/video/reaction/create", postController.createVideoReaction);
 
 // Create a new comment for a post
 router.post("/comment/create", postController.createComment);

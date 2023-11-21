@@ -6,18 +6,22 @@ import DeletePost from "@/components/Modals/DeletePost";
 import Modal from "@/components/Modals/Modal";
 import SharePost from "@/components/Modals/SharePost";
 import VideoDetails from "@/components/Modals/VideoDetails";
+import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import AllStories from "@/components/story/AllStories";
-import { dispatch } from "@/store";
+import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
-import { getAllPostVideos } from "@/store/slices/postSlice";
+import {
+  createVideoReaction,
+  getAllPostVideos,
+  refreshPage,
+} from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
 import { Suspense, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 
 function Main() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
-  const postState = useSelector((state: any) => state.post.videos) || [];
+  const postState = useSelector((state: any) => state.post) || [];
 
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
@@ -28,7 +32,8 @@ function Main() {
   useEffect(() => {
     dispatch(userSession(params));
     dispatch(getAllPostVideos());
-  }, []);
+  }, [postState.refresh]);
+
   console.log("authState MAIN", authState);
 
   const [modalState, setModalState] = useState({
@@ -56,6 +61,38 @@ function Main() {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
   };
 
+  const handleCreateReaction = async (postID: any, reactionType: any) => {
+    const payload = {
+      userID: authState._id,
+      postID: postID,
+      reactionType: reactionType,
+    };
+
+    console.log("My Payload Reaction: >><> ", payload);
+
+    const successCallback = (response: any) => {
+      console.log("RESPONSE ADDVIDEO: ", response);
+      handlePageRefresh();
+      toastSuccess(response);
+    };
+
+    const errorCallback = (error: string) => {
+      toastError(error);
+    };
+
+    const params = {
+      payload,
+      successCallback,
+      errorCallback,
+    };
+
+    dispatch(createVideoReaction(params));
+  };
+
+  const handlePageRefresh = () => {
+    dispatch(refreshPage());
+  };
+
   console.log("POSTIDDDD: ", postID);
 
   return (
@@ -68,7 +105,7 @@ function Main() {
         >
           <div className="flex justify-center">
             <div className="w-11/12 sm:w-9/12 flex flex-col gap-8 rounded-lg">
-              {postState.map((post: any) => (
+              {postState.videos.map((post: any) => (
                 <div
                   key={post._id}
                   className="border border-[#1C2C2E] rounded-2xl bg-[#091619]"
@@ -134,7 +171,10 @@ function Main() {
                   />
 
                   <div className="flex items-center my-3 mx-2">
-                    <div className="flex items-center p-2 mr-2 rounded-lg bg-[#162423]">
+                    <div
+                      className="flex items-center p-2 mr-2 rounded-lg bg-[#162423]"
+                      onClick={() => handleCreateReaction(post._id, "like")}
+                    >
                       <Image
                         className="mr-2 hover:opacity-80"
                         src={SVG.Like}
@@ -142,9 +182,18 @@ function Main() {
                         width={30}
                         height={30}
                       />
-                      <p>{post?.like}K</p>
+                      <p>
+                        {
+                          post.reactions.filter(
+                            (reaction: any) => reaction.reactionType === "like"
+                          ).length
+                        }
+                      </p>
                     </div>
-                    <div className="flex items-center p-2 mr-2 rounded-lg bg-[#162423]">
+                    <div
+                      className="flex items-center p-2 mr-2 rounded-lg bg-[#162423]"
+                      onClick={() => handleCreateReaction(post._id, "love")}
+                    >
                       <Image
                         className="mr-2 hover:opacity-80"
                         src={SVG.Love}
@@ -152,7 +201,13 @@ function Main() {
                         width={30}
                         height={30}
                       />
-                      <p>{post?.love}</p>
+                      <p>
+                        {
+                          post.reactions.filter(
+                            (reaction: any) => reaction.reactionType === "love"
+                          ).length
+                        }
+                      </p>
                     </div>
 
                     <div className="p-2 mr-2 rounded-lg bg-[#162423]">
@@ -237,6 +292,7 @@ function Main() {
         <DeletePost
           postID={postID}
           handleCloseModal={() => handleModalToggle("isPostDeleteOpen")}
+          handlePageRefresh={() => handlePageRefresh()}
         />
       </Modal>
     </Layout>
