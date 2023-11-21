@@ -56,12 +56,6 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
     setIsDropdownOpenMusic(!isDropdownOpenMusic);
   };
 
-  // const musicState = [
-  //   { value: "music1", label: "music 1" },
-  //   { value: "music2", label: "music 2" },
-  //   { value: "music3", label: "music 3" },
-  // ];
-
   const handleSelect = (value: any) => {
     setSelectedOption(value);
     setIsDropdownOpen(false);
