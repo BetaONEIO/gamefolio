@@ -35,7 +35,7 @@ function Main() {
     dispatch(getAllPostVideos());
   }, [postState.refresh]);
 
-  console.log("authState MAIN", authState);
+  // console.log("authState MAIN", authState);
 
   const [modalState, setModalState] = useState({
     isPostShareOpen: false,
@@ -44,8 +44,6 @@ function Main() {
   });
 
   const [postID, setPostID] = useState("");
-  console.log("#####333333", authState);
-  console.log("#####POSTSTATE: ", postState);
 
   const handleModalToggle = (
     modalName: keyof typeof modalState,
@@ -69,10 +67,10 @@ function Main() {
       reactionType: reactionType,
     };
 
-    console.log("My Payload Reaction: >><> ", payload);
+    console.log("My Payload CREATE Reaction: >><> ", payload);
 
     const successCallback = (response: any) => {
-      console.log("RESPONSE ADDVIDEO: ", response);
+      // console.log("RESPONSE ADDVIDEO: ", response);
       handlePageRefresh();
       toastSuccess(response);
     };
@@ -122,8 +120,8 @@ function Main() {
     dispatch(refreshPage());
   };
 
-  console.log("POSTIDDDD: ", postID);
-  console.log("POSTSTATE: ><> ", postState);
+  // console.log("POSTIDDDD: ", postID);
+  // console.log("POSTSTATE: ><> ", postState);
 
   return (
     <Layout>
@@ -136,18 +134,22 @@ function Main() {
           <div className="flex justify-center">
             <div className="w-11/12 sm:w-9/12 flex flex-col gap-8 rounded-lg">
               {postState.videos.map((post: any) => {
+                // Check if the current user has reacted with "like" or "love"
                 const hasLikeReacted = post.reactions.some(
                   (reaction: any) =>
                     reaction.userID === authState._id &&
                     reaction.reactionType === "like"
                 );
+
                 const hasLoveReacted = post.reactions.some(
                   (reaction: any) =>
                     reaction.userID === authState._id &&
                     reaction.reactionType === "love"
                 );
+
+                // Find the reaction ID for the current user
                 const reactionID = post.reactions.find(
-                  (reaction: any) => reaction._id
+                  (reaction: any) => reaction.userID === authState._id
                 );
 
                 return (
