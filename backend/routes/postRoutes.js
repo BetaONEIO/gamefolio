@@ -23,6 +23,9 @@ router.delete("/delete/:id", postController.deletePost);
 // Create a new reaction for a post
 router.post("/video/reaction/create", postController.createVideoReaction);
 
+// delete reaction of a post
+router.post("/video/reaction/delete", postController.deleteVideoReaction);
+
 // Create a new comment for a post
 router.post("/comment/create", postController.createComment);
 
@@ -46,9 +49,6 @@ router.put("/comment/update", postController.updateComment);
 
 // Update a share by ID
 router.put("/share/update", postController.updateShare);
-
-// Delete a reaction by ID
-router.delete("/reaction/delete", postController.deleteReaction);
 
 // Delete a comment by ID
 router.delete("/comment/delete", postController.deleteComment);
