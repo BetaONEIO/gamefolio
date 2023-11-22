@@ -30,7 +30,7 @@ export const PATH = {
   },
   reaction:{
     create: "post/video/reaction/create",
-    delete: "reaction/delete",
+    delete: "post/video/reaction/delete",
   },
   music: {
     getAllMusic: "music/get/all"

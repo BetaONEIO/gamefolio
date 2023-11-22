@@ -137,6 +137,29 @@ const createVideoReaction = async (req, res) => {
     });
   }
 };
+// Delete a reaction by ID
+const deleteVideoReaction = async (req, res) => {
+  try {
+    const { postID, reactionID } = req.body;
+
+    const post = await Posts.findByIdAndUpdate(
+      postID,
+      { $pull: { reactions: { _id: reactionID } } },
+      { new: true }
+    );
+
+    if (!post) {
+      return res.status(404).json({ error: "Post or Reaction not found." });
+    }
+
+    return res
+      .status(200)
+      .json({ data: post, message: "Successfully Deleted Reaction" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Could not delete the reaction." });
+  }
+};
 
 // Create a new comment for a post
 const createComment = async (req, res) => {
@@ -237,27 +260,6 @@ const getAllShares = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Could not retrieve shares." });
-  }
-};
-
-// Delete a reaction by ID
-const deleteReaction = async (req, res) => {
-  try {
-    const postId = req.params.id;
-    const reactionId = req.params.reactionId;
-
-    const post = await Posts.findById(postId);
-    if (!post) {
-      return res.status(404).json({ error: "Post not found." });
-    }
-
-    post.reactions.id(reactionId).remove();
-    const updatedPost = await post.save();
-
-    res.status(204).send();
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Could not delete the reaction." });
   }
 };
 
@@ -391,12 +393,12 @@ module.exports = {
   updatePost,
   deletePost,
   createVideoReaction,
+  deleteVideoReaction,
   createComment,
   createShare,
   getAllReactions,
   getAllComments,
   getAllShares,
-  deleteReaction,
   deleteComment,
   deleteShare,
   updateReaction,
