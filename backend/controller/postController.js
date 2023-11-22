@@ -142,11 +142,14 @@ const deleteVideoReaction = async (req, res) => {
   try {
     const { postID, reactionID } = req.body;
 
+    console.log({ postID, reactionID });
     const post = await Posts.findByIdAndUpdate(
       postID,
       { $pull: { reactions: { _id: reactionID } } },
       { new: true }
     );
+
+    console.log("deletepost: ", post);
 
     if (!post) {
       return res.status(404).json({ error: "Post or Reaction not found." });
