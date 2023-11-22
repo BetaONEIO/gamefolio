@@ -111,17 +111,6 @@ app.get("/api/store-token", (req, res) => {
   res.redirect("http://localhost:3000/main");
 });
 
-// app.get("/api/success", (req, res) => {
-//   // You can access the access token from the session
-//   const accessToken = req.session.token;
-
-//   if (accessToken) {
-//     res.json({ token: accessToken });
-//   } else {
-//     res.send("Access Token not found");
-//   }
-// });
-
 app.get("/main", (req, res) => {
   res.send("Successfully authenticated");
 });
@@ -208,14 +197,6 @@ app.post("/uploadfile", upload.single("file"), (req, res) => {
       })
       .run();
   };
-
-  // // Specify the path to your custom audio file
-  // const customAudioPath = "audio/song.mp3";
-
-  // // Specify the output path for the video with added audio
-  // const outputVideoPath = `output/${file.originalname}`;
-
-  // addAudioToVideo(file.path, customAudioPath, outputVideoPath);
 
   const videoFile = req.file;
   const videoPath = videoFile.path;

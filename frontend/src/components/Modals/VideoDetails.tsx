@@ -105,9 +105,9 @@ function VideoDetails({ handleCloseModal }: VideoDetailProps) {
               </div>
 
               {/* Right Column - Form */}
-              <div className="w-full md:w-full lg:w-7/12 lg:h-[33.9rem] md:h-[33.9rem] h-[8rem]">
+              <div className="w-full md:w-full lg:w-6/12 lg:h-[33.9rem] md:h-[33.9rem] h-[8rem]">
                 {/* Game Selection */}
-                <div className="w-full md:w-full lg:w-full ml-3">
+                <div className="w-full md:w-full lg:w-full">
                   <div className="flex items-center my-3">
                     <Image
                       className="w-12 h-12 mr-2 sm:mr-4"
@@ -132,10 +132,10 @@ function VideoDetails({ handleCloseModal }: VideoDetailProps) {
                     </p>
                   </div>
 
-                  <div className="flex items-center w-11/12">
+                  <div className="flex items-center w-full">
                     <div className="flex flex-1 gap-4">
                       <Image
-                        className="p-2 w-10 h-10 rounded-xl bg-[#162423]"
+                        className="cursor-pointer hover:opacity-80 p-2 w-10 h-10 rounded-xl bg-[#162423]"
                         src={SVG.Like}
                         alt="Like"
                         width={50}
@@ -143,7 +143,7 @@ function VideoDetails({ handleCloseModal }: VideoDetailProps) {
                       />
 
                       <Image
-                        className="w-10 h-10 rounded-xl bg-[#162423]"
+                        className="cursor-pointer hover:opacity-80 w-10 h-10 rounded-xl bg-[#162423]"
                         src={SVG.Comment}
                         alt="Comment"
                         width={50}
@@ -167,13 +167,14 @@ function VideoDetails({ handleCloseModal }: VideoDetailProps) {
                       />
                     </div>
 
-                    <div className="flex flex-1">
+                    {/* <div className="flex flex-1">
                       <p className="text-sm ">5.4K Like &nbsp;</p>
                       <p className="text-sm"> . 165 Comments</p>
-                    </div>
+                    </div> */}
 
-                    <div className="flex flex-end ">
+                    <div className="flex flex-end mr-2">
                       <Image
+                        className="cursor-pointer hover:opacity-80"
                         src={SVG.Share}
                         alt="Share"
                         width={25}
@@ -183,11 +184,11 @@ function VideoDetails({ handleCloseModal }: VideoDetailProps) {
                   </div>
                 </div>
 
-                <hr className="w-full border-t border-gray-600 mt-4" />
+                <div className="border dark:border-[#586769] mt-3"></div>
 
                 <div className="h-72 mx-4 overflow-y-scroll no-scrollbar">
                   {commentsData.map((item) => (
-                    <div key={item.id} className="flex items-start gap-2 mt-3">
+                    <div key={item.id} className="flex flex-row gap-2 mt-3">
                       <Image
                         className="w-12 h-12"
                         src={item.profilePicture}
@@ -195,21 +196,19 @@ function VideoDetails({ handleCloseModal }: VideoDetailProps) {
                         width={40}
                         height={40}
                       />
-                      <div className="flex flex-col">
-                        <div className="flex mb-1">
+                      <div>
+                        <div className="flex flex-row mb-1">
                           <p className="text-lg font-bold md:text-lg dark:text-white">
                             {item.name}
                           </p>
-                        </div>
-                        <div className="flex items-start">
                           <p className="ml-2 font-light md:text-md dark:text-gray-200">
                             {item.comment}
                           </p>
                         </div>
-                        <div className="flex items-start text-base font-light sm:text-sm text-gray-50 dark:text-gray-50">
-                          <p className="mr-2">1d</p>
-                          <p className="mr-2">8 likes</p>
-                          <p>Reply</p>
+                        <div className="flex items-center text-base font-light sm:text-sm text-gray-50 dark:text-gray-50 gap-2">
+                          <p>1d</p>
+                          <p className="cursor-pointer">8 likes</p>
+                          <p className="cursor-pointer">Reply</p>
                         </div>
                       </div>
                     </div>
@@ -229,7 +228,7 @@ function VideoDetails({ handleCloseModal }: VideoDetailProps) {
                     <input
                       type="Post"
                       id="default-search"
-                      className="w- block p-4 ml-10 text-sm bg-[#091619] outline-none sm:text-sm dark:text-white"
+                      className="w-[16rem] lg:w-[28rem] block p-4 ml-10 text-sm bg-[#091619] outline-none sm:text-sm dark:text-white"
                       placeholder="Add a comment..."
                       required
                     />

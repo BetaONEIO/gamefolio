@@ -156,7 +156,7 @@ function Main() {
                     className="border border-[#1C2C2E] rounded-2xl bg-[#091619]"
                   >
                     <div className="flex items-center justify-between m-3">
-                      <div className="flex items-center gap-4">
+                      <div className="flex items-center sm:gap-4 gap-2">
                         <Image
                           className="w-12 h-12 rounded-lg"
                           src={post?.userID?.profilePicture}
@@ -166,10 +166,10 @@ function Main() {
                           sizes="100vw"
                         />
                         <div>
-                          <h1 className="text-xs sm:text-lg font-bold text-gray-900 md:text-xl dark:text-white hover:opacity-80">
+                          <h1 className="w-[230px] sm:w-[350px] text-sm md:text-lg sm:text-md font-bold text-gray-900 dark:text-white hover:opacity-80">
                             {post?.userID?.name}
                           </h1>
-                          <p className="text-base font-light text-gray-600 dark:text-gray-400">
+                          <p className="text-sm md:text-md sm:text-md text-base font-light text-gray-600 dark:text-gray-400">
                             {post?.date &&
                               new Date(post.date).toLocaleString("en-US", {
                                 hour: "numeric",
@@ -184,14 +184,14 @@ function Main() {
 
                       <div className="flex items-center m-3">
                         <Image
-                          className="ml-3 hover:opacity-80"
+                          className="ml-3 cursor-pointer hover:opacity-80"
                           src={SVG.Bookmark}
                           alt="Bookmark"
                           width={20}
                           height={20}
                         />
                         <Image
-                          className="ml-3 hover:opacity-80"
+                          className="ml-3 cursor-pointer hover:opacity-80"
                           src={SVG.Threedots}
                           alt="Threedots"
                           width={5}
@@ -203,12 +203,12 @@ function Main() {
                       </div>
                     </div>
 
-                    <div className="mx-3 mt-3 mb-2">
+                    <div className="mx-3">
                       <p className="text-neutral-300">{post?.description}</p>
                     </div>
 
                     <video
-                      className="w-[800px] h-[300px] sm:h-[400px] my-2 sm:my-2"
+                      className="w-[710px] h-[185px] sm:h-[300px] my-2 sm:my-2"
                       src={post.video}
                       width={50}
                       height={50}
@@ -226,7 +226,7 @@ function Main() {
                         }
                       >
                         <Image
-                          className="mr-2 hover:opacity-80"
+                          className="mr-2 cursor-pointer hover:opacity-80"
                           src={SVG.Like}
                           alt="Like"
                           width={30}
@@ -241,6 +241,7 @@ function Main() {
                           }
                         </p>
                       </div>
+
                       <div
                         className="flex items-center p-2 mr-2 rounded-lg bg-[#162423]"
                         onClick={
@@ -251,7 +252,7 @@ function Main() {
                         }
                       >
                         <Image
-                          className="mr-2 hover:opacity-80"
+                          className="mr-2 cursor-pointer hover:opacity-80"
                           src={SVG.Love}
                           alt="Love"
                           width={30}
@@ -269,7 +270,7 @@ function Main() {
 
                       <div className="p-2 mr-2 rounded-lg bg-[#162423]">
                         <Image
-                          className="hover:opacity-80"
+                          className="cursor-pointer hover:opacity-80"
                           src={SVG.Chat}
                           alt="Comment"
                           width={30}
@@ -279,7 +280,7 @@ function Main() {
 
                       <div className="p-2 mr-2 rounded-lg bg-[#162423]">
                         <Image
-                          className="hover:opacity-80"
+                          className="cursor-pointer hover:opacity-80"
                           src={SVG.Trending}
                           alt="Trending1"
                           width={30}
@@ -288,7 +289,7 @@ function Main() {
                       </div>
 
                       <Image
-                        className="hover:opacity-80"
+                        className="cursor-pointer hover:opacity-80"
                         src={SVG.Gcoin}
                         alt="Gcoin"
                         width={45}
@@ -299,7 +300,7 @@ function Main() {
                     <div className="flex items-center justify-between w-full p-4">
                       <div>
                         <p
-                          className="hover:opacity-80"
+                          className="cursor-pointer hover:opacity-80"
                           onClick={() => handleModalToggle("isVideoDetailOpen")}
                         >
                           {post?.comment} Comments

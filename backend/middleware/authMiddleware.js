@@ -8,10 +8,10 @@ const authMiddleware = async (req, res, next) => {
   // Verify the token
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    if (decoded && decoded.exp && decoded.exp * 1000000 > Date.now()) {
+    if (decoded && decoded.exp && decoded.exp * 1000 > Date.now()) {
       req.token = token;
-      req.decodeduid = decoded.id; // Store the decoded user object in the request
-      next(); // Proceed to the next middleware or route handler
+      req.decodeduid = decoded.id;
+      next();
     }
   } catch (error) {
     return res.status(401).json({ message: "Invalid token" });
@@ -19,7 +19,6 @@ const authMiddleware = async (req, res, next) => {
 
   if (!token) {
     return res.status(401).send("Not authorized, no token found");
-    // throw new Error("Not authorized, no token found");
   }
 };
 

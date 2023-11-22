@@ -58,7 +58,9 @@ function AddNew({ handleCloseModal }: AddNewProps) {
             <div className="p-2 mb-4 text-sm text-left rounded-lg sm:mb-5 dark:bg-[#162423] hover:opacity-80 cursor-pointer">
               <div
                 className="flex items-center"
-                onClick={() => handleModalToggle("isAddVideoOpen")}
+                onClick={() => {
+                  handleModalToggle("isAddVideoOpen");
+                }}
               >
                 <Image
                   className="mr-4"
