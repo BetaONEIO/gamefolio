@@ -31,7 +31,7 @@ function DeletePost({
     console.log("My Payload DeletePost: >><> ", payload);
 
     const successCallback = (response: any) => {
-      console.log("RESPONSE ADDVIDEO: ", response);
+      console.log("delete post ", response);
       handlePageRefresh();
       toastSuccess(response);
       handleCloseModal();

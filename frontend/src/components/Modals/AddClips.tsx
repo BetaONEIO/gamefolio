@@ -1,18 +1,45 @@
 "use client";
+"use client";
 import { SVG } from "@/assets/SVG";
 import { leagueGothic } from "@/font/font";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
+import { ToastContainer } from "react-toastify";
+import { toastError, toastSuccess } from "../Toast/Toast";
+import { dispatch, useSelector } from "@/store";
+import { getAllMusic, clipVideo, refreshPage } from "@/store/slices/clipSlice";
 
-interface AddClipsProps {
+interface FileUploadState {
+  fileName: string;
+  percentCompleted: number;
+}
+interface AddClipProps {
   handleCloseModal: () => void;
 }
-function AddClips({ handleCloseModal }: AddClipsProps) {
+
+function AddVideo({ handleCloseModal }: AddClipProps) {
+  const authState = useSelector((state: any) => state.auth.userData) || [];
+  const musicState = useSelector((state: any) => state.post.allMusic) || [];
+  const [video, setVideo] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [description, setDescription] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedOptionMusic, setSelectedOptionMusic] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isDropdownOpenMusic, setIsDropdownOpenMusic] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState<File | null>(null);
+  const [fileUpload, setFileUpload] = useState<FileUploadState>({
+    fileName: "",
+    percentCompleted: 0,
+  });
+
+  useEffect(() => {
+    dispatch(getAllMusic());
+  }, []);
+
+  console.log("musicState: ", musicState);
 
   const optionsForGame = [
     { value: "game1", label: "Game 1" },
@@ -29,12 +56,6 @@ function AddClips({ handleCloseModal }: AddClipsProps) {
     setIsDropdownOpenMusic(!isDropdownOpenMusic);
   };
 
-  const optionsForMusic = [
-    { value: "music1", label: "music 1" },
-    { value: "music2", label: "music 2" },
-    { value: "music3", label: "music 3" },
-  ];
-
   const handleSelect = (value: any) => {
     setSelectedOption(value);
     setIsDropdownOpen(false);
@@ -44,30 +65,88 @@ function AddClips({ handleCloseModal }: AddClipsProps) {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const handleVideoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleClipSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("selectedOptionMusic: ", selectedOptionMusic);
+
     const file = e.target.files ? e.target.files[0] : null;
     if (file) {
       setSelectedVideo(file);
-      // setUploadProgress(0);
+      if (selectedOptionMusic.trim() === "") {
+        setError("Please select music");
+        return toastSuccess("Please select music");
+      } else {
+        setError(null);
+      }
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("music", selectedOptionMusic);
 
-      // Simulate video processing
-      // setTimeout(() => {
-      //   let progress = 0;
-      //   const interval = setInterval(() => {
-      //     progress += 10;
-      //     setUploadProgress(progress);
-      //     if (progress >= 100) {
-      //       clearInterval(interval);
-      //       // You can add logic for processing completion here
-      //     }
-      //   }, 1000);
-      // }, 1000);
+        const response = await axios.post(
+          "http://localhost:4000/uploadfile",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            onUploadProgress: (progressEvent: any) => {
+              console.log("progressEvent", progressEvent);
+              const percentCompleted = Math.round(
+                (progressEvent.loaded * 100) / progressEvent.total
+              );
+              setFileUpload({ fileName: file.name, percentCompleted });
+              console.log(`Upload Progress : ${percentCompleted}%`);
+              // You can update a progress bar or perform other actions based on the progress
+            },
+          }
+        );
+        console.log("RESPONSE ADDClip: ", response.data);
+        setVideo(response.data.videoURL);
+        toastSuccess(response.data.message);
+      } catch (error) {
+        console.error("Error uploading file:", error);
+      }
     }
   };
 
   const myBGStyleModal = {
     backgroundColor: "rgba(0, 0, 0, 0.6)",
     backdropFilter: "blur(8px)",
+  };
+
+  const handleSubmitClip = async () => {
+    const payload = {
+      userID: authState._id,
+      description: description.trim(),
+      game: selectedOption.trim(),
+      music: selectedOptionMusic.trim(),
+      video: video,
+    };
+
+    console.log("My Payload ADDCLIP: ", payload);
+
+    const successCallback = (response: any) => {
+      console.log("RESPONSE ADDCLIP: ", response);
+      handlePageRefresh();
+      handleCloseModal();
+      toastSuccess(response);
+    };
+
+    const errorCallback = (error: string) => {
+      toastError(error);
+    };
+
+    const params = {
+      payload,
+      successCallback,
+      errorCallback,
+    };
+
+    dispatch(clipVideo(params));
+  };
+
+  const handlePageRefresh = () => {
+    dispatch(refreshPage());
   };
 
   return (
@@ -100,7 +179,7 @@ function AddClips({ handleCloseModal }: AddClipsProps) {
               <div className="w-full sm:w-1/2 sm:mr-2 sm:ml-6 px-8 sm:px-0">
                 {/* Add your story block content here */}
                 <div className="lg:h-[33.9rem] md:h-[33.9rem] h-[8rem] w-full md:w-[22rem] lg:w-full flex flex-col sm:justify-center justify-center items-center rounded-lg dark:bg-[#091619] border-2 border-[#1C2C2E] md:mr-20">
-                  {!selectedVideo ? (
+                  {!selectedVideo || error ? (
                     <label htmlFor="dropzone-file">
                       <div className="flex flex-col items-center">
                         <Image
@@ -118,25 +197,38 @@ function AddClips({ handleCloseModal }: AddClipsProps) {
                         type="file"
                         className="hidden"
                         // accept="video/*"
-                        onChange={handleVideoSelect}
+                        onChange={handleClipSelect}
                       />
                     </label>
                   ) : (
-                    <div className="w-full h-full ">
-                      <video
-                        className="w-full h-full"
-                        src={URL.createObjectURL(selectedVideo)}
-                        controls
-                        width="100%"
-                        height="100%"
-                        autoPlay
-                      />
-                      {/* <div className="w-full bg-[#37C535] h-3 rounded-lg mt-2">
-                        <div
-                          style={{ width: `${uploadProgress}%` }}
-                          className="h-full bg-green-500 rounded-lg"
-                        ></div>
-                      </div>*/}
+                    <div className="w-full h-full flex items-center justify-center ">
+                      {video ? (
+                        <video
+                          className="w-full h-full"
+                          src={video}
+                          controls
+                          width="100%"
+                          height="100%"
+                          autoPlay
+                        />
+                      ) : (
+                        <CountdownCircleTimer
+                          isPlaying
+                          duration={60}
+                          size={240}
+                          colors={["#37C535", "#F7B801", "#A30000", "#A30000"]}
+                          colorsTime={[10, 6, 3, 0]}
+                        >
+                          {({ remainingTime }) => {
+                            return (
+                              <div className="flex flex-col justify-center items-center ">
+                                <span className="text-xs">Estimated Time</span>
+                                {remainingTime}
+                              </div>
+                            );
+                          }}
+                        </CountdownCircleTimer>
+                      )}
                     </div>
                   )}
                 </div>
@@ -171,7 +263,7 @@ function AddClips({ handleCloseModal }: AddClipsProps) {
                     </div>
 
                     {isDropdownOpen && (
-                      <div className="absolute z-50 mt-2 w-full rounded-md shadow-lg">
+                      <div className="absolute z-50 mt-2 w-full md:w-72 sm:w-96 rounded-md shadow-lg">
                         <ul className="py-1 bg-white  dark:bg-[#1C2C2E] dark:text-white  dark:rounded-b-lg">
                           {optionsForGame.map((option) => (
                             <li
@@ -217,6 +309,8 @@ function AddClips({ handleCloseModal }: AddClipsProps) {
                     rows={5}
                     className="w-full md:w-72 sm:w-96 p-2 text-gray-900 sm:text-sm outline-none rounded-lg dark:bg-[#1C2C2E] dark:text-white"
                     placeholder="Type here..."
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
                   ></textarea>
                 </div>
 
@@ -246,26 +340,26 @@ function AddClips({ handleCloseModal }: AddClipsProps) {
                     </div>
 
                     {isDropdownOpenMusic && (
-                      <div className="absolute z-50 mt-2 w-full rounded-md shadow-lg">
-                        <ul className="py-1 bg-white  dark:bg-[#1C2C2E]  dark:text-white  dark:rounded-b-lg">
-                          {optionsForMusic.map((option) => (
+                      <div className="absolute overflow-y-auto h-40 z-50 mt-2w-full md:w-72 sm:w-96 rounded-md shadow-lg">
+                        <ul className="py-1 bg-white   dark:bg-[#1C2C2E]  dark:text-white  dark:rounded-b-lg">
+                          {musicState.map((option: any) => (
                             <li
                               key={option.value}
-                              onClick={() => handleSelectMusic(option.value)}
+                              onClick={() => handleSelectMusic(option)}
                               className="cursor-pointer select-none outline-none relative px-4 py-3 text-gray-200"
                               role="option"
                               aria-selected={false}
                             >
                               <span
                                 className={`${
-                                  option.value === selectedOptionMusic
+                                  option === selectedOptionMusic
                                     ? "font-semibold"
                                     : ""
                                 } block truncate`}
                               >
-                                {option.label}
+                                {option}
                               </span>
-                              {option.value === selectedOptionMusic && (
+                              {option === selectedOptionMusic && (
                                 <Image
                                   className="absolute w-5 h-5 text-green-500 right-3 top-2/4 transform -translate-y-2/4"
                                   src={SVG.Tick}
@@ -283,7 +377,10 @@ function AddClips({ handleCloseModal }: AddClipsProps) {
                 </div>
 
                 <div className="flex justify-between items-center my-3 sm:mt-10 sm:ml-7 w-full md:w-72 sm:w-96 ml-2">
-                  <button className="font-bold w-full sm:w-40 py-2 lg:py-3 bg-[#37C535] text-white text-center px-[5px] sm:px-[40px] rounded-tl-[20px] sm:rounded-tl-[20px] rounded-br-[20px] sm:rounded-br-[20px] rounded-tr-[5px] sm:rounded-tr-[5px] rounded-bl-[5px] sm:rounded-bl-[5px]">
+                  <button
+                    className="font-bold w-full sm:w-40 py-2 lg:py-2.5 px-2 sm:px-1 bg-[#37C535] text-white text-center rounded-tl-[20px] sm:rounded-tl-[20px] rounded-br-[20px] sm:rounded-br-[20px] rounded-tr-[5px] sm:rounded-tr-[5px] rounded-bl-[5px] sm:rounded-bl-[5px] cursor-pointer hover:bg-[#2FB530]"
+                    onClick={handleSubmitClip}
+                  >
                     Submit
                   </button>
                   <button className="font-bold w-full sm:w-40 py-1 lg:py-3 text-white text-center sm:py-[10px] px-[30px] sm:px-[30px] rounded-tl-[20px] sm:rounded-tl-[20px] rounded-br-[20px] sm:rounded-br-[20px] rounded-tr-[5px] sm:rounded-tr-[5px] rounded-bl-[5px] sm:rounded-bl-[5px]">
@@ -295,8 +392,20 @@ function AddClips({ handleCloseModal }: AddClipsProps) {
           </div>
         </div>
       </div>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </>
   );
 }
 
-export default AddClips;
+export default AddVideo;

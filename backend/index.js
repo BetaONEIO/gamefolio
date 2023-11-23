@@ -7,6 +7,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 const userRoutes = require("./routes/userRoutes");
 const postRoutes = require("./routes/postRoutes");
+const clipsRoutes = require("./routes/clipsRoutes");
 const musicRoutes = require("./routes/musicRoutes");
 const { myDbConnection } = require("./db/connection");
 const generateToken = require("./utils/generateToken");
@@ -120,6 +121,9 @@ app.use("/api/user", userRoutes);
 
 // Post API
 app.use("/api/post", postRoutes);
+
+// Clips API
+app.use("/api/clip", clipsRoutes);
 
 // Music API
 app.use("/api/music", musicRoutes);

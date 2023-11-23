@@ -11,14 +11,12 @@ import AllStories from "@/components/story/AllStories";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import {
-  createComment,
   createVideoReaction,
   deleteVideoReaction,
   getAllPostVideos,
   refreshPage,
 } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
-import { log } from "console";
 import Image from "next/image";
 import { Suspense, useEffect, useState } from "react";
 
@@ -359,6 +357,7 @@ function Main() {
           postID={postID}
           detailedPost={detailedPost}
           handleCloseModal={() => handleModalToggle("isVideoDetailOpen")}
+          handlePageRefresh={() => handlePageRefresh()}
         />
       </Modal>
 

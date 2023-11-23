@@ -1,10 +1,33 @@
+"use client";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import Layout from "@/components/CustomLayout/layout";
+import { dispatch, useSelector } from "@/store";
+import { userSession } from "@/store/slices/authSlice";
+import { getAllClipVideos, refreshPage } from "@/store/slices/clipSlice";
+import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 
-function Page() {
+function Clip() {
+  const clipState = useSelector((state: any) => state.post) || [];
+
+  const payload = {
+    userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
+  };
+  const params = {
+    payload,
+  };
+  useEffect(() => {
+    dispatch(userSession(params));
+    dispatch(getAllClipVideos());
+  }, [clipState.refresh]);
+
+  console.log("clipState", clipState);
+
+  const handlePageRefresh = () => {
+    dispatch(refreshPage());
+  };
   const USERDATA = [
     {
       id: "1",
@@ -72,99 +95,104 @@ function Page() {
   return (
     <Layout>
       <div className="flex flex-col justify-center items-center py-4">
-        {USERDATA.map((user) => (
-          <div key={user.id} className="relative w-11/12 sm:w-5/12 h-1/5 mb-4">
-            <div className="absolute top-0 left-0 p-4">
-              <div className="flex items-center gap-2">
+        {USERDATA.map((clip: any) => {
+          return (
+            <div
+              key={clip?._id}
+              className="relative w-11/12 sm:w-5/12 h-1/5 mb-4"
+            >
+              <div className="absolute top-0 left-0 p-4">
+                <div className="flex items-center gap-2">
+                  <Image
+                    className="hover:opacity-80 rounded-lg object-cover"
+                    src={clip?.profilePicture}
+                    alt="Profile avatar"
+                    width={50}
+                    height={50}
+                  />
+                  <h1 className="font-bold text-lg hover:opacity-80">
+                    {clip?.name}
+                  </h1>
+                </div>
+              </div>
+              <div className="absolute top-1.5 right-0 p-4 justify-self-center">
                 <Image
-                  className="hover:opacity-80 rounded-lg object-cover"
-                  src={user.profilePicture}
-                  alt="Profile avatar"
-                  width={50}
-                  height={50}
+                  className="w-7 h-7 hover:opacity-80 rounded-full object-cover"
+                  src={SVG.Share}
+                  alt="Story"
+                  width={30}
+                  height={30}
                 />
-                <h1 className="font-bold text-lg hover:opacity-80">
-                  {user.name}
-                </h1>
               </div>
-            </div>
-            <div className="absolute top-1.5 right-0 p-4 justify-self-center">
+              <div className="absolute top-20 mx-4 md:mx-5">
+                <p className="font-light text-xs sm:text-sm">
+                  {clip?.description}
+                </p>
+              </div>
               <Image
-                className="w-7 h-7 hover:opacity-80 rounded-full object-cover"
-                src={SVG.Share}
+                className="w-full h-auto max-w-full max-h-[90vh] object-cover rounded-lg"
                 alt="Story"
-                width={30}
-                height={30}
+                src={clip.Story}
+                width={432}
+                height={768}
+                sizes="100vw"
               />
-            </div>
-            <div className="absolute top-20 mx-4 md:mx-5">
-              <p className="font-light text-xs sm:text-sm">
-                {user.description}
-              </p>
-            </div>
-            <Image
-              className="w-full h-auto max-w-full max-h-[90vh] object-cover rounded-lg"
-              alt="Story"
-              src={user.Story}
-              width={432}
-              height={768}
-              sizes="100vw"
-            />
 
-            <div className="absolute inset-x-0 bottom-20 p-4 flex items-center justify-between">
-              <p className="font-light text-xs sm:text-sm hover:opacity-80">
-                Liked by john Smith_12 and {user.like} others
-              </p>
-            </div>
-            <div className="absolute inset-x-0 bottom-14 p-4 flex items-center justify-between">
-              <p className="font-light text-xs sm:text-sm hover:opacity-80">
-                ROY KNOX - Lost In Sound
-              </p>
-            </div>
-
-            <div className="absolute inset-x-0 bottom-0 p-4 flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <div className="w-10 h-10 p-2 rounded-lg bg-[#162423]">
-                  <Image
-                    className="hover:opacity-80"
-                    src={SVG.Like}
-                    alt="Like"
-                    width={30}
-                    height={30}
-                  />
-                </div>
-                <div className="w-10 h-10 p-2 rounded-lg bg-[#162423]">
-                  <Image
-                    className="hover:opacity-80"
-                    src={SVG.Chat}
-                    alt="Comment"
-                    width={30}
-                    height={30}
-                  />
-                </div>
-                <div className="w-10 h-10 p-2 rounded-lg bg-[#162423]">
-                  <Image
-                    className="hover:opacity-80"
-                    src={SVG.GGcoin}
-                    alt="Gcoin"
-                    width={30}
-                    height={30}
-                  />
-                </div>
+              <div className="absolute inset-x-0 bottom-20 p-4 flex items-center justify-between">
+                <p className="font-light text-xs sm:text-sm hover:opacity-80">
+                  Liked by john Smith_12 and {clip?.like} others
+                </p>
               </div>
-              <Image
-                className="w-10 h-10 hover:opacity-80"
-                src={SVG.Mute}
-                alt="Mute"
-                width={40}
-                height={40}
-              />
+              <div className="absolute inset-x-0 bottom-14 p-4 flex items-center justify-between">
+                <p className="font-light text-xs sm:text-sm hover:opacity-80">
+                  ROY KNOX - Lost In Sound
+                </p>
+              </div>
+
+              <div className="absolute inset-x-0 bottom-0 p-4 flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <div className="w-10 h-10 p-2 rounded-lg bg-[#162423]">
+                    <Image
+                      className="hover:opacity-80"
+                      src={SVG.Like}
+                      alt="Like"
+                      width={30}
+                      height={30}
+                    />
+                  </div>
+                  <div className="w-10 h-10 p-2 rounded-lg bg-[#162423]">
+                    <Image
+                      className="hover:opacity-80"
+                      src={SVG.Chat}
+                      alt="Comment"
+                      width={30}
+                      height={30}
+                    />
+                  </div>
+                  <div className="w-10 h-10 p-2 rounded-lg bg-[#162423]">
+                    <Image
+                      className="hover:opacity-80"
+                      src={SVG.GGcoin}
+                      alt="Gcoin"
+                      width={30}
+                      height={30}
+                    />
+                  </div>
+                </div>
+                <Image
+                  className="w-10 h-10 hover:opacity-80"
+                  src={SVG.Mute}
+                  alt="Mute"
+                  width={40}
+                  height={40}
+                />
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </Layout>
   );
 }
 
-export default Page;
+export default Clip;
