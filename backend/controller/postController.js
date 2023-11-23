@@ -167,10 +167,9 @@ const deleteVideoReaction = async (req, res) => {
 // Create a new comment for a post
 const createComment = async (req, res) => {
   try {
-    const postId = req.params.id;
-    const { userID, commentText } = req.body;
+    const { userID, commentText, postID } = req.body;
 
-    const post = await Posts.findById(postId);
+    const post = await Posts.findById(postID);
     if (!post) {
       return res.status(404).json({ error: "Post not found." });
     }

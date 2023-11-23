@@ -23,16 +23,19 @@ export const PATH = {
   design: {
     root: "design",
   },
-  post:{
+  post: {
     create: "post/video/create",
     get: "post/video/get",
     delete: "post/video/delete",
   },
-  reaction:{
+  reaction: {
     create: "post/video/reaction/create",
     delete: "post/video/reaction/delete",
   },
+  comment: {
+    create: "post/comment/create",
+  },
   music: {
-    getAllMusic: "music/get/all"
-  }
+    getAllMusic: "music/get/all",
+  },
 };

@@ -74,7 +74,8 @@ export const slice = createSlice({
   },
 });
 
-export const { startLoading, stopLoading, getCredits, refreshPage } = slice.actions;
+export const { startLoading, stopLoading, getCredits, refreshPage } =
+  slice.actions;
 
 export function postVideo(params: ActionParams) {
   return async () => {
@@ -84,7 +85,7 @@ export function postVideo(params: ActionParams) {
       payload,
     } = params;
 
-    console.log("))) 00: ",payload);
+    console.log("))) 00: ", payload);
 
     dispatch(slice.actions.startLoading());
 
@@ -99,7 +100,7 @@ export function postVideo(params: ActionParams) {
       console.log(response);
       if (!ok || !response) return errorCallback(response.message);
 
-      console.log("repsonse:::: ",response)
+      console.log("repsonse:::: ", response);
 
       successCallback(response.message);
     } catch (error) {
@@ -113,7 +114,6 @@ export function postVideo(params: ActionParams) {
 
 export function getAllPostVideos() {
   return async () => {
-  
     dispatch(slice.actions.startLoading());
 
     const options: APIParams = {
@@ -124,8 +124,7 @@ export function getAllPostVideos() {
     };
 
     try {
-      const [ok, response] = await API(options)
-
+      const [ok, response] = await API(options);
 
       dispatch(slice.actions.getAllPostVideos(response.data));
     } catch (error) {
@@ -143,7 +142,7 @@ export function deleteVideo(params: ActionParams) {
       payload,
     } = params;
 
-    console.log("))) 00: ",payload);
+    console.log("))) 00: ", payload);
 
     dispatch(slice.actions.startLoading());
 
@@ -158,7 +157,7 @@ export function deleteVideo(params: ActionParams) {
       console.log(response);
       if (!ok || !response) return errorCallback(response.message);
 
-      console.log("repsonse:::: delete ",response)
+      console.log("repsonse:::: delete ", response);
 
       successCallback(response.message);
     } catch (error) {
@@ -172,7 +171,6 @@ export function deleteVideo(params: ActionParams) {
 
 export function getAllMusic() {
   return async () => {
-  
     dispatch(slice.actions.startLoading());
 
     const options: APIParams = {
@@ -183,7 +181,7 @@ export function getAllMusic() {
     };
 
     try {
-      const [ok, response] = await API(options)
+      const [ok, response] = await API(options);
 
       dispatch(slice.actions.getAllMusic(response.data));
     } catch (error) {
@@ -203,7 +201,7 @@ export function createVideoReaction(params: ActionParams) {
       payload,
     } = params;
 
-    console.log("))) 00: ",payload);
+    console.log("))) 00: ", payload);
 
     dispatch(slice.actions.startLoading());
 
@@ -218,7 +216,7 @@ export function createVideoReaction(params: ActionParams) {
       console.log(response);
       if (!ok || !response) return errorCallback(response.message);
 
-      console.log("repsonse:::: ",response)
+      console.log("repsonse:::: ", response);
 
       successCallback(response.message);
     } catch (error) {
@@ -238,7 +236,7 @@ export function deleteVideoReaction(params: ActionParams) {
       payload,
     } = params;
 
-    console.log("))) 00: ",payload);
+    console.log("))) 00: ", payload);
 
     dispatch(slice.actions.startLoading());
 
@@ -253,7 +251,7 @@ export function deleteVideoReaction(params: ActionParams) {
       console.log(response);
       if (!ok || !response) return errorCallback(response.message);
 
-      console.log("repsonse:::: ",response)
+      console.log("repsonse:::: ", response);
 
       successCallback(response.message);
     } catch (error) {
@@ -265,6 +263,40 @@ export function deleteVideoReaction(params: ActionParams) {
   };
 }
 
+export function createComment(params: ActionParams) {
+  return async () => {
+    const {
+      successCallback = () => {},
+      errorCallback = () => {},
+      payload,
+    } = params;
+
+    console.log("))) 00: ", payload);
+
+    dispatch(slice.actions.startLoading());
+
+    const options: APIParams = {
+      method: "POST",
+      endpoint: PATH.comment.create,
+      payload: payload,
+      isToken: false,
+    };
+    try {
+      const [ok, response] = await API(options);
+      console.log(response);
+      if (!ok || !response) return errorCallback(response.message);
+
+      console.log("repsonse:::: ", response);
+
+      successCallback(response.message);
+    } catch (error) {
+      console.log("error", error);
+      errorCallback();
+    } finally {
+      dispatch(slice.actions.stopLoading());
+    }
+  };
+}
 
 export function login(params: ActionParams) {
   return async () => {

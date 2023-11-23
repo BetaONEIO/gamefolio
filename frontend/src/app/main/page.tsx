@@ -11,12 +11,14 @@ import AllStories from "@/components/story/AllStories";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import {
+  createComment,
   createVideoReaction,
   deleteVideoReaction,
   getAllPostVideos,
   refreshPage,
 } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
+import { log } from "console";
 import Image from "next/image";
 import { Suspense, useEffect, useState } from "react";
 
@@ -35,7 +37,7 @@ function Main() {
     dispatch(getAllPostVideos());
   }, [postState.refresh]);
 
-  // console.log("authState MAIN", authState);
+  console.log("authState ##", postState);
 
   const [modalState, setModalState] = useState({
     isPostShareOpen: false,
@@ -55,6 +57,8 @@ function Main() {
       [modalName]: !prevState[modalName],
     }));
   };
+
+  console.log("POSTID ****: ", postID);
 
   const sectionStyle = {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
@@ -303,7 +307,9 @@ function Main() {
                       <div>
                         <p
                           className="cursor-pointer hover:opacity-80"
-                          onClick={() => handleModalToggle("isVideoDetailOpen")}
+                          onClick={() =>
+                            handleModalToggle("isVideoDetailOpen", post._id)
+                          }
                         >
                           {post?.comment} Comments
                         </p>
@@ -344,6 +350,8 @@ function Main() {
         handleClose={() => handleModalToggle("isVideoDetailOpen")}
       >
         <VideoDetails
+          postID={postID}
+          postState={postState}
           handleCloseModal={() => handleModalToggle("isVideoDetailOpen")}
         />
       </Modal>
