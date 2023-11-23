@@ -28,7 +28,9 @@ const postVideo = async (req, res) => {
 // Get all posts
 const getAllPostVideos = async (req, res) => {
   try {
-    const posts = await Posts.find().populate("userID");
+    const posts = await Posts.find()
+      .sort({ date: -1 }) // Sort posts by their date field in descending order
+      .populate("userID");
     res
       .status(201)
       .json({ data: posts, message: "Successfully Retrieve Post Videos" });
@@ -171,7 +173,9 @@ const createComment = async (req, res) => {
 
     const post = await Posts.findById(postID);
     if (!post) {
-      return res.status(404).json({ error: "Post not found." });
+      return res
+        .status(404)
+        .json({ error: "Post not found.", message: "Post not found." });
     }
 
     const newComment = {
@@ -182,10 +186,15 @@ const createComment = async (req, res) => {
     post.comments.push(newComment);
     const updatedPost = await post.save();
 
-    res.status(201).json(updatedPost);
+    res
+      .status(201)
+      .json({ data: updatedPost, message: "Successfully Comment Added" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Could not create the comment." });
+    res.status(500).json({
+      error: "Could not add the comment.",
+      message: "Could not add the comment.",
+    });
   }
 };
 

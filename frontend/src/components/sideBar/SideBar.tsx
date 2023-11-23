@@ -105,8 +105,8 @@ function SideBar() {
                     }}
                   >
                     <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
+                      fillRule="evenodd"
+                      clipRule="evenodd"
                       d="M5.00018 6.47388C3.89561 6.47388 3.00018 7.36931 3.00018 8.47388V19.0987C3.00018 20.2033 3.89561 21.0987 5.00018 21.0987H19C20.1046 21.0987 21 20.2033 21 19.0987V8.47388C21 7.36931 20.1046 6.47388 19 6.47388H5.00018ZM10.693 11.2164L14.6592 13.653C15.0135 13.8701 15.0135 14.2257 14.6592 14.4428L10.693 16.8803C10.3404 17.0983 10.05 16.9196 10.05 16.4854V11.6113C10.05 11.1771 10.3404 10.9984 10.693 11.2164Z"
                     />
                     <path d="M5.49533 4.58594H18.5657C19.0912 4.5899 19.6081 4.72023 20.0726 4.96593L19.483 3.30838C19.347 2.92395 19.0949 2.59131 18.7616 2.35654C18.4282 2.12177 18.0301 1.99649 17.6223 1.99806H6.406C5.99826 1.99649 5.60012 2.12177 5.26674 2.35654C4.93337 2.59131 4.68126 2.92395 4.54535 3.30838L3.98846 4.96593C4.453 4.72023 4.96983 4.5899 5.49533 4.58594Z" />
@@ -141,21 +141,21 @@ function SideBar() {
                     <path
                       d="M12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20Z"
                       strokeWidth="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
                     <path
                       d="M16 12C16 14.2091 14.2091 16 12 16"
                       stroke="#162423"
                       strokeWidth="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
                     <path
                       d="M22.75 22.75L18.0375 18.0375"
                       strokeWidth="2.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
                   </svg>
                   <div className="flex flex-row w-48 justify-between">

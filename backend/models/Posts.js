@@ -20,8 +20,8 @@ const postSchema = new mongoose.Schema({
   reactions: [
     {
       userID: {
-        type: String,
-        unique: true,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Users",
       },
       reactionType: {
         type: String,
@@ -32,10 +32,15 @@ const postSchema = new mongoose.Schema({
   comments: [
     {
       userID: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Users",
       },
       commentText: {
         type: String,
+      },
+      date: {
+        type: Date,
+        default: Date.now,
       },
     },
   ],

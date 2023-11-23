@@ -25,6 +25,8 @@ import { Suspense, useEffect, useState } from "react";
 function Main() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const postState = useSelector((state: any) => state.post) || [];
+  const [postID, setPostID] = useState("");
+  const [detailedPost, setDetailedPost] = useState("");
 
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
@@ -45,13 +47,13 @@ function Main() {
     isPostDeleteOpen: false,
   });
 
-  const [postID, setPostID] = useState("");
-
   const handleModalToggle = (
     modalName: keyof typeof modalState,
-    postID?: any
+    postID?: any,
+    detailedPost?: any
   ) => {
     setPostID(postID);
+    setDetailedPost(detailedPost);
     setModalState((prevState) => ({
       ...prevState,
       [modalName]: !prevState[modalName],
@@ -308,7 +310,11 @@ function Main() {
                         <p
                           className="cursor-pointer hover:opacity-80"
                           onClick={() =>
-                            handleModalToggle("isVideoDetailOpen", post._id)
+                            handleModalToggle(
+                              "isVideoDetailOpen",
+                              post._id,
+                              post
+                            )
                           }
                         >
                           {post?.comment} Comments
@@ -351,7 +357,7 @@ function Main() {
       >
         <VideoDetails
           postID={postID}
-          postState={postState}
+          detailedPost={detailedPost}
           handleCloseModal={() => handleModalToggle("isVideoDetailOpen")}
         />
       </Modal>
