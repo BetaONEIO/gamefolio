@@ -1,6 +1,5 @@
 "use client";
 import { SVG } from "@/assets/SVG";
-import { IMAGES } from "@/assets/images";
 import Layout from "@/components/CustomLayout/layout";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
@@ -10,7 +9,7 @@ import Image from "next/image";
 import React, { useEffect } from "react";
 
 function Clip() {
-  const clipState = useSelector((state: any) => state.post) || [];
+  const clipState = useSelector((state: any) => state.clip) || [];
 
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
@@ -28,74 +27,22 @@ function Clip() {
   const handlePageRefresh = () => {
     dispatch(refreshPage());
   };
-  const USERDATA = [
-    {
-      id: "1",
-      name: "Hannery",
-      profilePicture: IMAGES.Profile,
-      Story: IMAGES.Story,
-      date: "17 sep, 2022",
-      description:
-        " Lorem ipsum dolor sit amet consectetur. Ante duis tellus tincidu...",
-      like: 200,
-      love: 120,
-      comment: 165,
-    },
-
-    {
-      id: "2",
-      name: "Hannery",
-      profilePicture: IMAGES.Profile,
-      Story: IMAGES.Story,
-      date: "17 sep, 2022",
-      description:
-        "Lorem ipsum dolor sit amet consect. Ante duis tellus tincidunt nibh hi hahshhanjnjnijnijnihbibibib",
-      like: 200,
-      love: 120,
-      comment: 165,
-    },
-    {
-      id: "3",
-      name: "Hannery",
-      profilePicture: IMAGES.Profile,
-      Story: IMAGES.Story,
-      date: "17 sep, 2022",
-      description:
-        "Lorem ipsum dolor sit amet consect. Ante duis tellus tincidunt nibh hi hahshhanjnjnijnijnihbibibib",
-      like: 200,
-      love: 120,
-      comment: 165,
-    },
-    {
-      id: "4",
-      name: "Hannery",
-      profilePicture: IMAGES.Profile,
-      Story: IMAGES.Story,
-      date: "17 sep, 2022",
-      description:
-        "Lorem ipsum dolor sit amet consect. Ante duis tellus tincidunt nibh hi hahshhanjnjnijnijnihbibibib",
-      like: 200,
-      love: 120,
-      comment: 165,
-    },
-    {
-      id: "5",
-      name: "Hannery",
-      profilePicture: IMAGES.Profile,
-      Story: IMAGES.Story,
-      date: "17 sep, 2022",
-      description:
-        "Lorem ipsum dolor sit amet consect. Ante duis tellus tincidunt nibh hi hahshhanjnjnijnijnihbibibib",
-      like: 200,
-      love: 120,
-      comment: 165,
-    },
-  ];
+  // Function to toggle play/pause on video click
+  const handleVideoClick = (
+    event: React.MouseEvent<HTMLVideoElement, MouseEvent>
+  ) => {
+    const video = event.currentTarget;
+    if (video.paused) {
+      video.play();
+    } else {
+      video.pause();
+    }
+  };
 
   return (
     <Layout>
       <div className="flex flex-col justify-center items-center py-4">
-        {USERDATA.map((clip: any) => {
+        {clipState.videos.map((clip: any) => {
           return (
             <div
               key={clip?._id}
@@ -105,14 +52,26 @@ function Clip() {
                 <div className="flex items-center gap-2">
                   <Image
                     className="hover:opacity-80 rounded-lg object-cover"
-                    src={clip?.profilePicture}
+                    src={clip?.userID?.profilePicture}
                     alt="Profile avatar"
                     width={50}
                     height={50}
                   />
-                  <h1 className="font-bold text-lg hover:opacity-80">
-                    {clip?.name}
-                  </h1>
+                  <div>
+                    <h1 className="w-[230px] sm:w-[350px] text-sm md:text-lg sm:text-md font-bold text-gray-900 dark:text-white hover:opacity-80">
+                      {clip?.userID?.name}
+                    </h1>
+                    <p className="text-sm md:text-md sm:text-md text-base font-light text-gray-600 dark:text-gray-400">
+                      {clip?.date &&
+                        new Date(clip.date).toLocaleString("en-US", {
+                          hour: "numeric",
+                          minute: "numeric",
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        })}
+                    </p>
+                  </div>
                 </div>
               </div>
               <div className="absolute top-1.5 right-0 p-4 justify-self-center">
@@ -129,13 +88,14 @@ function Clip() {
                   {clip?.description}
                 </p>
               </div>
-              <Image
-                className="w-full h-auto max-w-full max-h-[90vh] object-cover rounded-lg"
-                alt="Story"
-                src={clip.Story}
-                width={432}
-                height={768}
-                sizes="100vw"
+
+              <video
+                className="w-full h-screen object-cover rounded-lg"
+                src={clip.video}
+                width={300}
+                height={300}
+                controls={false} // Disable default controls
+                onClick={handleVideoClick} // Handle video click event
               />
 
               <div className="absolute inset-x-0 bottom-20 p-4 flex items-center justify-between">
@@ -145,7 +105,7 @@ function Clip() {
               </div>
               <div className="absolute inset-x-0 bottom-14 p-4 flex items-center justify-between">
                 <p className="font-light text-xs sm:text-sm hover:opacity-80">
-                  ROY KNOX - Lost In Sound
+                  {clip.music}
                 </p>
               </div>
 
