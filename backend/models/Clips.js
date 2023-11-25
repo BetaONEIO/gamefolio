@@ -25,7 +25,7 @@ const clipsSchema = new mongoose.Schema({
       },
       reactionType: {
         type: String,
-        enum: ["like", "love"],
+        enum: ["like"],
       },
     },
   ],

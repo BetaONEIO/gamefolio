@@ -12,10 +12,7 @@ const musicRoutes = require("./routes/musicRoutes");
 const { myDbConnection } = require("./db/connection");
 const generateToken = require("./utils/generateToken");
 const authMiddleware = require("./middleware/authMiddleware");
-const nodemailer = require("nodemailer");
-const generateOTP = require("./utils/generateOtp");
 const AWS = require("aws-sdk");
-
 const fs = require("fs");
 const multer = require("multer");
 const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;

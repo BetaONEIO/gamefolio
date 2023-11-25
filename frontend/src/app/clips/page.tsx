@@ -1,14 +1,21 @@
 "use client";
 import { SVG } from "@/assets/SVG";
 import Layout from "@/components/CustomLayout/layout";
+import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
-import { getAllClipVideos, refreshPage } from "@/store/slices/clipSlice";
+import {
+  createClipReaction,
+  deleteClipReaction,
+  getAllClipVideos,
+  refreshPage,
+} from "@/store/slices/clipSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 function Clip() {
+  const authState = useSelector((state: any) => state.auth.userData) || [];
   const clipState = useSelector((state: any) => state.clip) || [];
 
   const payload = {
@@ -27,6 +34,63 @@ function Clip() {
   const handlePageRefresh = () => {
     dispatch(refreshPage());
   };
+
+  const handleCreateReaction = async (clipID: any, reactionType: any) => {
+    const payload = {
+      userID: authState._id,
+      postID: clipID,
+      reactionType: reactionType,
+    };
+
+    console.log("My Payload CREATE clip Reaction: >><> ", payload);
+
+    const successCallback = (response: any) => {
+      // console.log("RESPONSE ADDVIDEO: ", response);
+      handlePageRefresh();
+      toastSuccess(response);
+    };
+
+    const errorCallback = (error: string) => {
+      toastError(error);
+    };
+
+    const params = {
+      payload,
+      successCallback,
+      errorCallback,
+    };
+
+    dispatch(createClipReaction(params));
+  };
+
+  const handleDeleteReaction = async (clipID: any, reactionID: any) => {
+    const payload = {
+      userID: authState._id,
+      postID: clipID,
+      reactionID: reactionID,
+    };
+
+    console.log("My Payload Reaction: >><> ", payload);
+
+    const successCallback = (response: any) => {
+      console.log("RESPONSE ADDVIDEO: ", response);
+      handlePageRefresh();
+      toastSuccess(response);
+    };
+
+    const errorCallback = (error: string) => {
+      toastError(error);
+    };
+
+    const params = {
+      payload,
+      successCallback,
+      errorCallback,
+    };
+
+    dispatch(deleteClipReaction(params));
+  };
+
   // Function to toggle play/pause on video click
   const handleVideoClick = (
     event: React.MouseEvent<HTMLVideoElement, MouseEvent>
@@ -43,6 +107,16 @@ function Clip() {
     <Layout>
       <div className="flex flex-col justify-center items-center py-4">
         {clipState.videos.map((clip: any) => {
+          const hasLikeReacted = clip.reactions.some(
+            (reaction: any) =>
+              reaction.userID === authState._id &&
+              reaction.reactionType === "like"
+          );
+
+          // Find the reaction ID for the current user
+          const reactionID = clip.reactions.find(
+            (reaction: any) => reaction.userID === authState._id
+          );
           return (
             <div
               key={clip?._id}
@@ -94,13 +168,13 @@ function Clip() {
                 src={clip.video}
                 width={300}
                 height={300}
-                controls={false} // Disable default controls
-                onClick={handleVideoClick} // Handle video click event
+                controls={false}
+                onClick={handleVideoClick}
               />
 
               <div className="absolute inset-x-0 bottom-20 p-4 flex items-center justify-between">
                 <p className="font-light text-xs sm:text-sm hover:opacity-80">
-                  Liked by john Smith_12 and {clip?.like} others
+                  Liked by john Smith_12 and others
                 </p>
               </div>
               <div className="absolute inset-x-0 bottom-14 p-4 flex items-center justify-between">
@@ -111,7 +185,14 @@ function Clip() {
 
               <div className="absolute inset-x-0 bottom-0 p-4 flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                  <div className="w-10 h-10 p-2 rounded-lg bg-[#162423]">
+                  <div
+                    className="flex items-center w-10 h-10 p-2 rounded-lg bg-[#162423] cursor-pointer"
+                    onClick={
+                      hasLikeReacted
+                        ? () => handleDeleteReaction(clip._id, reactionID._id)
+                        : () => handleCreateReaction(clip._id, "like")
+                    }
+                  >
                     <Image
                       className="hover:opacity-80"
                       src={SVG.Like}
@@ -119,6 +200,13 @@ function Clip() {
                       width={30}
                       height={30}
                     />
+                    <p>
+                      {
+                        clip.reactions.filter(
+                          (reaction: any) => reaction.reactionType === "like"
+                        ).length
+                      }
+                    </p>
                   </div>
                   <div className="w-10 h-10 p-2 rounded-lg bg-[#162423]">
                     <Image

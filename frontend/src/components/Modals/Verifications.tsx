@@ -39,9 +39,9 @@ function Verifications({ handleCloseModal }: VerificationProps) {
         style={myBGStyleModal}
         className="fixed inset-0 flex items-center justify-center z-50"
       >
-        <div className="modal-container sm:w-96 mx-auto lg:w-1/4 lg-rounded z-50 ">
+        <div className="modal-container sm:w-96 lg:w-1/3 lg-rounded z-50 ">
           {/* Modal content */}
-          <div className="relative text-center bg-white rounded-lg dark:bg-[#091619] py-2 sm:py-4 px-6 sm:px-16 border dark:border-[#586769]">
+          <div className="relative text-center bg-white rounded-lg dark:bg-[#091619] py-2 sm:py-4 px-6 sm:px-10 border dark:border-[#586769]">
             <button
               type="button"
               className="text-white-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -62,18 +62,19 @@ function Verifications({ handleCloseModal }: VerificationProps) {
                 <div key={checkbox.id}>
                   <div className="flex items-center my-3">
                     <Image
-                      className="object-contain"
+                      className="w-12 h-12 rounded-lg object-contain"
                       src={IMAGES.Profile}
                       alt="Profile"
-                      width={50}
-                      height={50}
+                      width={20}
+                      height={20}
+                      sizes="100vw"
                     />
-                    <div className="flex items-center justify-between w-full sm:w-full">
+                    <div className="flex items-center justify-between w-full sm:w-full ml-2 sm:ml-4">
                       <div>
-                        <p className="text-left ml-2 sm:ml-4 text-sm sm:text-base">
+                        <p className="text-left font-bold text-sm sm:text-base">
                           Twitch
                         </p>
-                        <p className="text-left ml-2 sm:ml-4 text-xs">
+                        <p className="text-left text-xs">
                           Verification Completed
                         </p>
                       </div>

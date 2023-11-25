@@ -11,7 +11,7 @@ interface BlockUserProps {
 
 function BlockUser({ handleCloseModal }: BlockUserProps) {
   const initialUsers = [
-    { id: 1, name: "Mark Johnson", username: "john_smith", isBlocked: false },
+    { id: 1, name: "Mark Johnson", username: "mark_john", isBlocked: false },
     { id: 2, name: "Alice Smith", username: "alice", isBlocked: false },
     { id: 3, name: "Bob Williams", username: "bob", isBlocked: false },
     { id: 4, name: "Mark Johnson", username: "john_smith", isBlocked: false },
@@ -74,10 +74,10 @@ function BlockUser({ handleCloseModal }: BlockUserProps) {
                     />
                     <div className="flex items-center justify-between w-full sm:w-full">
                       <div>
-                        <span className="ml-2 sm:ml-4 text-sm sm:text-base">
+                        <span className="ml-2 sm:ml-4 text-sm font-bold sm:text-sm">
                           {user.name}
                         </span>
-                        <p className="ml-2 sm:ml-4 text-sm text-left">
+                        <p className="ml-2 sm:ml-4 text-xs text-left">
                           {user.username}
                         </p>
                       </div>

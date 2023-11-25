@@ -37,7 +37,7 @@ function Main() {
     dispatch(getAllPostVideos());
   }, [postState.refresh]);
 
-  console.log("authState ##", postState);
+  console.log("postState", postState);
 
   const [modalState, setModalState] = useState({
     isPostShareOpen: false,
@@ -123,9 +123,6 @@ function Main() {
   const handlePageRefresh = () => {
     dispatch(refreshPage());
   };
-
-  // console.log("POSTIDDDD: ", postID);
-  // console.log("POSTSTATE: ><> ", postState);
 
   return (
     <Layout>

@@ -1,6 +1,6 @@
 const Clips = require("../models/Clips.js"); // Import your Mongoose model
 
-// Create a new post
+// Create a new clip
 const createClip = async (req, res) => {
   try {
     const { userID, title, video, description, game, music } = req.body;
@@ -25,11 +25,11 @@ const createClip = async (req, res) => {
   }
 };
 
-// Get all posts
+// Get all clips
 const getAllClipVideos = async (req, res) => {
   try {
     const clips = await Clips.find()
-      .sort({ date: -1 }) // Sort posts by their date field in descending order
+      .sort({ date: -1 }) // Sort clips by their date field in descending order
       .populate("userID");
     res
       .status(201)
@@ -43,7 +43,7 @@ const getAllClipVideos = async (req, res) => {
   }
 };
 
-// Get a single post by ID
+// Get a single clip by ID
 const getClipById = async (req, res) => {
   try {
     const clipId = req.params.id;
@@ -58,7 +58,7 @@ const getClipById = async (req, res) => {
   }
 };
 
-// Update a post by ID
+// Update a clip by ID
 const updateClips = async (req, res) => {
   try {
     const clipId = req.params.id;
@@ -78,7 +78,7 @@ const updateClips = async (req, res) => {
   }
 };
 
-// Delete a post by ID
+// Delete a clip by ID
 const deleteClip = async (req, res) => {
   try {
     const { clipID } = req.body;
@@ -97,7 +97,7 @@ const deleteClip = async (req, res) => {
   }
 };
 
-// Create a new reaction for a post
+// Create a new reaction for a clip
 const createClipReaction = async (req, res) => {
   try {
     const { clipID, userID, reactionType } = req.body;
@@ -107,7 +107,7 @@ const createClipReaction = async (req, res) => {
       return res.status(404).json({ error: "Clip not found." });
     }
 
-    // Check if the user has already reacted to the post
+    // Check if the user has already reacted to the clip
     const existingReaction = clip.reactions.find(
       (reaction) => reaction.userID === userID
     );
@@ -151,7 +151,7 @@ const deleteClipReaction = async (req, res) => {
       { new: true }
     );
 
-    console.log("deletepost: ", clip);
+    console.log("deleteclipreaction: ", clip);
 
     if (!clip) {
       return res.status(404).json({ error: "Clip or Reaction not found." });
@@ -168,7 +168,7 @@ const deleteClipReaction = async (req, res) => {
   }
 };
 
-// Create a new comment for a post
+// Create a new comment for a clip
 const createClipComment = async (req, res) => {
   try {
     const { userID, commentText, clipID } = req.body;
@@ -200,7 +200,7 @@ const createClipComment = async (req, res) => {
   }
 };
 
-// Create a new share for a post
+// Create a new share for a clip
 const createShare = async (req, res) => {
   try {
     const clipId = req.params.id;
@@ -225,7 +225,7 @@ const createShare = async (req, res) => {
   }
 };
 
-// Get all reactions for a post
+// Get all reactions for a clip
 const getAllClipReactions = async (req, res) => {
   try {
     const clipId = req.params.id;
@@ -242,7 +242,7 @@ const getAllClipReactions = async (req, res) => {
   }
 };
 
-// Get all comments for a post
+// Get all comments for a clip
 const getAllClipComments = async (req, res) => {
   try {
     const clipId = req.params.id;
@@ -259,16 +259,16 @@ const getAllClipComments = async (req, res) => {
   }
 };
 
-// Get all shares for a post
+// Get all shares for a clip
 const getAllShares = async (req, res) => {
   try {
-    const postId = req.params.id;
-    const post = await Posts.findById(postId);
-    if (!post) {
-      return res.status(404).json({ error: "Post not found." });
+    const clipId = req.params.id;
+    const clip = await Clips.findById(clipId);
+    if (!clip) {
+      return res.status(404).json({ error: "Clip not found." });
     }
 
-    const shares = post.share;
+    const shares = clip.share;
     res.status(200).json(shares);
   } catch (error) {
     console.error(error);
@@ -279,16 +279,16 @@ const getAllShares = async (req, res) => {
 // Delete a comment by ID
 const deleteComment = async (req, res) => {
   try {
-    const postId = req.params.id;
+    const clipId = req.params.id;
     const commentId = req.params.commentId;
 
-    const post = await Posts.findById(postId);
-    if (!post) {
-      return res.status(404).json({ error: "Post not found." });
+    const clip = await Clips.findById(clipId);
+    if (!clip) {
+      return res.status(404).json({ error: "Clip not found." });
     }
 
-    post.comments.id(commentId).remove();
-    const updatedPost = await post.save();
+    clip.comments.id(commentId).remove();
+    const updatedClip = await clip.save();
 
     res.status(204).send();
   } catch (error) {
@@ -300,16 +300,16 @@ const deleteComment = async (req, res) => {
 // Delete a share by ID
 const deleteShare = async (req, res) => {
   try {
-    const postId = req.params.id;
+    const clipId = req.params.id;
     const shareId = req.params.shareId;
 
-    const post = await Posts.findById(postId);
-    if (!post) {
-      return res.status(404).json({ error: "Post not found." });
+    const clip = await Clips.findById(clipId);
+    if (!clip) {
+      return res.status(404).json({ error: "clip not found." });
     }
 
-    post.share.id(shareId).remove();
-    const updatedPost = await post.save();
+    clip.share.id(shareId).remove();
+    const updatedClip = await clip.save();
 
     res.status(204).send();
   } catch (error) {
@@ -321,24 +321,24 @@ const deleteShare = async (req, res) => {
 // Update a reaction by ID
 const updateReaction = async (req, res) => {
   try {
-    const postId = req.params.id;
+    const clipId = req.params.id;
     const reactionId = req.params.reactionId;
     const { reactionType } = req.body;
 
-    const post = await Posts.findById(postId);
-    if (!post) {
-      return res.status(404).json({ error: "Post not found." });
+    const clip = await Clips.findById(clipId);
+    if (!clip) {
+      return res.status(404).json({ error: "Clip not found." });
     }
 
-    const reactionToUpdate = post.reactions.id(reactionId);
+    const reactionToUpdate = clip.reactions.id(reactionId);
     if (!reactionToUpdate) {
       return res.status(404).json({ error: "Reaction not found." });
     }
 
     reactionToUpdate.reactionType = reactionType;
 
-    const updatedPost = await post.save();
-    res.status(200).json(updatedPost);
+    const updatedClip = await clip.save();
+    res.status(200).json(updatedClip);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Could not update the reaction." });
@@ -348,24 +348,24 @@ const updateReaction = async (req, res) => {
 // Update a comment by ID
 const updateComment = async (req, res) => {
   try {
-    const postId = req.params.id;
+    const clipId = req.params.id;
     const commentId = req.params.commentId;
     const { commentText } = req.body;
 
-    const post = await Posts.findById(postId);
-    if (!post) {
-      return res.status(404).json({ error: "Post not found." });
+    const clip = await Clips.findById(clipId);
+    if (!clip) {
+      return res.status(404).json({ error: "Clip not found." });
     }
 
-    const commentToUpdate = post.comments.id(commentId);
+    const commentToUpdate = clip.comments.id(commentId);
     if (!commentToUpdate) {
       return res.status(404).json({ error: "Comment not found." });
     }
 
     commentToUpdate.commentText = commentText;
 
-    const updatedPost = await post.save();
-    res.status(200).json(updatedPost);
+    const updatedClip = await clip.save();
+    res.status(200).json(updatedClip);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Could not update the comment." });
@@ -375,24 +375,24 @@ const updateComment = async (req, res) => {
 // Update a share by ID
 const updateShare = async (req, res) => {
   try {
-    const postId = req.params.id;
+    const clipId = req.params.id;
     const shareId = req.params.shareId;
     const { userID } = req.body;
 
-    const post = await Posts.findById(postId);
-    if (!post) {
-      return res.status(404).json({ error: "Post not found." });
+    const clip = await Clips.findById(clipId);
+    if (!clip) {
+      return res.status(404).json({ error: "Clip not found." });
     }
 
-    const shareToUpdate = post.share.id(shareId);
+    const shareToUpdate = clip.share.id(shareId);
     if (!shareToUpdate) {
       return res.status(404).json({ error: "Share not found." });
     }
 
     shareToUpdate.userID = userID;
 
-    const updatedPost = await post.save();
-    res.status(200).json(updatedPost);
+    const updatedClip = await clip.save();
+    res.status(200).json(updatedClip);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Could not update the share." });

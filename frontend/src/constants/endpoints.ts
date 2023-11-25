@@ -42,6 +42,11 @@ export const PATH = {
     delete: "post/video/reaction/delete",
   },
 
+  clipReaction: {
+    create: "clip/video/reaction/create",
+    delete: "clip/video/reaction/delete",
+  },
+
   comment: {
     create: "post/comment/create",
   },

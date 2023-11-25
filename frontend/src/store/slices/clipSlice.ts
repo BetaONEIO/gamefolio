@@ -194,7 +194,7 @@ export function getAllMusic() {
 }
 
 //create reaction
-export function createVideoReaction(params: ActionParams) {
+export function createClipReaction(params: ActionParams) {
   return async () => {
     const {
       successCallback = () => {},
@@ -208,7 +208,7 @@ export function createVideoReaction(params: ActionParams) {
 
     const options: APIParams = {
       method: "POST",
-      endpoint: PATH.reaction.create,
+      endpoint: PATH.clipReaction.create,
       payload: payload,
       isToken: false,
     };
@@ -229,7 +229,7 @@ export function createVideoReaction(params: ActionParams) {
   };
 }
 //delete reaction
-export function deleteVideoReaction(params: ActionParams) {
+export function deleteClipReaction(params: ActionParams) {
   return async () => {
     const {
       successCallback = () => {},
@@ -243,7 +243,7 @@ export function deleteVideoReaction(params: ActionParams) {
 
     const options: APIParams = {
       method: "POST",
-      endpoint: PATH.reaction.delete,
+      endpoint: PATH.clipReaction.delete,
       payload: payload,
       isToken: false,
     };
