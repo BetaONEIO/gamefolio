@@ -11,7 +11,7 @@ const rootReducer = combineReducers({
   app: appSlice,
   user: userSlice,
   post: postSlice,
-  clip: clipSlice,,
+  clip: clipSlice,
   story: storySlice
 });
 
