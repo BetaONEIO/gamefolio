@@ -2,16 +2,24 @@
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddStory from "../Modals/AddStory";
 import Modal from "../Modals/Modal";
 import ViewStory from "../Modals/ViewStory";
+import { dispatch, useSelector } from "@/store";
+import { getAllStories } from "@/store/slices/storySlice";
+import Link from "next/link";
 
 function AllStories() {
+  const storyState = useSelector((state: any) => state.story) || [];
   const [modalState, setModalState] = useState({
     isAddStoryModalOpen: false,
     isStoryModalOpen: false,
   });
+
+  useEffect(() => {
+    dispatch(getAllStories());
+  }, []);
 
   const namesArray = [
     { name: "Jonny" },
@@ -60,15 +68,16 @@ function AllStories() {
             <span className="text-xs">Story</span>
           </div>
 
-          {namesArray.map((items, index) => (
-            <div
+          {storyState?.stories?.map((items: any, index: number) => (
+            <Link
+              href={`/view-story`}
               key={index}
               className="flex flex-col justify-center items-center gap-2"
-              onClick={() => handleModalToggle("isStoryModalOpen")}
+              // onClick={() => handleModalToggle("isStoryModalOpen")}
             >
               <div className="w-16 h-16">
                 <Image
-                  src={IMAGES.testStoryUser}
+                  src={items?.userID?.profilePicture}
                   alt="UploadStory"
                   width="12"
                   height="12"
@@ -76,8 +85,10 @@ function AllStories() {
                   className="h-16 w-16 object-cover rounded-xl border-green-400 border-2"
                 />
               </div>
-              <span className="text-xs">{items.name}</span>
-            </div>
+              <span className="text-xs">
+                {items?.userID?.name?.split(" ")[0]}
+              </span>
+            </Link>
           ))}
         </div>
       </div>
@@ -91,14 +102,14 @@ function AllStories() {
         />
       </Modal>
 
-      <Modal
+      {/* <Modal
         isOpen={modalState.isStoryModalOpen}
         handleClose={() => handleModalToggle("isStoryModalOpen")}
       >
         <ViewStory
           handleCloseModal={() => handleModalToggle("isStoryModalOpen")}
         />
-      </Modal>
+      </Modal> */}
     </>
   );
 }

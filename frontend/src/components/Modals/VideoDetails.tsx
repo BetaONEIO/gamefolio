@@ -22,7 +22,7 @@ function VideoDetails({
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const [comments, setComments] = useState("");
 
-  console.log("POST statewww####: ", detailedPost);
+  console.log("POST statewww####: VideoDetails.tsx ", detailedPost);
 
   const handleCreateComment = async (postID: any, comment: any) => {
     const payload = {
@@ -193,7 +193,7 @@ function VideoDetails({
                     <div key={comment._id} className="flex flex-row gap-2 mt-3">
                       <Image
                         className="w-12 h-12"
-                        src={detailedPost?.userID?.profilePicture}
+                        src={comment?.userID?.profilePicture}
                         alt="Profile avatar"
                         width={40}
                         height={40}
@@ -201,7 +201,7 @@ function VideoDetails({
                       <div>
                         <div className="flex flex-row mb-1">
                           <p className="text-lg font-bold md:text-lg dark:text-white">
-                            {detailedPost?.userID?.name}
+                            {comment?.userID?.name}
                           </p>
                           <p className="ml-2 font-light md:text-md dark:text-gray-200">
                             {comment.commentText}
@@ -210,7 +210,7 @@ function VideoDetails({
                         <div className="flex items-center text-base font-light sm:text-sm text-gray-50 dark:text-gray-50 gap-2">
                           <p>1d</p>
                           <p className="cursor-pointer">
-                            {detailedPost?.like} likes
+                            {comment?.like} likes
                           </p>
                           <p className="cursor-pointer">Reply</p>
                         </div>

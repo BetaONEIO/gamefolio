@@ -17,7 +17,7 @@ export type InitialState = {
   token: string;
   userCredits: Credit | null;
   gallery: ImageResponse[] | null;
-  videos: Array<any>;
+  stories: Array<any>;
   allMusic: Array<any>;
   refresh: boolean;
 };
@@ -29,13 +29,13 @@ const initialState: InitialState = {
   token: "",
   userCredits: null,
   gallery: null,
-  videos: [],
+  stories: [],
   allMusic: [],
   refresh: false,
 };
 
 export const slice = createSlice({
-  name: "post",
+  name: "story",
   initialState,
   reducers: {
     hasError(state, action) {
@@ -62,8 +62,8 @@ export const slice = createSlice({
     getGallery(state, action) {
       state.gallery = action.payload;
     },
-    getAllPostVideos(state, action) {
-      state.videos = action.payload;
+    getStory(state, action) {
+      state.stories = action.payload;
     },
     getAllMusic(state, action) {
       state.allMusic = action.payload;
@@ -77,7 +77,7 @@ export const slice = createSlice({
 export const { startLoading, stopLoading, getCredits, refreshPage } =
   slice.actions;
 
-export function postVideo(params: ActionParams) {
+export function postStory(params: ActionParams) {
   return async () => {
     const {
       successCallback = () => {},
@@ -91,7 +91,7 @@ export function postVideo(params: ActionParams) {
 
     const options: APIParams = {
       method: "POST",
-      endpoint: PATH.post.create,
+      endpoint: PATH.story.create,
       payload: payload,
       isToken: false,
     };
@@ -113,13 +113,13 @@ export function postVideo(params: ActionParams) {
 }
 
 
-export function getAllPostVideos() {
+export function getAllStories() {
   return async () => {
     dispatch(slice.actions.startLoading());
 
     const options: APIParams = {
       method: "GET",
-      endpoint: PATH.post.get,
+      endpoint: PATH.story.get,
       payload: {},
       isToken: false,
     };
@@ -127,7 +127,7 @@ export function getAllPostVideos() {
     try {
       const [ok, response] = await API(options);
 
-      dispatch(slice.actions.getAllPostVideos(response.data));
+      dispatch(slice.actions.getStory(response.data));
     } catch (error) {
       console.log(error);
     } finally {

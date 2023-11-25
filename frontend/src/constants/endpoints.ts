@@ -28,6 +28,11 @@ export const PATH = {
     get: "post/video/get",
     delete: "post/video/delete",
   },
+  story: {
+    create: "stories/story/create",
+    get: "stories/story/get",
+    delete: "stories/story/delete",
+  },
   reaction: {
     create: "post/video/reaction/create",
     delete: "post/video/reaction/delete",

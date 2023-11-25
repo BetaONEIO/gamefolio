@@ -1,10 +1,10 @@
-const Posts = require("../models/Posts.js"); // Import your Mongoose model
+const Story = require("../models/Story.js"); // Import your Mongoose model
 
-// Create a new post
-const postVideo = async (req, res) => {
+// Create a new story
+const postStory = async (req, res) => {
   try {
     const { userID, title, video, description, game, music } = req.body;
-    const newPost = new Posts({
+    const newStory = new Story({
       userID,
       title,
       video,
@@ -13,33 +13,34 @@ const postVideo = async (req, res) => {
       music,
     });
 
-    const post = await newPost.save();
+    const story = await newStory.save();
 
-    res.status(201).json({ data: post, message: "Post created successfully" });
+    res
+      .status(201)
+      .json({ data: story, message: "Story created successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({
-      message: "Could not create the post.",
-      error: "Could not create the post.",
+      message: "Could not create the story.",
+      error: "Could not create the story.",
     });
   }
 };
 
-// Get all posts
-const getAllPostVideos = async (req, res) => {
+// Get all stories
+const getAllStories = async (req, res) => {
   try {
-    const posts = await Posts.find()
-      .sort({ date: -1 }) // Sort posts by their date field in descending order
-      .populate("userID")
-      .populate({ path: "comments.userID" });
+    const stories = await Story.find()
+      .sort({ date: -1 }) // Sort stories by their date field in descending order
+      .populate("userID");
     res
       .status(201)
-      .json({ data: posts, message: "Successfully Retrieve Post Videos" });
+      .json({ data: stories, message: "Successfully Retrieve Stories" });
   } catch (error) {
     console.error(error);
     res.status(500).json({
-      error: "Could not retrieve posts.",
-      message: "Could not retrieve posts.",
+      error: "Could not retrieve stories.",
+      message: "Could not retrieve stories.",
     });
   }
 };
@@ -48,7 +49,7 @@ const getAllPostVideos = async (req, res) => {
 const getPostById = async (req, res) => {
   try {
     const postId = req.params.id;
-    const post = await Posts.findById(postId);
+    const post = await Story.findById(postId);
     if (!post) {
       return res.status(404).json({ error: "Post not found." });
     }
@@ -65,7 +66,7 @@ const updatePost = async (req, res) => {
     const postId = req.params.id;
     const updatedData = req.body;
 
-    const post = await Posts.findByIdAndUpdate(postId, updatedData, {
+    const post = await Story.findByIdAndUpdate(postId, updatedData, {
       new: true,
     });
     if (!post) {
@@ -84,7 +85,7 @@ const deletePost = async (req, res) => {
   try {
     const { postID } = req.body;
     console.log("pID: ", postID);
-    const post = await Posts.findByIdAndDelete(postID);
+    const post = await Story.findByIdAndDelete(postID);
     if (!post) {
       return res
         .status(404)
@@ -105,7 +106,7 @@ const createVideoReaction = async (req, res) => {
 
     console.log({ postID, userID, reactionType });
 
-    const post = await Posts.findById(postID);
+    const post = await Story.findById(postID);
     if (!post) {
       return res.status(404).json({ error: "Post not found." });
     }
@@ -148,7 +149,7 @@ const deleteVideoReaction = async (req, res) => {
     const { postID, reactionID } = req.body;
 
     console.log({ postID, reactionID });
-    const post = await Posts.findByIdAndUpdate(
+    const post = await Story.findByIdAndUpdate(
       postID,
       { $pull: { reactions: { _id: reactionID } } },
       { new: true }
@@ -174,7 +175,7 @@ const createComment = async (req, res) => {
   try {
     const { userID, commentText, postID } = req.body;
 
-    const post = await Posts.findById(postID);
+    const post = await Story.findById(postID);
     if (!post) {
       return res
         .status(404)
@@ -207,7 +208,7 @@ const createShare = async (req, res) => {
     const postId = req.params.id;
     const { userID } = req.body;
 
-    const post = await Posts.findById(postId);
+    const post = await Story.findById(postId);
     if (!post) {
       return res.status(404).json({ error: "Post not found." });
     }
@@ -230,7 +231,7 @@ const createShare = async (req, res) => {
 const getAllReactions = async (req, res) => {
   try {
     const postId = req.params.id;
-    const post = await Posts.findById(postId);
+    const post = await Story.findById(postId);
     if (!post) {
       return res.status(404).json({ error: "Post not found." });
     }
@@ -247,7 +248,7 @@ const getAllReactions = async (req, res) => {
 const getAllComments = async (req, res) => {
   try {
     const postId = req.params.id;
-    const post = await Posts.findById(postId);
+    const post = await Story.findById(postId);
     if (!post) {
       return res.status(404).json({ error: "Post not found." });
     }
@@ -264,7 +265,7 @@ const getAllComments = async (req, res) => {
 const getAllShares = async (req, res) => {
   try {
     const postId = req.params.id;
-    const post = await Posts.findById(postId);
+    const post = await Story.findById(postId);
     if (!post) {
       return res.status(404).json({ error: "Post not found." });
     }
@@ -283,7 +284,7 @@ const deleteComment = async (req, res) => {
     const postId = req.params.id;
     const commentId = req.params.commentId;
 
-    const post = await Posts.findById(postId);
+    const post = await Story.findById(postId);
     if (!post) {
       return res.status(404).json({ error: "Post not found." });
     }
@@ -304,7 +305,7 @@ const deleteShare = async (req, res) => {
     const postId = req.params.id;
     const shareId = req.params.shareId;
 
-    const post = await Posts.findById(postId);
+    const post = await Story.findById(postId);
     if (!post) {
       return res.status(404).json({ error: "Post not found." });
     }
@@ -326,7 +327,7 @@ const updateReaction = async (req, res) => {
     const reactionId = req.params.reactionId;
     const { reactionType } = req.body;
 
-    const post = await Posts.findById(postId);
+    const post = await Story.findById(postId);
     if (!post) {
       return res.status(404).json({ error: "Post not found." });
     }
@@ -353,7 +354,7 @@ const updateComment = async (req, res) => {
     const commentId = req.params.commentId;
     const { commentText } = req.body;
 
-    const post = await Posts.findById(postId);
+    const post = await Story.findById(postId);
     if (!post) {
       return res.status(404).json({ error: "Post not found." });
     }
@@ -380,7 +381,7 @@ const updateShare = async (req, res) => {
     const shareId = req.params.shareId;
     const { userID } = req.body;
 
-    const post = await Posts.findById(postId);
+    const post = await Story.findById(postId);
     if (!post) {
       return res.status(404).json({ error: "Post not found." });
     }
@@ -401,8 +402,8 @@ const updateShare = async (req, res) => {
 };
 
 module.exports = {
-  postVideo,
-  getAllPostVideos,
+  postStory,
+  getAllStories,
   getPostById,
   updatePost,
   deletePost,

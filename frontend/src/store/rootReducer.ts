@@ -4,13 +4,15 @@ import appSlice from "./slices/appSlice";
 import gallerSlice from "./slices/gallerySlice";
 import userSlice from "./slices/userSlice";
 import postSlice from "./slices/postSlice";
+import storySlice from "./slices/storySlice";
 
 const rootReducer = combineReducers({
   auth: authSlice,
   app: appSlice,
   gallery: gallerSlice,
   user: userSlice,
-  post: postSlice
+  post: postSlice,
+  story: storySlice
 });
 
 export default rootReducer;
