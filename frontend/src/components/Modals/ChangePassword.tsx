@@ -19,7 +19,7 @@ function ChangePassword({ handleCloseModal }: ChangePasswordProps) {
         style={myBGStyleModal}
         className="fixed inset-0 flex items-center justify-center z-50"
       >
-        <div className="modal-container w-full sm:w-2/3 md:w-1/2 lg:w-1/5 mx-auto lg-rounded z-50 overflow-y-auto">
+        <div className="modal-container w-full sm:w-2/3 md:w-1/2 lg:w-1/4 mx-auto lg-rounded z-50 overflow-y-auto">
           {/* Modal content */}
 
           <div className="relative p-4  bg-white rounded-lg  dark:bg-[#091619] sm:p-5 border dark:border-[#586769]">
@@ -43,7 +43,7 @@ function ChangePassword({ handleCloseModal }: ChangePasswordProps) {
               <div>
                 <label
                   htmlFor="password"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-bold text-gray-900 dark:text-white"
                 >
                   Old Password
                 </label>
@@ -60,7 +60,7 @@ function ChangePassword({ handleCloseModal }: ChangePasswordProps) {
               <div>
                 <label
                   htmlFor="password"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-bold text-gray-900 dark:text-white"
                 >
                   New Password
                 </label>
@@ -77,7 +77,7 @@ function ChangePassword({ handleCloseModal }: ChangePasswordProps) {
               <div>
                 <label
                   htmlFor="password"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-bold text-gray-900 dark:text-white"
                 >
                   Repeat New Password
                 </label>
@@ -91,7 +91,7 @@ function ChangePassword({ handleCloseModal }: ChangePasswordProps) {
                 />
               </div>
 
-              <button className="w-full h-[50] bg-[#37C535] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3">
+              <button className="w-full font-bold h-[50] bg-[#37C535] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3">
                 Save
               </button>
             </form>

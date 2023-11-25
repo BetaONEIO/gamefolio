@@ -7,15 +7,13 @@ const dotenv = require("dotenv");
 dotenv.config();
 const userRoutes = require("./routes/userRoutes");
 const postRoutes = require("./routes/postRoutes");
+const clipsRoutes = require("./routes/clipsRoutes");
 const storyRoutes = require("./routes/storyRoutes");
 const musicRoutes = require("./routes/musicRoutes");
 const { myDbConnection } = require("./db/connection");
 const generateToken = require("./utils/generateToken");
 const authMiddleware = require("./middleware/authMiddleware");
-const nodemailer = require("nodemailer");
-const generateOTP = require("./utils/generateOtp");
 const AWS = require("aws-sdk");
-
 const fs = require("fs");
 const multer = require("multer");
 const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
@@ -121,6 +119,9 @@ app.use("/api/user", userRoutes);
 
 // Post API
 app.use("/api/post", postRoutes);
+
+// Clips API
+app.use("/api/clip", clipsRoutes);
 
 // Story API
 app.use("/api/stories", storyRoutes);

@@ -1,23 +1,24 @@
 "use client";
-import { IMAGES } from "@/assets/images";
 import { SVG } from "@/assets/SVG";
-import Image from "next/image";
-import { toastError, toastSuccess } from "../Toast/Toast";
-import { createComment } from "@/store/slices/postSlice";
 import { dispatch, useSelector } from "@/store";
+import { createComment } from "@/store/slices/postSlice";
+import Image from "next/image";
 import { useState } from "react";
 import { ToastContainer } from "react-toastify";
+import { toastError, toastSuccess } from "../Toast/Toast";
 
 interface VideoDetailProps {
   handleCloseModal: () => void;
   postID: any;
   detailedPost: any;
+  handlePageRefresh: () => void;
 }
 
 function VideoDetails({
   handleCloseModal,
   postID,
   detailedPost,
+  handlePageRefresh,
 }: VideoDetailProps) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const [comments, setComments] = useState("");
@@ -34,6 +35,7 @@ function VideoDetails({
     console.log("Comment ", payload);
 
     const successCallback = (response: any) => {
+      handlePageRefresh();
       console.log("RESPONSE COMMENT: ", response);
       toastSuccess(response);
     };
@@ -83,12 +85,10 @@ function VideoDetails({
               />
               <span className="sr-only">Close modal</span>
             </button>
-            {/* Map function inside the JSX */}
-            {/* {detailedPost.map((post: any) => { */}
 
             <div className="flex flex-col sm:flex-row sm:justify-between lg:h-[33.9rem] md:h-[33.9rem] h-[8rem] justify-center border-2 border-[#1C2C2E] rounded-lg my-8 mx-4 no-scrollbar">
               {/* Left Column - Story Block */}
-              <div className="w-full sm:w-1/2 sm:mr-2 sm:ml-6 border-r-2 border-[#1C2C2E] flex justify-center items-center">
+              <div className="flex justify-center w-full sm:w-1/2 border-r-2 border-[#1C2C2E]">
                 {/* Add your story block content here */}
                 <div className="w-full md:w-[22rem] lg:w-full flex flex-col sm:justify-center justify-center items-center rounded-lg dark:bg-[#091619] bg-gray-100 rounded-lg dark:bg-[#091619] border-[#1C2C2E]">
                   <div className="mb-4">
@@ -107,11 +107,10 @@ function VideoDetails({
 
               {/* Right Column - Form */}
               <div className="w-full md:w-full lg:w-6/12 lg:h-[33.9rem] md:h-[33.9rem] h-[8rem]">
-                {/* Game Selection */}
                 <div className="w-full md:w-full lg:w-full">
-                  <div className="flex items-center my-3">
+                  <div className="flex items-center my-3 mx-3">
                     <Image
-                      className="w-12 h-12 mr-2 sm:mr-4"
+                      className="w-12 h-12 rounded-lg mr-2 sm:mr-4"
                       src={detailedPost?.userID?.profilePicture}
                       alt="Profile avatar"
                       width={50}
@@ -133,13 +132,13 @@ function VideoDetails({
                       </p>
                     </div>
                   </div>
-                  <div className="mb-3 mr-4">
+                  <div className="m-4">
                     <p className="text-base font-light text-gray-200 dark:text-gray-200">
                       {detailedPost?.description}
                     </p>
                   </div>
 
-                  <div className="flex items-center w-full">
+                  <div className="flex items-center justify-between mx-3">
                     <div className="flex flex-1 gap-4">
                       <Image
                         className="cursor-pointer hover:opacity-80 p-2 w-10 h-10 rounded-xl bg-[#162423]"
@@ -174,7 +173,7 @@ function VideoDetails({
                       />
                     </div>
 
-                    <div className="flex flex-end mr-2">
+                    <div>
                       <Image
                         className="cursor-pointer hover:opacity-80"
                         src={SVG.Share}
@@ -188,7 +187,7 @@ function VideoDetails({
 
                 <div className="border dark:border-[#586769] mt-3"></div>
 
-                <div className="h-72 mx-4 overflow-y-scroll no-scrollbar">
+                <div className="h-[19.5rem] mx-4 overflow-y-scroll no-scrollbar">
                   {detailedPost?.comments.map((comment: any) => (
                     <div key={comment._id} className="flex flex-row gap-2 mt-3">
                       <Image
@@ -204,7 +203,7 @@ function VideoDetails({
                             {comment?.userID?.name}
                           </p>
                           <p className="ml-2 font-light md:text-md dark:text-gray-200">
-                            {comment.commentText}
+                            {comment?.commentText}
                           </p>
                         </div>
                         <div className="flex items-center text-base font-light sm:text-sm text-gray-50 dark:text-gray-50 gap-2">
@@ -220,7 +219,7 @@ function VideoDetails({
                 </div>
 
                 <div className="flex w-full mx-2">
-                  <div className="relative">
+                  <div className="flex w-5/12 absolute bottom-14">
                     <div className="absolute inset-y-0 left-0 flex items-center  pointer-events-none">
                       <Image
                         src={SVG.Emoji}

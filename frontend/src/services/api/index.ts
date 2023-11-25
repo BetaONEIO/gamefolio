@@ -2,7 +2,7 @@ import { ERRORS } from "@/labels/error";
 import { APIOption, APIParams } from "@/types/Api";
 import { getFromLocal } from "@/utils/localStorage";
 
-// export const BASE_URL = "http://192.168.2.119:4000/api";
+// export const BASE_URL = "http://1192.168.234:4000/api";
 export const BASE_URL = "http://localhost:4000/api";
 // export const BASE_URL = process.env.NEXT_PUBLIC_DEV_BASE_URL;
 

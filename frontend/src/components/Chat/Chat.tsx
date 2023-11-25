@@ -1,5 +1,6 @@
 "use client";
 import { SVG } from "@/assets/SVG";
+import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
 import Image from "next/image";
 import React from "react";
@@ -65,17 +66,18 @@ function Chat() {
             <img
               className="rounded-xl"
               alt="person"
-              src="https://s3-alpha-sig.figma.com/img/1ada/6763/c9a55b7abc19cd1dc9a9e27deaae7039?Expires=1698624000&Signature=cotVmpQWFAjD4YLJfz1vesY4wldPb3G9wCXaWiBQFF98MFIWWVcFapaLPXVTNq4IJ0OUIJ0icNzDemgwdmf6~nS4XHcEdesAtCwlBvYghm0ZiyCKsyaPwTR8mCuZ3pD6rLXOGGAfFsNdkHyC1FO7Dbc3N2HvyXifGZcpkfFEX4UNBdTRnu134fLpYh9z4pHiaREXz0wNnRun5785iiFL-5jM66PDtKxx0sss77jOA64V86gG1GZjICy9Lsf6Ny06t5-RTpLQcCwU4hK-axXOD-7gK4E0IfoWwuPFVg8JKZktMYHJ0IBjB2m5j22eALW4FOD4HjdkPNmNHghT~J6pBw__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
+              src={IMAGES.Profile}
               width={38}
               height={38}
             />
           </div>
         </div>
+
         {/* Message container  */}
-        <div className="flex h-full flex-col overflow-y-auto ">
+        <div>
           <Toaster />
           {/* Messages */}
-          <div className="flex flex-1 flex-col justify-end gap-4  p-2">
+          <div className="flex h-screen flex-col gap-4 p-2 overflow-y-auto">
             {ChatMessages[0].messages?.map((element, index) => {
               console.log("ELEMENT: ", element);
               return (
@@ -129,7 +131,7 @@ function Chat() {
           </div>
 
           {/* Bottom Input container */}
-          <div className="flex items-center justify-around gap-2 bg-[#162423]  px-4">
+          <div className="flex items-center justify-around absolute bottom-0 bg-[#162423] px-4 ">
             <label htmlFor="file_input">
               <Image
                 className="hover:opacity-70"
@@ -138,13 +140,12 @@ function Chat() {
                 height={24}
                 src={SVG.ChatFile}
               />
-
               <input type="file" id="file_input" className="hidden" />
             </label>
-            <div className="mx-3 my-2 flex w-full items-center justify-around rounded-lg  bg-[#162423] p-2">
+            <div className="flex-grow mx-3 my-2  flex items-center rounded-lg bg-[#162423] p-2">
               <input
                 type="text"
-                className="w-5/6 px-1 py-1 bg-[#162423] focus:outline-none"
+                className="flex-grow px-1 py-1 bg-[#162423] focus:outline-none"
                 placeholder="Write message"
               />
 

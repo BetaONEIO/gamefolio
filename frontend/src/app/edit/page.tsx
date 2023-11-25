@@ -2,6 +2,7 @@ import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import Layout from "@/components/CustomLayout/layout";
 import { leagueGothic } from "@/font/font";
+import Image from "next/image";
 
 const Edit = () => {
   const sectionStyle = {
@@ -10,7 +11,7 @@ const Edit = () => {
   return (
     <Layout>
       <div className="flex items-center py-6 bg-[#091619]">
-        <div className="flex justify-between items-center w-full mx-4 ">
+        <div className="flex justify-between items-center w-full mx-4">
           <div className="flex gap-4 items-center">
             <h1 className={`${leagueGothic.className} text-2xl sm:text-4xl`}>
               EDIT PROFILE
@@ -26,21 +27,25 @@ const Edit = () => {
         <div className="flex justify-between px-6 py-8 md:h-screen lg:py-0">
           <div className="relative p-6 sm:p-8">
             <div className="mb-4 w-20 h-20 rounded-lg relative">
-              <img
+              <Image
                 src={IMAGES.testStoryUser}
                 alt="testStoryUser"
                 className="w-full h-full rounded-lg"
                 width={10}
                 height={10}
+                sizes="100vw"
               />
-              <div className="absolute -bottom-2 -right-2">
-                <img
-                  src={SVG.Cameraupload}
-                  alt="Cameraupload"
-                  className="w-6 h-6 rounded-lg"
-                  width={10}
-                  height={10}
-                />
+              <div className="absolute -bottom-2 -right-2 cursor-pointer">
+                <label htmlFor="dropzone-file">
+                  <Image
+                    src={SVG.Cameraupload}
+                    alt="Cameraupload"
+                    className="w-6 h-6 rounded-lg"
+                    width={10}
+                    height={10}
+                  />
+                </label>
+                <input id="dropzone-file" type="file" className="hidden" />
               </div>
             </div>
           </div>
@@ -50,7 +55,7 @@ const Edit = () => {
               <div>
                 <label
                   htmlFor="name"
-                  className="block mb-2 text-sm font-medium  text-gray-900 dark:text-white"
+                  className="block font-bold mb-2 text-sm text-gray-900 dark:text-white"
                 >
                   Name
                 </label>
@@ -67,7 +72,7 @@ const Edit = () => {
               <div>
                 <label
                   htmlFor="username"
-                  className="block mb-2 text-sm font-medium  text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-bold text-gray-900 dark:text-white"
                 >
                   Username
                 </label>
@@ -84,7 +89,7 @@ const Edit = () => {
               <div>
                 <label
                   htmlFor="Date of Birth"
-                  className="block mb-2 text-sm font-medium  text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-bold  text-gray-900 dark:text-white"
                 >
                   Date of Birth (optional)
                 </label>
@@ -99,7 +104,7 @@ const Edit = () => {
               </div>
 
               <div className="mb-4">
-                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                <label className="block mb-2 text-sm font-bold text-gray-900 dark:text-white">
                   Bio
                 </label>
                 <textarea
@@ -111,7 +116,7 @@ const Edit = () => {
               </div>
 
               <div>
-                <p className="mb-2 text-sm font-medium ">Account Type</p>
+                <p className="mb-2 text-sm font-bold ">Account Type</p>
                 <div className="flex justify-center w-full gap-2">
                   <button className="text-white w-full justify-center bg-primary-700  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-[#162423] dark:border-green-500 border border-gray-200">
                     Public

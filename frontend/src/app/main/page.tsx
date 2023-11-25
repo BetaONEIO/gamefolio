@@ -11,14 +11,12 @@ import AllStories from "@/components/story/AllStories";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import {
-  createComment,
   createVideoReaction,
   deleteVideoReaction,
   getAllPostVideos,
   refreshPage,
 } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
-import { log } from "console";
 import Image from "next/image";
 import { Suspense, useEffect, useState } from "react";
 
@@ -39,7 +37,7 @@ function Main() {
     dispatch(getAllPostVideos());
   }, [postState.refresh]);
 
-  console.log("authState ##", postState);
+  console.log("postState", postState);
 
   const [modalState, setModalState] = useState({
     isPostShareOpen: false,
@@ -125,9 +123,6 @@ function Main() {
   const handlePageRefresh = () => {
     dispatch(refreshPage());
   };
-
-  // console.log("POSTIDDDD: ", postID);
-  // console.log("POSTSTATE: ><> ", postState);
 
   return (
     <Layout>
@@ -359,6 +354,7 @@ function Main() {
           postID={postID}
           detailedPost={detailedPost}
           handleCloseModal={() => handleModalToggle("isVideoDetailOpen")}
+          handlePageRefresh={() => handlePageRefresh()}
         />
       </Modal>
 
