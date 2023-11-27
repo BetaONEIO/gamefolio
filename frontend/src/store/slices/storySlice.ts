@@ -18,6 +18,7 @@ export type InitialState = {
   userCredits: Credit | null;
   gallery: ImageResponse[] | null;
   stories: Array<any>;
+  userStories: Array<any>;
   allMusic: Array<any>;
   refresh: boolean;
 };
@@ -30,6 +31,7 @@ const initialState: InitialState = {
   userCredits: null,
   gallery: null,
   stories: [],
+  userStories: [],
   allMusic: [],
   refresh: false,
 };
@@ -65,6 +67,9 @@ export const slice = createSlice({
     getStory(state, action) {
       state.stories = action.payload;
     },
+    getUserStory(state, action) {
+      state.userStories = action.payload;
+    },
     getAllMusic(state, action) {
       state.allMusic = action.payload;
     },
@@ -84,8 +89,6 @@ export function postStory(params: ActionParams) {
       errorCallback = () => {},
       payload,
     } = params;
-
-    console.log("))) 00: ", payload);
 
     dispatch(slice.actions.startLoading());
 
@@ -112,6 +115,32 @@ export function postStory(params: ActionParams) {
   };
 }
 
+
+export function getUserStories(params: ActionParams) {
+  return async () => {
+    const {
+      errorCallback = () => {},
+      payload,
+    } = params;
+    dispatch(slice.actions.startLoading());
+
+    const options: APIParams = {
+      method: "POST",
+      endpoint: PATH.story.getUser,
+      payload: payload,
+      isToken: false,
+    };
+
+    try {
+      const [ok, response] = await API(options);
+      dispatch(slice.actions.getUserStory(response.data));
+    } catch (error) {
+      errorCallback();
+    } finally {
+      dispatch(slice.actions.stopLoading());
+    }
+  };
+}
 
 export function getAllStories() {
   return async () => {
