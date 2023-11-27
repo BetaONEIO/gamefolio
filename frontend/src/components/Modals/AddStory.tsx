@@ -196,7 +196,7 @@ function AddStory({ handleCloseModal }: AddStoryProps) {
                       />
                     </label>
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center ">
+                    <div className="w-full h-full flex items-center justify-center">
                       {video ? (
                         <video
                           className="w-full h-full"
@@ -264,8 +264,8 @@ function AddStory({ handleCloseModal }: AddStoryProps) {
                     </div>
 
                     {isDropdownOpen && (
-                      <div className="absolute z-50 mt-2 w-full rounded-md shadow-lg">
-                        <ul className="py-1 bg-white  dark:bg-[#1C2C2E] dark:text-white  dark:rounded-b-lg">
+                      <div className="absolute overflow-y-auto h-40 z-50 mt-2w-full md:w-72 sm:w-96 rounded-md shadow-lg">
+                        <ul className="py-1 bg-white dark:bg-[#1C2C2E] dark:text-white dark:rounded-b-lg">
                           {optionsForGame.map((option) => (
                             <li
                               key={option.value}
@@ -340,7 +340,7 @@ function AddStory({ handleCloseModal }: AddStoryProps) {
 
                     {isDropdownOpenMusic && (
                       <div className="absolute overflow-y-auto h-40 z-50 mt-2w-full md:w-72 sm:w-96 rounded-md shadow-lg">
-                        <ul className="py-1 bg-white   dark:bg-[#1C2C2E]  dark:text-white  dark:rounded-b-lg">
+                        <ul className="py-1 bg-white dark:bg-[#1C2C2E] dark:text-white dark:rounded-b-lg">
                           {musicState.map((option: any) => (
                             <li
                               key={option.value}

@@ -1,6 +1,8 @@
 "use client";
 import { SVG } from "@/assets/SVG";
 import Layout from "@/components/CustomLayout/layout";
+import Modal from "@/components/Modals/Modal";
+import SharePost from "@/components/Modals/SharePost";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
@@ -17,6 +19,7 @@ import React, { useEffect, useState } from "react";
 function Clip() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const clipState = useSelector((state: any) => state.clip) || [];
+  const [clipID, setClipID] = useState("");
 
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
@@ -31,6 +34,17 @@ function Clip() {
 
   console.log("clipState", clipState);
 
+  const [modalState, setModalState] = useState({
+    isClipShareOpen: false,
+  });
+
+  const handleModalToggle = (modalName: keyof typeof modalState) => {
+    setModalState((prevState) => ({
+      ...prevState,
+      [modalName]: !prevState[modalName],
+    }));
+  };
+
   const handlePageRefresh = () => {
     dispatch(refreshPage());
   };
@@ -38,7 +52,7 @@ function Clip() {
   const handleCreateReaction = async (clipID: any, reactionType: any) => {
     const payload = {
       userID: authState._id,
-      postID: clipID,
+      clipID: clipID,
       reactionType: reactionType,
     };
 
@@ -47,7 +61,7 @@ function Clip() {
     const successCallback = (response: any) => {
       // console.log("RESPONSE ADDVIDEO: ", response);
       handlePageRefresh();
-      toastSuccess(response);
+      // toastSuccess(response);
     };
 
     const errorCallback = (error: string) => {
@@ -66,7 +80,7 @@ function Clip() {
   const handleDeleteReaction = async (clipID: any, reactionID: any) => {
     const payload = {
       userID: authState._id,
-      postID: clipID,
+      clipID: clipID,
       reactionID: reactionID,
     };
 
@@ -75,7 +89,7 @@ function Clip() {
     const successCallback = (response: any) => {
       console.log("RESPONSE ADDVIDEO: ", response);
       handlePageRefresh();
-      toastSuccess(response);
+      // toastSuccess(response);
     };
 
     const errorCallback = (error: string) => {
@@ -117,6 +131,7 @@ function Clip() {
           const reactionID = clip.reactions.find(
             (reaction: any) => reaction.userID === authState._id
           );
+
           return (
             <div
               key={clip?._id}
@@ -148,7 +163,10 @@ function Clip() {
                   </div>
                 </div>
               </div>
-              <div className="absolute top-1.5 right-0 p-4 justify-self-center">
+              <div
+                className="cursor-pointer absolute top-1.5 right-0 p-4 justify-self-center"
+                onClick={() => handleModalToggle("isClipShareOpen")}
+              >
                 <Image
                   className="w-7 h-7 hover:opacity-80 rounded-full object-cover"
                   src={SVG.Share}
@@ -174,7 +192,7 @@ function Clip() {
 
               <div className="absolute inset-x-0 bottom-20 p-4 flex items-center justify-between">
                 <p className="font-light text-xs sm:text-sm hover:opacity-80">
-                  Liked by john Smith_12 and others
+                  Liked by {clip?.userID?.name} and others
                 </p>
               </div>
               <div className="absolute inset-x-0 bottom-14 p-4 flex items-center justify-between">
@@ -239,6 +257,14 @@ function Clip() {
           );
         })}
       </div>
+      <Modal
+        isOpen={modalState.isClipShareOpen}
+        handleClose={() => handleModalToggle("isClipShareOpen")}
+      >
+        <SharePost
+          handleCloseModal={() => handleModalToggle("isClipShareOpen")}
+        />
+      </Modal>
     </Layout>
   );
 }

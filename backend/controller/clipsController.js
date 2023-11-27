@@ -101,15 +101,16 @@ const deleteClip = async (req, res) => {
 const createClipReaction = async (req, res) => {
   try {
     const { clipID, userID, reactionType } = req.body;
+    console.log({ clipID, userID, reactionType });
 
     const clip = await Clips.findById(clipID);
     if (!clip) {
       return res.status(404).json({ error: "Clip not found." });
     }
 
-    // Check if the user has already reacted to the clip
-    const existingReaction = clip.reactions.find(
-      (reaction) => reaction.userID === userID
+    // Check if the user has already reacted to the post
+    const existingReaction = clip.reactions.some(
+      (reaction) => reaction.userID.toString() === userID.toString()
     );
 
     if (existingReaction) {
@@ -139,6 +140,7 @@ const createClipReaction = async (req, res) => {
     });
   }
 };
+
 // Delete a reaction by ID
 const deleteClipReaction = async (req, res) => {
   try {

@@ -76,7 +76,7 @@ function Main() {
     const successCallback = (response: any) => {
       // console.log("RESPONSE ADDVIDEO: ", response);
       handlePageRefresh();
-      toastSuccess(response);
+      // toastSuccess(response);
     };
 
     const errorCallback = (error: string) => {
@@ -104,7 +104,7 @@ function Main() {
     const successCallback = (response: any) => {
       console.log("RESPONSE ADDVIDEO: ", response);
       handlePageRefresh();
-      toastSuccess(response);
+      // toastSuccess(response);
     };
 
     const errorCallback = (error: string) => {
