@@ -1,3 +1,4 @@
+const { get } = require("mongoose");
 const Story = require("../models/Story.js"); // Import your Mongoose model
 
 // Create a new story
@@ -27,15 +28,60 @@ const postStory = async (req, res) => {
   }
 };
 
+// Controller function to get all stories of a specific user
+const getUserAllStories = async (req, res) => {
+  const userID = req.body.userID; // Assuming userId is passed in the URL params
+
+  console.log("userID: ", userID);
+
+  try {
+    // Fetch all stories for the specified user ID
+    const userStories = await Story.find({ userID: userID }).populate("userID"); // Assuming userID in Story model refers to User model
+
+    if (!userStories) {
+      return res.status(404).json({
+        message: "No stories found for this user.",
+        error: "No stories found for this user.",
+      });
+    }
+
+    res
+      .status(200)
+      .json({ data: userStories, message: "Successfully Fetched Stories" });
+  } catch (error) {
+    res.status(500).json({
+      message: "Server error. Failed to fetch stories.",
+      error: error.message,
+    });
+  }
+};
+
 // Get all stories
 const getAllStories = async (req, res) => {
   try {
     const stories = await Story.find()
       .sort({ date: -1 }) // Sort stories by their date field in descending order
       .populate("userID");
-    res
-      .status(201)
-      .json({ data: stories, message: "Successfully Retrieve Stories" });
+
+    function getUniqueUserData(data) {
+      const uniqueUsers = {};
+
+      data.forEach((item) => {
+        const userId = item.userID._id.toString();
+        if (!uniqueUsers[userId]) {
+          uniqueUsers[userId] = item;
+        }
+      });
+
+      return Object.values(uniqueUsers);
+    }
+
+    const uniqueStories = getUniqueUserData(stories);
+    console.log("uniqueStories: ", uniqueStories);
+    res.status(201).json({
+      data: uniqueStories,
+      message: "Successfully Retrieve Stories",
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -403,6 +449,7 @@ const updateShare = async (req, res) => {
 
 module.exports = {
   postStory,
+  getUserAllStories,
   getAllStories,
   getPostById,
   updatePost,

@@ -5,6 +5,9 @@ const storyController = require("../controller/storyController.js");
 // Create a new post story
 router.post("/story/create", storyController.postStory);
 
+// Get user stories
+router.post("/story/get-user", storyController.getUserAllStories);
+
 // Get all posts
 router.get("/story/get", storyController.getAllStories);
 

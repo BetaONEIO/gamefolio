@@ -9,13 +9,18 @@ import ViewStory from "../Modals/ViewStory";
 import { dispatch, useSelector } from "@/store";
 import { getAllStories } from "@/store/slices/storySlice";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 function AllStories() {
+  const router = useRouter();
   const storyState = useSelector((state: any) => state.story) || [];
   const [modalState, setModalState] = useState({
     isAddStoryModalOpen: false,
     isStoryModalOpen: false,
   });
+  const [storyUserID, setStoryUserID] = useState("");
+
+  console.log("storyState: ", storyState);
 
   useEffect(() => {
     dispatch(getAllStories());
@@ -41,7 +46,11 @@ function AllStories() {
     { name: "Elan" },
   ];
 
-  const handleModalToggle = (modalName: keyof typeof modalState) => {
+  const handleModalToggle = (
+    modalName: keyof typeof modalState,
+    storyUserID?: any
+  ) => {
+    setStoryUserID(storyUserID);
     setModalState((prevState) => ({
       ...prevState,
       [modalName]: !prevState[modalName],
@@ -69,11 +78,12 @@ function AllStories() {
           </div>
 
           {storyState?.stories?.map((items: any, index: number) => (
-            <Link
-              href={`/view-story`}
+            <button
               key={index}
               className="flex flex-col justify-center items-center gap-2"
-              // onClick={() => handleModalToggle("isStoryModalOpen")}
+              onClick={() =>
+                handleModalToggle("isStoryModalOpen", items?.userID?._id)
+              }
             >
               <div className="w-16 h-16">
                 <Image
@@ -88,7 +98,7 @@ function AllStories() {
               <span className="text-xs">
                 {items?.userID?.name?.split(" ")[0]}
               </span>
-            </Link>
+            </button>
           ))}
         </div>
       </div>
@@ -102,14 +112,15 @@ function AllStories() {
         />
       </Modal>
 
-      {/* <Modal
+      <Modal
         isOpen={modalState.isStoryModalOpen}
         handleClose={() => handleModalToggle("isStoryModalOpen")}
       >
         <ViewStory
+          storyUserID={storyUserID}
           handleCloseModal={() => handleModalToggle("isStoryModalOpen")}
         />
-      </Modal> */}
+      </Modal>
     </>
   );
 }

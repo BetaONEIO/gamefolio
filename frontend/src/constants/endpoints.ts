@@ -40,6 +40,7 @@ export const PATH = {
   story: {
     create: "stories/story/create",
     get: "stories/story/get",
+    getUser: "stories/story/get-user",
     delete: "stories/story/delete",
   },
   reaction: {

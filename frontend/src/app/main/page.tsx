@@ -6,6 +6,7 @@ import DeletePost from "@/components/Modals/DeletePost";
 import Modal from "@/components/Modals/Modal";
 import SharePost from "@/components/Modals/SharePost";
 import VideoDetails from "@/components/Modals/VideoDetails";
+import ViewStory from "@/components/Modals/ViewStory";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import AllStories from "@/components/story/AllStories";
 import { dispatch, useSelector } from "@/store";
