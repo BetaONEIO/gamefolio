@@ -22,6 +22,7 @@ ffmpeg.setFfmpegPath(ffmpegPath);
 var ffprobe = require("ffprobe-static");
 ffmpeg.setFfprobePath(ffprobe.path);
 const upload = multer({ dest: "uploads/" });
+const { v4: uuidv4 } = require("uuid");
 
 const app = express();
 const port = 4000;
@@ -155,11 +156,14 @@ app.post("/uploadfile", upload.single("file"), (req, res) => {
   console.log(musicName);
 
   const uploadVideo = (file) => {
+    const uniqueFileName = `${uuidv4()}-${file.originalname}`; // Generating a unique filename
     const fileStream = fs.createReadStream(file.path);
+
+    console.log("uniqueFileName: ", uniqueFileName);
 
     const params = {
       Bucket: bucketName,
-      Key: file.originalname,
+      Key: uniqueFileName,
       Body: fileStream,
     };
 
