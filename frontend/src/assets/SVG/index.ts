@@ -41,6 +41,7 @@ export const SVG = {
   StoryReaction2: "/story-reply-reactions-2.svg",
   SideBar: "/sidebar.svg",
   Mute: "/mute.svg",
+  UnMute: "/unmute.svg",
   Camera: "/camera.svg",
   Gallery: "/gallery.svg",
   Coin: "/coin.svg",

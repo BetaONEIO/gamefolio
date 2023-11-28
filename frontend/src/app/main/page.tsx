@@ -6,8 +6,7 @@ import DeletePost from "@/components/Modals/DeletePost";
 import Modal from "@/components/Modals/Modal";
 import SharePost from "@/components/Modals/SharePost";
 import VideoDetails from "@/components/Modals/VideoDetails";
-import ViewStory from "@/components/Modals/ViewStory";
-import { toastError, toastSuccess } from "@/components/Toast/Toast";
+import { toastError } from "@/components/Toast/Toast";
 import AllStories from "@/components/story/AllStories";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
@@ -21,11 +20,20 @@ import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
 import { Suspense, useEffect, useState } from "react";
 
+interface VideoState {
+  isMuted?: boolean;
+  videoDuration?: number;
+  elapsedTime?: number;
+}
+
 function Main() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const postState = useSelector((state: any) => state.post) || [];
   const [postID, setPostID] = useState("");
   const [detailedPost, setDetailedPost] = useState("");
+  const [videoStates, setVideoStates] = useState<{ [key: string]: VideoState }>(
+    {}
+  );
 
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
@@ -121,6 +129,54 @@ function Main() {
     dispatch(deleteVideoReaction(params));
   };
 
+  const handleToggleMute = (postID: string) => {
+    setVideoStates((prevStates) => ({
+      ...prevStates,
+      [postID]: {
+        ...prevStates[postID],
+        isMuted: !prevStates[postID]?.isMuted,
+      },
+    }));
+  };
+
+  const handleVideoClick = (
+    event: React.MouseEvent<HTMLVideoElement, MouseEvent>,
+    postID: string
+  ) => {
+    const video = event.currentTarget;
+    if (video.paused) {
+      video.play();
+    } else {
+      video.pause();
+    }
+  };
+
+  const handleVideoLoadedMetadata = (event: any, postID: string) => {
+    setVideoStates((prevStates) => ({
+      ...prevStates,
+      [postID]: {
+        ...prevStates[postID],
+        videoDuration: event.target.duration,
+      },
+    }));
+  };
+
+  const handleVideoTimeUpdate = (event: any, postID: string) => {
+    setVideoStates((prevStates) => ({
+      ...prevStates,
+      [postID]: {
+        ...prevStates[postID],
+        elapsedTime: event.target.currentTime,
+      },
+    }));
+  };
+
+  const formatVideoDuration = (durationInSeconds: any) => {
+    const minutes = Math.floor(durationInSeconds / 60);
+    const seconds = Math.floor(durationInSeconds % 60);
+    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+  };
+
   const handlePageRefresh = () => {
     dispatch(refreshPage());
   };
@@ -153,7 +209,11 @@ function Main() {
                 const reactionID = post.reactions.find(
                   (reaction: any) => reaction.userID === authState._id
                 );
-
+                const videoState = videoStates[post._id] || {
+                  videoDuration: 0,
+                  elapsedTime: 0,
+                  isMuted: false,
+                };
                 return (
                   <div
                     key={post._id}
@@ -193,6 +253,7 @@ function Main() {
                           alt="Bookmark"
                           width={20}
                           height={20}
+                          style={{ width: "22px", height: "22px" }}
                         />
                         <Image
                           className="ml-3 cursor-pointer hover:opacity-80"
@@ -200,6 +261,7 @@ function Main() {
                           alt="Threedots"
                           width={5}
                           height={5}
+                          style={{ width: "20px", height: "18px" }}
                           onClick={() =>
                             handleModalToggle("isPostDeleteOpen", post._id)
                           }
@@ -211,13 +273,49 @@ function Main() {
                       <p className="text-neutral-300">{post?.description}</p>
                     </div>
 
-                    <video
-                      className="w-[710px] h-[185px] sm:h-[300px] my-2 sm:my-2"
-                      src={post.video}
-                      width={50}
-                      height={50}
-                      controls
-                    />
+                    <div className="relative">
+                      <video
+                        className="w-[710px] h-[185px] sm:h-[300px] my-2 sm:my-2"
+                        src={post?.video}
+                        width={50}
+                        height={50}
+                        controls={false}
+                        onClick={(e) => handleVideoClick(e, post._id)}
+                        muted={videoState.isMuted}
+                        onLoadedMetadata={(e) =>
+                          handleVideoLoadedMetadata(e, post._id)
+                        }
+                        onTimeUpdate={(e) => handleVideoTimeUpdate(e, post._id)}
+                      />
+
+                      <p className="absolute bottom-2 left-2 text-neutral-300">
+                        {formatVideoDuration(videoState.elapsedTime)} /{" "}
+                        {formatVideoDuration(videoState.videoDuration)}
+                      </p>
+
+                      <div className="absolute bottom-1 right-2">
+                        <button
+                          className="cursor-pointer hover:opacity-80"
+                          onClick={() => handleToggleMute(post._id)}
+                        >
+                          {videoState.isMuted ? (
+                            <Image
+                              src={SVG.Mute}
+                              alt="Mute"
+                              width={40}
+                              height={40}
+                            />
+                          ) : (
+                            <Image
+                              src={SVG.UnMute}
+                              alt="Unmute"
+                              width={40}
+                              height={40}
+                            />
+                          )}
+                        </button>
+                      </div>
+                    </div>
 
                     <div className="flex items-center my-3 mx-2">
                       <div

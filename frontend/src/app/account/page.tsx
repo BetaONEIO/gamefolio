@@ -9,11 +9,15 @@ import Modal from "@/components/Modals/Modal";
 import MoreOptions from "@/components/Modals/MoreOptions";
 import AllStories from "@/components/story/AllStories";
 import { leagueGothic } from "@/font/font";
-import { useSelector } from "@/store";
+import { dispatch, useSelector } from "@/store";
 import Image from "next/image";
 import Link from "next/link";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Loading from "./loading";
+import { log } from "console";
+import { userSession } from "@/store/slices/authSlice";
+import { getAllPostVideos } from "@/store/slices/postSlice";
+import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 
 const USERDATA = [
   {
@@ -27,6 +31,7 @@ const USERDATA = [
     following: 2356,
   },
 ];
+
 const popular = [
   { id: 1, IMAGE: IMAGES.Popular },
   { id: 2, IMAGE: IMAGES.Popular1 },
@@ -42,22 +47,43 @@ const popular = [
 
 interface MyVideosSectionProps {
   data: Array<any>;
+  authState: any; // Add authState as a prop
+  postState: any; // Add postState as a prop
 }
 
 const MyVideosSection: React.FC<MyVideosSectionProps> = ({
   data = [{ id: 1, IMAGE: "test" }],
+  authState,
+  postState,
 }) => {
+  const userVideos = postState.videos.filter(
+    (post: any) => post.userID._id === authState._id
+  );
+  console.log("postState:", postState);
+  console.log("authState:", authState);
+  console.log("USER VIDEOS: ", userVideos);
+
+  const handleVideoClick = (
+    event: React.MouseEvent<HTMLVideoElement, MouseEvent>
+  ) => {
+    const video = event.currentTarget;
+    if (video.paused) {
+      video.play();
+    } else {
+      video.pause();
+    }
+  };
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
-      {data.map((game) => (
-        <div key={game.id} className="relative">
-          <Image
-            src={game.IMAGE}
-            alt="Popular"
-            width={0}
-            height={0}
-            sizes="100vw"
+      {userVideos.map((item: any) => (
+        <div key={item.id} className="relative">
+          <video
+            src={item.video}
             className="w-96 sm:w-96 h-52 md:h-40  rounded-xl object-cover hover:opacity-80"
+            width={20}
+            height={20}
+            controls={false}
+            onClick={handleVideoClick}
           />
           <Image
             className="absolute bottom-2 right-2 hover:opacity-70"
@@ -89,7 +115,7 @@ const MyBookmarkSection: React.FC<MyBookmarkSectionProps> = ({
             width={0}
             height={0}
             sizes="100vw"
-            className="w-96 sm:w-96 h-52 md:h-52  rounded-xl object-cover hover:opacity-80"
+            className="w-96 sm:w-96 h-52 md:h-40  rounded-xl object-cover hover:opacity-80"
           />
           <Image
             className="absolute top-2 right-2 hover:opacity-70"
@@ -107,6 +133,7 @@ const MyBookmarkSection: React.FC<MyBookmarkSectionProps> = ({
 
 function Page() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
+  const postState = useSelector((state: any) => state.post) || [];
   const [open, setOpen] = useState(false);
   const [selectedSection, setSelectedSection] = useState("videos");
   const [modalState, setModalState] = useState({
@@ -117,6 +144,19 @@ function Page() {
   });
 
   console.log("authState", authState);
+
+  const payload = {
+    userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
+  };
+  const params = {
+    payload,
+  };
+  useEffect(() => {
+    dispatch(userSession(params));
+    dispatch(getAllPostVideos());
+  }, [postState.refresh]);
+
+  console.log("postState", postState);
 
   const handleModalToggle = (modalName: keyof typeof modalState) => {
     setModalState((prevState) => ({
@@ -248,24 +288,24 @@ function Page() {
                     className="w-12 h-12"
                     src={IMAGES.AccountCurrentBadgeIcon}
                     alt="Current Badge"
-                    width={0}
-                    height={0}
+                    width={12}
+                    height={12}
                     sizes="100vw"
                   />
                   <Image
                     className="w-8 h-8 opacity-50"
                     src={IMAGES.AccountNextBadgeIcon}
                     alt="Next Badge"
-                    width={0}
-                    height={0}
+                    width={8}
+                    height={8}
                     sizes="100vw"
                   />
                   <Image
                     className="w-8 h-8"
                     src={SVG.ShowNext}
                     alt="Next"
-                    width={0}
-                    height={0}
+                    width={8}
+                    height={8}
                     sizes="100vw"
                   />
                 </div>
@@ -355,7 +395,11 @@ function Page() {
 
             {/* Content Section */}
             {selectedSection === "videos" ? (
-              <MyVideosSection data={popular} />
+              <MyVideosSection
+                data={popular}
+                authState={authState}
+                postState={postState}
+              />
             ) : (
               <MyBookmarkSection data={popular} />
             )}

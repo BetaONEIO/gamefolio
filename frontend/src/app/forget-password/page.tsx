@@ -6,7 +6,14 @@ const ForgetPassword = () => {
   return (
     <section className="dark:bg-[#091619] min-h-screen flex flex-col justify-center">
       <div className="flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
-        <Image src={IMAGES.logo} alt="logo" width={100} height={100} />
+        <Image
+          src={IMAGES.logo}
+          alt="logo"
+          width={100}
+          height={100}
+          priority
+          style={{ width: "100px", height: "100px" }}
+        />
 
         <div className="p-6 space-y-4 sm:p-8 md:w-96">
           <h1 className={`${leagueGothic.className} text-4xl`}>

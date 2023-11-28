@@ -6,8 +6,10 @@ import React, { useState } from "react";
 import AddNew from "../Modals/AddNew";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
 function SideBar() {
+  const authState = useSelector((state: any) => state.auth.userData) || [];
   const [isModalOpen, setIsModalOpen] = useState(false);
   {
     /* Get the current route */
@@ -258,21 +260,24 @@ function SideBar() {
               </button>
             </div>
 
-            <div className="flex flex-col items-center justify-center p-3 bg-gray-100 rounded-lg border border-gray-200 dark:bg-[#1C2C2E] dark:border-gray-600">
+            <div
+              key={authState?.userID}
+              className="flex flex-col items-center justify-center p-3 bg-gray-100 rounded-lg border border-gray-200 dark:bg-[#1C2C2E] dark:border-gray-600"
+            >
               <Image
+                src={authState?.profilePicture}
                 sizes="100vw"
-                width={0}
-                height={0}
+                width={20}
+                height={20}
                 className="mb-4 w-20 h-20 rounded-full"
-                src={IMAGES.testStoryUser}
                 alt="account"
               />
 
-              <dt className="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
-                Hannery
+              <dt className="text-xs sm:text-sm mb-2 font-semibold leading-none text-gray-900 dark:text-white">
+                {authState?.name}
               </dt>
               <dd className="text-gray-500 dark:text-gray-400">
-                (rocks_hanne)
+                ({authState.username})
               </dd>
             </div>
           </div>

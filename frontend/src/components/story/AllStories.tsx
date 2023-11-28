@@ -26,26 +26,6 @@ function AllStories() {
     dispatch(getAllStories());
   }, []);
 
-  const namesArray = [
-    { name: "Jonny" },
-    { name: "Maria" },
-    { name: "Erena" },
-    { name: "Smith" },
-    { name: "Elan" },
-    { name: "Maria" },
-    { name: "Erena" },
-    { name: "Smith" },
-    { name: "Elan" },
-    { name: "Maria" },
-    { name: "Erena" },
-    { name: "Smith" },
-    { name: "Elan" },
-    { name: "Maria" },
-    { name: "Erena" },
-    { name: "Smith" },
-    { name: "Elan" },
-  ];
-
   const handleModalToggle = (
     modalName: keyof typeof modalState,
     storyUserID?: any

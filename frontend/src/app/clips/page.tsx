@@ -16,10 +16,17 @@ import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
+interface VideoState {
+  isMuted?: boolean;
+}
+
 function Clip() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const clipState = useSelector((state: any) => state.clip) || [];
   const [clipID, setClipID] = useState("");
+  const [videoStates, setVideoStates] = useState<{ [key: string]: VideoState }>(
+    {}
+  );
 
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
@@ -117,6 +124,16 @@ function Clip() {
     }
   };
 
+  const handleToggleMute = (clipID: string) => {
+    setVideoStates((prevStates) => ({
+      ...prevStates,
+      [clipID]: {
+        ...prevStates[clipID],
+        isMuted: !prevStates[clipID]?.isMuted,
+      },
+    }));
+  };
+
   return (
     <Layout>
       <div className="flex flex-col justify-center items-center py-4">
@@ -131,6 +148,10 @@ function Clip() {
           const reactionID = clip.reactions.find(
             (reaction: any) => reaction.userID === authState._id
           );
+
+          const videoState = videoStates[clip._id] || {
+            isMuted: false,
+          };
 
           return (
             <div
@@ -188,6 +209,7 @@ function Clip() {
                 height={300}
                 controls={false}
                 onClick={handleVideoClick}
+                muted={videoState.isMuted}
               />
 
               <div className="absolute inset-x-0 bottom-20 p-4 flex items-center justify-between">
@@ -245,13 +267,23 @@ function Clip() {
                     />
                   </div>
                 </div>
-                <Image
-                  className="w-10 h-10 hover:opacity-80"
-                  src={SVG.Mute}
-                  alt="Mute"
-                  width={40}
-                  height={40}
-                />
+                <div className="absolute bottom-1 right-2">
+                  <button
+                    className="cursor-pointer hover:opacity-80"
+                    onClick={() => handleToggleMute(clip._id)}
+                  >
+                    {videoState.isMuted ? (
+                      <Image src={SVG.Mute} alt="Mute" width={40} height={40} />
+                    ) : (
+                      <Image
+                        src={SVG.UnMute}
+                        alt="Unmute"
+                        width={40}
+                        height={40}
+                      />
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
           );
