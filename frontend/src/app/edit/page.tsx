@@ -1,13 +1,46 @@
+"use client";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import Layout from "@/components/CustomLayout/layout";
 import { leagueGothic } from "@/font/font";
+import { useForm } from "react-hook-form";
 import Image from "next/image";
+import { useSelector } from "@/store";
+import { useEffect } from "react";
 
 const Edit = () => {
+  const authState = useSelector((state: any) => state.auth.userData) || [];
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      Name: "",
+      Username: "",
+      Bio: "",
+    },
+  });
   const sectionStyle = {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
   };
+
+  const onUpdate = (data: any) => {
+    setValue("Name", data?.name);
+    setValue("Username", data?.username);
+    setValue("Bio", data?.bio);
+  };
+
+  useEffect(() => {
+    onUpdate(authState);
+  }, [authState]);
+
+  console.log("rppage pro: ", register("Name"));
+
+  const onSubmit = (data: any) => console.log(data);
+
   return (
     <Layout>
       <div className="flex items-center py-6 bg-[#091619]">
@@ -28,8 +61,8 @@ const Edit = () => {
           <div className="relative p-6 sm:p-8">
             <div className="mb-4 w-20 h-20 rounded-lg relative">
               <Image
-                src={IMAGES.testStoryUser}
-                alt="testStoryUser"
+                src={authState.profilePicture}
+                alt="Profile Picture"
                 className="w-full h-full rounded-lg"
                 width={10}
                 height={10}
@@ -51,7 +84,10 @@ const Edit = () => {
           </div>
 
           <div className="p-6 space-y-4 sm:p-8 md:w-96">
-            <form className="space-y-4 md:space-y-6" action="#">
+            <form
+              className="space-y-4 md:space-y-6"
+              onSubmit={handleSubmit(onSubmit)}
+            >
               <div>
                 <label
                   htmlFor="name"
@@ -61,11 +97,16 @@ const Edit = () => {
                 </label>
                 <input
                   type="text"
-                  name="name"
                   id="name"
                   className="bg-[#162423] sm:text-sm outline-none rounded-lg block w-full p-2.5 dark:text-white"
                   placeholder="Name"
                   required
+                  {...register("Name", {
+                    required: true,
+                    max: 12,
+                    min: 4,
+                    maxLength: 12,
+                  })}
                 />
               </div>
 
@@ -78,11 +119,16 @@ const Edit = () => {
                 </label>
                 <input
                   type="text"
-                  name="username"
                   id="username"
                   className="bg-[#162423] sm:text-sm outline-none rounded-lg block w-full p-2.5 dark:text-white"
                   placeholder="Username"
                   required
+                  {...register("Username", {
+                    required: true,
+                    max: 16,
+                    min: 4,
+                    maxLength: 16,
+                  })}
                 />
               </div>
 
@@ -99,7 +145,6 @@ const Edit = () => {
                   id="Date"
                   className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-2.5 dark:text-white"
                   placeholder="Date of Birth"
-                  required
                 />
               </div>
 
@@ -112,6 +157,12 @@ const Edit = () => {
                   rows={3}
                   className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-2.5 dark:text-white"
                   placeholder="Lorem ipsum dolor sit amet consectetur. Ante duis tellus tincidunt nibh"
+                  {...register("Bio", {
+                    required: true,
+                    min: 10,
+                    maxLength: 100,
+                  })}
+                  // {...register("AccountType", { required: true })}
                 ></textarea>
               </div>
 

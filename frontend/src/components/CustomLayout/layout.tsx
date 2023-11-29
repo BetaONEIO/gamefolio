@@ -1,7 +1,7 @@
 "use client";
 import SideBar from "@/components/sideBar/SideBar";
 import { ROUTES } from "@/labels/routes";
-import { dispatch } from "@/store";
+import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import { useRouter } from "next/navigation";
