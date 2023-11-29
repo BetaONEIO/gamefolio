@@ -255,6 +255,8 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
                           width="100%"
                           height="100%"
                           autoPlay
+                          controlsList=" nodownload  noremoteplayback noplaybackrate foobar"
+                          disablePictureInPicture
                         />
                       ) : (
                         <CountdownCircleTimer

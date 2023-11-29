@@ -99,6 +99,8 @@ function VideoDetails({
                         width={50}
                         height={50}
                         controls
+                        controlsList=" nodownload  noremoteplayback noplaybackrate foobar"
+                        disablePictureInPicture
                       />
                     </div>
                   </div>

@@ -237,6 +237,9 @@ function Trending() {
                     width={50}
                     height={50}
                     controls
+                    controlsList=" nodownload  noremoteplayback noplaybackrate foobar"
+                    disablePictureInPicture
+                    onLoadedData={(e) => console.log(e)}
                   />
 
                   <div className="flex items-center my-3 mx-2">

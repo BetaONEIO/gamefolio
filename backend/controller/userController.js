@@ -187,7 +187,10 @@ const updateLoginUser = asyncHandler(async (req, res) => {
 
 const getUserProfile = asyncHandler(async (req, res) => {
   // req.user was set in authMiddleware.js
+  console.log("req.body.userToken: ", req.body.userToken);
   const decoded = jwt.verify(req.body.userToken, process.env.JWT_SECRET);
+
+  console.log("decoded: ", decoded);
 
   const user = await User.findById(decoded.id);
   if (user) {

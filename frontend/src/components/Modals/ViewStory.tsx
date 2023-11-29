@@ -130,7 +130,7 @@ function ViewStory({ storyUserID, handleCloseModal }: ViewStoryProps) {
             controls={false}
             width="100%"
             height="100%"
-            autoPlay={true}
+            autoPlay
           />
         </div>
 

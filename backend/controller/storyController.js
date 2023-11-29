@@ -77,7 +77,7 @@ const getAllStories = async (req, res) => {
     }
 
     const uniqueStories = getUniqueUserData(stories);
-    console.log("uniqueStories: ", uniqueStories);
+
     res.status(201).json({
       data: uniqueStories,
       message: "Successfully Retrieve Stories",
