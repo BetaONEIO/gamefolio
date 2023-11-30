@@ -2,7 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const router = express.Router();
 const storageController = require("../controller/storageController.js");
-const upload = multer({ dest: "../uploads/" });
+const upload = multer({ dest: "..backend/uploads/" });
 
 // Upload Video to AWS S3
 router.post(
