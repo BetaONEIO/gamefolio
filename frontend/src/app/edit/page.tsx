@@ -18,12 +18,14 @@ const Edit = () => {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
       name: "",
       username: "",
       bio: "",
+      accountType: "public",
     },
   });
   const sectionStyle = {
@@ -31,17 +33,21 @@ const Edit = () => {
   };
 
   const onUpdate = (data: any) => {
-    console.log("data: ", data);
     setValue("name", data?.name);
     setValue("username", data?.username);
     setValue("bio", data?.bio);
+    setValue("accountType", data?.accountType);
   };
+
+  const onUpdateAccountType = (value: string) => {
+    setValue("accountType", value); // Set the value of accountType when the button is clicked
+  };
+  // Watch the value of the 'accountType' field
+  const accountTypeValue = watch("accountType");
 
   useEffect(() => {
     onUpdate(authState);
   }, [authState]);
-
-  const onSubmit = (data: any) => console.log(data);
 
   const handleUpdateProfile = (data: any) => {
     const payload = {
@@ -197,10 +203,26 @@ const Edit = () => {
               <div>
                 <p className="mb-2 text-sm font-bold ">Account Type</p>
                 <div className="flex justify-center w-full gap-2">
-                  <button className="text-white w-full justify-center bg-primary-700  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-[#162423] dark:border-green-500 border border-gray-200">
+                  <button
+                    type="button"
+                    onClick={() => onUpdateAccountType("public")}
+                    className={
+                      accountTypeValue === "public"
+                        ? "text-white w-full justify-center bg-primary-700 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-[#162423] dark:border-green-500 border border-gray-200"
+                        : "w-full justify-center text-gray-500 items-center outline-none rounded-lg text-sm font-medium px-5 py-2.5 bg-[#162423]"
+                    }
+                  >
                     Public
                   </button>
-                  <button className="w-full justify-center text-gray-500 items-center outline-none rounded-lg text-sm font-medium px-5 py-2.5 bg-[#162423]">
+                  <button
+                    type="button"
+                    onClick={() => onUpdateAccountType("private")}
+                    className={
+                      accountTypeValue === "private"
+                        ? "text-white w-full justify-center bg-primary-700 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-[#162423] dark:border-green-500 border border-gray-200"
+                        : "w-full justify-center text-gray-500 items-center outline-none rounded-lg text-sm font-medium px-5 py-2.5 bg-[#162423]"
+                    }
+                  >
                     Private
                   </button>
                 </div>

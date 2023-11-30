@@ -89,6 +89,7 @@ const loginUser = asyncHandler(async (req, res) => {
       favoriteGames: user.favoriteGames,
       bio: user.bio,
       dateOfBirth: user.dateOfBirth,
+      accountType: user.accountType,
       token: generateToken(user._id),
       message: "Successfully Sign in",
     });
@@ -181,6 +182,7 @@ const updateLoginUser = asyncHandler(async (req, res) => {
       bio: user.bio,
       profilePicture: user.profilePicture,
       dateOfBirth: user.dateOfBirth,
+      accountType: user.accountType,
       userToken: req.token,
     });
   } else {
@@ -205,6 +207,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
       bio: user.bio,
       profilePicture: user.profilePicture,
       dateOfBirth: user.dateOfBirth,
+      accountType: user.accountType,
     });
   } else {
     res.status(404);
