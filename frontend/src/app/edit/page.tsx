@@ -78,9 +78,6 @@ const Edit = () => {
       successCallback,
       errorCallback,
     };
-
-    console.log("Payload: ", payload);
-
     dispatch(updateProfile(params));
   };
 
@@ -101,11 +98,11 @@ const Edit = () => {
             },
           }
         );
-        console.log("RESPONSE ADDVIDEO: ", response.data);
         onUpdateProfilePicture(response.data.imageURL);
         toastSuccess(response.data.message);
       } catch (error) {
         console.error("Error uploading file:", error);
+        toastError(error);
       }
     }
   };
@@ -130,7 +127,9 @@ const Edit = () => {
           <div className="relative p-6 sm:p-8">
             <div className="mb-4 w-20 h-20 rounded-lg relative">
               <Image
-                src={authState.profilePicture}
+                src={
+                  image ? URL.createObjectURL(image) : authState.profilePicture
+                }
                 alt="Profile Picture"
                 className="w-full h-full rounded-lg"
                 width={10}
