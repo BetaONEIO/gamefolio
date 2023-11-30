@@ -18,6 +18,8 @@ import { log } from "console";
 import { userSession } from "@/store/slices/authSlice";
 import { getAllPostVideos } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
+import { copyToClipboard } from "@/utils/helpers";
+import { ToastContainer } from "react-toastify";
 
 const USERDATA = [
   {
@@ -220,7 +222,10 @@ function Page() {
               <div className="flex flex-1 flex-col gap-2 flex-wrap justify-center text-center lg:justify-start lg:text-start p-2 ">
                 <span>{authState?.name}</span>
                 <div className="flex items-center gap-6 justify-center lg:justify-between">
-                  <div className="flex items-center">
+                  <div
+                    className="flex items-center"
+                    onClick={() => copyToClipboard(authState?.username)}
+                  >
                     <p>({authState.username})</p>
                     <Image
                       src={SVG.AccountCopyUsername}
@@ -442,6 +447,18 @@ function Page() {
           />
         </Modal>
       </Suspense>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </Layout>
   );
 }

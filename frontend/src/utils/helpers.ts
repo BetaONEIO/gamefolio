@@ -1,3 +1,5 @@
+import { toastError, toastSuccess } from "@/components/Toast/Toast";
+
 export const apiErrors = (
   endpoint: string,
   errorCallback: (errMsg: {}) => void,
@@ -68,4 +70,14 @@ export const imgProps = (
     // placeholder: "blur",
     blurDataURL: blurDataURL || src, // default will be src if not provided
   };
+};
+
+export const copyToClipboard = async (textToCopy:string) => {
+  try {
+    await navigator.clipboard.writeText(textToCopy);
+    toastSuccess("Copied to clipboard");
+  } catch (err) {
+    console.error('Failed to copy:', err);
+    toastError("Failed to copy");
+  }
 };
