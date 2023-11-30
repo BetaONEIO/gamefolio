@@ -5,6 +5,7 @@ const userController = require("../controller/userController");
 const router = express.Router();
 
 router.post("/signup", userController.registerUser);
+router.put("/profile/update", userController.updateProfile);
 router.post("/preferences/create", userController.addPreferences);
 router.post("/favorite-games/create", userController.addFavoriteGames);
 router.post("/signup", userController.registerUser);

@@ -22,6 +22,16 @@ const userSchema = new mongoose.Schema({
   profilePicture: {
     type: String,
   },
+  dateOfBirth: {
+    type: String,
+  },
+  bio: {
+    type: String,
+  },
+  accountType: {
+    type: String,
+    enum: ["public", "private"],
+  },
 
   preferences: [
     {

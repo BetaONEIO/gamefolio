@@ -75,7 +75,7 @@ const loginUser = asyncHandler(async (req, res) => {
       name: user.name,
       username: user.username,
       email: user.email,
-      password: user.password,
+      // password: user.password,
       token: generateToken(user._id),
     });
 
@@ -87,6 +87,8 @@ const loginUser = asyncHandler(async (req, res) => {
       profilePicture: user.profilePicture,
       preferences: user.preferences,
       favoriteGames: user.favoriteGames,
+      bio: user.bio,
+      dateOfBirth: user.dateOfBirth,
       token: generateToken(user._id),
       message: "Successfully Sign in",
     });
@@ -173,11 +175,12 @@ const updateLoginUser = asyncHandler(async (req, res) => {
     });
     return res.status(200).json({
       _id: user._id,
-      firstName: user.FirstName,
-      lastName: user.LastName,
+      name: user.name,
       email: user.email,
-      role: user.Role,
-      phoneNumber: user.PhoneNumber,
+      username: user.username,
+      bio: user.bio,
+      profilePicture: user.profilePicture,
+      dateOfBirth: user.dateOfBirth,
       userToken: req.token,
     });
   } else {
@@ -197,9 +200,11 @@ const getUserProfile = asyncHandler(async (req, res) => {
     res.json({
       _id: user._id,
       name: user.name,
-      username: user.username,
       email: user.email,
+      username: user.username,
+      bio: user.bio,
       profilePicture: user.profilePicture,
+      dateOfBirth: user.dateOfBirth,
     });
   } else {
     res.status(404);
@@ -280,6 +285,47 @@ const addFavoriteGames = asyncHandler(async (req, res) => {
   }
 });
 
+// Controller to update user profile
+const updateProfile = async (req, res) => {
+  const {
+    userID,
+    name,
+    username,
+    profilePicture,
+    dateOfBirth,
+    bio,
+    accountType,
+  } = req.body;
+
+  try {
+    // Find the user by ID
+    console.log("updateProfile: ", req.body);
+    let user = await User.findById(userID);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update the user object with new profile information
+    user.name = name || user.name;
+    user.username = username || user.username;
+    user.profilePicture = profilePicture || user.profilePicture;
+    user.dateOfBirth = dateOfBirth || user.dateOfBirth;
+    user.bio = bio || user.bio;
+    user.accountType = accountType || user.accountType;
+
+    // Save the updated user object
+    await user.save();
+
+    res.status(200).json({ message: "Profile updated successfully" });
+  } catch (error) {
+    console.log("error: ", error.message);
+    res
+      .status(500)
+      .json({ message: "Could not update profile", error: error.message });
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
@@ -291,4 +337,5 @@ module.exports = {
   updatePassword,
   addPreferences,
   addFavoriteGames,
+  updateProfile,
 };

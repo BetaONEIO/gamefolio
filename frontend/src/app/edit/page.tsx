@@ -5,8 +5,11 @@ import Layout from "@/components/CustomLayout/layout";
 import { leagueGothic } from "@/font/font";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
-import { useSelector } from "@/store";
+import { dispatch, useSelector } from "@/store";
 import { useEffect } from "react";
+import { toastError, toastSuccess } from "@/components/Toast/Toast";
+import { updateProfile } from "@/store/slices/authSlice";
+import { ToastContainer } from "react-toastify";
 
 const Edit = () => {
   const authState = useSelector((state: any) => state.auth.userData) || [];
@@ -18,9 +21,9 @@ const Edit = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      Name: "",
-      Username: "",
-      Bio: "",
+      name: "",
+      username: "",
+      bio: "",
     },
   });
   const sectionStyle = {
@@ -28,18 +31,43 @@ const Edit = () => {
   };
 
   const onUpdate = (data: any) => {
-    setValue("Name", data?.name);
-    setValue("Username", data?.username);
-    setValue("Bio", data?.bio);
+    console.log("data: ", data);
+    setValue("name", data?.name);
+    setValue("username", data?.username);
+    setValue("bio", data?.bio);
   };
 
   useEffect(() => {
     onUpdate(authState);
   }, [authState]);
 
-  console.log("rppage pro: ", register("Name"));
-
   const onSubmit = (data: any) => console.log(data);
+
+  const handleUpdateProfile = (data: any) => {
+    const payload = {
+      userID: authState._id,
+      ...data,
+    };
+
+    const successCallback = (response: any) => {
+      console.log("response: ", response);
+      toastSuccess(response);
+    };
+
+    const errorCallback = (error: string) => {
+      toastError(error);
+    };
+
+    const params = {
+      payload,
+      successCallback,
+      errorCallback,
+    };
+
+    console.log("Payload: ", payload);
+
+    dispatch(updateProfile(params));
+  };
 
   return (
     <Layout>
@@ -86,7 +114,7 @@ const Edit = () => {
           <div className="p-6 space-y-4 sm:p-8 md:w-96">
             <form
               className="space-y-4 md:space-y-6"
-              onSubmit={handleSubmit(onSubmit)}
+              onSubmit={handleSubmit(handleUpdateProfile)}
             >
               <div>
                 <label
@@ -101,7 +129,7 @@ const Edit = () => {
                   className="bg-[#162423] sm:text-sm outline-none rounded-lg block w-full p-2.5 dark:text-white"
                   placeholder="Name"
                   required
-                  {...register("Name", {
+                  {...register("name", {
                     required: true,
                     max: 12,
                     min: 4,
@@ -123,7 +151,7 @@ const Edit = () => {
                   className="bg-[#162423] sm:text-sm outline-none rounded-lg block w-full p-2.5 dark:text-white"
                   placeholder="Username"
                   required
-                  {...register("Username", {
+                  {...register("username", {
                     required: true,
                     max: 16,
                     min: 4,
@@ -157,7 +185,7 @@ const Edit = () => {
                   rows={3}
                   className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-2.5 dark:text-white"
                   placeholder="Lorem ipsum dolor sit amet consectetur. Ante duis tellus tincidunt nibh"
-                  {...register("Bio", {
+                  {...register("bio", {
                     required: true,
                     min: 10,
                     maxLength: 100,
@@ -192,6 +220,18 @@ const Edit = () => {
             </form>
           </div>
         </div>
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
       </section>
     </Layout>
   );
