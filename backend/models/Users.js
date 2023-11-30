@@ -32,6 +32,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ["public", "private"],
   },
+  accountStatus: {
+    type: String,
+    enum: ["active", "deactive"],
+  },
 
   preferences: [
     {

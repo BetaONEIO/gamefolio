@@ -78,7 +78,7 @@ function AddStory({ handleCloseModal }: AddStoryProps) {
         formData.append("music", selectedOptionMusic);
 
         const response = await axios.post(
-          "http://localhost:4000/uploadfile",
+          "http://localhost:4000/api/storage/video/upload",
           formData,
           {
             headers: {

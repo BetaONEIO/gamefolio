@@ -6,13 +6,15 @@ import { leagueGothic } from "@/font/font";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
 import { dispatch, useSelector } from "@/store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import { updateProfile } from "@/store/slices/authSlice";
 import { ToastContainer } from "react-toastify";
+import axios from "axios";
 
 const Edit = () => {
   const authState = useSelector((state: any) => state.auth.userData) || [];
+  const [image, setImage] = useState<File | null>(null);
 
   const {
     register,
@@ -25,7 +27,9 @@ const Edit = () => {
       name: "",
       username: "",
       bio: "",
+      dateOfBirth: "",
       accountType: "public",
+      profilePicture: "",
     },
   });
   const sectionStyle = {
@@ -36,11 +40,16 @@ const Edit = () => {
     setValue("name", data?.name);
     setValue("username", data?.username);
     setValue("bio", data?.bio);
+    setValue("dateOfBirth", data?.dateOfBirth);
     setValue("accountType", data?.accountType);
   };
 
   const onUpdateAccountType = (value: string) => {
     setValue("accountType", value); // Set the value of accountType when the button is clicked
+  };
+
+  const onUpdateProfilePicture = (value: string) => {
+    setValue("profilePicture", value);
   };
   // Watch the value of the 'accountType' field
   const accountTypeValue = watch("accountType");
@@ -73,6 +82,32 @@ const Edit = () => {
     console.log("Payload: ", payload);
 
     dispatch(updateProfile(params));
+  };
+
+  const handleUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[0] : null;
+    if (file) {
+      setImage(file);
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const response = await axios.post(
+          "http://localhost:4000/api/storage/image/upload",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        console.log("RESPONSE ADDVIDEO: ", response.data);
+        onUpdateProfilePicture(response.data.imageURL);
+        toastSuccess(response.data.message);
+      } catch (error) {
+        console.error("Error uploading file:", error);
+      }
+    }
   };
 
   return (
@@ -112,7 +147,12 @@ const Edit = () => {
                     height={10}
                   />
                 </label>
-                <input id="dropzone-file" type="file" className="hidden" />
+                <input
+                  id="dropzone-file"
+                  type="file"
+                  className="hidden"
+                  onChange={handleUploadImage}
+                />
               </div>
             </div>
           </div>
@@ -175,10 +215,9 @@ const Edit = () => {
                 </label>
                 <input
                   type="Date"
-                  name="Date"
-                  id="Date"
                   className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-2.5 dark:text-white"
                   placeholder="Date of Birth"
+                  {...register("dateOfBirth")}
                 />
               </div>
 
@@ -196,7 +235,6 @@ const Edit = () => {
                     min: 10,
                     maxLength: 100,
                   })}
-                  // {...register("AccountType", { required: true })}
                 ></textarea>
               </div>
 
