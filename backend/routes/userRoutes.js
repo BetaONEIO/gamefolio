@@ -12,7 +12,7 @@ router.post("/signup", userController.registerUser);
 router.post("/signup/emailotp/sent", userController.sendEmailOTP);
 router.post("/signup/emailotp/verify", userController.verifyEmailOTP);
 router.post("/signin", userController.loginUser);
-router.post("/updatePassword", authMiddleware, userController.updatePassword);
+router.put("/password/update", userController.updatePassword);
 router.get("/updatesignin", authMiddleware, userController.updateLoginUser);
 // router.route("/profile").get(protect, userController.getUserProfile);
 router.post("/getUser", userController.getUserProfile);

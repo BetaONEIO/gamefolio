@@ -230,23 +230,33 @@ const getAllUsers = asyncHandler(async (req, res) => {
 });
 
 const updatePassword = asyncHandler(async (req, res) => {
-  const { email, currentPassword, newPassword } = req.body;
+  const { userID, password, newPassword } = req.body; // Assuming password and newPassword are sent in the request body
+  try {
+    const user = await User.findById(userID);
 
-  // check if user email exists in db
-  const user = await User.findOne({ Email: email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
-  if (!user) {
-    res.status(400);
-    throw new Error("User not found");
-  }
+    // Check if the entered old password matches the user's current password
+    const isMatch = await user.matchPassword(password);
 
-  if (user && (await user.matchPassword(currentPassword))) {
-    user.Password = newPassword;
+    console.log("isMatch: ", isMatch);
+
+    if (!isMatch) {
+      return res.status(400).json({
+        message: "Invalid old password",
+        error: "Invalid old password",
+      });
+    }
+
+    // If the old password matches, update the password with the new one
+    user.password = newPassword;
     await user.save();
-    res.json({ user });
-    // return user;
-  } else {
-    res.status(400).send("Wrong password");
+
+    return res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: "Error updating password" });
   }
 });
 
@@ -334,10 +344,10 @@ module.exports = {
   loginUser,
   updateLoginUser,
   getUserProfile,
+  updatePassword,
   getAllUsers,
   sendEmailOTP,
   verifyEmailOTP,
-  updatePassword,
   addPreferences,
   addFavoriteGames,
   updateProfile,

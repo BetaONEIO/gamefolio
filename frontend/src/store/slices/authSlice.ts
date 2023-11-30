@@ -204,6 +204,37 @@ export function updateProfile(params: ActionParams) {
     }
   };
 }
+export function updatePassword(params: ActionParams) {
+  const {
+    successCallback = () => {},
+    errorCallback = () => {},
+    payload,
+  } = params;
+  return async () => {
+  
+
+    dispatch(slice.actions.startLoading());
+
+    const options: APIParams = {
+      method: "PUT",
+      endpoint: PATH.user.updatePassword,
+      payload: payload,
+      isToken: false,
+    };
+    try {
+      const [ok, response] = await API(options);
+      if (!ok || !response) return errorCallback(response.message);
+      console.log("update password response: ", response.message);
+      successCallback(response.message);
+    } catch (error) {
+      console.log("error", error);
+      errorCallback();
+    } finally {
+      dispatch(slice.actions.stopLoading());
+    }
+  };
+}
+
 export function createFavoriteGame(params: ActionParams) {
   const {
     successCallback = () => {},

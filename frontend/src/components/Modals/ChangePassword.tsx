@@ -2,15 +2,68 @@
 import { SVG } from "@/assets/SVG";
 import { leagueGothic } from "@/font/font";
 import Image from "next/image";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { toastError, toastSuccess } from "../Toast/Toast";
+import { dispatch } from "@/store";
+import { ToastContainer } from "react-toastify";
+import { updatePassword } from "@/store/slices/authSlice";
 
 interface ChangePasswordProps {
   handleCloseModal: () => void;
 }
 
+interface FormData {
+  password: string;
+  newPassword: string;
+  confirmNewPassword: string;
+}
+
 function ChangePassword({ handleCloseModal }: ChangePasswordProps) {
+  const authState = useSelector((state: any) => state.auth.userData) || [];
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    defaultValues: {
+      password: "",
+      newPassword: "",
+      confirmNewPassword: "",
+    },
+  });
+
   const myBGStyleModal = {
     backgroundColor: "rgba(0, 0, 0, 0.6)",
     backdropFilter: "blur(8px)",
+  };
+
+  const handleChangePassword = (data: any) => {
+    if (data.newPassword !== data.confirmNewPassword) {
+      toastError("New Password does not match");
+      return;
+    }
+
+    const payload = {
+      userID: authState._id,
+      ...data,
+    };
+
+    const successCallback = (response: any) => {
+      toastSuccess(response);
+    };
+
+    const errorCallback = (error: string) => {
+      toastError(error);
+    };
+
+    const params = {
+      payload,
+      successCallback,
+      errorCallback,
+    };
+    dispatch(updatePassword(params));
   };
 
   return (
@@ -39,7 +92,10 @@ function ChangePassword({ handleCloseModal }: ChangePasswordProps) {
               CHANGE PASSWORD
             </h1>
 
-            <form className="space-y-4 md:space-y-6" action="#">
+            <form
+              className="space-y-4 md:space-y-6"
+              onSubmit={handleSubmit(handleChangePassword)}
+            >
               <div>
                 <label
                   htmlFor="password"
@@ -49,11 +105,11 @@ function ChangePassword({ handleCloseModal }: ChangePasswordProps) {
                 </label>
                 <input
                   type="password"
-                  name="password"
-                  id="password"
                   className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-3 dark:text-white"
                   placeholder="Password"
-                  required
+                  {...register("password", {
+                    required: true,
+                  })}
                 />
               </div>
 
@@ -66,28 +122,31 @@ function ChangePassword({ handleCloseModal }: ChangePasswordProps) {
                 </label>
                 <input
                   type="password"
-                  name="password"
-                  id="password"
-                  className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-3 dark:text-white"
+                  className="outline-none
+                  bg-[#162423] sm:text-sm rounded-lg  block w-full p-3 dark:text-white "
                   placeholder="Password"
                   required
+                  {...register("newPassword", {
+                    required: true,
+                  })}
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="password"
-                  className="block mb-2 text-sm font-bold text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-bold text-gray-900 dark:text-white "
                 >
                   Repeat New Password
                 </label>
                 <input
                   type="password"
-                  name="password"
-                  id="password"
-                  className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-3 dark:text-white"
+                  className="outline-none
+                  } bg-[#162423] sm:text-sm rounded-lg  block w-full p-3 dark:text-white"
                   placeholder="Password"
-                  required
+                  {...register("confirmNewPassword", {
+                    required: true,
+                  })}
                 />
               </div>
 
@@ -98,6 +157,18 @@ function ChangePassword({ handleCloseModal }: ChangePasswordProps) {
           </div>
         </div>
       </div>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </>
   );
 }

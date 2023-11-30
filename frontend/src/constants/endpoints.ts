@@ -13,7 +13,8 @@ export const PATH = {
     preferences: "user/preferences/create",
     favoritegame: "user/favorite-games/create",
     getUser: "user/getUser",
-    updateProfile: "user/profile/update"
+    updateProfile: "user/profile/update",
+    updatePassword: "user/password/update"
   },
 
   theNextLeg: {
