@@ -2,7 +2,7 @@
 import { SVG } from "@/assets/SVG";
 import { leagueGothic } from "@/font/font";
 import Image from "next/image";
-import { useEffect } from "react";
+import { use, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { toastError, toastSuccess } from "../Toast/Toast";
@@ -11,7 +11,7 @@ import { ToastContainer } from "react-toastify";
 import { updatePassword } from "@/store/slices/authSlice";
 
 interface ChangePasswordProps {
-  handleCloseModal: () => void;
+  handleCloseModal: (error?: string) => void;
 }
 
 interface FormData {
@@ -66,6 +66,18 @@ function ChangePassword({ handleCloseModal }: ChangePasswordProps) {
     dispatch(updatePassword(params));
   };
 
+  if (
+    authState?.signupMethod === "google" ||
+    authState?.signupMethod === "twitter" ||
+    authState?.signupMethod === "facebook"
+  ) {
+    const method = authState.signupMethod; // Get the signup method
+    handleCloseModal(
+      `You are logged in with ${method} Account. Can't change password`
+    );
+    return;
+  }
+
   return (
     <>
       <div
@@ -80,7 +92,7 @@ function ChangePassword({ handleCloseModal }: ChangePasswordProps) {
               type="button"
               className="text-white-400 absolute top-3.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
               data-modal-toggle="deleteAlertModal"
-              onClick={handleCloseModal}
+              onClick={() => handleCloseModal()}
             >
               <Image src={SVG.Exit} alt="exit" width={30} height={30} />
               <span className="sr-only">Close modal</span>

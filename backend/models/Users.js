@@ -31,10 +31,17 @@ const userSchema = new mongoose.Schema({
   accountType: {
     type: String,
     enum: ["public", "private"],
+    default: "public",
   },
   accountStatus: {
     type: String,
     enum: ["active", "deactive"],
+    default: "active",
+  },
+  signupMethod: {
+    type: String,
+    enum: ["email", "twitter", "google", "facebook"],
+    default: "email",
   },
 
   preferences: [

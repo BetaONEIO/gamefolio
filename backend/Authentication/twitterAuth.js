@@ -20,7 +20,9 @@ const findOrCreate = async (profile, done) => {
       const newUser = new User({
         name: profile.displayName,
         email: profile.emails[0].value,
-        profilePicture: profile.photos[0].value.replace("normal", "400x400"), // Change this to the appropriate field from the Google profile
+        profilePicture: profile.photos[0].value.replace("normal", "400x400"),
+
+        signupMethod: "twitter",
         // Add other user properties here
       });
 

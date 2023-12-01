@@ -12,16 +12,6 @@ const registerUser = asyncHandler(async (req, res) => {
   // check if email exists in db
   const userExists = await User.findOne({ email });
 
-  console.log(
-    "SIGNUP: ",
-    name,
-    username,
-    email,
-    password,
-    "userExists: ",
-    userExists
-  );
-
   if (userExists) {
     return res.status(404).json({ message: "User already exist" });
     // throw new Error("User already exists");
@@ -33,6 +23,7 @@ const registerUser = asyncHandler(async (req, res) => {
     username,
     email,
     password,
+    signupMethod: "email",
   });
 
   if (user) {
@@ -44,6 +35,7 @@ const registerUser = asyncHandler(async (req, res) => {
       name: user.name,
       username: user.username,
       email: user.email,
+      signupMethod: user.signupMethod,
       message: "Successfully Sign Up",
     });
   } else {
@@ -90,6 +82,7 @@ const loginUser = asyncHandler(async (req, res) => {
       bio: user.bio,
       dateOfBirth: user.dateOfBirth,
       accountType: user.accountType,
+      signupMethod: user.signupMethod,
       token: generateToken(user._id),
       message: "Successfully Sign in",
     });
@@ -183,6 +176,7 @@ const updateLoginUser = asyncHandler(async (req, res) => {
       profilePicture: user.profilePicture,
       dateOfBirth: user.dateOfBirth,
       accountType: user.accountType,
+      signupMethod: user.signupMethod,
       userToken: req.token,
     });
   } else {
@@ -208,6 +202,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
       profilePicture: user.profilePicture,
       dateOfBirth: user.dateOfBirth,
       accountType: user.accountType,
+      signupMethod: user.signupMethod,
     });
   } else {
     res.status(404);

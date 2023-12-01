@@ -14,6 +14,8 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { Suspense, useState } from "react";
 import Loading from "./loading";
+import { toastError } from "@/components/Toast/Toast";
+import { ToastContainer } from "react-toastify";
 
 function Setting() {
   const [modalState, setModalState] = useState({
@@ -30,7 +32,13 @@ function Setting() {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 30%)`,
   };
 
-  const handleModalToggle = (modalName: keyof typeof modalState) => {
+  const handleModalToggle = (
+    modalName: keyof typeof modalState,
+    error?: string
+  ) => {
+    if (error) {
+      toastError(error);
+    }
     setModalState((prevState) => ({
       ...prevState,
       [modalName]: !prevState[modalName],
@@ -194,7 +202,9 @@ function Setting() {
           handleClose={() => handleModalToggle("isChangePasswordOpen")}
         >
           <ChangePassword
-            handleCloseModal={() => handleModalToggle("isChangePasswordOpen")}
+            handleCloseModal={(error?: string) =>
+              handleModalToggle("isChangePasswordOpen", error)
+            }
           />
         </Modal>
 
@@ -256,6 +266,18 @@ function Setting() {
           />
         </Modal>
       </Suspense>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </Layout>
   );
 }
