@@ -226,7 +226,7 @@ function Page() {
                     className="flex items-center"
                     onClick={() => copyToClipboard(authState?.username)}
                   >
-                    <p>({authState.username})</p>
+                    <p>({authState?.username || "no_username"})</p>
                     <Image
                       src={SVG.AccountCopyUsername}
                       width={16}
@@ -247,7 +247,7 @@ function Page() {
                     <span
                       className={`${leagueGothic.className} text-lg md:text-2xl font-normal`}
                     >
-                      {authState?.posts}
+                      {postState?.videos?.length || 0}
                     </span>
                     <span className="md:text-lg text-gray-400">Posts</span>
                   </div>
@@ -260,7 +260,7 @@ function Page() {
                     <span
                       className={`${leagueGothic.className} text-lg md:text-2xl font-normal`}
                     >
-                      {authState?.followers}
+                      {authState?.followers || 0}
                     </span>
                     <span className="md:text-lg text-gray-400">Followers</span>
                   </div>
@@ -274,7 +274,7 @@ function Page() {
                     <span
                       className={`${leagueGothic.className} text-lg md:text-2xl font-normal`}
                     >
-                      {authState?.following}
+                      {authState?.following || 0}
                     </span>
                     <span className="md:text-lg text-gray-400">Following</span>
                   </div>
