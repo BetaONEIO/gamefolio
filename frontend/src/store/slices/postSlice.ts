@@ -112,7 +112,6 @@ export function postVideo(params: ActionParams) {
   };
 }
 
-
 export function getAllPostVideos() {
   return async () => {
     dispatch(slice.actions.startLoading());
@@ -135,6 +134,7 @@ export function getAllPostVideos() {
     }
   };
 }
+
 export function deleteVideo(params: ActionParams) {
   return async () => {
     const {

@@ -210,7 +210,22 @@ const getUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-const getAllUsers = asyncHandler(async (req, res) => {
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find();
+    res
+      .status(201)
+      .json({ data: users, message: "Successfully Retrieve Users" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Could not retrieve users.",
+      message: "Could not retrieve users.",
+    });
+  }
+};
+
+const getAllUsersProfile = asyncHandler(async (req, res) => {
   // req.user was set in authMiddleware.js
 
   console.log("yess api called");
