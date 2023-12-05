@@ -38,7 +38,7 @@ export const slice = createSlice({
       state.userList = action.payload.users;
     },
     getAllUsers(state, action) {
-      state.userList = action.payload.users;
+      state.userList = action.payload;
     },
     setProfile(state, action) {
       state.profile = action.payload.result;

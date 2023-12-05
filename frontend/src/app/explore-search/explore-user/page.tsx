@@ -6,6 +6,7 @@ import { getAllUsers } from "@/store/slices/userSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
 import { useEffect } from "react";
+import Loading from "./loading";
 
 function ExploreUser() {
   const userState = useSelector((state: any) => state.user) || [];
@@ -20,52 +21,28 @@ function ExploreUser() {
     dispatch(getAllUsers());
   }, [userState.refresh]);
 
-  console.log("userState", userState);
-  const dummy = [
-    {
-      id: 1,
-      Image: IMAGES.Profile,
-      userName: "John_mark123",
-      Name: "John Mark",
-    },
-    {
-      id: 2,
-      Image: IMAGES.Profile,
-      userName: "John_mark123",
-      Name: "John Mark",
-    },
-    {
-      id: 3,
-      Image: IMAGES.Profile,
-      userName: "John_mark123",
-      Name: "John Mark",
-    },
-    {
-      id: 4,
-      Image: IMAGES.Profile,
-      userName: "John_mark123",
-      Name: "John Mark",
-    },
-  ];
+  if (userState.loading) return <Loading />;
+
+  console.log("userState:: ", userState);
 
   return (
     <div className="flow-root w-96 sm:1/3 mx-auto">
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        {dummy.map((dummy) => (
-          <div key={dummy.id} className="flex py-6">
+        {userState?.userList?.map((user: any) => (
+          <div key={user._id} className="flex py-6">
             <Image
               className="mr-2 sm:mr-4"
-              src={dummy.Image}
+              src={user?.profilePicture || IMAGES.AccountProfile}
               alt="Profile"
               width={50}
               height={50}
             />
             <div>
               <h3 className=" font-semibold text-gray-900 dark:text-white">
-                {dummy.userName}
+                {user?.username}
               </h3>
               <p className="text-base font-light text-gray-600 dark:text-gray-400">
-                {dummy.Name}
+                {user?.name}
               </p>
             </div>
           </div>
