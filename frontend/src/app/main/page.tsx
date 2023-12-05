@@ -173,7 +173,7 @@ function Main() {
                           <h1 className="w-[230px] sm:w-[350px] text-sm md:text-lg sm:text-md font-bold text-gray-900 dark:text-white hover:opacity-80">
                             {post?.userID?.name}
                           </h1>
-                          <p className="text-sm md:text-md sm:text-md text-base font-light text-gray-600 dark:text-gray-400">
+                          <p className="md:text-md sm:text-md text-base font-light text-gray-600 dark:text-gray-400">
                             {post?.date &&
                               new Date(post.date).toLocaleString("en-US", {
                                 hour: "numeric",
