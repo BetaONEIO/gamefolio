@@ -37,6 +37,9 @@ export const slice = createSlice({
     setUsers(state, action) {
       state.userList = action.payload.users;
     },
+    getAllUsers(state, action) {
+      state.userList = action.payload.users;
+    },
     setProfile(state, action) {
       state.profile = action.payload.result;
     },
@@ -64,6 +67,28 @@ export function getUser(params: ActionParams) {
       dispatch(slice.actions.setProfile(response));
       successCallback();
     } catch (error) {
+    } finally {
+      dispatch(slice.actions.stopLoading());
+    }
+  };
+}
+
+export function getAllUsers() {
+  return async () => {
+    dispatch(slice.actions.startLoading());
+    const options: APIParams = {
+      method: "GET",
+      endpoint: PATH.user.getAllUsers,
+      payload: {},
+      isToken: false,
+    };
+
+    try {
+      const [ok, response] = await API(options);
+      console.log("all users", response.data);
+      dispatch(slice.actions.getAllUsers(response.data));
+    } catch (error) {
+      console.log(error);
     } finally {
       dispatch(slice.actions.stopLoading());
     }
@@ -214,31 +239,31 @@ export function getOtherUser(params: ActionParams) {
   };
 }
 
-export function getAllUsers(params: ActionParams) {
-  return async () => {
-    const { successCallback = () => {}, errorCallback = () => {} } = params;
+// export function getAllUsers(params: ActionParams) {
+//   return async () => {
+//     const { successCallback = () => {}, errorCallback = () => {} } = params;
 
-    dispatch(slice.actions.startLoading());
+//     dispatch(slice.actions.startLoading());
 
-    const options: APIParams = {
-      method: "GET",
-      endpoint: "users/allUsers",
-      isToken: false,
-      payload: {},
-    };
+//     const options: APIParams = {
+//       method: "GET",
+//       endpoint: "users/allUsers",
+//       isToken: false,
+//       payload: {},
+//     };
 
-    try {
-      const [ok, response] = await API(options);
-      if (!ok || !response) return;
+//     try {
+//       const [ok, response] = await API(options);
+//       if (!ok || !response) return;
 
-      dispatch(slice.actions.setUsers(response));
-      successCallback(response);
-    } catch (error) {
-    } finally {
-      dispatch(slice.actions.stopLoading());
-    }
-  };
-}
+//       dispatch(slice.actions.setUsers(response));
+//       successCallback(response);
+//     } catch (error) {
+//     } finally {
+//       dispatch(slice.actions.stopLoading());
+//     }
+//   };
+// }
 
 export function updateUser(params: ActionParams) {
   return async () => {

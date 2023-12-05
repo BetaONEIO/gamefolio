@@ -16,6 +16,6 @@ router.put("/password/update", userController.updatePassword);
 router.get("/updatesignin", authMiddleware, userController.updateLoginUser);
 // router.route("/profile").get(protect, userController.getUserProfile);
 router.post("/getUser", userController.getUserProfile);
-router.get("/", userController.getAllUsers);
+router.get("/getAllUsers", userController.getAllUsers);
 
 module.exports = router;

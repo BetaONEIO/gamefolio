@@ -4,7 +4,6 @@ import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
 import Image from "next/image";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
-
 import { ROUTES } from "@/labels/routes";
 import { useRouter } from "next/navigation";
 import { ToastContainer } from "react-toastify";

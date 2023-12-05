@@ -1,7 +1,26 @@
+"use client";
 import { IMAGES } from "@/assets/images";
+import { dispatch, useSelector } from "@/store";
+import { userSession } from "@/store/slices/authSlice";
+import { getAllUsers } from "@/store/slices/userSlice";
+import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
+import { useEffect } from "react";
 
 function ExploreUser() {
+  const userState = useSelector((state: any) => state.user) || [];
+  const payload = {
+    userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
+  };
+  const params = {
+    payload,
+  };
+  useEffect(() => {
+    dispatch(userSession(params));
+    dispatch(getAllUsers());
+  }, [userState.refresh]);
+
+  console.log("userState", userState);
   const dummy = [
     {
       id: 1,
@@ -37,7 +56,7 @@ function ExploreUser() {
             <Image
               className="mr-2 sm:mr-4"
               src={dummy.Image}
-              alt="Profile avatar"
+              alt="Profile"
               width={50}
               height={50}
             />
