@@ -31,7 +31,7 @@ function ExploreUser() {
         {userState?.userList?.map((user: any) => (
           <div key={user._id} className="flex py-6">
             <Image
-              className="mr-2 sm:mr-4"
+              className="w-12 h-12 rounded-lg mr-2 sm:mr-4"
               src={user?.profilePicture || IMAGES.AccountProfile}
               alt="Profile"
               width={50}

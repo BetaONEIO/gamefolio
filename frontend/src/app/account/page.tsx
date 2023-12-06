@@ -1,4 +1,5 @@
 "use client";
+import { Suspense, useEffect, useState } from "react";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import Layout from "@/components/CustomLayout/layout";
@@ -8,31 +9,16 @@ import Following from "@/components/Modals/Following";
 import Modal from "@/components/Modals/Modal";
 import MoreOptions from "@/components/Modals/MoreOptions";
 import AllStories from "@/components/story/AllStories";
-import { leagueGothic } from "@/font/font";
-import { dispatch, useSelector } from "@/store";
 import Image from "next/image";
 import Link from "next/link";
-import { Suspense, useEffect, useState } from "react";
 import Loading from "./loading";
-import { log } from "console";
+import { leagueGothic } from "@/font/font";
+import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import { getAllPostVideos } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import { copyToClipboard } from "@/utils/helpers";
 import { ToastContainer } from "react-toastify";
-
-const USERDATA = [
-  {
-    userID: "123",
-    name: "Hannery",
-    profilePicture: IMAGES.AccountProfile,
-    username: "rocks_hanne",
-    bio: "Lorem ipsum dolor sit amet consect. Ante duis tellus tincidunt nibh hi hahshha",
-    posts: 200,
-    followers: 2356,
-    following: 2356,
-  },
-];
 
 const popular = [
   { id: 1, IMAGE: IMAGES.Popular },
@@ -52,18 +38,20 @@ interface MyVideosSectionProps {
   authState: any; // Add authState as a prop
   postState: any; // Add postState as a prop
 }
+interface VideoState {
+  isMuted?: boolean;
+}
 
 const MyVideosSection: React.FC<MyVideosSectionProps> = ({
-  data = [{ id: 1, IMAGE: "test" }],
   authState,
   postState,
 }) => {
+  const [videoStates, setVideoStates] = useState<{ [key: string]: VideoState }>(
+    {}
+  );
   const userVideos = postState.videos.filter(
     (post: any) => post.userID._id === authState._id
   );
-  console.log("postState:", postState);
-  console.log("authState:", authState);
-  console.log("USER VIDEOS: ", userVideos);
 
   const handleVideoClick = (
     event: React.MouseEvent<HTMLVideoElement, MouseEvent>
@@ -75,28 +63,48 @@ const MyVideosSection: React.FC<MyVideosSectionProps> = ({
       video.pause();
     }
   };
+  const handleToggleMute = (clipID: string) => {
+    setVideoStates((prevStates) => ({
+      ...prevStates,
+      [clipID]: {
+        ...prevStates[clipID],
+        isMuted: !prevStates[clipID]?.isMuted,
+      },
+    }));
+  };
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
-      {userVideos.map((item: any) => (
-        <div key={item.id} className="relative">
-          <video
-            src={item.video}
-            className="w-96 sm:w-96 h-52 md:h-40  rounded-xl object-cover hover:opacity-80"
-            width={20}
-            height={20}
-            controls={false}
-            onClick={handleVideoClick}
-          />
-          <Image
-            className="absolute bottom-2 right-2 hover:opacity-70"
-            src={SVG.Mute}
-            alt="Play"
-            width={32}
-            height={32}
-            sizes="100vw"
-          />
-        </div>
-      ))}
+      {userVideos.map((item: any) => {
+        const videoState = videoStates[item._id] || {
+          isMuted: false,
+        };
+        return (
+          <div key={item.id} className="relative">
+            <video
+              src={item.video}
+              className="w-96 sm:w-96 h-52 md:h-40  rounded-xl object-cover hover:opacity-80"
+              width={20}
+              height={20}
+              controls={false}
+              onClick={handleVideoClick}
+              muted={videoState.isMuted}
+            />
+            <div className="absolute bottom-1 right-2">
+              <button
+                className="cursor-pointer hover:opacity-80"
+                onClick={() => handleToggleMute(item._id)}
+              >
+                {videoState.isMuted ? (
+                  <Image src={SVG.Mute} alt="Mute" width={40} height={40} />
+                ) : (
+                  <Image src={SVG.UnMute} alt="Unmute" width={40} height={40} />
+                )}
+              </button>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 };
@@ -228,6 +236,7 @@ function Page() {
                   >
                     <p>({authState?.username || "no_username"})</p>
                     <Image
+                      className="cursor-pointer hover:opacity-80"
                       src={SVG.AccountCopyUsername}
                       width={16}
                       height={16}
@@ -235,7 +244,7 @@ function Page() {
                     />
                   </div>
                   <div
-                    className="hover:opacity-80"
+                    className="cursor-pointer hover:opacity-80"
                     onClick={() => handleModalToggle("isShareModalOpen")}
                   >
                     <Image src={SVG.Share} width={16} height={16} alt="Share" />
@@ -319,84 +328,62 @@ function Page() {
 
             <AllStories />
             {/* Top Bar */}
-            <div className=" h-10 w-full flex justify-around items-center">
-              <div
-                className={`flex gap-2 items-center cursor-pointer ${
-                  selectedSection === "videos" ? "text-white" : "text-gray-500"
-                }`}
-                onClick={() => setSelectedSection("videos")}
-              >
-                <Image
-                  className={`${
-                    selectedSection !== "videos" ? "opacity-40" : "opacity-100"
+            <div className="h-10 w-full flex justify-around items-center">
+              <div>
+                <div
+                  className={`flex gap-2 my-6 items-center cursor-pointer ${
+                    selectedSection === "videos"
+                      ? "text-white"
+                      : "text-gray-500"
                   }`}
-                  src={SVG.AccountMyVideos}
-                  alt="My Videos"
-                  width={24}
-                  height={24}
-                />
-                <span className="text-xs md:text-base">My Videos</span>
-              </div>
-
-              <div
-                className={`flex gap-2 items-center cursor-pointer ${
-                  selectedSection === "bookmarked"
-                    ? "text-white"
-                    : "text-gray-500"
-                }`}
-                onClick={() => setSelectedSection("bookmarked")}
-              >
-                <Image
-                  className={`${
-                    selectedSection !== "bookmarked"
-                      ? "opacity-40"
-                      : "opacity-100"
-                  }`}
-                  src={SVG.AccountMyBookmarked}
-                  alt="My Bookmarked"
-                  width={22}
-                  height={22}
-                />
-                <span className="text-xs md:text-base">My Bookmarked</span>
-              </div>
-            </div>
-
-            <div>
-              <div
-                className={`flex ${
-                  selectedSection === "videos" ? "justify-start" : "justify-end"
-                }`}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="169"
-                  height="2"
-                  viewBox="0 0 169 2"
-                  fill="none"
+                  onClick={() => setSelectedSection("videos")}
                 >
-                  <path
-                    d="M1 1H168"
-                    stroke="url(#paint0_linear_133_5406)"
-                    strokeWidth="2"
-                    strokeLinecap="round"
+                  <Image
+                    className={`${
+                      selectedSection !== "videos"
+                        ? "opacity-40"
+                        : "opacity-100"
+                    }`}
+                    src={SVG.AccountMyVideos}
+                    alt="My Videos"
+                    width={24}
+                    height={24}
                   />
-                  <defs>
-                    <linearGradient
-                      id="paint0_linear_133_5406"
-                      x1="84.5"
-                      y1="1"
-                      x2="84.5"
-                      y2="2"
-                      gradientUnits="userSpaceOnUse"
-                    >
-                      <stop stopColor="#62C860" />
-                      <stop offset="1" stopColor="#37C535" />
-                    </linearGradient>
-                  </defs>
-                </svg>
+                  <span className="text-xs md:text-base">My Videos</span>
+                </div>
+                {selectedSection === "videos" && (
+                  <div className="w-full h-1 bg-[#62C860] rounded-lg"></div>
+                )}
               </div>
-              <hr className="h-px  bg-gray-200 border-0 dark:bg-gray-700" />
+
+              <div className="">
+                <div
+                  className={`flex my-6 gap-2 items-center cursor-pointer ${
+                    selectedSection === "bookmarked"
+                      ? "text-white"
+                      : "text-gray-500"
+                  }`}
+                  onClick={() => setSelectedSection("bookmarked")}
+                >
+                  <Image
+                    className={`${
+                      selectedSection !== "bookmarked"
+                        ? "opacity-40"
+                        : "opacity-100"
+                    }`}
+                    src={SVG.AccountMyBookmarked}
+                    alt="My Bookmarked"
+                    width={22}
+                    height={22}
+                  />
+                  <span className="text-xs md:text-base">My Bookmarked</span>
+                </div>
+                {selectedSection === "bookmarked" && (
+                  <div className="w-full h-1 bg-[#62C860] rounded-lg"></div>
+                )}
+              </div>
             </div>
+            <hr className="h-px bg-gray-50 border-0 dark:bg-gray-700" />
 
             {/* Content Section */}
             {selectedSection === "videos" ? (

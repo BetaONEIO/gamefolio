@@ -16,6 +16,14 @@ const config: Config = {
       extend: {
         fontFamily: {
           lexend: ["Lexend Exa"],
+          keyframes: {
+            spinner: {
+              to: { transform: "rotate(360deg)" },
+            },
+          },
+          animation: {
+            spinner: "spinner 0.5s linear infinite",
+          },
         },
       },
     },
