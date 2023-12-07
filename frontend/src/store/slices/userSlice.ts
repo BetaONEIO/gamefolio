@@ -7,6 +7,7 @@ import { PATH } from "@/constants/endpoints";
 export type InitialState = {
   error: null;
   loading: boolean;
+  profileUserInfo?: any;
   userList?: any;
   profile?: any;
 };
@@ -14,6 +15,7 @@ export type InitialState = {
 const initialState: InitialState = {
   error: null,
   loading: false,
+  profileUserInfo:{},
   userList: [],
   profile: null,
 };
@@ -42,6 +44,9 @@ export const slice = createSlice({
     },
     setProfile(state, action) {
       state.profile = action.payload.result;
+    },
+    setSearchUserInfo(state, action) {
+      state.profileUserInfo = action.payload;
     },
   },
 });
@@ -72,7 +77,6 @@ export function getUser(params: ActionParams) {
     }
   };
 }
-
 export function getAllUsers() {
   return async () => {
     dispatch(slice.actions.startLoading());
@@ -94,6 +98,38 @@ export function getAllUsers() {
     }
   };
 }
+
+export function getProfileInfo(params: ActionParams) {
+  return async () => {
+    const {
+      // errorCallback = () => {},
+      payload,
+    }: any = params;
+    dispatch(slice.actions.startLoading());
+
+    console.log("payload: >:::: USESLICES    ", payload);
+
+    const options: APIParams = {
+      method: "POST",
+      endpoint: PATH.user.getProfileInfo,
+      isToken: true,
+      payload: payload,
+    };
+
+    try {
+      const [ok, response] = await API(options);
+      if (!ok || !response) return;
+      console.log("response: >:::: USESLICES    ", response);
+      
+      dispatch(slice.actions.setSearchUserInfo(response));
+    } catch (error) {
+    } finally {
+      dispatch(slice.actions.stopLoading());
+    }
+  };
+}
+
+
 
 export function followUser(params: ActionParams) {
   return async () => {

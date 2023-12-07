@@ -192,6 +192,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
   console.log("decoded: ", decoded);
 
   const user = await User.findById(decoded.id);
+  console.log("user: ", user);
   if (user) {
     res.json({
       _id: user._id,
@@ -205,8 +206,34 @@ const getUserProfile = asyncHandler(async (req, res) => {
       signupMethod: user.signupMethod,
     });
   } else {
-    res.status(404);
-    throw new Error("User not found");
+    return res.status(404).json({
+      message: "Could not find user",
+    });
+  }
+});
+
+const getProfileInfo = asyncHandler(async (req, res) => {
+  const { username } = req.body;
+  console.log("username: ", username);
+
+  const user = await User.findOne({ username });
+  console.log("user: profileInfo ", user);
+  if (user) {
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      username: user.username,
+      bio: user.bio,
+      profilePicture: user.profilePicture,
+      dateOfBirth: user.dateOfBirth,
+      accountType: user.accountType,
+      signupMethod: user.signupMethod,
+    });
+  } else {
+    return res.status(404).json({
+      message: "Could not find user",
+    });
   }
 });
 
@@ -354,6 +381,7 @@ module.exports = {
   loginUser,
   updateLoginUser,
   getUserProfile,
+  getProfileInfo,
   updatePassword,
   getAllUsers,
   sendEmailOTP,
