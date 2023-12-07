@@ -39,3 +39,20 @@ body {
     scrollbar-width: none; /* Firefox */
   }
 }
+
+/* Add the following custom styles for the loader */
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loader {
+  animation: spinner 0.5s linear infinite;
+  border: 0.4rem solid transparent;
+  border-top-color: #62C860;
+  border-bottom-color: #62C860;
+  border-radius: 50%;
+  height: 2.5rem;
+  width: 2.5rem;
+}

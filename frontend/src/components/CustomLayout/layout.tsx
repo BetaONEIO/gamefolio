@@ -10,8 +10,6 @@ import React, { ReactNode, Suspense, useEffect } from "react";
 const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const router = useRouter();
 
-  // if(router.isFallback) return <div>Loading...</div>
-
   const cookies = getCookieValue("gfoliotoken");
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),

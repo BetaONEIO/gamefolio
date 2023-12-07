@@ -4,6 +4,7 @@ import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import { getAllPostVideos } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
+import Loading from "./loading";
 
 function ExploreVideo() {
   const postState = useSelector((state: any) => state.post) || [];
@@ -19,7 +20,21 @@ function ExploreVideo() {
     dispatch(getAllPostVideos());
   }, [postState.refresh]);
 
+  if (postState.loading) return <Loading />;
+
   console.log("postState", postState);
+
+  // Function to toggle play/pause on video click
+  const handleVideoClick = (
+    event: React.MouseEvent<HTMLVideoElement, MouseEvent>
+  ) => {
+    const video = event.currentTarget;
+    if (video.paused) {
+      video.play();
+    } else {
+      video.pause();
+    }
+  };
 
   return (
     <>
@@ -33,12 +48,8 @@ function ExploreVideo() {
               height={20}
               controls={false}
               autoPlay={false}
-              onLoadedMetadata={(e) => {
-                const video = e.currentTarget;
-                const timeInSeconds = video.duration;
-
-                console.log("Video time", timeInSeconds);
-              }}
+              onClick={handleVideoClick}
+              onDurationChange={(e) => console.log(e)}
             />
             <span className="absolute bottom-2 right-2">8:31</span>
           </div>
