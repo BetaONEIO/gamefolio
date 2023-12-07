@@ -11,6 +11,7 @@ const clipsRoutes = require("./routes/clipsRoutes");
 const storyRoutes = require("./routes/storyRoutes");
 const musicRoutes = require("./routes/musicRoutes");
 const storageRoutes = require("./routes/storageRoutes");
+const chatRoutes = require("./routes/chatRoutes");
 const { myDbConnection } = require("./db/connection");
 const generateToken = require("./utils/generateToken");
 const authMiddleware = require("./middleware/authMiddleware");
@@ -128,6 +129,9 @@ app.use("/api/music", musicRoutes);
 // AWS S3 Storage API
 app.use("/api/storage", storageRoutes);
 
+// Chat API
+app.use("/api/v1/chat", chatRoutes);
+
 app.get("/api/user/protected", authMiddleware, (req, res) => {
   // Access protected resource
   res.json({ message: "Success" });
@@ -140,3 +144,5 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
 });
+
+module.exports = { app };

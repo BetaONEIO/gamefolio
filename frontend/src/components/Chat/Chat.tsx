@@ -2,8 +2,11 @@
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
+import { socket } from "@/services/api";
+import { generateUniqueRoomId } from "@/utils/helpers";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
 
 import toast, { Toaster } from "react-hot-toast";
 
@@ -51,6 +54,29 @@ const ChatMessages = [
 ];
 
 function Chat() {
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      userID: "",
+      message: "",
+    },
+  });
+  useEffect(() => {
+    socket.emit("joinRoom", generateUniqueRoomId());
+  }, []);
+
+  console.log("WATCH: ", watch("message"));
+
+  const handleSendMessage = (data: any) => {
+    console.log("DATA: ", data);
+    socket.emit("sendMessage", data);
+  };
+
   return (
     <>
       <div className="hideScrollBar hidden  w-full flex-col bg-[#091619] gap-4 overflow-auto border-r  md:hidden lg:block">
@@ -131,7 +157,7 @@ function Chat() {
           </div>
 
           {/* Bottom Input container */}
-          <div className="flex items-center justify-around absolute bottom-0 bg-[#162423] px-4 ">
+          <div className="flex items-center  justify-around  absolute bottom-0 bg-[#162423] px-4 ">
             <label htmlFor="file_input">
               <Image
                 className="hover:opacity-70"
@@ -147,6 +173,7 @@ function Chat() {
                 type="text"
                 className="flex-grow px-1 py-1 bg-[#162423] focus:outline-none"
                 placeholder="Write message"
+                {...register("message")}
               />
 
               <span>😀</span>
@@ -157,6 +184,7 @@ function Chat() {
                 width={24}
                 height={24}
                 src={SVG.ChatMessageSent}
+                onClick={handleSubmit(handleSendMessage)}
               />
             </div>
           </div>

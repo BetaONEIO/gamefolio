@@ -28,6 +28,22 @@ const userSchema = new mongoose.Schema({
   bio: {
     type: String,
   },
+  followers: [
+    {
+      userID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Users",
+      },
+    },
+  ],
+  following: [
+    {
+      userID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Users",
+      },
+    },
+  ],
   accountType: {
     type: String,
     enum: ["public", "private"],

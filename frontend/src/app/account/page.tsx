@@ -50,7 +50,7 @@ const MyVideosSection: React.FC<MyVideosSectionProps> = ({
     {}
   );
   const userVideos = postState.videos.filter(
-    (post: any) => post.userID._id === authState._id
+    (post: any) => post?.userID?._id === authState._id
   );
 
   const handleVideoClick = (

@@ -19,4 +19,7 @@ router.post("/getUser", userController.getUserProfile);
 router.post("/profile/get", userController.getProfileInfo);
 router.get("/getAllUsers", userController.getAllUsers);
 
+//followers
+router.post("/follower/create", userController.addFollowers);
+
 module.exports = router;

@@ -376,6 +376,36 @@ const updateProfile = async (req, res) => {
   }
 };
 
+// Followers
+const addFollowers = asyncHandler(async (req, res) => {
+  const { userId, followerID } = req.body;
+
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Check if the follower is already in the followers list
+    const isFollower = user.followers.find(
+      (follower) => follower.userID.toString() === followerID
+    );
+
+    if (isFollower) {
+      return res.status(400).json({ message: "Already a follower" });
+    }
+
+    // Add the follower to the user's followers list
+    user.followers.push({ userID: followerID });
+    await user.save();
+
+    return res.status(201).json({ message: "Follower added successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: "Server Error" });
+  }
+});
+
 module.exports = {
   registerUser,
   loginUser,
@@ -389,4 +419,5 @@ module.exports = {
   addPreferences,
   addFavoriteGames,
   updateProfile,
+  addFollowers,
 };

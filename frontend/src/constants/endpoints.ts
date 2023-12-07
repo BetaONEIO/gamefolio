@@ -17,6 +17,7 @@ export const PATH = {
     getAllUsers: "user/getAllUsers",
     updateProfile: "user/profile/update",
     updatePassword: "user/password/update",
+    followUser: "user/follower/create",
   },
 
   theNextLeg: {

@@ -7,13 +7,15 @@ import MoreOptions from "@/components/Modals/MoreOptions";
 import { leagueGothic } from "@/font/font";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
-import { getProfileInfo } from "@/store/slices/userSlice";
+import { followUser, getProfileInfo } from "@/store/slices/userSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Loading from "../loading";
 import { getAllPostVideos } from "@/store/slices/postSlice";
+import { toastError, toastSuccess } from "@/components/Toast/Toast";
+import { ToastContainer } from "react-toastify";
 
 const popular = [
   { id: 1, IMAGE: IMAGES.Popular },
@@ -45,7 +47,7 @@ const MyVideosSection: React.FC<MyVideosSectionProps> = ({
     {}
   );
   const userVideos = postState.videos.filter(
-    (post: any) => post.userID._id === authState._id
+    (post: any) => post?.userID?._id === authState._id
   );
 
   const handleVideoClick = (
@@ -231,6 +233,28 @@ function Page({ params }: any) {
     }));
   };
 
+  const handleFollowUser = async (userId: any) => {
+    const payload = {
+      userId: userId,
+      followerID: authState._id,
+    };
+
+    const successCallback = (response: any) => {
+      toastSuccess(response.message);
+    };
+
+    const errorCallback = (error: string) => {
+      toastError(error);
+    };
+
+    const params = {
+      payload,
+      successCallback,
+      errorCallback,
+    };
+
+    dispatch(followUser(params));
+  };
   if (profileInfoState?.loading) return <Loading />;
 
   return (
@@ -279,7 +303,10 @@ function Page({ params }: any) {
             <div className="flex items-top">
               <Image
                 className="w-40 h-40 rounded-xl  object-cover"
-                src={profileInfoState?.profileUserInfo?.profilePicture}
+                src={
+                  profileInfoState?.profileUserInfo?.profilePicture ||
+                  IMAGES.AccountProfile
+                }
                 width={0}
                 height={0}
                 sizes="100vw"
@@ -455,7 +482,12 @@ function Page({ params }: any) {
 
               {/* Buttons */}
               <div className="flex h-8 gap-6 sm:gap-6">
-                <button className="font-bold w-40 h-10 bg-[#37C535] text-white text-center py-[10px] px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3">
+                <button
+                  className="font-bold w-40 h-10 bg-[#37C535] text-white text-center py-[10px] px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3"
+                  onClick={() =>
+                    handleFollowUser(profileInfoState?.profileUserInfo?._id)
+                  }
+                >
                   Follow
                 </button>
                 <button className="font-bold w-40 h-10 bg-[#37C535] text-white text-center py-[10px] px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3">
@@ -611,6 +643,18 @@ function Page({ params }: any) {
           handleCloseModal={() => handleModalToggle("isShareModalOpen")}
         />
       </Modal>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </Layout>
   );
 }
