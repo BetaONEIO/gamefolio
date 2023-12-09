@@ -65,4 +65,8 @@ export const PATH = {
   music: {
     getAllMusic: "music/get/all",
   },
+  chat: {
+    init: "v1/chat/init",
+    getUserMessages: "v1/chat/messages/get",
+  }
 };

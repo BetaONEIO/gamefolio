@@ -16,6 +16,8 @@ import Loading from "../loading";
 import { getAllPostVideos } from "@/store/slices/postSlice";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import { ToastContainer } from "react-toastify";
+import { initChat } from "@/store/slices/chatSlice";
+import { useRouter } from "next/navigation";
 
 const popular = [
   { id: 1, IMAGE: IMAGES.Popular },
@@ -213,6 +215,8 @@ function Page({ params }: any) {
     isBadgeModalOpen: false,
   });
 
+  const router = useRouter();
+
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
   };
@@ -231,6 +235,35 @@ function Page({ params }: any) {
       ...prevState,
       [modalName]: !prevState[modalName],
     }));
+  };
+
+  const handleMessage = async () => {
+    const payload = {
+      roomID: 100,
+      sender: authState._id,
+      receiver: profileInfoState?.profileUserInfo?._id,
+      content: "Hello",
+      isSocket: false,
+    };
+
+    const successCallback = (response: any) => {
+      toastSuccess(response);
+      setTimeout(() => {
+        router.push("/chat");
+      }, 4000);
+    };
+
+    const errorCallback = (error: string) => {
+      toastError(error);
+    };
+
+    const params = {
+      payload,
+      successCallback,
+      errorCallback,
+    };
+
+    dispatch(initChat(params));
   };
 
   const handleFollowUser = async (userId: any) => {
@@ -490,7 +523,10 @@ function Page({ params }: any) {
                 >
                   Follow
                 </button>
-                <button className="font-bold w-40 h-10 bg-[#37C535] text-white text-center py-[10px] px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3">
+                <button
+                  className="font-bold w-40 h-10 bg-[#37C535] text-white text-center py-[10px] px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3"
+                  onClick={handleMessage}
+                >
                   Message
                 </button>
               </div>

@@ -1,5 +1,5 @@
 const socketIO = require("socket.io");
-// const { createChatMessage } = require("./controllers/chatController");
+const chatController = require("../controller/chatController");
 
 let io;
 
@@ -20,26 +20,26 @@ function init(server) {
     });
 
     socket.on("sendMessage", async (data) => {
-      const { ticketId, sender, receiver, content } = data;
+      const { roomID, sender, receiver, content } = data;
       console.log("Data: ", data);
 
-      // Create an save the chat message using the createChatMessage controller
-      // const chat = await createChatMessage({
-      //   body: {
-      //     ticketId,
-      //     sender,
-      //     receiver,
-      //     content,
-      //     isSocket: true,
-      //   },
-      // });
-      // await chat.save();
+      // Create an save the chat using the createChatMessage controller
+      const chat = await chatController.createChatMessage({
+        body: {
+          roomID,
+          sender,
+          receiver,
+          content,
+          isSocket: true,
+        },
+      });
+      await chat.save();
 
       // Emit the message to the sender and receiver
-      // console.log("ChatID: on socket server ", chat._id);
+      console.log("ChatID: on socket server ", chat._id);
 
       // Send the message to all clients in the room
-      io.to("123").emit("newMessage", { sender, receiver, content });
+      io.to(roomID).emit("newMessage", { sender, receiver, content });
     });
 
     // Listening when user is typing
