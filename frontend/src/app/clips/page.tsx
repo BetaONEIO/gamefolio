@@ -212,6 +212,8 @@ function Clip() {
                   controls={false}
                   onClick={handleVideoClick}
                   muted={videoState.isMuted}
+                  preload="auto"
+                  autoFocus
                 />
 
                 <div className="absolute inset-x-0 bottom-20 p-4 flex items-center justify-between">
