@@ -81,3 +81,11 @@ export const copyToClipboard = async (textToCopy:string) => {
     toastError("Failed to copy");
   }
 };
+
+export const generateUniqueRoomId = () => {
+
+    const uniqueNumber =  Math.floor(Math.random() * 9000) + 1000;
+    return uniqueNumber;
+ 
+
+}

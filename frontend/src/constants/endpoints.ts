@@ -17,6 +17,7 @@ export const PATH = {
     getAllUsers: "user/getAllUsers",
     updateProfile: "user/profile/update",
     updatePassword: "user/password/update",
+    followUser: "user/follower/create",
   },
 
   theNextLeg: {
@@ -64,4 +65,8 @@ export const PATH = {
   music: {
     getAllMusic: "music/get/all",
   },
+  chat: {
+    init: "v1/chat/init",
+    getUserMessages: "v1/chat/messages/get",
+  }
 };

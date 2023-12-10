@@ -7,6 +7,7 @@ import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
 import { useEffect } from "react";
 import Loading from "./loading";
+import Link from "next/link";
 
 function ExploreUser() {
   const userState = useSelector((state: any) => state.user) || [];
@@ -29,7 +30,11 @@ function ExploreUser() {
     <div className="flow-root w-96 sm:1/3 mx-auto">
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
         {userState?.userList?.map((user: any) => (
-          <div key={user._id} className="flex py-6">
+          <Link
+            href={`/account/${user?.username}`}
+            key={user._id}
+            className="flex py-6"
+          >
             <Image
               className="w-12 h-12 rounded-lg mr-2 sm:mr-4"
               src={user?.profilePicture || IMAGES.AccountProfile}
@@ -45,7 +50,7 @@ function ExploreUser() {
                 {user?.name}
               </p>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

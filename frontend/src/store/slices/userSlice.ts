@@ -3,6 +3,7 @@ import { dispatch } from "..";
 import { API } from "@/services/api";
 import { APIParams, ActionParams } from "@/types/Api";
 import { PATH } from "@/constants/endpoints";
+import path from "path";
 
 export type InitialState = {
   error: null;
@@ -143,21 +144,18 @@ export function followUser(params: ActionParams) {
 
     const options: APIParams = {
       method: "POST",
-      endpoint: "users/manageFollows",
+      endpoint: PATH.user.followUser,
       isToken: false,
       payload,
     };
 
     try {
       const [ok, response] = await API(options);
-      if (!ok || !response) return;
-      let paramspayload: any = { id: payload };
+      if (!ok || !response) return errorCallback(response.message);
       successCallback(response);
-      let params: any = {
-        paramspayload,
-      };
-      dispatch(getSingleUser(params));
+      // dispatch(getSingleUser(params));
     } catch (error) {
+      errorCallback(error);
     } finally {
       dispatch(slice.actions.stopLoading());
     }

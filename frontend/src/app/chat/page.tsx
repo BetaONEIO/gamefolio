@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import Messages from "@/components/Chat/Messages";
 import "@/components/Chat/ChatLayout.css";
 import Chat from "@/components/Chat/Chat";
