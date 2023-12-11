@@ -87,6 +87,7 @@ exports.createChatMessage = async (req, res) => {
   }
 };
 
+// Get all chats for a user
 exports.getUserMessages = async (req, res) => {
   try {
     const { userID } = req.body; // Assuming userID is passed in the request params

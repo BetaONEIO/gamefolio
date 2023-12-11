@@ -3,56 +3,14 @@ import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
 import { socket } from "@/services/api";
-import { useSelector } from "@/store";
+import { dispatch, useSelector } from "@/store";
+import { setSelectedChat, updateSelectedChat } from "@/store/slices/chatSlice";
 import { generateUniqueRoomId } from "@/utils/helpers";
 import Image from "next/image";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import toast, { Toaster } from "react-hot-toast";
-
-const ChatMessages = [
-  {
-    _id: "649c1ce0ce2157108f0fd53a",
-    participants: ["649c1ca1ce2157108f0fd533"],
-    ticket: "649c1ca1ce2157108f0fd533",
-    messages: [
-      {
-        _id: "649da8db7f9f3917422f17c3",
-        sender: "649c1ca1ce2157108f0fd533",
-        content: {
-          message: "Okay",
-          files: "test.jpg",
-          __v: 0,
-        },
-
-        timestamp: "2023-06-28T11:43:28.882+00:00",
-      },
-      {
-        _id: "649da8db7f9f3917422f17c3",
-        sender: "649c1ca1ce2157108f0fd534",
-        content: {
-          message: "Nice 👍👍",
-          files: "test.jpg",
-          __v: 0,
-        },
-
-        timestamp: "2023-06-28T11:43:28.882+00:00",
-      },
-      {
-        _id: "649da8db7f9f3917422f17c3",
-        sender: "649c1ca1ce2157108f0fd533",
-        content: {
-          message: "Thank you",
-          files: "test.jpg",
-          __v: 0,
-        },
-
-        timestamp: "2023-06-28T11:43:28.882+00:00",
-      },
-    ],
-  },
-];
 
 function Chat() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
@@ -65,7 +23,6 @@ function Chat() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      userID: "",
       message: "",
     },
   });
@@ -73,8 +30,18 @@ function Chat() {
   // let getUniqueRoomID = generateUniqueRoomId();
 
   useEffect(() => {
-    socket.emit("joinRoom", "100");
-  }, []);
+    socket.emit("joinRoom", messageState.chat.roomID);
+
+    // Listening to the incoming message from recipient
+    socket.on("newMessage", (data) => {
+      console.log("Data receiving from server ..: ", data);
+      // Dispatching chat data to our chatSlice to maintain state
+      dispatch(setSelectedChat(data));
+    });
+    return () => {
+      socket.off("disconnect");
+    };
+  }, [socket, messageState.chat]);
 
   console.log("WATCH: ", watch("message"));
 
@@ -83,14 +50,14 @@ function Chat() {
   const handleSendMessage = (data: any) => {
     console.log("DATA: ", data);
     socket.emit("sendMessage", {
-      roomID: 100,
-      sender: "6571d49987c0f9c9f147db7d",
-      receiver: "6569bd80ca82a8d7e1a8cac2",
+      roomID: messageState?.chat?.roomID,
+      sender: authState._id,
+      receiver: "6576c231c4a2e7e679b6a359",
       content: data.message,
     });
   };
 
-  if (messageState?.chat?.length === 0) {
+  if (Object.keys(messageState?.chat).length === 0) {
     return (
       <div className="flex h-full w-full items-center justify-center">
         <p>No chat to show</p>
@@ -99,7 +66,9 @@ function Chat() {
   }
 
   const isCurrentUser =
-    messageState?.chat.participants[0]?._id === authState._id;
+    messageState?.chat?.participants?.[0]?._id === authState?._id;
+
+  console.log("IS CURRENT USER: ", { isCurrentUser, messageState });
 
   return (
     <>
@@ -110,8 +79,8 @@ function Chat() {
             <div>
               <span className={`${leagueGothic.className} text-3xl`}>
                 {isCurrentUser
-                  ? messageState?.chat?.participants[1]?.name
-                  : messageState?.chat?.participants[0]?.name}
+                  ? messageState?.chat?.participants?.[1]?.name
+                  : messageState?.chat?.participants?.[0]?.name}
               </span>
             </div>
           </div>
@@ -121,9 +90,9 @@ function Chat() {
               alt="person"
               src={
                 isCurrentUser
-                  ? messageState?.chat?.participants[1]?.profilePicture ||
+                  ? messageState?.chat?.participants?.[1]?.profilePicture ||
                     IMAGES.Profile
-                  : messageState?.chat?.participants[0]?.profilePicture ||
+                  : messageState?.chat?.participants?.[0]?.profilePicture ||
                     IMAGES.Profile
               }
               width={38}
