@@ -13,7 +13,7 @@ import { PATH } from "@/constants/endpoints";
 export type InitialState = {
   error: null;
   loading: boolean;
-  chat: Array<any>;
+  chat: any; //
   messages:  Array<any>;
   token: string;
   userCredits: Credit | null;
@@ -26,7 +26,7 @@ export type InitialState = {
 const initialState: InitialState = {
   error: null,
   loading: false,
-  chat:[],
+  chat:{},
   messages: [],
   token: "",
   userCredits: null,
@@ -78,11 +78,16 @@ export const slice = createSlice({
     },
     setSelectedChat(state, action) {
       state.chat = action.payload;
+    },
+    updateSelectedChat(state, action) {
+      console.log("state.chat: ", state)
+      // state.chat.push(action.payload);
+      state.chat.messages = [...state.chat.messages, action.payload];
     }
   },
 });
 
-export const { startLoading, stopLoading, getCredits, refreshPage, getAllMessages, setSelectedChat } =
+export const { startLoading, stopLoading, getCredits, refreshPage, getAllMessages, setSelectedChat, updateSelectedChat } =
   slice.actions;
 
 export function initChat(params: ActionParams) {

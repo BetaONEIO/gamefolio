@@ -18,6 +18,7 @@ import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import { ToastContainer } from "react-toastify";
 import { initChat } from "@/store/slices/chatSlice";
 import { useRouter } from "next/navigation";
+import { generateUniqueRoomId } from "@/utils/helpers";
 
 const popular = [
   { id: 1, IMAGE: IMAGES.Popular },
@@ -239,7 +240,7 @@ function Page({ params }: any) {
 
   const handleMessage = async () => {
     const payload = {
-      roomID: 100,
+      roomID: generateUniqueRoomId(),
       sender: authState._id,
       receiver: profileInfoState?.profileUserInfo?._id,
       content: "Hello",

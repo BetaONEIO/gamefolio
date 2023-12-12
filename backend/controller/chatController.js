@@ -41,6 +41,7 @@ exports.createChatMessage = async (req, res) => {
 
     const chat = await Chats.findOne({
       participants: { $all: [sender, receiver] },
+      roomID: roomID,
     });
 
     console.log("chat: server ", chat);
@@ -87,6 +88,7 @@ exports.createChatMessage = async (req, res) => {
   }
 };
 
+// Get all chats for a user
 exports.getUserMessages = async (req, res) => {
   try {
     const { userID } = req.body; // Assuming userID is passed in the request params
