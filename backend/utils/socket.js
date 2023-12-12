@@ -50,7 +50,7 @@ function init(server) {
     // Listening when user is typing
     socket.on("userTyping", async (data) => {
       console.log("user typing data: ", data);
-      io.to("123").emit("userIsTyping", {
+      io.to(data.roomID).emit("userIsTyping", {
         userWhichIsTyping: data.userWhichIsTyping,
         // typing: data.userisTyping,
       });
@@ -58,7 +58,7 @@ function init(server) {
     // Listening when user stopped typing
     socket.on("userNotTyping", async (data) => {
       console.log("user typing data: ", data);
-      io.to("123").emit("userIsNotTyping", {
+      io.to(data.roomID).emit("userIsNotTyping", {
         userWhichIsTyping: data.userWhichIsTyping,
       });
     });
