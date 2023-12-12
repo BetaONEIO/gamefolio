@@ -52,7 +52,7 @@ function Chat() {
     socket.emit("sendMessage", {
       roomID: messageState?.chat?.roomID,
       sender: authState._id,
-      receiver: "6576c231c4a2e7e679b6a359",
+      receiver: NotCurrentUser(),
       content: data.message,
     });
   };
@@ -67,8 +67,23 @@ function Chat() {
 
   const isCurrentUser =
     messageState?.chat?.participants?.[0]?._id === authState?._id;
-
   console.log("IS CURRENT USER: ", { isCurrentUser, messageState });
+
+  const NotCurrentUser = () => {
+    return messageState?.chat?.participants?.[0]?._id !== authState?._id
+      ? messageState?.chat?.participants?.[0]?._id
+      : messageState?.chat?.participants?.[1]?._id;
+  };
+  const formatTime = (timestamp: any) => {
+    const date = new Date(timestamp);
+    const formattedTime = date.toLocaleString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    });
+
+    return formattedTime;
+  };
 
   return (
     <>
@@ -122,7 +137,7 @@ function Chat() {
                               </span>
                             </div>
                             <span className="text-xs text-gray-100">
-                              12:20 AM
+                              {formatTime(element?.timestamp)}
                             </span>
                           </div>
                         </div>
@@ -135,7 +150,7 @@ function Chat() {
                               </span>
                             </div>
                             <span className="text-xs text-gray-100">
-                              12:20 AM
+                              {formatTime(element?.timestamp)}
                             </span>
                           </div>
                         </div>
@@ -148,7 +163,10 @@ function Chat() {
                           <div className="bg-black border border-gray-900  p-2 rounded-full  px-4 py-2 text-white">
                             <span className="text-md">{element.content}</span>
                           </div>
-                          <span className="text-xs text-white">12:22 AM</span>
+                          <span className="text-xs text-white">
+                            {" "}
+                            {formatTime(element?.timestamp)}
+                          </span>
                         </div>
                       </div>
                     )}

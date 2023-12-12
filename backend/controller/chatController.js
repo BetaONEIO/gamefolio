@@ -41,6 +41,7 @@ exports.createChatMessage = async (req, res) => {
 
     const chat = await Chats.findOne({
       participants: { $all: [sender, receiver] },
+      roomID: roomID,
     });
 
     console.log("chat: server ", chat);

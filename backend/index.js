@@ -44,6 +44,12 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Starting Socket.IO
+const socket = require("./utils/socket.js");
+const server = require("http").createServer(app);
+socket.init(server);
+// --------------
+
 // ...
 
 // Now, set up your Google authentication routes and other middleware as needed.
