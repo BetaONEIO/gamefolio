@@ -37,6 +37,8 @@ function Main() {
     dispatch(getAllPostVideos());
   }, [postState.refresh]);
 
+  console.log("secondtime");
+
   console.log("postState", postState);
 
   const [modalState, setModalState] = useState({
