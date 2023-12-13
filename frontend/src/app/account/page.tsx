@@ -269,7 +269,7 @@ function Page() {
                     <span
                       className={`${leagueGothic.className} text-lg md:text-2xl font-normal`}
                     >
-                      {authState?.followers || 0}
+                      {authState?.follower?.length || 0}
                     </span>
                     <span className="md:text-lg text-gray-400">Followers</span>
                   </div>
@@ -283,7 +283,7 @@ function Page() {
                     <span
                       className={`${leagueGothic.className} text-lg md:text-2xl font-normal`}
                     >
-                      {authState?.following || 0}
+                      {authState?.following?.length || 0}
                     </span>
                     <span className="md:text-lg text-gray-400">Following</span>
                   </div>

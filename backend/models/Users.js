@@ -44,6 +44,14 @@ const userSchema = new mongoose.Schema({
       },
     },
   ],
+  block: [
+    {
+      userID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Users",
+      },
+    },
+  ],
   accountType: {
     type: String,
     enum: ["public", "private"],

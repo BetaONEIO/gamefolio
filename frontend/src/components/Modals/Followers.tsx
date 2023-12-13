@@ -1,15 +1,17 @@
 "use client";
+import { useState } from "react";
+import { useSelector } from "@/store";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
 import Image from "next/image";
-import { useState } from "react";
 
 interface FollowerProps {
   handleCloseModal: () => void;
 }
 
 function Followers({ handleCloseModal }: FollowerProps) {
+  const authState = useSelector((state: any) => state.auth.userData) || [];
   const initialUsers = [
     { id: 1, name: "Mark Johnson", username: "john_smith", isFollowed: false },
     { id: 2, name: "Alice Smith", username: "alice", isFollowed: false },
@@ -22,6 +24,8 @@ function Followers({ handleCloseModal }: FollowerProps) {
     { id: 9, name: "Bob Williams", username: "bob", isFollowed: false },
     // Add more users as needed
   ];
+
+  console.log("authstate", authState);
 
   const [users, setUsers] = useState(initialUsers);
 
@@ -70,12 +74,12 @@ function Followers({ handleCloseModal }: FollowerProps) {
             </div>
 
             <div className="flex flex-col w-full sm:min-h-[350px] lg:min-h-[500px] max-h-[400px] sm:max-h-[350px] lg:max-h-[500px] overflow-y-auto no-scrollbar">
-              {users.map((user) => (
-                <div key={user.id}>
+              {authState?.follower?.map((user: any) => (
+                <div key={user?.id}>
                   <div className="flex items-center my-3">
                     <Image
-                      className="object-contain"
-                      src={IMAGES.Profile}
+                      className="object-contain w-12 h-12 rounded-lg"
+                      src={user?.userID?.profilePicture || IMAGES.Profile}
                       alt="Profile"
                       width={50}
                       height={50}
@@ -83,22 +87,22 @@ function Followers({ handleCloseModal }: FollowerProps) {
                     <div className="flex items-center justify-between w-full sm:w-full">
                       <div>
                         <span className="ml-2 sm:ml-4 text-sm sm:text-base">
-                          {user.name}
+                          {user?.userID?.name || 0}
                         </span>
                         <p className="ml-2 sm:ml-4 text-sm text-left">
-                          {user.username}
+                          {user?.userID?.username || 0}
                         </p>
                       </div>
                       <div>
                         <button
-                          onClick={() => handleUserButtonClick(user.id)}
+                          onClick={() => handleUserButtonClick(user?._id)}
                           className={`${
-                            user.isFollowed
+                            authState?.isFollowed
                               ? "w-[150px] h-[50] font-bold bg-[#37C535] text-white text-center py-[5px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] "
                               : "w-[150px] h-[50] font-bold bg-[#162423] text-white text-center py-[5px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] "
                           } rounded-lg p-2`}
                         >
-                          {user.isFollowed ? "Follow" : "Remove"}
+                          {user?.isFollowed ? "Follow" : "Remove"}
                         </button>
                       </div>
                     </div>
