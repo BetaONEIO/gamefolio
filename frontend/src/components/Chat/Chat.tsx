@@ -7,14 +7,17 @@ import { dispatch, useSelector } from "@/store";
 import { setSelectedChat, updateSelectedChat } from "@/store/slices/chatSlice";
 import { generateUniqueRoomId } from "@/utils/helpers";
 import Image from "next/image";
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
-
+import React, { useEffect, useState } from "react";
+import { set, useForm } from "react-hook-form";
+import { ThreeDots } from "react-loader-spinner";
 import toast, { Toaster } from "react-hot-toast";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
 
 function Chat() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const messageState = useSelector((state: any) => state.chat) || [];
+  const [emoji, setEmoji] = useState(false);
   const {
     register,
     handleSubmit,
@@ -38,12 +41,11 @@ function Chat() {
       // Dispatching chat data to our chatSlice to maintain state
       dispatch(setSelectedChat(data));
     });
+
     return () => {
       socket.off("disconnect");
     };
-  }, [socket, messageState.chat]);
-
-  console.log("WATCH: ", watch("message"));
+  }, [messageState.chat]);
 
   console.log("MESSAGE STATE: chat.tsx", messageState.chat);
 
@@ -55,6 +57,8 @@ function Chat() {
       receiver: NotCurrentUser(),
       content: data.message,
     });
+
+    setValue("message", "");
   };
 
   if (Object.keys(messageState?.chat).length === 0) {
@@ -85,11 +89,28 @@ function Chat() {
     return formattedTime;
   };
 
+  // toggle emoji
+  const toggleEmoji = () => {
+    setEmoji(!emoji);
+  };
+
+  // handle emoji
+  const handleEmojiSelect = (selectedEmoji: any) => {
+    // Get the current value of the message input field
+    const currentMessage = watch("message");
+
+    // Append the selected emoji to the current message value
+    const updatedMessage = currentMessage + selectedEmoji;
+
+    // Set the updated message value to the input field using setValue
+    setValue("message", updatedMessage);
+  };
+
   return (
     <>
       {/* {messageState?.chat?.map((chat: any) => ( */}
-      <div className="hideScrollBar hidden  w-full flex-col bg-[#091619] gap-4 overflow-auto border-r  md:hidden lg:block">
-        <div className="sticky top-0  flex items-center justify-between gap-2 border-b border-gray-800 bg-[#091619] p-5">
+      <div className="hideScrollBar hidden relative  w-full flex-col bg-[#091619] gap-4 overflow-auto border-r  md:hidden lg:block">
+        <div className="sticky top-0 z-40  flex items-center justify-between gap-2 border-b border-gray-800 bg-[#091619] p-5">
           <div>
             <div>
               <span className={`${leagueGothic.className} text-3xl`}>
@@ -117,10 +138,13 @@ function Chat() {
         </div>
 
         {/* Message container  */}
-        <div>
+        <div className="relative h-full max-h-full ">
           <Toaster />
           {/* Messages */}
-          <div className="flex h-screen flex-col gap-4 p-2 overflow-y-auto">
+          <div
+            id="chatContainer"
+            className="flex  flex-col gap-4 p-2 h-full overflow-scroll"
+          >
             {messageState?.chat?.messages?.map(
               (element: any, index: number) => {
                 console.log("ELEMENT: ", element);
@@ -175,38 +199,47 @@ function Chat() {
               }
             )}
           </div>
+        </div>
+        {/* Bottom Input container */}
 
-          {/* Bottom Input container */}
-          <div className="flex items-center  justify-around  absolute bottom-0 bg-[#162423] px-4 ">
-            <label htmlFor="file_input">
-              <Image
-                className="hover:opacity-70"
-                alt="Chat File"
-                width={24}
-                height={24}
-                src={SVG.ChatFile}
-              />
-              <input type="file" id="file_input" className="hidden" />
-            </label>
-            <div className="flex-grow mx-3 my-2  flex items-center rounded-lg bg-[#162423] p-2">
-              <input
-                type="text"
-                className="flex-grow px-1 py-1 bg-[#162423] focus:outline-none"
-                placeholder="Write message"
-                {...register("message")}
-              />
+        <div className="flex w-3/5 items-center  fixed  bottom-0 justify-around   bg-[#162423] px-4 ">
+          <label htmlFor="file_input">
+            <Image
+              className="hover:opacity-70"
+              alt="Chat File"
+              width={24}
+              height={24}
+              src={SVG.ChatFile}
+            />
+            <input type="file" id="file_input" className="hidden" />
+          </label>
+          <div className="flex-grow mx-3 my-2 relative flex items-center rounded-lg bg-[#162423] p-2">
+            <input
+              type="text"
+              className="flex-grow px-1 py-1 bg-[#162423] focus:outline-none"
+              placeholder="Write message"
+              {...register("message")}
+            />
 
-              <span>😀</span>
+            <button onClick={toggleEmoji}>😀</button>
+            {emoji && (
+              <div className="absolute bottom-10 right-0">
+                <Picker
+                  data={data}
+                  onEmojiSelect={(data: any) => handleEmojiSelect(data.native)}
+                  previewPosition="none"
+                />
+              </div>
+            )}
 
-              <Image
-                className="hover:opacity-70"
-                alt="Message sent"
-                width={24}
-                height={24}
-                src={SVG.ChatMessageSent}
-                onClick={handleSubmit(handleSendMessage)}
-              />
-            </div>
+            <Image
+              className="hover:opacity-70"
+              alt="Message sent"
+              width={24}
+              height={24}
+              src={SVG.ChatMessageSent}
+              onClick={handleSubmit(handleSendMessage)}
+            />
           </div>
         </div>
       </div>
