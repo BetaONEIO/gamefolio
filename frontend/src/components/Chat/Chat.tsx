@@ -8,7 +8,7 @@ import { setSelectedChat, updateSelectedChat } from "@/store/slices/chatSlice";
 import { generateUniqueRoomId } from "@/utils/helpers";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { ThreeDots } from "react-loader-spinner";
 import toast, { Toaster } from "react-hot-toast";
 import data from "@emoji-mart/data";
@@ -42,8 +42,6 @@ function Chat() {
       dispatch(setSelectedChat(data));
     });
 
-    console.log("Someone in the room is typing");
-
     return () => {
       socket.off("disconnect");
     };
@@ -59,6 +57,8 @@ function Chat() {
       receiver: NotCurrentUser(),
       content: data.message,
     });
+
+    setValue("message", "");
   };
 
   if (Object.keys(messageState?.chat).length === 0) {
@@ -89,17 +89,28 @@ function Chat() {
     return formattedTime;
   };
 
-  // handle emoji
-
+  // toggle emoji
   const toggleEmoji = () => {
     setEmoji(!emoji);
+  };
+
+  // handle emoji
+  const handleEmojiSelect = (selectedEmoji: any) => {
+    // Get the current value of the message input field
+    const currentMessage = watch("message");
+
+    // Append the selected emoji to the current message value
+    const updatedMessage = currentMessage + selectedEmoji;
+
+    // Set the updated message value to the input field using setValue
+    setValue("message", updatedMessage);
   };
 
   return (
     <>
       {/* {messageState?.chat?.map((chat: any) => ( */}
       <div className="hideScrollBar hidden relative  w-full flex-col bg-[#091619] gap-4 overflow-auto border-r  md:hidden lg:block">
-        <div className="sticky top-0  flex items-center justify-between gap-2 border-b border-gray-800 bg-[#091619] p-5">
+        <div className="sticky top-0 z-40  flex items-center justify-between gap-2 border-b border-gray-800 bg-[#091619] p-5">
           <div>
             <div>
               <span className={`${leagueGothic.className} text-3xl`}>
@@ -130,7 +141,10 @@ function Chat() {
         <div className="relative h-full max-h-full ">
           <Toaster />
           {/* Messages */}
-          <div className="flex  flex-col gap-4 p-2 h-full overflow-scroll">
+          <div
+            id="chatContainer"
+            className="flex  flex-col gap-4 p-2 h-full overflow-scroll"
+          >
             {messageState?.chat?.messages?.map(
               (element: any, index: number) => {
                 console.log("ELEMENT: ", element);
@@ -212,9 +226,8 @@ function Chat() {
               <div className="absolute bottom-10 right-0">
                 <Picker
                   data={data}
-                  onEmojiSelect={(data: any) =>
-                    console.log("data: ", data.native)
-                  }
+                  onEmojiSelect={(data: any) => handleEmojiSelect(data.native)}
+                  previewPosition="none"
                 />
               </div>
             )}
