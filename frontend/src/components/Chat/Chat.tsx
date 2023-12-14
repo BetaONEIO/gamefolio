@@ -228,8 +228,8 @@ function Chat() {
         {/* Bottom Input container */}
 
         <div className="flex w-3/5 items-center  fixed  bottom-0 justify-around   bg-[#162423] px-4 ">
-          <label
-            htmlFor="file_input"
+          <div
+            className="cursor-pointer"
             onClick={() => handleModalToggle("isAttachmentViewOpen")}
           >
             <Image
@@ -239,8 +239,7 @@ function Chat() {
               height={24}
               src={SVG.ChatFile}
             />
-            <button id="file_input" className="hidden" />
-          </label>
+          </div>
           <div className="flex-grow mx-3 my-2 relative flex items-center rounded-lg bg-[#162423] p-2">
             <input
               type="text"
@@ -279,9 +278,9 @@ function Chat() {
         handleClose={() => handleModalToggle("isAttachmentViewOpen")}
       >
         <AttachmentView
-          handleCloseModal={(error?: string) =>
-            handleModalToggle("isAttachmentViewOpen", error)
-          }
+          // handleCloseModal={(error?: string) =>
+          //   handleModalToggle("isAttachmentViewOpen", error)
+          handleCloseModal={() => handleModalToggle("isAttachmentViewOpen")}
         />
       </Modal>
     </>

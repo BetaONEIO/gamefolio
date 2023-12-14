@@ -8,9 +8,10 @@ import Image from "next/image";
 
 interface FollowerProps {
   handleCloseModal: () => void;
+  followerData: any;
 }
 
-function Followers({ handleCloseModal }: FollowerProps) {
+function Followers({ handleCloseModal, followerData }: FollowerProps) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const initialUsers = [
     { id: 1, name: "Mark Johnson", username: "john_smith", isFollowed: false },
@@ -26,6 +27,7 @@ function Followers({ handleCloseModal }: FollowerProps) {
   ];
 
   console.log("authstate", authState);
+  console.log("followerData", followerData);
 
   const [users, setUsers] = useState(initialUsers);
 
@@ -74,7 +76,7 @@ function Followers({ handleCloseModal }: FollowerProps) {
             </div>
 
             <div className="flex flex-col w-full sm:min-h-[350px] lg:min-h-[500px] max-h-[400px] sm:max-h-[350px] lg:max-h-[500px] overflow-y-auto no-scrollbar">
-              {authState?.follower?.map((user: any) => (
+              {followerData?.map((user: any) => (
                 <div key={user?.id}>
                   <div className="flex items-center my-3">
                     <Image

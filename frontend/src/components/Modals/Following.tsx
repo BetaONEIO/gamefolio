@@ -8,8 +8,9 @@ import { useState } from "react";
 
 interface FollowingProps {
   handleCloseModal: () => void;
+  followingData: any;
 }
-function Following({ handleCloseModal }: FollowingProps) {
+function Following({ handleCloseModal, followingData }: FollowingProps) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const initialUsers = [
     { id: 1, name: "Mark Johnson", username: "john_smith", isFollowing: false },
@@ -67,13 +68,13 @@ function Following({ handleCloseModal }: FollowingProps) {
             <div className="bg-[#1C2C2E] flex gap-2 px-4 items-center w-full sm:w-full rounded-lg overflow-hidden mb-2">
               <Image src={SVG.Search} alt="search" width={30} height={30} />
               <input
-                className="w-full block p-2.5 outline-none bg-[#1C2C2E] "
+                className="w-full block p-2.5 outline-none bg-[#1C2C2E]"
                 placeholder="Search"
               />
             </div>
 
             <div className="flex flex-col w-full sm:min-h-[350px] lg:min-h-[500px] max-h-[400px] sm:max-h-[350px] lg:max-h-[500px] overflow-y-auto no-scrollbar">
-              {authState?.following.map((user: any) => (
+              {followingData.map((user: any) => (
                 <div key={user?.id}>
                   <div className="flex items-center my-3">
                     <Image
