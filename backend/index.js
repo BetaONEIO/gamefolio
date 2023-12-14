@@ -110,7 +110,8 @@ app.get("/api/store-token", (req, res) => {
     maxAge: twelveHours,
     httpOnly: false,
   });
-  res.redirect("http://localhost:3000/main");
+  // res.redirect("http://localhost:3000/main");
+  res.redirect(`${process.env.VERCEL_URL}/main`);
 });
 
 app.get("/main", (req, res) => {
