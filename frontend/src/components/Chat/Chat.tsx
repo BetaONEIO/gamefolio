@@ -13,11 +13,17 @@ import { ThreeDots } from "react-loader-spinner";
 import toast, { Toaster } from "react-hot-toast";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
+import Modal from "../Modals/Modal";
+import AttachmentView from "../Modals/AttachmentView";
+import { toastError } from "../Toast/Toast";
 
 function Chat() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const messageState = useSelector((state: any) => state.chat) || [];
   const [emoji, setEmoji] = useState(false);
+  const [modalState, setModalState] = useState({
+    isAttachmentViewOpen: false,
+  });
   const {
     register,
     handleSubmit,
@@ -93,6 +99,25 @@ function Chat() {
   const toggleEmoji = () => {
     setEmoji(!emoji);
   };
+  // toggle emoji
+  const toggleModal = () => {
+    setEmoji(!emoji);
+  };
+
+  const handleModalToggle = (
+    modalName: keyof typeof modalState,
+    error?: string
+  ) => {
+    if (error) {
+      toastError(error);
+    }
+    setModalState((prevState) => ({
+      ...prevState,
+      [modalName]: !prevState[modalName],
+    }));
+  };
+
+  console.log("MODAL STATE: ", modalState);
 
   // handle emoji
   const handleEmojiSelect = (selectedEmoji: any) => {
@@ -203,7 +228,10 @@ function Chat() {
         {/* Bottom Input container */}
 
         <div className="flex w-3/5 items-center  fixed  bottom-0 justify-around   bg-[#162423] px-4 ">
-          <label htmlFor="file_input">
+          <label
+            htmlFor="file_input"
+            onClick={() => handleModalToggle("isAttachmentViewOpen")}
+          >
             <Image
               className="hover:opacity-70"
               alt="Chat File"
@@ -211,7 +239,7 @@ function Chat() {
               height={24}
               src={SVG.ChatFile}
             />
-            <input type="file" id="file_input" className="hidden" />
+            <button id="file_input" className="hidden" />
           </label>
           <div className="flex-grow mx-3 my-2 relative flex items-center rounded-lg bg-[#162423] p-2">
             <input
@@ -244,6 +272,18 @@ function Chat() {
         </div>
       </div>
       {/* ))} */}
+
+      {/* Modals */}
+      <Modal
+        isOpen={modalState.isAttachmentViewOpen}
+        handleClose={() => handleModalToggle("isAttachmentViewOpen")}
+      >
+        <AttachmentView
+          handleCloseModal={(error?: string) =>
+            handleModalToggle("isAttachmentViewOpen", error)
+          }
+        />
+      </Modal>
     </>
   );
 }

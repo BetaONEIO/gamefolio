@@ -3,11 +3,11 @@ import { SVG } from "@/assets/SVG";
 import { leagueGothic } from "@/font/font";
 import Image from "next/image";
 
-// interface AddNewProps {
-//   handleCloseModal: () => void; // Define handleCloseModal as a function
-// }
+interface AttachmentViewProps {
+  handleCloseModal: (error?: string) => void;
+}
 
-function AttachmentView() {
+function AttachmentView({ handleCloseModal }: AttachmentViewProps) {
   const myBGStyleModal = {
     backgroundColor: "rgba(0, 0, 0, 0.6)",
     backdropFilter: "blur(8px)",
@@ -27,7 +27,7 @@ function AttachmentView() {
               type="button"
               className="text-white-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
               data-modal-toggle="deleteAlertModal"
-              //   onClick={handleCloseModal}
+              onClick={() => handleCloseModal()}
             >
               <Image src={SVG.Exit} alt="exit" width={30} height={30} />
               <span className="sr-only">Close modal</span>

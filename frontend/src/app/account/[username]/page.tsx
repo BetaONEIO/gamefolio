@@ -289,6 +289,7 @@ function Page({ params }: any) {
 
     dispatch(followUser(params));
   };
+
   if (profileInfoState?.loading) return <Loading />;
 
   return (
@@ -388,7 +389,7 @@ function Page({ params }: any) {
                   <span
                     className={`${leagueGothic.className} text-lg md:text-2xl font-normal`}
                   >
-                    {profileInfoState?.profileUserInfo?.followers || 0}
+                    {profileInfoState?.profileUserInfo?.followers?.length || 0}
                   </span>
                   <span className="md:text-lg text-gray-400">Followers</span>
                 </div>
@@ -399,7 +400,7 @@ function Page({ params }: any) {
                   <span
                     className={`${leagueGothic.className} text-lg md:text-2xl font-normal`}
                   >
-                    {profileInfoState?.profileUserInfo?.following || 0}
+                    {profileInfoState?.profileUserInfo?.following?.length || 0}
                   </span>
                   <span className="md:text-lg text-gray-400">Following</span>
                 </div>
