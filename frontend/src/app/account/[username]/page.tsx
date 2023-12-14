@@ -389,7 +389,7 @@ function Page({ params }: any) {
                   <span
                     className={`${leagueGothic.className} text-lg md:text-2xl font-normal`}
                   >
-                    {profileInfoState?.profileUserInfo?.followers?.length || 0}
+                    {profileInfoState?.profileUserInfo?.follower?.length || 0}
                   </span>
                   <span className="md:text-lg text-gray-400">Followers</span>
                 </div>

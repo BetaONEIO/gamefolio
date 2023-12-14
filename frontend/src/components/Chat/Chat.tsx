@@ -228,10 +228,7 @@ function Chat() {
         {/* Bottom Input container */}
 
         <div className="flex w-3/5 items-center  fixed  bottom-0 justify-around   bg-[#162423] px-4 ">
-          <label
-            htmlFor="file_input"
-            onClick={() => handleModalToggle("isAttachmentViewOpen")}
-          >
+          <div onClick={() => handleModalToggle("isAttachmentViewOpen")}>
             <Image
               className="hover:opacity-70"
               alt="Chat File"
@@ -240,7 +237,7 @@ function Chat() {
               src={SVG.ChatFile}
             />
             <button id="file_input" className="hidden" />
-          </label>
+          </div>
           <div className="flex-grow mx-3 my-2 relative flex items-center rounded-lg bg-[#162423] p-2">
             <input
               type="text"
