@@ -2,6 +2,7 @@
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
+import { useSelector } from "@/store";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -9,6 +10,7 @@ interface FollowingProps {
   handleCloseModal: () => void;
 }
 function Following({ handleCloseModal }: FollowingProps) {
+  const authState = useSelector((state: any) => state.auth.userData) || [];
   const initialUsers = [
     { id: 1, name: "Mark Johnson", username: "john_smith", isFollowing: false },
     { id: 2, name: "Alice Smith", username: "alice", isFollowing: false },
@@ -21,6 +23,8 @@ function Following({ handleCloseModal }: FollowingProps) {
     { id: 9, name: "Bob Williams", username: "bob", isFollowing: false },
     // Add more users as needed
   ];
+
+  console.log("authstate", authState);
 
   const [users, setUsers] = useState(initialUsers);
 
@@ -69,12 +73,12 @@ function Following({ handleCloseModal }: FollowingProps) {
             </div>
 
             <div className="flex flex-col w-full sm:min-h-[350px] lg:min-h-[500px] max-h-[400px] sm:max-h-[350px] lg:max-h-[500px] overflow-y-auto no-scrollbar">
-              {users.map((user) => (
-                <div key={user.id}>
+              {authState?.following.map((user: any) => (
+                <div key={user?.id}>
                   <div className="flex items-center my-3">
                     <Image
-                      className="object-contain"
-                      src={IMAGES.Profile}
+                      className="w-12 h-12 rounded-lg object-contain"
+                      src={user?.userID?.profilePicture || IMAGES.Profile}
                       alt="Profile"
                       width={50}
                       height={50}
@@ -82,10 +86,10 @@ function Following({ handleCloseModal }: FollowingProps) {
                     <div className="flex items-center justify-between w-full sm:w-full">
                       <div>
                         <span className="ml-2 sm:ml-4 text-sm sm:text-base">
-                          {user.name}
+                          {user?.userID?.name}
                         </span>
                         <p className="ml-2 sm:ml-4 text-sm text-left">
-                          {user.username}
+                          {user?.userID?.username}
                         </p>
                       </div>
                       <div>

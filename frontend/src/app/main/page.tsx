@@ -18,7 +18,7 @@ import {
 } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, VideoHTMLAttributes, useEffect, useState } from "react";
 
 function Main() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
@@ -36,6 +36,8 @@ function Main() {
     dispatch(userSession(params));
     dispatch(getAllPostVideos());
   }, [postState.refresh]);
+
+  console.log("secondtime");
 
   console.log("postState", postState);
 
@@ -63,6 +65,8 @@ function Main() {
   const sectionStyle = {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
   };
+
+  const videoLoading: "auto" | "eager" | "lazy" | undefined = "lazy";
 
   const handleCreateReaction = async (postID: any, reactionType: any) => {
     const payload = {
@@ -213,11 +217,15 @@ function Main() {
                     <video
                       className="w-[710px] h-[185px] sm:h-[300px] my-2 sm:my-2"
                       src={post.video}
+                      style={{ aspectRatio: "16:9" }}
                       width={50}
                       height={50}
                       controls
                       controlsList=" nodownload  noremoteplayback noplaybackrate"
                       disablePictureInPicture
+                      autoPlay={false}
+                      preload="metadata"
+                      // loading="lazy"
                     />
 
                     <div className="flex items-center my-3 mx-2">

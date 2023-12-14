@@ -145,8 +145,6 @@ export function createPreferences(params: ActionParams) {
     payload,
   } = params;
   return async () => {
-  
-
     dispatch(slice.actions.startLoading());
 
     const options: APIParams = {
@@ -160,7 +158,7 @@ export function createPreferences(params: ActionParams) {
       console.log(response);
       if (!ok || !response) return errorCallback(response.message);
 
-      console.log("repsonse:::: ",response );
+      console.log("repsonse:::: ", response);
 
       successCallback(response.message);
     } catch (error) {
@@ -178,8 +176,6 @@ export function updateProfile(params: ActionParams) {
     payload,
   } = params;
   return async () => {
-  
-
     dispatch(slice.actions.startLoading());
 
     const options: APIParams = {
@@ -193,7 +189,7 @@ export function updateProfile(params: ActionParams) {
       console.log(response);
       if (!ok || !response) return errorCallback(response.message);
 
-      console.log("repsonse:::: ",response );
+      console.log("repsonse:::: ", response);
 
       successCallback(response.message);
     } catch (error) {
@@ -211,8 +207,6 @@ export function updatePassword(params: ActionParams) {
     payload,
   } = params;
   return async () => {
-  
-
     dispatch(slice.actions.startLoading());
 
     const options: APIParams = {
@@ -242,8 +236,6 @@ export function createFavoriteGame(params: ActionParams) {
     payload,
   } = params;
   return async () => {
-  
-
     dispatch(slice.actions.startLoading());
 
     const options: APIParams = {
@@ -257,7 +249,7 @@ export function createFavoriteGame(params: ActionParams) {
       console.log(response);
       if (!ok || !response) return errorCallback(response.message);
 
-      console.log("repsonse:::: ",response );
+      console.log("repsonse:::: ", response);
 
       successCallback(response.message);
     } catch (error) {
@@ -398,13 +390,10 @@ export function onVerifyLink(params: ActionParams) {
 
 export function userSession(params: ActionParams) {
   return async () => {
-
-    const {
-      payload,
-    } = params;
+    const { payload } = params;
     dispatch(slice.actions.startLoading());
 
-    console.log("payload:", payload)
+    console.log("payload:", payload);
 
     const options: APIParams = {
       method: "POST",
@@ -420,7 +409,7 @@ export function userSession(params: ActionParams) {
       } else {
         console.log("GET USER ===>", response);
         setToLocal("@userData", response);
-      
+
         dispatch(slice.actions.getUser(response));
       }
       const token = getFromLocal("@token");
