@@ -10,6 +10,7 @@ import { ToastContainer } from "react-toastify";
 import { toastError, toastSuccess } from "../Toast/Toast";
 import { getAllMusic, postVideo, refreshPage } from "@/store/slices/postSlice";
 import { dispatch, useSelector } from "@/store";
+import { BASE_URL } from "@/services/api";
 
 interface FileUploadState {
   fileName: string;
@@ -83,7 +84,7 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
         formData.append("music", selectedOptionMusic);
 
         const response = await axios.post(
-          "http://localhost:4000/api/storage/video/upload",
+          `${BASE_URL}/storage/video/upload`,
           formData,
           {
             headers: {

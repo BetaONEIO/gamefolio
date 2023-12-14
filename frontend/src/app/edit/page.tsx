@@ -11,6 +11,7 @@ import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import { updateProfile } from "@/store/slices/authSlice";
 import { ToastContainer } from "react-toastify";
 import axios from "axios";
+import { BASE_URL } from "@/services/api";
 
 const Edit = () => {
   const authState = useSelector((state: any) => state.auth.userData) || [];
@@ -90,7 +91,7 @@ const Edit = () => {
         formData.append("file", file);
 
         const response = await axios.post(
-          "http://localhost:4000/api/storage/image/upload",
+          `${BASE_URL}/storage/image/upload`,
           formData,
           {
             headers: {

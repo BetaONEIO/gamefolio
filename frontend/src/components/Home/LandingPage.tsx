@@ -3,6 +3,7 @@ import Link from "next/link";
 import { IMAGES } from "@/assets/images";
 import { SVG } from "@/assets/SVG";
 import Image from "next/image";
+import { BASE_URL2 } from "@/services/api";
 
 const LandingPage = () => {
   const backgroundImage = `url(${IMAGES.bgImage})`;
@@ -38,9 +39,7 @@ const LandingPage = () => {
         <button className="w-80 h-[50] bg-[#4076E4] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3">
           <div className="flex items-center gap-2">
             <Image src={SVG.Google} alt="Email" width={20} height={20} />
-            <Link href="http://localhost:4000/auth/google">
-              Continue with Google
-            </Link>
+            <Link href={`${BASE_URL2}/auth/google`}>Continue with Google</Link>
           </div>
         </button>
 
@@ -53,19 +52,14 @@ const LandingPage = () => {
               height={20}
               style={{ width: "20px", height: "20px" }}
             />
-            <Link href="http://localhost:4000/auth/facebook">
-              Login with Facebook
-            </Link>
+            <Link href={`${BASE_URL2}/auth/facebook`}>Login with Facebook</Link>
           </div>
         </button>
 
         <button className="w-80 h-[50] bg-[#32CCFE] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3">
           <div className="flex items-center gap-2">
             <Image src={SVG.Twitter} alt="Email" width={20} height={20} />
-
-            <Link href="http://localhost:4000/auth/twitter">
-              Login with twitter
-            </Link>
+            <Link href={`${BASE_URL2}/auth/twitter`}>Login with twitter</Link>
           </div>
         </button>
 

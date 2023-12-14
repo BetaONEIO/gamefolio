@@ -10,6 +10,7 @@ import { toastError, toastSuccess } from "../Toast/Toast";
 import axios from "axios";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import { postStory } from "@/store/slices/storySlice";
+import { BASE_URL } from "@/services/api";
 
 interface AddStoryProps {
   handleCloseModal: () => void;
@@ -78,7 +79,7 @@ function AddStory({ handleCloseModal }: AddStoryProps) {
         formData.append("music", selectedOptionMusic);
 
         const response = await axios.post(
-          "http://localhost:4000/api/storage/video/upload",
+          `${BASE_URL}/storage/video/upload`,
           formData,
           {
             headers: {

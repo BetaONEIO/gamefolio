@@ -11,7 +11,7 @@ passport.use(
     {
       clientID: process.env.FACEBOOK_APP_ID,
       clientSecret: process.env.FACEBOOK_SECRET_KEY,
-      callbackURL: "http://localhost:4000/auth/facebook/callback",
+      callbackURL: `${process.env.BASE_URL}/auth/facebook/callback`,
     },
     async function (accessToken, refreshToken, profile, cb) {
       const user = await User.findOne({
