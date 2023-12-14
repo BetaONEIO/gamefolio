@@ -4,7 +4,7 @@ import { leagueGothic } from "@/font/font";
 import Image from "next/image";
 
 interface AttachmentViewProps {
-  handleCloseModal: (error?: string) => void;
+  handleCloseModal: () => void;
 }
 
 function AttachmentView({ handleCloseModal }: AttachmentViewProps) {

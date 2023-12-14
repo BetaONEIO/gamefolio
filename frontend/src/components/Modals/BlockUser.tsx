@@ -2,6 +2,7 @@
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
+import { useSelector } from "@/store";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -10,6 +11,7 @@ interface BlockUserProps {
 }
 
 function BlockUser({ handleCloseModal }: BlockUserProps) {
+  const authState = useSelector((state: any) => state.auth.userData) || [];
   const initialUsers = [
     { id: 1, name: "Mark Johnson", username: "mark_john", isBlocked: false },
     { id: 2, name: "Alice Smith", username: "alice", isBlocked: false },
@@ -23,6 +25,8 @@ function BlockUser({ handleCloseModal }: BlockUserProps) {
     // Add more users as needed
   ];
   const [users, setUsers] = useState(initialUsers);
+
+  console.log("authstate", authState);
 
   const handleUserButtonClick = (id: any) => {
     const updatedUsers = users.map((user) =>
@@ -62,12 +66,12 @@ function BlockUser({ handleCloseModal }: BlockUserProps) {
             </h1>
 
             <div className="flex flex-col w-full sm:min-h-[350px] lg:min-h-[500px] max-h-[400px] sm:max-h-[350px] lg:max-h-[500px] overflow-y-auto no-scrollbar">
-              {users.map((user) => (
+              {authState?.block?.map((user: any) => (
                 <div key={user.id}>
                   <div className="flex items-center my-3">
                     <Image
-                      className="object-contain"
-                      src={IMAGES.Profile}
+                      className="object-contain w-12 h-12 rounded-lg"
+                      src={user?.userID?.profilePicture || IMAGES.Profile}
                       alt="Profile"
                       width={50}
                       height={50}

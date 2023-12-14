@@ -18,7 +18,9 @@ import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import { ToastContainer } from "react-toastify";
 import { initChat } from "@/store/slices/chatSlice";
 import { useRouter } from "next/navigation";
-import { generateUniqueRoomId } from "@/utils/helpers";
+import { copyToClipboard, generateUniqueRoomId } from "@/utils/helpers";
+import Followers from "@/components/Modals/Followers";
+import Following from "@/components/Modals/Following";
 
 const popular = [
   { id: 1, IMAGE: IMAGES.Popular },
@@ -213,8 +215,9 @@ function Page({ params }: any) {
     isShareModalOpen: false,
     isFollowerModalOpen: false,
     isFollowingModalOpen: false,
-    isBadgeModalOpen: false,
   });
+
+  console.log("authState****", authState);
 
   const router = useRouter();
 
@@ -292,12 +295,20 @@ function Page({ params }: any) {
 
   if (profileInfoState?.loading) return <Loading />;
 
+  const handleBackButtonClick = () => {
+    // Use the router's back method to navigate to the previous page
+    router.back();
+  };
+
   return (
     <Layout>
       {/* Header */}
       <div className="flex items-center py-2 bg-[#091619]">
         <div className="flex justify-between items-center w-full mx-4">
-          <div className="flex gap-4 items-center">
+          <div
+            className="flex gap-4 items-center"
+            onClick={handleBackButtonClick}
+          >
             <Image
               className="hover:opacity-80 cursor-pointer"
               src={SVG.Back}
@@ -305,7 +316,7 @@ function Page({ params }: any) {
               width={32}
               height={32}
             />
-            <h1 className={`${leagueGothic.className} text-4xl`}>Back</h1>
+            <h1 className={`${leagueGothic.className} text-4xl`}> Back</h1>
           </div>
           <div className="flex items-center my-3 mx-2">
             <div className="flex items-center mr-2 rounded-full bg-[#162423]">
@@ -354,9 +365,13 @@ function Page({ params }: any) {
                 {profileInfoState?.profileUserInfo?.name}
               </p>
               <div className="flex items-center gap-2 justify-between lg:justify-between">
-                <div className="flex items-center">
+                <div
+                  className="flex items-center"
+                  onClick={() => copyToClipboard(authState?.username)}
+                >
                   <p>({profileInfoState?.profileUserInfo?.username})</p>
                   <Image
+                    className="cursor-pointer hover:opacity-80"
                     src={SVG.AccountCopyUsername}
                     width={16}
                     height={16}
@@ -385,7 +400,10 @@ function Page({ params }: any) {
 
                 {/* Vertical divider */}
                 <div className="border-r border-gray-700 h-full  rounded-full mx-2"></div>
-                <div className="flex items-center gap-2 ">
+                <div
+                  className="flex items-center gap-2 cursor-pointer hover:opacity-80"
+                  onClick={() => handleModalToggle("isFollowerModalOpen")}
+                >
                   <span
                     className={`${leagueGothic.className} text-lg md:text-2xl font-normal`}
                   >
@@ -396,7 +414,10 @@ function Page({ params }: any) {
                 {/* Vertical divider */}
                 <div className="border-r border-gray-700 h-full  rounded-full mx-2"></div>
 
-                <div className="flex items-center gap-2 ">
+                <div
+                  className="flex items-center gap-2 cursor-pointer hover:opacity-80"
+                  onClick={() => handleModalToggle("isFollowingModalOpen")}
+                >
                   <span
                     className={`${leagueGothic.className} text-lg md:text-2xl font-normal`}
                   >
@@ -440,7 +461,7 @@ function Page({ params }: any) {
               </div>
 
               {/* Socials */}
-              <div className="flex h-8 my-4 gap-8 sm:gap-8 -space-x-4">
+              {/* <div className="flex h-8 my-4 gap-8 sm:gap-8 -space-x-4">
                 <div className="relative">
                   <Image
                     className="w-8 h-8 p-0.5 dark:bg-[#FFF] rounded-lg"
@@ -513,7 +534,7 @@ function Page({ params }: any) {
                     sizes="100vw"
                   />
                 </div>
-              </div>
+              </div> */}
 
               {/* Buttons */}
               <div className="flex h-8 gap-6 sm:gap-6">
@@ -537,124 +558,100 @@ function Page({ params }: any) {
 
           {/* Top Bar */}
           <div className="h-10 w-full flex justify-around items-center">
-            <div
-              className={`flex gap-2 items-center cursor-pointer ${
-                selectedSection === "videos" ? "text-white" : "text-gray-500"
-              }`}
-              onClick={() => setSelectedSection("videos")}
-            >
-              <Image
-                className={`${
-                  selectedSection !== "videos" ? "opacity-40" : "opacity-100"
+            <div>
+              <div
+                className={`flex justify-center gap-2 my-6 cursor-pointer ${
+                  selectedSection === "videos" ? "text-white" : "text-gray-500"
                 }`}
-                src={SVG.AccountMyVideos}
-                alt="My Videos"
-                width={24}
-                height={24}
-              />
-            </div>
-
-            <div
-              className={`flex gap-2 items-center cursor-pointer ${
-                selectedSection === "clips" ? "text-white" : "text-gray-500"
-              }`}
-              onClick={() => setSelectedSection("clips")}
-            >
-              <Image
-                className={`${
-                  selectedSection !== "clips" ? "opacity-40" : "opacity-100"
-                }`}
-                src={SVG.Clip2}
-                alt="clips"
-                width={100}
-                height={32}
-              />
-            </div>
-
-            <div
-              className={`flex gap-2 items-center cursor-pointer ${
-                selectedSection === "story" ? "text-white" : "text-gray-500"
-              }`}
-              onClick={() => setSelectedSection("story")}
-            >
-              <Image
-                className={`${
-                  selectedSection !== "story" ? "opacity-40" : "opacity-100"
-                }`}
-                src={SVG.Story}
-                alt="story"
-                width={100}
-                height={10}
-              />
-            </div>
-
-            <div
-              className={`flex gap-2 items-center cursor-pointer ${
-                selectedSection === "bookmarked"
-                  ? "text-white"
-                  : "text-gray-500"
-              }`}
-              onClick={() => setSelectedSection("bookmarked")}
-            >
-              <Image
-                className={`${
-                  selectedSection !== "bookmarked"
-                    ? "opacity-40"
-                    : "opacity-100"
-                }`}
-                src={SVG.AccountMyBookmarked}
-                alt="My Bookmarked"
-                width={22}
-                height={22}
-              />
-            </div>
-          </div>
-
-          {/* green line */}
-          <div>
-            <div
-              className={`flex w-full ${
-                selectedSection === "videos"
-                  ? "justify-start"
-                  : selectedSection === "clips"
-                  ? "justify-center"
-                  : selectedSection === "story"
-                  ? "justify-evenly"
-                  : selectedSection === "bookmarks"
-                  ? "justify-center"
-                  : "justify-end"
-              }`}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="169"
-                height="2"
-                viewBox="0 0 169 2"
-                fill="none"
+                onClick={() => setSelectedSection("videos")}
               >
-                <path
-                  d="M1 1H168"
-                  stroke="url(#paint0_linear_133_5406)"
-                  strokeWidth="2"
-                  strokeLinecap="round"
+                <Image
+                  className={`${
+                    selectedSection !== "videos" ? "opacity-40" : "opacity-100"
+                  }`}
+                  src={SVG.AccountMyVideos}
+                  alt="My Videos"
+                  width={24}
+                  height={24}
                 />
-                <defs>
-                  <linearGradient
-                    id="paint0_linear_133_5406"
-                    x1="84.5"
-                    y1="1"
-                    x2="84.5"
-                    y2="2"
-                    gradientUnits="userSpaceOnUse"
-                  >
-                    <stop stopColor="#62C860" />
-                    <stop offset="1" stopColor="#37C535" />
-                  </linearGradient>
-                </defs>
-              </svg>
+              </div>
+              {selectedSection === "videos" && (
+                <div className="w-16 h-1 bg-[#62C860] rounded-lg"></div>
+              )}
             </div>
-            <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
+
+            <div>
+              <div
+                className={`flex justify-center gap-2 my-6 cursor-pointer ${
+                  selectedSection === "clips" ? "text-white" : "text-gray-500"
+                }`}
+                onClick={() => setSelectedSection("clips")}
+              >
+                <Image
+                  className={`${
+                    selectedSection !== "clips" ? "opacity-40" : "opacity-100"
+                  }`}
+                  src={SVG.Clips}
+                  alt="My clips"
+                  width={24}
+                  height={24}
+                />
+              </div>
+              {selectedSection === "clips" && (
+                <div className=" w-16 h-1 bg-[#62C860] rounded-lg"></div>
+              )}
+            </div>
+
+            <div>
+              <div
+                className={`flex justify-center gap-2 my-6 cursor-pointer ${
+                  selectedSection === "videos" ? "text-white" : "text-gray-500"
+                }`}
+                onClick={() => setSelectedSection("story")}
+              >
+                <Image
+                  className={` ${
+                    selectedSection !== "story" ? "opacity-40" : "opacity-100"
+                  }`}
+                  src={SVG.Story}
+                  alt="My story"
+                  width={24}
+                  height={24}
+                />
+              </div>
+              {selectedSection === "story" && (
+                <div className="w-16 h-1 bg-[#62C860] rounded-lg"></div>
+              )}
+            </div>
+
+            <div>
+              <div
+                className={`flex justify-center gap-2 my-6 cursor-pointer ${
+                  selectedSection === "bookmarked"
+                    ? "text-white"
+                    : "text-gray-500"
+                }`}
+                onClick={() => setSelectedSection("bookmarked")}
+              >
+                <Image
+                  className={`${
+                    selectedSection !== "bookmarked"
+                      ? "opacity-40"
+                      : "opacity-100"
+                  }`}
+                  src={SVG.AccountMyBookmarked}
+                  alt="My bookmarked"
+                  width={24}
+                  height={24}
+                />
+              </div>
+              {selectedSection === "bookmarked" && (
+                <div className="w-16 h-1 bg-[#62C860] rounded-lg"></div>
+              )}
+            </div>
           </div>
+          <hr className="h-px bg-gray-50 border-0 dark:bg-gray-700" />
+          {/* green line */}
 
           {/* Content Section */}
           {selectedSection === "videos" ? (
@@ -681,6 +678,26 @@ function Page({ params }: any) {
           handleCloseModal={() => handleModalToggle("isShareModalOpen")}
         />
       </Modal>
+      <Modal
+        isOpen={modalState.isFollowerModalOpen}
+        handleClose={() => handleModalToggle("isFollowerModalOpen")}
+      >
+        <Followers
+          handleCloseModal={() => handleModalToggle("isFollowerModalOpen")}
+          followerData={profileInfoState?.profileUserInfo?.follower}
+        />
+      </Modal>
+
+      <Modal
+        isOpen={modalState.isFollowingModalOpen}
+        handleClose={() => handleModalToggle("isFollowingModalOpen")}
+      >
+        <Following
+          handleCloseModal={() => handleModalToggle("isFollowingModalOpen")}
+          followingData={profileInfoState?.profileUserInfo?.following}
+        />
+      </Modal>
+
       <ToastContainer
         position="top-center"
         autoClose={5000}

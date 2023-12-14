@@ -234,7 +234,19 @@ const getProfileInfo = asyncHandler(async (req, res) => {
   const { username } = req.body;
   console.log("username: ", username);
 
-  const user = await User.findOne({ username });
+  const user = await User.findOne({ username })
+    .populate({
+      path: "followers.userID",
+      select: "name username profilePicture", // Specify the fields you want to retrieve
+    })
+    .populate({
+      path: "following.userID",
+      select: "name username profilePicture", // Specify the fields you want to retrieve
+    })
+    .populate({
+      path: "block.userID",
+      select: "name username profilePicture", // Specify the fields you want to retrieve
+    });
   console.log("user: profileInfo ", user);
   if (user) {
     res.json({
@@ -440,6 +452,7 @@ const addFollowers = asyncHandler(async (req, res) => {
 
     return res.status(201).json({
       message: "Follower added successfully",
+      isFollowing: true,
     });
   } catch (error) {
     return res.status(500).json({ message: "Server Error" });
@@ -475,7 +488,7 @@ const blockUser = asyncHandler(async (req, res) => {
       .sort({ date: -1 })
       .populate("block.userID");
 
-    console.log("Updated user:", followedUser);
+    console.log("blockedUser:", blockedUser);
 
     return res.status(201).json({
       message: "User blocked successfully",
@@ -487,43 +500,43 @@ const blockUser = asyncHandler(async (req, res) => {
 });
 
 // Unblock a user
-const unblockUser = asyncHandler(async (req, res) => {
-  const { userId, unblockedUserId } = req.body;
+// const unblockUser = asyncHandler(async (req, res) => {
+//   const { userId, unblockedUserId } = req.body;
 
-  try {
-    const user = await User.findById(userId);
+//   try {
+//     const user = await User.findById(userId);
 
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
+//     if (!user) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
 
-    // Check if the user is blocked
-    const blockedUserIndex = user.block.findIndex(
-      (blockedUser) => blockedUser.userID.toString() === unblockedUserId
-    );
+//     // Check if the user is blocked
+//     const blockedUserIndex = user.block.findIndex(
+//       (blockedUser) => blockedUser.userID.toString() === unblockedUserId
+//     );
 
-    if (blockedUserIndex === -1) {
-      return res.status(400).json({ message: "User is not blocked" });
-    }
+//     if (blockedUserIndex === -1) {
+//       return res.status(400).json({ message: "User is not blocked" });
+//     }
 
-    // Unblock the user
-    const unblockedUser = user.block[blockedUserIndex];
-    user.block.splice(blockedUserIndex, 1);
-    await user.save();
+//     // Unblock the user
+//     const unblockedUser = user.block[blockedUserIndex];
+//     user.block.splice(blockedUserIndex, 1);
+//     await user.save();
 
-    // Populate data for the unblocked user
-    const userToUnblock = await User.findById(unblockedUser.userID).select(
-      "name username profilePicture"
-    );
+//     // Populate data for the unblocked user
+//     const userToUnblock = await User.findById(unblockedUser.userID).select(
+//       "name username profilePicture"
+//     );
 
-    return res.status(200).json({
-      message: "User unblocked successfully",
-      unblockedUser: userToUnblock,
-    });
-  } catch (error) {
-    return res.status(500).json({ message: "Server Error" });
-  }
-});
+//     return res.status(200).json({
+//       message: "User unblocked successfully",
+//       unblockedUser: userToUnblock,
+//     });
+//   } catch (error) {
+//     return res.status(500).json({ message: "Server Error" });
+//   }
+// });
 
 module.exports = {
   registerUser,
@@ -540,5 +553,5 @@ module.exports = {
   updateProfile,
   addFollowers,
   blockUser,
-  unblockUser,
+  // unblockUser,
 };

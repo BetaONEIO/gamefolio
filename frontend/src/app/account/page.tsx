@@ -413,6 +413,7 @@ function Page() {
         >
           <Followers
             handleCloseModal={() => handleModalToggle("isFollowerModalOpen")}
+            followerData={authState?.follower}
           />
         </Modal>
 
@@ -422,6 +423,7 @@ function Page() {
         >
           <Following
             handleCloseModal={() => handleModalToggle("isFollowingModalOpen")}
+            followingData={authState?.following}
           />
         </Modal>
 
