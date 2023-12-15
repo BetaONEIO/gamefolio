@@ -5,8 +5,8 @@ import io from 'socket.io-client';
 
 // export const BASE_URL = "http://192.168.2.120:4000/api";
 // export const BASE_URL = "http://localhost:4000/api";
-export const BASE_URL = "http://3.10.4.157:8080/api";
-export const BASE_URL2 = "http://3.10.4.157:8080";
+export const BASE_URL = "https://3.10.4.157:8080/api";
+export const BASE_URL2 = "https://3.10.4.157:8080";
 // export const BASE_URL = process.env.NEXT_PUBLIC_DEV_BASE_URL;
 
 export const API = async (params: APIParams) => {
