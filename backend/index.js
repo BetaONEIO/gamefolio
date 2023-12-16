@@ -111,7 +111,7 @@ app.get("/api/store-token", (req, res) => {
     httpOnly: false,
   });
   // res.redirect("http://localhost:3000/main");
-  res.redirect(`${process.env.VERCEL_URL}/main`);
+  res.redirect(`${process.env.BASE_URL}/main`);
 });
 
 app.get("/main", (req, res) => {
