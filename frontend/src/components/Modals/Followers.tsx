@@ -1,10 +1,12 @@
 "use client";
 import { useState } from "react";
-import { useSelector } from "@/store";
+import { dispatch, useSelector } from "@/store";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
 import Image from "next/image";
+import { toastError, toastSuccess } from "../Toast/Toast";
+import { followUser, removeFollow } from "@/store/slices/userSlice";
 
 interface FollowerProps {
   handleCloseModal: () => void;
@@ -41,6 +43,32 @@ function Followers({ handleCloseModal, followerData }: FollowerProps) {
   const myBGStyleModal = {
     backgroundColor: "rgba(0, 0, 0, 0.6)",
     backdropFilter: "blur(8px)",
+  };
+
+  const handleRemoveFollow = async (followerID: any) => {
+    const payload = {
+      userId: authState._id,
+      followerID: followerID,
+    };
+
+    console.log("authState._id:", authState._id);
+    console.log("followerID:", followerID);
+
+    const successCallback = (response: any) => {
+      toastSuccess(response.message);
+    };
+
+    const errorCallback = (error: string) => {
+      toastError(error);
+    };
+
+    const params = {
+      payload,
+      successCallback,
+      errorCallback,
+    };
+
+    dispatch(removeFollow(params));
   };
 
   return (
@@ -97,7 +125,7 @@ function Followers({ handleCloseModal, followerData }: FollowerProps) {
                       </div>
                       <div>
                         <button
-                          onClick={() => handleUserButtonClick(user?._id)}
+                          onClick={() => handleRemoveFollow(user?.userID?._id)}
                           className={`${
                             authState?.isFollowed
                               ? "w-[150px] h-[50] font-bold bg-[#37C535] text-white text-center py-[5px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] "

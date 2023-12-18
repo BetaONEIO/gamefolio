@@ -180,6 +180,7 @@ const updateLoginUser = asyncHandler(async (req, res) => {
       follower: user.followers,
       following: user.following,
       block: user.block,
+      report: user.report,
       userToken: req.token,
     });
   } else {
@@ -222,6 +223,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
       follower: user.followers,
       following: user.following,
       block: user.block,
+      report: user.report,
     });
   } else {
     return res.status(404).json({
@@ -262,6 +264,7 @@ const getProfileInfo = asyncHandler(async (req, res) => {
       follower: user.followers,
       following: user.following,
       block: user.block,
+      report: user.report,
     });
   } else {
     return res.status(404).json({
@@ -368,6 +371,28 @@ const addFavoriteGames = asyncHandler(async (req, res) => {
   }
 });
 
+const report = asyncHandler(async (req, res) => {
+  const { userID, report, description } = req.body;
+
+  try {
+    const user = await User.findById(userID);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    await user.report.push({
+      userID,
+      reportType: report,
+      reportDescription: description,
+    });
+    await user.save();
+
+    res.status(200).json({ message: "Report updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 // Controller to update user profile
 const updateProfile = async (req, res) => {
   const {
@@ -459,9 +484,124 @@ const addFollowers = asyncHandler(async (req, res) => {
   }
 });
 
+const removeFollower = asyncHandler(async (req, res) => {
+  const { userId, followerID } = req.body;
+  console.log("req.body##: ", req.body);
+  try {
+    // Find the user who is being followed
+    const user = await User.findById(userId);
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "User not found", error: "User not found" });
+    }
+
+    // Check if the follower is in the followers list
+    const followerIndex = user.followers.findIndex(
+      (follower) => follower.userID.toString() === followerID
+    );
+
+    if (followerIndex === -1) {
+      return res
+        .status(400)
+        .json({ message: "Follower not found", error: "Follower not found" });
+    }
+
+    // Remove the follower from the user's followers list
+    user.followers.splice(followerIndex, 1);
+    await user.save();
+
+    // Find the follower to delete them
+    const deletedFollower = await User.findByIdAndDelete(followerID);
+
+    if (!deletedFollower) {
+      return res
+        .status(400)
+        .json({ message: "Follower not found", error: "Follower not found" });
+    }
+
+    // Use populate to retrieve additional information about the updated user
+    const updatedUser = await User.findById(userId)
+      .populate("followers.userID")
+      .populate("following.userID");
+
+    return res.status(200).json({
+      message: "Follower removed successfully",
+      deletedFollower,
+      updatedUser,
+    });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ message: "Server Error", error: "Server Error" });
+  }
+});
+
+// const removeFollowing = asyncHandler(async (req, res) => {
+//   const { userId, followingID } = req.body;
+//   console.log("req.body##: ", req.body);
+
+//   try {
+//     // Find the user who is following
+//     const user = await User.findById(userId);
+//     if (!user) {
+//       return res
+//         .status(404)
+//         .json({ message: "User not found", error: "User not found" });
+//     }
+
+//     // Check if the user is in the following list
+//     const followingIndex = user.following.findIndex(
+//       (following) => following.userID.toString() === followingID
+//     );
+
+//     if (followingIndex === -1) {
+//       return res.status(400).json({
+//         message: "User not found in following list",
+//         error: "User not found",
+//       });
+//     }
+
+//     // Remove the user from the following list
+//     user.following.splice(followingIndex, 1);
+//     await user.save();
+
+//     // Find the user to update their followers list
+//     const unfollowedUser = await User.findByIdAndDelete(followingID);
+//     if (unfollowedUser) {
+//       // Remove the user from the unfollowed user's followers list
+//       const followersIndex = unfollowedUser.followers.findIndex(
+//         (follower) => follower.userID.toString() === userId
+//       );
+
+//       if (followersIndex !== -1) {
+//         unfollowedUser.followers.splice(followersIndex, 1);
+//         await unfollowedUser.save();
+//       }
+//     }
+
+//     // Use populate to retrieve additional information about the updated user
+//     const updatedUser = await User.findById(userId)
+//       .populate("followers.userID")
+//       .populate("following.userID");
+
+//     return res.status(200).json({
+//       message: "User removed from following list successfully",
+//       updatedUser,
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     return res
+//       .status(500)
+//       .json({ message: "Server Error", error: "Server Error" });
+//   }
+// });
+
 // Block a user
 const blockUser = asyncHandler(async (req, res) => {
   const { userId, blockedUserId } = req.body;
+  console.log("req.body____: ", req.body);
 
   try {
     const user = await User.findById(userId);
@@ -550,8 +690,10 @@ module.exports = {
   verifyEmailOTP,
   addPreferences,
   addFavoriteGames,
+  report,
   updateProfile,
   addFollowers,
+  removeFollower,
   blockUser,
   // unblockUser,
 };

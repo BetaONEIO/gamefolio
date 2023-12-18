@@ -1,13 +1,42 @@
+"use client";
 import { leagueGothic } from "@/font/font";
+import { toastError, toastSuccess } from "../Toast/Toast";
+import { blockUser } from "@/store/slices/userSlice";
+import { dispatch, useSelector } from "@/store";
 
 interface BlockPopupProps {
   handleCloseModal: () => void;
+  data: any;
 }
 
-function BlockPopup({ handleCloseModal }: BlockPopupProps) {
+function BlockPopup({ handleCloseModal, data }: BlockPopupProps) {
+  const authState = useSelector((state: any) => state.auth.userData) || [];
   const myBGStyleModal = {
     backgroundColor: "rgba(0, 0, 0, 0.6)",
     backdropFilter: "blur(8px)",
+  };
+
+  const handleBlockUser = async (blockedUserId: any) => {
+    const payload = {
+      userId: authState._id,
+      blockedUserId: blockedUserId,
+    };
+
+    const successCallback = (response: any) => {
+      toastSuccess(response.message);
+    };
+
+    const errorCallback = (error: string) => {
+      toastError(error);
+    };
+
+    const params = {
+      payload,
+      successCallback,
+      errorCallback,
+    };
+
+    dispatch(blockUser(params));
   };
 
   return (
@@ -28,12 +57,15 @@ function BlockPopup({ handleCloseModal }: BlockPopupProps) {
 
             <div className="w-full mb-4 sm:mb-5">
               <p className="text-md">
-                Are you sure you want to block Mark Johnson?
+                Are you sure you want to block this user?
               </p>
             </div>
 
             <div className="flex flex-col items-center mb-2 sm:mb-2 ">
-              <button className="w-1/2 h-[50] font-bold bg-[#162423] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3">
+              <button
+                onClick={() => handleBlockUser(data)}
+                className="w-1/2 h-[50] font-bold bg-[#162423] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3"
+              >
                 Yes
               </button>
               <button

@@ -110,6 +110,6 @@ export const API = async (params: APIParams) => {
   }
 };
 
-export const socket = io(`http://3.10.4.157:${9090}`);
+export const socket = io("http://localhost:8000");
 
 

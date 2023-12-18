@@ -1,26 +1,26 @@
 "use client";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import Layout from "@/components/CustomLayout/layout";
+import Followers from "@/components/Modals/Followers";
+import Following from "@/components/Modals/Following";
 import Modal from "@/components/Modals/Modal";
 import MoreOptions from "@/components/Modals/MoreOptions";
+import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import { leagueGothic } from "@/font/font";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
+import { initChat } from "@/store/slices/chatSlice";
+import { getAllPostVideos } from "@/store/slices/postSlice";
 import { followUser, getProfileInfo } from "@/store/slices/userSlice";
+import { copyToClipboard, generateUniqueRoomId } from "@/utils/helpers";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import Loading from "../loading";
-import { getAllPostVideos } from "@/store/slices/postSlice";
-import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import { ToastContainer } from "react-toastify";
-import { initChat } from "@/store/slices/chatSlice";
-import { useRouter } from "next/navigation";
-import { copyToClipboard, generateUniqueRoomId } from "@/utils/helpers";
-import Followers from "@/components/Modals/Followers";
-import Following from "@/components/Modals/Following";
+import Loading from "../loading";
 
 const popular = [
   { id: 1, IMAGE: IMAGES.Popular },
@@ -270,6 +270,10 @@ function Page({ params }: any) {
     dispatch(initChat(params));
   };
 
+  const userVideos = postState.videos.filter(
+    (post: any) => post?.userID?._id === authState._id
+  );
+
   const handleFollowUser = async (userId: any) => {
     const payload = {
       userId: userId,
@@ -393,7 +397,7 @@ function Page({ params }: any) {
                   <span
                     className={`${leagueGothic.className} text-lg md:text-2xl font-normal`}
                   >
-                    {postState?.videos?.length || 0}
+                    {userVideos.length || 0}
                   </span>
                   <span className="md:text-lg text-gray-400">Posts</span>
                 </div>
@@ -676,6 +680,7 @@ function Page({ params }: any) {
       >
         <MoreOptions
           handleCloseModal={() => handleModalToggle("isShareModalOpen")}
+          data={profileInfoState?.profileUserInfo?._id}
         />
       </Modal>
       <Modal

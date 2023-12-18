@@ -18,6 +18,10 @@ export const PATH = {
     updateProfile: "user/profile/update",
     updatePassword: "user/password/update",
     followUser: "user/follower/create",
+    removeFollow: "user/follower/delete",
+    // removeFollowing: "user/following/delete",
+    blockUser: "user/block/create",
+    reportUser: "user/report/create",
   },
 
   theNextLeg: {
@@ -68,5 +72,5 @@ export const PATH = {
   chat: {
     init: "v1/chat/init",
     getUserMessages: "v1/chat/messages/get",
-  }
+  },
 };

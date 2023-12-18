@@ -19,6 +19,7 @@ import { getAllPostVideos } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import { copyToClipboard } from "@/utils/helpers";
 import { ToastContainer } from "react-toastify";
+import BlockUser from "@/components/Modals/BlockUser";
 
 const popular = [
   { id: 1, IMAGE: IMAGES.Popular },
@@ -153,6 +154,10 @@ function Page() {
     isBadgeModalOpen: false,
   });
 
+  const userVideos = postState.videos.filter(
+    (post: any) => post?.userID?._id === authState._id
+  );
+
   console.log("authState", authState);
 
   const payload = {
@@ -256,10 +261,11 @@ function Page() {
                     <span
                       className={`${leagueGothic.className} text-lg md:text-2xl font-normal`}
                     >
-                      {postState?.videos?.length || 0}
+                      {userVideos.length || 0}
                     </span>
-                    <span className="md:text-lg text-gray-400">Posts</span>
+                    <span className="md:text-lg text-gray-400"> Posts</span>
                   </div>
+
                   {/* Vertical divider */}
                   <div className="border-r border-gray-700 h-full rounded-full mx-2"></div>
                   <div
@@ -404,6 +410,7 @@ function Page() {
         >
           <MoreOptions
             handleCloseModal={() => handleModalToggle("isShareModalOpen")}
+            data={authState?.userID}
           />
         </Modal>
 
