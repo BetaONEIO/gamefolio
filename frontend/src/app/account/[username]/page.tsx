@@ -373,7 +373,9 @@ function Page({ params }: any) {
                   className="flex items-center"
                   onClick={() => copyToClipboard(authState?.username)}
                 >
-                  <p>({profileInfoState?.profileUserInfo?.username})</p>
+                  <p className="text-white">
+                    ({profileInfoState?.profileUserInfo?.username})
+                  </p>
                   <Image
                     className="cursor-pointer hover:opacity-80"
                     src={SVG.AccountCopyUsername}
@@ -435,7 +437,7 @@ function Page({ params }: any) {
               <div className="flex h-8 items-center  my-2 gap-6 sm:gap-6 -space-x-4">
                 <div className="flex -space-x-4">
                   <Image
-                    className="w-8 h-8 rounded-full border-white dark:border-gray-800"
+                    className="w-8 h-8 rounded-full  border-gray-800"
                     src={IMAGES.Ellipse1}
                     alt="Next"
                     width={0}
@@ -443,7 +445,7 @@ function Page({ params }: any) {
                     sizes="100vw"
                   />
                   <Image
-                    className="w-8 h-8 rounded-full border-white dark:border-gray-800"
+                    className="w-8 h-8 rounded-full  border-gray-800"
                     src={IMAGES.Ellipse2}
                     alt="Next"
                     width={0}
@@ -451,7 +453,7 @@ function Page({ params }: any) {
                     sizes="100vw"
                   />
                   <Image
-                    className="w-8 h-8 rounded-full border-white dark:border-gray-800"
+                    className="w-8 h-8 rounded-full border-gray-800"
                     src={IMAGES.Ellipse3}
                     alt="Next"
                     width={0}
@@ -468,7 +470,7 @@ function Page({ params }: any) {
               {/* <div className="flex h-8 my-4 gap-8 sm:gap-8 -space-x-4">
                 <div className="relative">
                   <Image
-                    className="w-8 h-8 p-0.5 dark:bg-[#FFF] rounded-lg"
+                    className="w-8 h-8 p-0.5 bg-[#FFF] rounded-lg"
                     src={SVG.Twitch}
                     alt="Next"
                     width={0}
@@ -486,7 +488,7 @@ function Page({ params }: any) {
                 </div>
                 <div className="relative">
                   <Image
-                    className="relative w-8 h-8 p-0.5 dark:bg-[#FFF] rounded-lg"
+                    className="relative w-8 h-8 p-0.5 bg-[#FFF] rounded-lg"
                     src={SVG.PlayStation}
                     alt="Next"
                     width={0}
@@ -504,7 +506,7 @@ function Page({ params }: any) {
                 </div>
                 <div className="relative">
                   <Image
-                    className="relative w-8 h-8 p-0.5 dark:bg-[#FFF] rounded-lg"
+                    className="relative w-8 h-8 p-0.5 bg-[#FFF] rounded-lg"
                     src={SVG.Xbox}
                     alt="Next"
                     width={0}
@@ -522,7 +524,7 @@ function Page({ params }: any) {
                 </div>
                 <div className="relative">
                   <Image
-                    className="relative w-8 h-8 p-0.5 dark:bg-[#FFF] rounded-lg"
+                    className="relative w-8 h-8 p-0.5 bg-[#FFF] rounded-lg"
                     src={SVG.Steam}
                     alt="Next"
                     width={0}
@@ -654,7 +656,7 @@ function Page({ params }: any) {
               )}
             </div>
           </div>
-          <hr className="h-px bg-gray-50 border-0 dark:bg-gray-700" />
+          <hr className="h-px  border-0 bg-gray-700" />
           {/* green line */}
 
           {/* Content Section */}

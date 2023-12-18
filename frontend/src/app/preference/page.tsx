@@ -81,7 +81,7 @@ const Preference = () => {
 
   return (
     <Suspense fallback={<Loading />}>
-      <section className="bg-gray-50 dark:bg-[#091619] min-h-screen flex flex-col justify-center">
+      <section className="bg-[#091619] min-h-screen flex flex-col justify-center">
         <div className="flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
           <Image src={IMAGES.logo} alt="logo" width={100} height={100} />
 
@@ -98,17 +98,17 @@ const Preference = () => {
             <hr className="border-t border-gray-600 my-4" />
             <div className="w-80 py-4">
               <ul
-                className="flex-wrap flex text-gray-500 dark:text-gray-400"
+                className="flex-wrap flex text-gray-400"
                 id="myTab"
                 role="tablist"
               >
                 {tabsData.map((tab) => (
                   <li key={tab.id} className="mr-0.5 m-0.5" role="presentation">
                     <button
-                      className={`inline-block px-2 font-normal rounded-full dark:bg-[#162423] ${
+                      className={`inline-block px-2 font-normal rounded-full bg-[#162423] ${
                         activeTabs.includes(tab.label)
                           ? "border-2 border-[#37C535] bg-[#37C535] text-white"
-                          : "bg-gray-100 dark:bg-[#162423]  dark:border-green-700 text-gray-500 "
+                          : " bg-[#162423]  border-green-700 text-gray-500 "
                       }`}
                       onClick={() => handleTabClick(tab.label)}
                       role="tab"

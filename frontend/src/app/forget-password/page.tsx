@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const ForgetPassword = () => {
   return (
-    <section className="dark:bg-[#091619] min-h-screen flex flex-col justify-center">
+    <section className="bg-[#091619] min-h-screen flex flex-col justify-center">
       <div className="flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
         <Image
           src={IMAGES.logo}
@@ -30,7 +30,7 @@ const ForgetPassword = () => {
             <div>
               <label
                 htmlFor="email"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-white"
               >
                 Email
               </label>
@@ -38,7 +38,7 @@ const ForgetPassword = () => {
                 type="email"
                 name="email"
                 id="email"
-                className="bg-[#162423] sm:text-sm outline-none rounded-lg block w-full p-3 dark:text-white"
+                className="bg-[#162423] sm:text-sm outline-none rounded-lg block w-full p-3 text-white"
                 placeholder="Email Address"
                 required
               />
@@ -48,11 +48,11 @@ const ForgetPassword = () => {
               Send
             </button>
 
-            <p className="text-sm font-light text-center text-gray-50 dark:text-gray-50">
+            <p className="text-sm font-light text-center text-gray-50">
               Go back to{" "}
               <a
                 href="/login"
-                className="font-medium text-primary-600 hover:underline dark:text-[#43DD4E]"
+                className="font-medium text-primary-600 hover:underline text-[#43DD4E]"
               >
                 Login
               </a>

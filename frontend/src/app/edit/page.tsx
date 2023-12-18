@@ -122,7 +122,7 @@ const Edit = () => {
 
       <section
         style={sectionStyle}
-        className="flex flex-col items-center bg-gray-50 dark:bg-[#091619] min-h-screen"
+        className="flex flex-col items-center  bg-[#091619] min-h-screen"
       >
         <div className="flex justify-between px-6 py-8 md:h-screen lg:py-0">
           <div className="relative p-6 sm:p-8">
@@ -165,14 +165,14 @@ const Edit = () => {
               <div>
                 <label
                   htmlFor="name"
-                  className="block font-bold mb-2 text-sm text-gray-900 dark:text-white"
+                  className="block font-bold mb-2 text-sm text-white"
                 >
                   Name
                 </label>
                 <input
                   type="text"
                   id="name"
-                  className="bg-[#162423] sm:text-sm outline-none rounded-lg block w-full p-2.5 dark:text-white"
+                  className="bg-[#162423] sm:text-sm outline-none rounded-lg block w-full p-2.5 text-white"
                   placeholder="Name"
                   required
                   {...register("name", {
@@ -187,14 +187,14 @@ const Edit = () => {
               <div>
                 <label
                   htmlFor="username"
-                  className="block mb-2 text-sm font-bold text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-bold  text-white"
                 >
                   Username
                 </label>
                 <input
                   type="text"
                   id="username"
-                  className="bg-[#162423] sm:text-sm outline-none rounded-lg block w-full p-2.5 dark:text-white"
+                  className="bg-[#162423] sm:text-sm outline-none rounded-lg block w-full p-2.5 text-white"
                   placeholder="Username"
                   required
                   {...register("username", {
@@ -209,26 +209,26 @@ const Edit = () => {
               <div>
                 <label
                   htmlFor="Date of Birth"
-                  className="block mb-2 text-sm font-bold  text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-bold   text-white"
                 >
                   Date of Birth (optional)
                 </label>
                 <input
                   type="Date"
-                  className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-2.5 dark:text-white"
+                  className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-2.5 text-white"
                   placeholder="Date of Birth"
                   {...register("dateOfBirth")}
                 />
               </div>
 
               <div className="mb-4">
-                <label className="block mb-2 text-sm font-bold text-gray-900 dark:text-white">
+                <label className="block mb-2 text-sm font-bold  text-white">
                   Bio
                 </label>
                 <textarea
                   id="description"
                   rows={3}
-                  className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-2.5 dark:text-white"
+                  className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-2.5 text-white"
                   placeholder="Lorem ipsum dolor sit amet consectetur. Ante duis tellus tincidunt nibh"
                   {...register("bio", {
                     required: true,
@@ -246,7 +246,7 @@ const Edit = () => {
                     onClick={() => onUpdateAccountType("public")}
                     className={
                       accountTypeValue === "public"
-                        ? "text-white w-full justify-center bg-primary-700 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-[#162423] dark:border-green-500 border border-gray-200"
+                        ? "text-white w-full justify-center bg-primary-700 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-[#162423] border-green-500 border"
                         : "w-full justify-center text-gray-500 items-center outline-none rounded-lg text-sm font-medium px-5 py-2.5 bg-[#162423]"
                     }
                   >
@@ -257,7 +257,7 @@ const Edit = () => {
                     onClick={() => onUpdateAccountType("private")}
                     className={
                       accountTypeValue === "private"
-                        ? "text-white w-full justify-center bg-primary-700 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-[#162423] dark:border-green-500 border border-gray-200"
+                        ? "text-white w-full justify-center bg-primary-700 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-[#162423] border-green-500 border "
                         : "w-full justify-center text-gray-500 items-center outline-none rounded-lg text-sm font-medium px-5 py-2.5 bg-[#162423]"
                     }
                   >
@@ -269,7 +269,7 @@ const Edit = () => {
               <button className="w-full font-bold h-12 bg-[#37C535] text-white text-center rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3">
                 Update
               </button>
-              <p className="text-md text-center text-gray-50 dark:text-gray-50">
+              <p className="text-md text-center  text-gray-50">
                 <a
                   href="/login"
                   className="font-bold text-primary-600 underline "

@@ -45,7 +45,7 @@ function Transaction() {
       <div className="flex justify-center m-5">
         <button
           id="updateProductButton"
-          className="block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#091619] dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+          className="block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-[#091619] hover:bg-primary-700 focus:ring-primary-800"
           type="button"
           onClick={handleUpdateButtonClick}
         >
@@ -56,10 +56,10 @@ function Transaction() {
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="modal-container sm:w-96 lg:w-4/12 mx-auto z-50 overflow-y-auto">
-            <div className="relative text-center bg-white rounded-lg dark:bg-[#091619] p-3 sm:p-6 border dark:border-[#586769]">
+            <div className="relative text-center  rounded-lg bg-[#091619] p-3 sm:p-6 border border-[#586769]">
               <button
                 type="button"
-                className="text-white-400 absolute top-3.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                className="text-white-400 absolute top-3.5 right-2.5 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white"
                 onClick={handleCloseModal}
               >
                 <Image src={SVG.Exit} alt="exit" width={30} height={30} />
@@ -67,7 +67,7 @@ function Transaction() {
               </button>
 
               <h1
-                className={`${leagueGothic.className} text-center text-3xl mb-5 dark:text-white`}
+                className={`${leagueGothic.className} text-center text-3xl mb-5 text-white`}
               >
                 TRANSACTION HISTORY
               </h1>
@@ -119,7 +119,7 @@ function Transaction() {
                           </p>
                         </div>
                         <div>
-                          <p>{coin.coin} Coin</p>
+                          <p className="text-white">{coin.coin} Coin</p>
                         </div>
                       </div>
                     </div>

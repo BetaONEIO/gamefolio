@@ -11,11 +11,11 @@ interface AddNewProps {
 function StoryView({ handleCloseModal }: AddNewProps) {
   return (
     <>
-      <div className="modal-container sm:w-96 sm:h-screen mx-auto lg:w-full lg:h-screen z-50 bg-white dark:bg-[#091619]">
+      <div className="modal-container sm:w-96 sm:h-screen mx-auto lg:w-full lg:h-screen z-50  bg-[#091619]">
         {/* Modal content */}
         <button
           type="button"
-          className="text-white-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex  dark:hover:bg-gray-600 dark:hover:text-white"
+          className="text-white-400 absolute top-2.5 right-2.5 bg-transparent  rounded-lg text-sm p-1.5 ml-auto inline-flex  hover:bg-gray-600 hover:text-white"
           data-modal-toggle="deleteAlertModal"
           onClick={handleCloseModal}
         >

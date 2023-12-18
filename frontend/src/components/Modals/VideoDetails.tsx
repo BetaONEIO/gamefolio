@@ -67,12 +67,12 @@ function VideoDetails({
         style={myBGStyleModal}
         className="fixed inset-0 flex items-center justify-center z-50"
       >
-        <div className="modal-container w-11/12 sm:w-11/12 lg:w-9/12 h-[40rem] lg:h-[calc(100vh - 2rem)] z-50 overflow-y-auto dark:bg-[#091619] rounded-lg no-scrollbar">
+        <div className="modal-container w-11/12 sm:w-11/12 lg:w-9/12 h-[40rem] lg:h-[calc(100vh - 2rem)] z-50 overflow-y-auto bg-[#091619] rounded-lg no-scrollbar">
           {/* Modal content */}
-          <div className="relative bg-white rounded-lg dark:bg-[#091619] py-5 sm:py-4 border dark:border-[#586769]">
+          <div className="relative  rounded-lg bg-[#091619] py-5 sm:py-4 border border-[#586769]">
             <button
               type="button"
-              className="text-white-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex  dark:hover:bg-gray-600 dark:hover:text-white"
+              className="text-white-400 absolute top-2.5 right-2.5 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex  hover:bg-gray-600 hover:text-white"
               data-modal-toggle="deleteAlertModal"
               onClick={handleCloseModal}
             >
@@ -90,7 +90,7 @@ function VideoDetails({
               {/* Left Column - Story Block */}
               <div className="flex justify-center w-full sm:w-1/2 border-r-2 border-[#1C2C2E]">
                 {/* Add your story block content here */}
-                <div className="w-full md:w-[22rem] lg:w-full flex flex-col sm:justify-center justify-center items-center rounded-lg dark:bg-[#091619] bg-gray-100 rounded-lg dark:bg-[#091619] border-[#1C2C2E]">
+                <div className="w-full md:w-[22rem] lg:w-full flex flex-col sm:justify-center justify-center items-center  bg-[#091619]  rounded-lg  border-[#1C2C2E]">
                   <div className="mb-4">
                     <div className="flex justify-center items-center w-full">
                       <video
@@ -119,10 +119,10 @@ function VideoDetails({
                       height={50}
                     />
                     <div>
-                      <h3 className="text-lg font-bold text-gray-900 md:text-xl dark:text-white">
+                      <h3 className="text-lg font-bold  md:text-xl text-white">
                         {detailedPost?.userID?.name}
                       </h3>
-                      <p className="text-base font-light text-gray-600 dark:text-gray-400">
+                      <p className="text-base font-light  text-gray-400">
                         {detailedPost?.date &&
                           new Date(detailedPost.date).toLocaleString("en-US", {
                             hour: "numeric",
@@ -135,7 +135,7 @@ function VideoDetails({
                     </div>
                   </div>
                   <div className="m-4">
-                    <p className="text-base font-light text-gray-200 dark:text-gray-200">
+                    <p className="text-base font-light  text-gray-200">
                       {detailedPost?.description}
                     </p>
                   </div>
@@ -187,7 +187,7 @@ function VideoDetails({
                   </div>
                 </div>
 
-                <div className="border dark:border-[#586769] mt-3"></div>
+                <div className="border border-[#586769] mt-3"></div>
 
                 <div className="h-[19.5rem] mx-4 overflow-y-scroll no-scrollbar">
                   {detailedPost?.comments.map((comment: any) => (
@@ -201,15 +201,15 @@ function VideoDetails({
                       />
                       <div>
                         <div className="flex flex-row mb-1">
-                          <p className="text-lg font-bold md:text-lg dark:text-white">
+                          <p className="text-lg font-bold md:text-lg text-white">
                             {comment?.userID?.name}
                           </p>
-                          <p className="ml-2 font-light md:text-md dark:text-gray-200">
+                          <p className="ml-2 font-light md:text-md text-gray-200">
                             {comment?.commentText}
                           </p>
                         </div>
-                        <div className="flex items-center text-base font-light sm:text-sm text-gray-50 dark:text-gray-50 gap-2">
-                          <p>1d</p>
+                        <div className="flex items-center text-base font-light sm:text-sm text-gray-50 gap-2">
+                          <p className="text-white">1d</p>
                           <p className="cursor-pointer">
                             {comment?.like} likes
                           </p>
@@ -233,7 +233,7 @@ function VideoDetails({
                     <input
                       type="Post"
                       id="default-search"
-                      className="w-[16rem] lg:w-[28rem] block p-4 ml-10 text-sm bg-[#091619] outline-none sm:text-sm dark:text-white"
+                      className="w-[16rem] lg:w-[28rem] block p-4 ml-10 text-sm bg-[#091619] outline-none sm:text-sm text-white"
                       placeholder="Add a comment..."
                       onChange={handleChange}
                       value={comments}
@@ -242,7 +242,7 @@ function VideoDetails({
                     <button
                       onClick={() => handleCreateComment(postID, comments)}
                       type="submit"
-                      className="text-[#43DD4E] absolute right-0 bottom-0 top-0 bg-primary-700 font-medium text-sm px-4 py-2 dark:bg-primary-600 "
+                      className="text-[#43DD4E] absolute right-0 bottom-0 top-0 bg-primary-700 font-medium text-sm px-4 py-2 bg-primary-600 "
                     >
                       Post
                     </button>

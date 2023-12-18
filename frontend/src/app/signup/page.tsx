@@ -68,7 +68,7 @@ const Signup = () => {
   };
 
   return (
-    <section className="bg-gray-50 dark:bg-[#091619] min-h-screen flex flex-col justify-center">
+    <section className=" bg-[#091619] min-h-screen flex flex-col justify-center">
       <div className="flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
         <Image
           src={IMAGES.logo}
@@ -90,14 +90,14 @@ const Signup = () => {
             <div>
               <label
                 htmlFor="name"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium  text-white"
               >
                 Name
               </label>
               <input
                 type="text"
                 name="name"
-                className="bg-[#162423] sm:text-sm outline-none rounded-lg block w-full p-2.5 dark:text-white"
+                className="bg-[#162423] sm:text-sm outline-none rounded-lg block w-full p-2.5 text-white"
                 placeholder="Name"
                 value={form.name}
                 onChange={onChange}
@@ -106,14 +106,14 @@ const Signup = () => {
             <div>
               <label
                 htmlFor="username"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium  text-white"
               >
                 Username
               </label>
               <input
                 type="text"
                 name="username"
-                className="bg-[#162423] sm:text-sm outline-none rounded-lg block w-full p-2.5 dark:text-white"
+                className="bg-[#162423] sm:text-sm outline-none rounded-lg block w-full p-2.5 text-white"
                 placeholder="Username"
                 value={form.username}
                 onChange={onChange}
@@ -123,14 +123,14 @@ const Signup = () => {
             <div>
               <label
                 htmlFor="email"
-                className="block mb-2 text-sm font-medium  text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium  text-white"
               >
                 Email
               </label>
               <input
                 type="email"
                 name="email"
-                className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-2.5 dark:text-white"
+                className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-2.5 text-white"
                 placeholder="Email Address"
                 value={form.email}
                 onChange={onChange}
@@ -140,14 +140,14 @@ const Signup = () => {
             <div>
               <label
                 htmlFor="password"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium  text-white"
               >
                 Password
               </label>
               <input
                 type="password"
                 name="password"
-                className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-2.5 dark:text-white"
+                className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-2.5 text-white"
                 placeholder="Password"
                 value={form.password}
                 onChange={onChange}
@@ -161,11 +161,11 @@ const Signup = () => {
             >
               SignUp
             </button>
-            <p className="text-sm font-light text-center text-gray-50 dark:text-gray-50">
+            <p className="text-sm font-light text-center  text-gray-50">
               Already have an account?{" "}
               <a
                 href="/login"
-                className="font-medium text-primary-600 hover:underline dark:text-[#43DD4E]"
+                className="font-medium text-primary-600 hover:underline text-[#43DD4E]"
               >
                 Login
               </a>

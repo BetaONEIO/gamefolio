@@ -21,10 +21,10 @@ function TermsModal({ handleCloseModal }: TermsModalProps) {
         <div className="modal-container sm:w-96 mx-auto lg:w-1/4 lg-rounded z-50">
           {/* Modal content */}
 
-          <div className="relative text-center justify-center bg-white rounded-lg  dark:bg-[#091619] p-5 sm:p-5 border dark:border-[#586769]">
+          <div className="relative text-center justify-center rounded-lg  bg-[#091619] p-5 sm:p-5 border border-[#586769]">
             <button
               type="button"
-              className="text-white-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              className="text-white-400 absolute top-2.5 right-2.5 bg-transparent  rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white"
               data-modal-toggle="deleteAlertModal"
               onClick={handleCloseModal}
             >
@@ -32,14 +32,16 @@ function TermsModal({ handleCloseModal }: TermsModalProps) {
               <span className="sr-only">Close modal</span>
             </button>
             <h1
-              className={`${leagueGothic.className} text-3xl mb-7  dark:text-white`}
+              className={`${leagueGothic.className} text-3xl mb-7  text-white`}
             >
               TERMS & CONDITIONS
             </h1>
 
-            <div className="w-full mb-4 sm:mb-5">
-              <h2 className=" text-left font-semibold mb-3">Version 1.0.0</h2>
-              <p className="text-left text-xs font-light mb-2">
+            <div className="w-full mb-4 sm:mb-5  ">
+              <h2 className=" text-left font-semibold mb-3 text-white">
+                Version 1.0.0
+              </h2>
+              <p className="text-left text-xs font-light mb-2 text-white">
                 Lorem ipsum dolor sit amet consectetur. Placerat quis integer
                 facilisi sit vivamus aenean lacus. Lacus rhoncus eu sed diam.
                 Turpis mus suspendisse sociis scelerisque lacus gravida fames.
@@ -50,14 +52,14 @@ function TermsModal({ handleCloseModal }: TermsModalProps) {
                 vivamus. Cras nunc a morbi risus. Nullam cursus odio tempus
                 posuere non risus non venenatis.
               </p>
-              <p className="text-left text-xs font-light mb-2">
+              <p className="text-left text-xs font-light mb-2 text-white">
                 Lorem ipsum dolor sit amet consectetur. Nunc ullamcorper quis
                 facilisis ac congue tincidunt tristique ipsum semper. Tincidunt
                 fringilla nisl dolor orci nibh imperdiet faucibus fames. Euismod
                 elementum.
               </p>
 
-              <p className="text-left text-xs font-light mb-2">
+              <p className="text-left text-xs font-light mb-2 text-white">
                 Lorem ipsum dolor sit amet consectetur. Congue pretium molestie
                 molestie nunc etiam eu urna id lacus. At dignissim blandit
                 imperdiet eget commodo tristique viverra in. Ultricies neque
@@ -68,7 +70,7 @@ function TermsModal({ handleCloseModal }: TermsModalProps) {
                 faucibus volutpat scelerisque a. Nisi facilisis purus maecenas
                 diam neque.
               </p>
-              <p className="text-left text-xs font-light">
+              <p className="text-left text-xs font-light text-white">
                 Lorem ipsum dolor sit amet consectetur. Congue pretium
               </p>
             </div>

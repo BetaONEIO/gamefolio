@@ -54,7 +54,7 @@ function AllStories() {
                 alt="UploadStory"
               />
             </div>
-            <span className="text-xs">Story</span>
+            <span className="text-xs text-white">Story</span>
           </div>
 
           {storyState?.stories?.map((items: any, index: number) => (

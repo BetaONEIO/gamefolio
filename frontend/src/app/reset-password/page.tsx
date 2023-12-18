@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const ResetPassword = () => {
   return (
-    <section className="bg-gray-50 dark:bg-[#091619] min-h-screen flex flex-col justify-center">
+    <section className=" bg-[#091619] min-h-screen flex flex-col justify-center">
       <div className="flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
         <Image
           src={IMAGES.logo}
@@ -31,7 +31,7 @@ const ResetPassword = () => {
             <div>
               <label
                 htmlFor="password"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium  text-white"
               >
                 New Password
               </label>
@@ -39,7 +39,7 @@ const ResetPassword = () => {
                 type="password"
                 name="password"
                 id="password"
-                className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-3 dark:text-white"
+                className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-3 text-white"
                 placeholder="New Password"
                 required
               />
@@ -48,7 +48,7 @@ const ResetPassword = () => {
             <div>
               <label
                 htmlFor="resetPassword"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium  text-white"
               >
                 Repeat New Password
               </label>
@@ -56,7 +56,7 @@ const ResetPassword = () => {
                 type="password"
                 name="resetPassword"
                 id="resetPassword"
-                className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-3 dark:text-white"
+                className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-3 text-white"
                 placeholder="Confirm New Password"
                 required
               />

@@ -81,7 +81,7 @@ const Page = () => {
   }, []);
 
   return (
-    <section className="dark:bg-[#091619] min-h-screen flex flex-col justify-center">
+    <section className="bg-[#091619] min-h-screen flex flex-col justify-center">
       <div className="flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
         <Image
           src={IMAGES.logo}
@@ -103,14 +103,14 @@ const Page = () => {
             <div>
               <label
                 htmlFor="email"
-                className="block mb-2 text-sm font-medium dark:text-white"
+                className="block mb-2 text-sm font-medium text-white"
               >
                 Email
               </label>
               <input
                 type="email"
                 name="email"
-                className="bg-[#162423] sm:text-sm outline-none rounded-lg block w-full p-3 dark:text-white"
+                className="bg-[#162423] sm:text-sm outline-none rounded-lg block w-full p-3 text-white"
                 placeholder="Email Address"
                 value={email}
                 onChange={handleChange}
@@ -120,7 +120,7 @@ const Page = () => {
             <div>
               <label
                 htmlFor="password"
-                className="block mb-2 text-sm font-medium dark:text-white"
+                className="block mb-2 text-sm font-medium text-white"
               >
                 Password
               </label>
@@ -128,7 +128,7 @@ const Page = () => {
                 type="password"
                 name="password"
                 id="password"
-                className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-3 dark:text-white"
+                className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-3 text-white"
                 placeholder="Password"
                 value={password}
                 onChange={handleChange}
@@ -142,15 +142,15 @@ const Page = () => {
               Login
             </button>
 
-            <p className="text-sm font-light text-center dark:text-gray-300">
+            <p className="text-sm font-light text-center text-gray-300">
               <a href="./forget-password">Forget Password?</a>
             </p>
 
-            <p className="text-sm font-light text-center dark:text-gray-50">
+            <p className="text-sm font-light text-center text-gray-50">
               A new user?{" "}
               <a
                 href="./signup"
-                className="font-medium text-primary-600 hover:underline dark:text-primary-500 dark:text-green-400"
+                className="font-medium text-primary-600 hover:underline  text-green-400"
               >
                 SignUp
               </a>

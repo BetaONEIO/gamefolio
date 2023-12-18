@@ -65,10 +65,10 @@ function Report({ handleCloseModal }: ReportProps) {
       <div className="fixed inset-0 flex items-center justify-center z-50">
         <div className="modal-container w-full sm:w-96 mx-auto lg-rounded z-50 overflow-y-auto">
           {/* Modal content */}
-          <div className="relative p-4 text-center rounded-lg dark:bg-[#091619] sm:p-5 border dark:border-[#586769]">
+          <div className="relative p-4 text-center rounded-lg bg-[#091619] sm:p-5 border border-[#586769]">
             <button
               type="button"
-              className="text-white-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              className="text-white-400 absolute top-2.5 right-2.5 bg-transparentrounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white"
               data-modal-toggle="deleteAlertModal"
               onClick={handleCloseModal}
             >
@@ -77,7 +77,7 @@ function Report({ handleCloseModal }: ReportProps) {
             </button>
 
             <h1
-              className={`${leagueGothic.className} text-3xl mb-7  dark:text-white`}
+              className={`${leagueGothic.className} text-3xl mb-7  text-white`}
             >
               REPORT
             </h1>
@@ -89,7 +89,7 @@ function Report({ handleCloseModal }: ReportProps) {
                     <button
                       onClick={toggleDropdown}
                       type="button"
-                      className="inline-flex justify-between w-80 px-4 py-2 text-gray-700  dark:bg-[#1C2C2E] dark:border-gray-700 dark:text-white dark:hover:bg-[#1C2C2E] dark:rounded-lg"
+                      className="inline-flex justify-between w-80 px-4 py-2   bg-[#1C2C2E] border-gray-700 text-white hover:bg-[#1C2C2E] rounded-lg"
                       aria-selected={true}
                     >
                       {selectedOption || "Select Reason"}
@@ -106,7 +106,7 @@ function Report({ handleCloseModal }: ReportProps) {
 
                 {isDropdownOpen && (
                   <div className="absolute z-50 mt-2 w-full rounded-md shadow-lg">
-                    <ul className="py-1 border  dark:bg-[#1C2C2E] dark:border-gray-700 dark:text-white dark:border-t-0 dark:rounded-b-lg">
+                    <ul className="py-1 border  bg-[#1C2C2E] border-gray-700 text-white border-t-0 rounded-b-lg">
                       {optionsForGame.map((option) => (
                         <li
                           key={option.value}
@@ -144,7 +144,7 @@ function Report({ handleCloseModal }: ReportProps) {
             <div className="mb-4 sm:col-span-2">
               <textarea
                 id="description"
-                className="inline-flex justify-between  p-2.5 w-80 h-28 text-sm text-gray-900 outline-none rounded-lg dark:bg-[#1C2C2E] dark:text-white"
+                className="inline-flex justify-between  p-2.5 w-80 h-28 text-sm  outline-none rounded-lg bg-[#1C2C2E] text-white"
                 placeholder="Type here report reason..."
                 onChange={(e) => setReportDescription(e.target.value)}
               ></textarea>

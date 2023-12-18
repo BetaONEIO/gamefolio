@@ -46,7 +46,7 @@ function Page() {
         className="flex flex-col  items-center py-6 bg-[#091619]"
       >
         <div className="flex flex-col w-7/12  p-2">
-          <span>Transcation History</span>
+          <span className="text-white">Transcation History</span>
           {/* Coins section */}
           <div className="flex flex-col gap-2">
             {/* Coins Item */}
@@ -57,15 +57,15 @@ function Page() {
                 width={42}
                 height={42}
               />
-              <span>Spend to John Smith</span>
+              <span className="text-white">Spend to John Smith</span>
               <span className="text-[#7C7F80]">22 Mar, 2022 - 3:20 PM</span>
-              <span>3 Coins</span>
+              <span className="text-white">3 Coins</span>
             </div>
             <div className="flex gap-2 justify-between items-center py-4 px-4 border-b border-gray-600">
               <Image src={SVG.CoinsAdd} alt="GGcoin" width={42} height={42} />
-              <span>Spend to John Smith</span>
+              <span className="text-white">Spend to John Smith</span>
               <span className="text-[#7C7F80]">22 Mar, 2022 - 3:20 PM</span>
-              <span>3 Coins</span>
+              <span className="text-white">3 Coins</span>
             </div>
           </div>
         </div>

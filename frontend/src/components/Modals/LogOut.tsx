@@ -34,11 +34,11 @@ function LogOut({ handleCloseModal }: LogOutProps) {
         <div className="modal-container w-[410px] mx-auto lg-rounded z-50">
           {/* Modal content */}
 
-          <div className="relative text-center justify-center bg-white rounded-lg  dark:bg-[#091619] p-5 sm:p-5 border dark:border-[#586769]">
+          <div className="relative text-center justify-center rounded-lg  bg-[#091619] p-5 sm:p-5 border border-[#586769]">
             <h1
-              className={`${leagueGothic.className} text-3xl mb-7  dark:text-white`}
+              className={`${leagueGothic.className} text-3xl mb-7  text-white`}
             >
-              LOG OUT
+              ∆ LOG OUT
             </h1>
 
             <div className="w-full mb-4  sm:mb-5">

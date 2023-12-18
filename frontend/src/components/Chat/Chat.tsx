@@ -70,7 +70,7 @@ function Chat() {
   if (Object.keys(messageState?.chat).length === 0) {
     return (
       <div className="flex h-full w-full items-center justify-center">
-        <p>No chat to show</p>
+        <p className="text-white">No chat to show</p>
       </div>
     );
   }
@@ -138,7 +138,7 @@ function Chat() {
         <div className="sticky top-0 z-40  flex items-center justify-between gap-2 border-b border-gray-800 bg-[#091619] p-5">
           <div>
             <div>
-              <span className={`${leagueGothic.className} text-3xl`}>
+              <span className={`${leagueGothic.className} text-3xl text-white`}>
                 {isCurrentUser
                   ? messageState?.chat?.participants?.[1]?.name
                   : messageState?.chat?.participants?.[0]?.name}

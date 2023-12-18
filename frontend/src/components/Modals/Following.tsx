@@ -74,10 +74,10 @@ function Following({ handleCloseModal, followingData }: FollowingProps) {
       >
         <div className="modal-container sm:w-96 mx-auto lg:w-2/5 z-50 overflow-y-auto">
           {/* Modal content */}
-          <div className="relative text-center bg-white rounded-lg dark:bg-[#091619] py-3 px-3 sm:py-6 sm:px-8 border dark:border-[#586769]">
+          <div className="relative text-center rounded-lg bg-[#091619] py-3 px-3 sm:py-6 sm:px-8 border border-[#586769]">
             <button
               type="button"
-              className="text-white-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              className="text-white-400 absolute top-2.5 right-2.5 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white"
               onClick={handleCloseModal}
             >
               <Image src={SVG.Exit} alt="exit" width={30} height={30} />
@@ -85,7 +85,7 @@ function Following({ handleCloseModal, followingData }: FollowingProps) {
             </button>
 
             <h1
-              className={`${leagueGothic.className} text-center text-3xl mb-5  dark:text-white`}
+              className={`${leagueGothic.className} text-center text-3xl mb-5  text-white`}
             >
               FOLLOWING
             </h1>

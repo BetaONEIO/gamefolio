@@ -30,7 +30,7 @@ function NavigationLink({ href, text, router }: any) {
         href={href === "/home" ? "/" : href}
         className={`${isActive && "nav_item_active"} nav_item`}
       >
-        <span>{text}</span>
+        <span className="text-white">{text}</span>
       </a>
     </Link>
   );

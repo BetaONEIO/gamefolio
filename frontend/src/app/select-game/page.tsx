@@ -77,7 +77,7 @@ const SelectGame = () => {
   };
 
   return (
-    <section className="flex flex-col h-screen items-center justify-center px-6 sm:px-6  mx-auto md:h-screen lg:py-10 bg-gray-50 dark:bg-[#091619]">
+    <section className="flex flex-col h-screen items-center justify-center px-6 sm:px-6  mx-auto md:h-screen lg:py-10 bg-[#091619]">
       <div className="flex flex-col justify-between p-4 gap-4 items-center h-full w-full md:w-2/3 lg:w-1/2 xl:w-1/3 border-2 border-gray-800">
         <div>
           <h2 className={`${leagueGothic.className} text-2xl sm:text-3xl`}>
@@ -127,7 +127,7 @@ const SelectGame = () => {
         </div>
 
         <div className="flex justify-between items-center w-full">
-          <span>{selectedGames.length} Selected</span>
+          <span className="text-white">{selectedGames.length} Selected</span>
           <button
             onClick={handleNext}
             className="sm:w-6/12 sm:h-6/12 sm:text-base bg-[#37C535]  text-white text-center py-[7px]  rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3"

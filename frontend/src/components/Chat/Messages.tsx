@@ -33,7 +33,7 @@ const MessageCard: React.FC<MessageCardProps> = ({ currentUser, message }) => {
       </div>
       <div className="flex flex-1 flex-col justify-center">
         <div className="flex items-center justify-between">
-          <span className="text-sm font-bold">
+          <span className="text-sm font-bold text-white">
             {isCurrentUser
               ? message?.participants[1]?.name
               : message?.participants[0]?.name}

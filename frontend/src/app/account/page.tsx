@@ -187,7 +187,9 @@ function Page() {
         <div className="flex items-center py-2 bg-[#091619]">
           <div className="flex justify-between items-center w-full mx-4">
             <div>
-              <h1 className={`${leagueGothic.className} text-4xl`}>ACCOUNT</h1>
+              <h1 className={`${leagueGothic.className} text-4xl text-white`}>
+                ACCOUNT
+              </h1>
             </div>
             <div className="flex items-center my-3 mx-2">
               <div className="flex items-center p-2 mr-2 rounded-full bg-[#162423]">
@@ -198,7 +200,7 @@ function Page() {
                   width={30}
                   height={30}
                 />
-                <p className="font-semibold pr-2">GG COIN</p>
+                <p className="font-semibold pr-2 text-white">GG COIN</p>
               </div>
               <Link href="/account/settings">
                 <Image
@@ -233,13 +235,15 @@ function Page() {
                 />
               </div>
               <div className="flex flex-1 flex-col gap-2 flex-wrap justify-center text-center lg:justify-start lg:text-start p-2 ">
-                <span>{authState?.name}</span>
+                <span className="text-white">{authState?.name}</span>
                 <div className="flex items-center gap-6 justify-center lg:justify-between">
                   <div
                     className="flex items-center"
                     onClick={() => copyToClipboard(authState?.username)}
                   >
-                    <p>({authState?.username || "no_username"})</p>
+                    <p className="text-white">
+                      ({authState?.username || "no_username"})
+                    </p>
                     <Image
                       className="cursor-pointer hover:opacity-80"
                       src={SVG.AccountCopyUsername}
@@ -259,7 +263,7 @@ function Page() {
                 <div className="flex h-8 items-center justify-center md:gap-8">
                   <div className="flex items-center gap-2 ">
                     <span
-                      className={`${leagueGothic.className} text-lg md:text-2xl font-normal`}
+                      className={`${leagueGothic.className} text-lg md:text-2xl font-normal text-white`}
                     >
                       {userVideos.length || 0}
                     </span>
@@ -273,7 +277,7 @@ function Page() {
                     onClick={() => handleModalToggle("isFollowerModalOpen")}
                   >
                     <span
-                      className={`${leagueGothic.className} text-lg md:text-2xl font-normal`}
+                      className={`${leagueGothic.className} text-lg md:text-2xl font-normal text-white`}
                     >
                       {authState?.follower?.length || 0}
                     </span>
@@ -287,7 +291,7 @@ function Page() {
                     onClick={() => handleModalToggle("isFollowingModalOpen")}
                   >
                     <span
-                      className={`${leagueGothic.className} text-lg md:text-2xl font-normal`}
+                      className={`${leagueGothic.className} text-lg md:text-2xl font-normal text-white`}
                     >
                       {authState?.following?.length || 0}
                     </span>
@@ -301,7 +305,7 @@ function Page() {
               className="bg-gray-800 py-4 w-full rounded-xl flex items-center hover:opacity-80 cursor-pointer"
               onClick={() => handleModalToggle("isBadgeModalOpen")}
             >
-              <div className="flex justify-between flex-1  items-center px-4 ">
+              <div className="flex justify-between flex-1  items-center px-4 text-white ">
                 Current Badge
                 <div className="flex items-center gap-2">
                   <Image
@@ -389,7 +393,7 @@ function Page() {
                 )}
               </div>
             </div>
-            <hr className="h-px bg-gray-50 border-0 dark:bg-gray-700" />
+            <hr className="h-px border-0 bg-gray-700" />
 
             {/* Content Section */}
             {selectedSection === "videos" ? (

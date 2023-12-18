@@ -71,14 +71,14 @@ function Explore() {
           <div className="flex items-center">
             <div className="flex justify-between items-center w-full sm:mx-2 lg:mx-4">
               <div>
-                <p className="font-semibold text-base sm:text-lg lg:text-lg">
+                <p className="font-semibold text-base sm:text-lg lg:text-lg text-white">
                   Explore By Games
                 </p>
               </div>
               <div className="flex items-center">
                 <Link
                   href="/explore-search"
-                  className="text-md sm:text-md lg:text-md hover:opacity-80 cursor-pointer"
+                  className="text-md sm:text-md lg:text-md hover:opacity-80 cursor-pointer text-white"
                 >
                   View All
                 </Link>

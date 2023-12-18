@@ -10,7 +10,7 @@ function ExploreHeader() {
         <div className="flex justify-between items-center w-full mx-4 sm:mx-2 lg:mx-4">
           <div>
             <h1
-              className={`${leagueGothic.className} text-2xl sm:text-4xl lg:text-4xl`}
+              className={`${leagueGothic.className} text-2xl sm:text-4xl lg:text-4xl text-white`}
             >
               EXPLORE
             </h1>

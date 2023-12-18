@@ -87,10 +87,10 @@ function ChangePassword({ handleCloseModal }: ChangePasswordProps) {
         <div className="modal-container w-full sm:w-2/3 md:w-1/2 lg:w-1/4 mx-auto lg-rounded z-50 overflow-y-auto">
           {/* Modal content */}
 
-          <div className="relative p-4  bg-white rounded-lg  dark:bg-[#091619] sm:p-5 border dark:border-[#586769]">
+          <div className="relative p-4   rounded-lg  bg-[#091619] sm:p-5 border border-[#586769]">
             <button
               type="button"
-              className="text-white-400 absolute top-3.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              className="text-white-400 absolute top-3.5 right-2.5 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white"
               data-modal-toggle="deleteAlertModal"
               onClick={() => handleCloseModal()}
             >
@@ -99,7 +99,7 @@ function ChangePassword({ handleCloseModal }: ChangePasswordProps) {
             </button>
 
             <h1
-              className={`${leagueGothic.className} text-3xl mb-7 text-center  dark:text-white`}
+              className={`${leagueGothic.className} text-3xl mb-7 text-center  text-white`}
             >
               CHANGE PASSWORD
             </h1>
@@ -111,13 +111,13 @@ function ChangePassword({ handleCloseModal }: ChangePasswordProps) {
               <div>
                 <label
                   htmlFor="password"
-                  className="block mb-2 text-sm font-bold text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-bold  text-white"
                 >
                   Old Password
                 </label>
                 <input
                   type="password"
-                  className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-3 dark:text-white"
+                  className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-3 text-white"
                   placeholder="Password"
                   {...register("password", {
                     required: true,
@@ -128,14 +128,14 @@ function ChangePassword({ handleCloseModal }: ChangePasswordProps) {
               <div>
                 <label
                   htmlFor="password"
-                  className="block mb-2 text-sm font-bold text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-bold  text-white"
                 >
                   New Password
                 </label>
                 <input
                   type="password"
                   className="outline-none
-                  bg-[#162423] sm:text-sm rounded-lg  block w-full p-3 dark:text-white "
+                  bg-[#162423] sm:text-sm rounded-lg  block w-full p-3 text-white "
                   placeholder="Password"
                   required
                   {...register("newPassword", {
@@ -147,14 +147,14 @@ function ChangePassword({ handleCloseModal }: ChangePasswordProps) {
               <div>
                 <label
                   htmlFor="password"
-                  className="block mb-2 text-sm font-bold text-gray-900 dark:text-white "
+                  className="block mb-2 text-sm font-bold  text-white "
                 >
                   Repeat New Password
                 </label>
                 <input
                   type="password"
                   className="outline-none
-                  } bg-[#162423] sm:text-sm rounded-lg  block w-full p-3 dark:text-white"
+                  } bg-[#162423] sm:text-sm rounded-lg  block w-full p-3 text-white"
                   placeholder="Password"
                   {...register("confirmNewPassword", {
                     required: true,
