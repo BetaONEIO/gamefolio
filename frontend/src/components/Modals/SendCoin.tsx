@@ -32,7 +32,7 @@ function SendCoin() {
       <div className="flex justify-center m-5">
         <button
           id="updateProductButton"
-          className="block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#091619] dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+          className="block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-[#091619] hover:bg-primary-700 focus:ring-primary-800"
           type="button"
           onClick={handleUpdateButtonClick}
         >
@@ -45,10 +45,10 @@ function SendCoin() {
           <div className="modal-container sm:w-96 mx-auto lg:w-3/12 z-50 overflow-y-auto">
             {/* Modal content */}
 
-            <div className="relative p-4 text-center bg-white rounded-lg  dark:bg-[#091619] sm:p-5 border dark:border-[#586769]">
+            <div className="relative p-4 text-center  rounded-lg  bg-[#091619] sm:p-5 border border-[#586769]">
               <button
                 type="button"
-                className="text-white-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                className="text-white-400 absolute top-2.5 right-2.5 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white"
                 data-modal-toggle="deleteAlertModal"
                 onClick={handleCloseModal}
               >
@@ -57,33 +57,33 @@ function SendCoin() {
               </button>
 
               <h1
-                className={`${leagueGothic.className} text-center text-3xl mb-5  dark:text-white`}
+                className={`${leagueGothic.className} text-center text-3xl mb-5  text-white`}
               >
                 SEND COIN
               </h1>
 
               <div className="justify-center items-center block">
-                <button className="w-12 h-12 m-2 dark:bg-[#162423] rounded-lg">
+                <button className="w-12 h-12 m-2 bg-[#162423] rounded-lg">
                   1
                 </button>
-                <button className="w-12 h-12 m-2 dark:bg-[#162423] rounded-lg">
+                <button className="w-12 h-12 m-2 bg-[#162423] rounded-lg">
                   3
                 </button>
-                <button className="w-12 h-12 m-2 dark:bg-[#162423] rounded-lg">
+                <button className="w-12 h-12 m-2 bg-[#162423] rounded-lg">
                   5
                 </button>
-                <button className="w-12 h-12 m-2 dark:bg-[#162423] rounded-lg">
+                <button className="w-12 h-12 m-2 bg-[#162423] rounded-lg">
                   7
                 </button>
 
                 <div className="justify-center items-center block">
-                  <button className="w-12 h-12 m-2 dark:bg-[#162423] rounded-lg">
+                  <button className="w-12 h-12 m-2 bg-[#162423] rounded-lg">
                     8
                   </button>
-                  <button className="w-12 h-12 m-2 dark:bg-[#162423] rounded-lg">
+                  <button className="w-12 h-12 m-2 bg-[#162423] rounded-lg">
                     9
                   </button>
-                  <button className="w-12 h-12 m-2 dark:bg-[#162423] rounded-lg">
+                  <button className="w-12 h-12 m-2 bg-[#162423] rounded-lg">
                     10
                   </button>
                 </div>
@@ -95,7 +95,7 @@ function SendCoin() {
                 <input
                   name="number"
                   id="number"
-                  className="mb-1 w-72 bg-gray-50 text-gray-900 sm:text-sm outline-none rounded-lg block py-4 px-4 dark:bg-[#162423] dark:placeholder-gray-400 dark:text-white"
+                  className="mb-1 w-72 sm:text-sm outline-none rounded-lg block py-4 px-4 bg-[#162423] placeholder-gray-400 text-white"
                   placeholder="Or Enter manually"
                   required
                 />

@@ -156,12 +156,12 @@ function AddVideo({ handleCloseModal }: AddClipProps) {
         style={myBGStyleModal}
         className="fixed inset-0 flex items-center justify-center z-50"
       >
-        <div className="modal-container w-11/12 sm:w-11/12 lg:w-9/12 h-[40rem] lg:h-[calc(100vh - 2rem)] z-50 overflow-y-auto dark:bg-[#091619] rounded-lg">
+        <div className="modal-container w-11/12 sm:w-11/12 lg:w-9/12 h-[40rem] lg:h-[calc(100vh - 2rem)] z-50 overflow-y-auto bg-[#091619] rounded-lg">
           {/* Modal content */}
-          <div className="relative bg-white rounded-lg dark:bg-[#091619] py-5 sm:py-4 border dark:border-[#586769]">
+          <div className="relative  rounded-lg bg-[#091619] py-5 sm:py-4 border border-[#586769]">
             <button
               type="button"
-              className="text-white-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex  dark:hover:bg-gray-600 dark:hover:text-white"
+              className="text-white-400 absolute top-2.5 right-2.5 bg-transparent  rounded-lg text-sm p-1.5 ml-auto inline-flex  hover:bg-gray-600 hover:text-white"
               data-modal-toggle="deleteAlertModal"
               onClick={handleCloseModal}
             >
@@ -170,7 +170,7 @@ function AddVideo({ handleCloseModal }: AddClipProps) {
             </button>
 
             <h1
-              className={`${leagueGothic.className} text-center text-3xl mb-7 dark:text-white`}
+              className={`${leagueGothic.className} text-center text-3xl mb-7 text-white`}
             >
               ADD CLIPS
             </h1>
@@ -179,7 +179,7 @@ function AddVideo({ handleCloseModal }: AddClipProps) {
               {/* Left Column - Story Block */}
               <div className="w-full sm:w-1/2 sm:mr-2 sm:ml-6 px-8 sm:px-0">
                 {/* Add your story block content here */}
-                <div className="lg:h-[33.9rem] md:h-[33.9rem] h-[8rem] w-full md:w-[22rem] lg:w-full flex flex-col sm:justify-center justify-center items-center rounded-lg dark:bg-[#091619] border-2 border-[#1C2C2E] md:mr-20">
+                <div className="lg:h-[33.9rem] md:h-[33.9rem] h-[8rem] w-full md:w-[22rem] lg:w-full flex flex-col sm:justify-center justify-center items-center rounded-lg bg-[#091619] border-2 border-[#1C2C2E] md:mr-20">
                   {!selectedVideo || error ? (
                     <label htmlFor="dropzone-file">
                       <div className="flex flex-col items-center">
@@ -189,7 +189,7 @@ function AddVideo({ handleCloseModal }: AddClipProps) {
                           width={60}
                           height={60}
                         />
-                        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                        <p className="mb-2 text-sm  text-gray-400">
                           <span className="font-semibold">Upload Videos</span>
                         </p>
                       </div>
@@ -241,7 +241,7 @@ function AddVideo({ handleCloseModal }: AddClipProps) {
               <div className="w-full md:w-full lg:w-2/5 px-8 sm:px-0">
                 {/* Game Selection */}
                 <div className="mb-2 sm:mb-4">
-                  <label className="block mb-2 text-gray-700 dark:text-gray-200">
+                  <label className="block mb-2  text-gray-200">
                     Select Game
                   </label>
                   <div className="relative inline-block text-left w-full">
@@ -250,7 +250,7 @@ function AddVideo({ handleCloseModal }: AddClipProps) {
                         <button
                           onClick={toggleDropdown}
                           type="button"
-                          className="w-full md:w-72 sm:w-96 inline-flex justify-between px-4 py-3 text-gray-700 rounded-lg dark:bg-[#1C2C2E] dark:text-white"
+                          className="w-full md:w-72 sm:w-96 inline-flex justify-between px-4 py-3 rounded-lg bg-[#1C2C2E] text-white"
                           aria-selected={true}
                         >
                           {selectedOption || "Game"}
@@ -267,7 +267,7 @@ function AddVideo({ handleCloseModal }: AddClipProps) {
 
                     {isDropdownOpen && (
                       <div className="absolute overflow-y-auto h-40 z-50 mt-2w-full md:w-72 sm:w-96 rounded-md shadow-lg">
-                        <ul className="py-1 bg-white   dark:bg-[#1C2C2E]  dark:text-white  dark:rounded-b-lg">
+                        <ul className="py-1   bg-[#1C2C2E]  text-white  rounded-b-lg">
                           {optionsForGame.map((option) => (
                             <li
                               key={option.value}
@@ -304,13 +304,13 @@ function AddVideo({ handleCloseModal }: AddClipProps) {
                 </div>
 
                 <div className="mb-0 sm:mb-4">
-                  <label className="block mb-2 text-gray-700 dark:text-gray-200">
+                  <label className="block mb-2  text-gray-200">
                     Write Description
                   </label>
                   <textarea
                     id="description"
                     rows={5}
-                    className="w-full md:w-72 sm:w-96 p-2 text-gray-900 sm:text-sm outline-none rounded-lg dark:bg-[#1C2C2E] dark:text-white"
+                    className="w-full md:w-72 sm:w-96 p-2  sm:text-sm outline-none rounded-lg bg-[#1C2C2E] text-white"
                     placeholder="Type here..."
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
@@ -318,16 +318,14 @@ function AddVideo({ handleCloseModal }: AddClipProps) {
                 </div>
 
                 <div className="mb-0 sm:mb-4">
-                  <label className="block mb-2 text-gray-700 dark:text-gray-200">
-                    Add Music
-                  </label>
+                  <label className="block mb-2  text-gray-200">Add Music</label>
                   <div className="relative inline-block text-left w-full">
                     <div className="relative">
                       <span className="rounded-md shadow-sm">
                         <button
                           onClick={toggleDropdownMusic}
                           type="button"
-                          className="w-full md:w-72 sm:w-96 inline-flex justify-between  px-4 py-3 rounded-lg dark:bg-[#1C2C2E] dark:text-white "
+                          className="w-full md:w-72 sm:w-96 inline-flex justify-between  px-4 py-3 rounded-lg bg-[#1C2C2E] text-white "
                           aria-selected={true}
                         >
                           {selectedOptionMusic || "Music"}
@@ -344,7 +342,7 @@ function AddVideo({ handleCloseModal }: AddClipProps) {
 
                     {isDropdownOpenMusic && (
                       <div className="absolute overflow-y-auto h-40 z-50 mt-2w-full md:w-72 sm:w-96 rounded-md shadow-lg">
-                        <ul className="py-1 bg-white dark:bg-[#1C2C2E] dark:text-white dark:rounded-b-lg">
+                        <ul className="py-1  bg-[#1C2C2E] text-white rounded-b-lg">
                           {musicState.map((option: any) => (
                             <li
                               key={option.value}

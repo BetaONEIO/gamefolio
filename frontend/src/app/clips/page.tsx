@@ -170,10 +170,10 @@ function Clip() {
                       height={50}
                     />
                     <div>
-                      <h1 className="w-[230px] sm:w-[350px] text-sm md:text-lg sm:text-md font-bold text-gray-900 dark:text-white hover:opacity-80">
+                      <h1 className="w-[230px] sm:w-[350px] text-sm md:text-lg sm:text-md font-bold text-white hover:opacity-80">
                         {clip?.userID?.name}
                       </h1>
-                      <p className="text-sm md:text-md sm:text-md font-light text-gray-600 dark:text-gray-400 ">
+                      <p className="text-sm md:text-md sm:text-md font-light text-gray-400 ">
                         {clip?.date &&
                           new Date(clip.date).toLocaleString("en-US", {
                             hour: "numeric",
@@ -244,7 +244,7 @@ function Clip() {
                         width={30}
                         height={30}
                       />
-                      <p>
+                      <p className="text-white">
                         {
                           clip.reactions.filter(
                             (reaction: any) => reaction.reactionType === "like"

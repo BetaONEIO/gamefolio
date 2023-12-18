@@ -228,7 +228,7 @@ function Page() {
                 <p className="font-bold">{user.name}</p>
                 <div className="flex items-center gap-2 justify-between lg:justify-between">
                   <div className="flex items-center">
-                    <p>({user.username})</p>
+                    <p className="text-white">({user.username})</p>
                     <Image
                       src={SVG.AccountCopyUsername}
                       width={16}
@@ -281,7 +281,7 @@ function Page() {
                 <div className="flex h-8 items-center  my-2 gap-6 sm:gap-6 -space-x-4">
                   <div className="flex -space-x-4">
                     <Image
-                      className="w-8 h-8 rounded-full border-white dark:border-gray-800"
+                      className="w-8 h-8 rounded-full border-gray-800"
                       src={IMAGES.Ellipse1}
                       alt="Next"
                       width={0}
@@ -289,7 +289,7 @@ function Page() {
                       sizes="100vw"
                     />
                     <Image
-                      className="w-8 h-8 rounded-full border-white dark:border-gray-800"
+                      className="w-8 h-8 rounded-full border-gray-800"
                       src={IMAGES.Ellipse2}
                       alt="Next"
                       width={0}
@@ -297,7 +297,7 @@ function Page() {
                       sizes="100vw"
                     />
                     <Image
-                      className="w-8 h-8 rounded-full border-white dark:border-gray-800"
+                      className="w-8 h-8 rounded-full border-gray-800"
                       src={IMAGES.Ellipse3}
                       alt="Next"
                       width={0}
@@ -314,7 +314,7 @@ function Page() {
                 <div className="flex h-8 my-4 gap-8 sm:gap-8 -space-x-4">
                   <div className="relative">
                     <Image
-                      className="w-8 h-8 p-0.5 dark:bg-[#FFF] rounded-lg"
+                      className="w-8 h-8 p-0.5 bg-[#FFF] rounded-lg"
                       src={SVG.Twitch}
                       alt="Next"
                       width={0}
@@ -332,7 +332,7 @@ function Page() {
                   </div>
                   <div className="relative">
                     <Image
-                      className="relative w-8 h-8 p-0.5 dark:bg-[#FFF] rounded-lg"
+                      className="relative w-8 h-8 p-0.5 bg-[#FFF] rounded-lg"
                       src={SVG.PlayStation}
                       alt="Next"
                       width={0}
@@ -350,7 +350,7 @@ function Page() {
                   </div>
                   <div className="relative">
                     <Image
-                      className="relative w-8 h-8 p-0.5 dark:bg-[#FFF] rounded-lg"
+                      className="relative w-8 h-8 p-0.5 bg-[#FFF] rounded-lg"
                       src={SVG.Xbox}
                       alt="Next"
                       width={0}
@@ -368,7 +368,7 @@ function Page() {
                   </div>
                   <div className="relative">
                     <Image
-                      className="relative w-8 h-8 p-0.5 dark:bg-[#FFF] rounded-lg"
+                      className="relative w-8 h-8 p-0.5 bg-[#FFF] rounded-lg"
                       src={SVG.Steam}
                       alt="Next"
                       width={0}
@@ -516,7 +516,7 @@ function Page() {
                   </defs>
                 </svg>
               </div>
-              <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
+              <hr className="h-px  border-0 bg-gray-700" />
             </div>
 
             {/* Content Section */}

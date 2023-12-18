@@ -76,7 +76,7 @@ function ViewStory({ storyUserID, handleCloseModal }: ViewStoryProps) {
         style={myBGStyleModal}
         className="fixed inset-0 flex items-center justify-center z-50"
       >
-        <div className="modal-container w-full h-screen z-50 overflow-y-auto dark:bg-[#091619] rounded-lg">
+        <div className="modal-container w-full h-screen z-50 overflow-y-auto bg-[#091619] rounded-lg">
           <Loading />
         </div>
       </div>
@@ -167,13 +167,13 @@ function ViewStory({ storyUserID, handleCloseModal }: ViewStoryProps) {
       style={myBGStyleModal}
       className="fixed inset-0 flex items-center justify-center z-50"
     >
-      <div className="modal-container w-full h-screen z-50 overflow-y-auto dark:bg-[#091619] rounded-lg">
+      <div className="modal-container w-full h-screen z-50 overflow-y-auto bg-[#091619] rounded-lg">
         <Suspense fallback={<Loading />}>
           <div className="flex flex-col items-center h-screen py-4 overflow-y-scroll">
             <div className="flex items-center justify-center w-full sm:w-2/3 md:w-2/5 h-full mb-4 rounded-lg">
               <button
                 type="button"
-                className="text-white-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                className="text-white-400 absolute top-2.5 right-2.5 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white"
                 data-modal-toggle="deleteAlertModal"
                 onClick={handleCloseModal}
               >

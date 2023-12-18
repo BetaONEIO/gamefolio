@@ -28,7 +28,7 @@ function ExploreUser() {
 
   return (
     <div className="flow-root w-96 sm:1/3 mx-auto">
-      <div className="divide-y divide-gray-200 dark:divide-gray-700">
+      <div className="divide-y divide-gray-700">
         {userState?.userList?.map((user: any) => (
           <Link
             href={`/account/${user?.username}`}
@@ -43,12 +43,8 @@ function ExploreUser() {
               height={50}
             />
             <div>
-              <h3 className=" font-semibold text-gray-900 dark:text-white">
-                {user?.username}
-              </h3>
-              <p className="text-base font-light text-gray-600 dark:text-gray-400">
-                {user?.name}
-              </p>
+              <h3 className=" font-semibold text-white">{user?.username}</h3>
+              <p className="text-base font-light text-gray-400">{user?.name}</p>
             </div>
           </Link>
         ))}

@@ -18,11 +18,11 @@ const TermsCondition = () => {
               type="checkbox"
               value=""
               name="show-only"
-              className="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+              className="w-4 h-4  text-primary-600 focus:ring-primary-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600"
             />
             <label
               htmlFor="pending"
-              className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              className="ml-2 text-sm font-medium text-gray-300"
             >
               You agree to Gamefolio.ggs
               <br />
@@ -37,11 +37,11 @@ const TermsCondition = () => {
               type="checkbox"
               value=""
               name="show-only"
-              className="w-4 h-4 bg-gray-100 border-gray-300 text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+              className="w-4 h-4 text-primary-600 focus:ring-primary-500 focus:ring-primary-600 ring-offset-gray-800 focus:ring-2 bg-gray-700 border-gray-600"
             />
             <label
               htmlFor="pending"
-              className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              className="ml-2 text-sm font-medium  text-gray-300"
             >
               I confirm that I am <b className="text-white">13+ years old</b>.
             </label>

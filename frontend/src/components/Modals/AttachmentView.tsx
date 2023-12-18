@@ -22,10 +22,10 @@ function AttachmentView({ handleCloseModal }: AttachmentViewProps) {
         <div className="modal-container w-120 mx-auto lg-rounded z-50 overflow-y-auto">
           {/* Modal content */}
 
-          <div className="relative p-4 text-center bg-white rounded-lg  dark:bg-[#091619] sm:p-5">
+          <div className="relative p-4 text-center  rounded-lg  bg-[#091619] sm:p-5">
             <button
               type="button"
-              className="text-white-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              className="text-white-400 absolute top-2.5 right-2.5 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white"
               data-modal-toggle="deleteAlertModal"
               onClick={() => handleCloseModal()}
             >
@@ -34,7 +34,7 @@ function AttachmentView({ handleCloseModal }: AttachmentViewProps) {
             </button>
 
             <h1
-              className={`${leagueGothic.className} text-3xl mb-7  dark:text-white`}
+              className={`${leagueGothic.className} text-3xl mb-7  text-white`}
             >
               ATTACHMENT
             </h1>

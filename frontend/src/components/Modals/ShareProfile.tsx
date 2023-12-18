@@ -47,10 +47,10 @@ function ShareProfile({ handleCloseModal }: ShareProfileProps) {
         <div className="modal-container sm:w-96 mx-auto lg:w-4/12 z-50 overflow-y-auto">
           {/* Modal content */}
 
-          <div className="relative text-center bg-white rounded-lg dark:bg-[#091619] py-3 px-3 sm:py-4 sm:px-8 border dark:border-[#586769]">
+          <div className="relative text-center rounded-lg bg-[#091619] py-3 px-3 sm:py-4 sm:px-8 border border-[#586769]">
             <button
               type="button"
-              className="text-white-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              className="text-white-400 absolute top-2.5 right-2.5 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white"
               onClick={handleCloseModal}
             >
               <Image src={SVG.Exit} alt="exit" width={30} height={30} />
@@ -58,7 +58,7 @@ function ShareProfile({ handleCloseModal }: ShareProfileProps) {
             </button>
 
             <h1
-              className={`${leagueGothic.className} text-center text-3xl mb-5  dark:text-white`}
+              className={`${leagueGothic.className} text-center text-3xl mb-5  text-white`}
             >
               SHARE PROFILE
             </h1>
@@ -110,7 +110,7 @@ function ShareProfile({ handleCloseModal }: ShareProfileProps) {
             </div>
 
             <div className="flex items-center  justify-between w-full my-3">
-              <span>3 Selected</span>
+              <span className="text-white"> 3 Selected</span>
               <button className="font-bold w-40 sm:w-1/3 h-10 sm:h-6/12 text-base sm:text-base bg-[#37C535] text-white text-center  sm:py-[7px] rounded-tl-[20px] sm:rounded-tl-[20px] rounded-br-[20px] sm:rounded-br-[20px] rounded-tr-[5px] sm:rounded-tr-[5px] rounded-bl-[5px] sm:rounded-bl-[5px] hover:opacity-80">
                 Share Profile
               </button>

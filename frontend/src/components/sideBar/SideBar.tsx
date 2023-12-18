@@ -35,7 +35,7 @@ function SideBar() {
         data-drawer-toggle="sidebar-notification"
         aria-controls="sidebar-notification"
         type="button"
-        className="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+        className="inline-flex items-center p-2 mt-2 ml-3 text-sm  rounded-lg sm:hidden focus:outline-none focus:ring-2  text-gray-400 hover:bg-gray-700 focus:ring-gray-600"
       >
         <span className="sr-only">Open sidebar</span>
         <Image src={SVG.SideBar} alt="sidebar" width={30} height={30} />
@@ -43,9 +43,9 @@ function SideBar() {
 
       <aside
         id="sidebar-notification"
-        className=" fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 dark:bg-[#091619]"
+        className=" fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-[#091619]"
       >
-        <div className="flex flex-col justify-between h-full overflow-y-auto no-scrollbar py-4 px-3 border-r border-gray-200 dark:bg-[#050E10] dark:border-[#050E10]">
+        <div className="flex flex-col justify-between h-full overflow-y-auto no-scrollbar py-4 px-3 border-r  bg-[#050E10] border-[#050E10]">
           <div className="mb-16">
             <div className="flex flex-col items-center px-6 py-8 mb-6 lg:py-0">
               <Image width={100} height={100} src={IMAGES.logo} alt="logo" />
@@ -55,9 +55,9 @@ function SideBar() {
               <li>
                 <Link
                   href="/main"
-                  className={`flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white  ${
+                  className={`flex items-center p-2 text-base font-normal  rounded-lg text-white  ${
                     isItemActive("/main") ? "bg-[#162423]" : ""
-                  } dark:hover:bg-[#162423] group`}
+                  } hover:bg-[#162423] group`}
                 >
                   <svg
                     width="20"
@@ -93,9 +93,9 @@ function SideBar() {
               <li>
                 <Link
                   href="/clips"
-                  className={`flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white  ${
+                  className={`flex items-center p-2 text-base font-normal  rounded-lg text-white  ${
                     isItemActive("/clips") ? "bg-[#162423]" : ""
-                  } dark:hover:bg-[#162423] group`}
+                  } hover:bg-[#162423] group`}
                 >
                   <svg
                     width="26"
@@ -125,9 +125,9 @@ function SideBar() {
               <li>
                 <Link
                   href="/explore"
-                  className={`flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white  ${
+                  className={`flex items-center p-2 text-base font-normal  rounded-lg text-white  ${
                     isItemActive("/explore") ? "bg-[#162423]" : ""
-                  } dark:hover:bg-[#162423] group`}
+                  } hover:bg-[#162423] group`}
                 >
                   <svg
                     width="26"
@@ -172,9 +172,9 @@ function SideBar() {
               <li>
                 <Link
                   href="/trending"
-                  className={`flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white  ${
+                  className={`flex items-center p-2 text-base font-normal  rounded-lg text-white  ${
                     isItemActive("/trending") ? "bg-[#162423]" : ""
-                  } dark:hover:bg-[#162423] group`}
+                  } hover:bg-[#162423] group`}
                 >
                   <svg
                     width="26"
@@ -199,9 +199,9 @@ function SideBar() {
               <li>
                 <Link
                   href="/account"
-                  className={`flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white  ${
+                  className={`flex items-center p-2 text-base font-normal  rounded-lg text-white  ${
                     isItemActive("/account") ? "bg-[#162423]" : ""
-                  } dark:hover:bg-[#162423] group`}
+                  } hover:bg-[#162423] group`}
                 >
                   <svg
                     width="26"
@@ -262,7 +262,7 @@ function SideBar() {
 
             <div
               key={authState?.userID}
-              className="flex flex-col items-center justify-center p-3 bg-gray-100 rounded-lg border border-gray-200 dark:bg-[#1C2C2E] dark:border-gray-600"
+              className="flex flex-col items-center justify-center p-3  rounded-lg border  bg-[#1C2C2E] border-gray-600"
             >
               <Image
                 src={authState?.profilePicture}
@@ -273,12 +273,10 @@ function SideBar() {
                 alt="account"
               />
 
-              <dt className="text-xs sm:text-sm mb-2 font-semibold leading-none text-gray-900 dark:text-white">
+              <dt className="text-xs sm:text-sm mb-2 font-semibold leading-none  text-white">
                 {authState?.name}
               </dt>
-              <dd className="text-gray-500 dark:text-gray-400">
-                ({authState.username})
-              </dd>
+              <dd className=" text-gray-400">({authState.username})</dd>
             </div>
           </div>
         </div>

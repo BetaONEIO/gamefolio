@@ -173,10 +173,10 @@ function Main() {
                           sizes="100vw"
                         />
                         <div>
-                          <h1 className="w-[230px] sm:w-[350px] text-sm md:text-lg sm:text-md font-bold text-gray-900 dark:text-white hover:opacity-80">
+                          <h1 className="w-[230px] sm:w-[350px] text-sm md:text-lg sm:text-md font-bold text-white hover:opacity-80">
                             {post?.userID?.name}
                           </h1>
-                          <p className="md:text-md sm:text-md text-base font-light text-gray-600 dark:text-gray-400">
+                          <p className="md:text-md sm:text-md text-base font-light text-gray-400">
                             {post?.date &&
                               new Date(post.date).toLocaleString("en-US", {
                                 hour: "numeric",
@@ -245,7 +245,7 @@ function Main() {
                           width={30}
                           height={30}
                         />
-                        <p>
+                        <p className="text-white">
                           {
                             post.reactions.filter(
                               (reaction: any) =>
@@ -271,7 +271,7 @@ function Main() {
                           width={30}
                           height={30}
                         />
-                        <p>
+                        <p className="text-white">
                           {
                             post.reactions.filter(
                               (reaction: any) =>
@@ -313,7 +313,7 @@ function Main() {
                     <div className="flex items-center justify-between w-full p-4">
                       <div>
                         <p
-                          className="cursor-pointer hover:opacity-80"
+                          className="cursor-pointer hover:opacity-80 text-white"
                           onClick={() =>
                             handleModalToggle(
                               "isVideoDetailOpen",

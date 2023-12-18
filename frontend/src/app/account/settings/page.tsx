@@ -52,7 +52,9 @@ function Setting() {
         <div className="flex items-center py-6 bg-[#091619]">
           <div className="flex justify-between items-center w-full mx-4 ">
             <div className="flex gap-4 items-center">
-              <h1 className={`${leagueGothic.className} text-4xl`}>SETTINGS</h1>
+              <h1 className={`${leagueGothic.className} text-4xl text-white`}>
+                SETTINGS
+              </h1>
               <Image
                 className="hover:opacity-80 cursor-pointer"
                 src={SVG.SettingHeader}
@@ -82,7 +84,7 @@ function Setting() {
                   width={42}
                   height={42}
                 />
-                <span className="font-semibold">Edit Profile</span>
+                <span className="font-semibold text-white">Edit Profile</span>
               </div>
             </div>
           </Link>
@@ -99,7 +101,7 @@ function Setting() {
                 width={42}
                 height={42}
               />
-              <span className="font-semibold">Change Password</span>
+              <span className="font-semibold text-white">Change Password</span>
             </div>
           </div>
 
@@ -115,7 +117,9 @@ function Setting() {
                 width={42}
                 height={42}
               />
-              <span className="font-semibold">Terms & Conditions</span>
+              <span className="font-semibold text-white">
+                Terms & Conditions
+              </span>
             </div>
           </div>
 
@@ -131,7 +135,7 @@ function Setting() {
                 width={42}
                 height={42}
               />
-              <span className="font-semibold">Privacy Policy</span>
+              <span className="font-semibold text-white">Privacy Policy</span>
             </div>
           </div>
 
@@ -147,7 +151,7 @@ function Setting() {
                 width={42}
                 height={42}
               />
-              <span className="font-semibold">Verification</span>
+              <span className="font-semibold text-white">Verification</span>
             </div>
           </div>
 
@@ -163,7 +167,7 @@ function Setting() {
                 width={42}
                 height={42}
               />
-              <span className="font-semibold">Send Feedback</span>
+              <span className="font-semibold text-white">Send Feedback</span>
             </div>
           </div>
 
@@ -179,7 +183,7 @@ function Setting() {
                 width={42}
                 height={42}
               />
-              <span className="font-semibold">Block Users</span>
+              <span className="font-semibold text-white">Block Users</span>
             </div>
           </div>
 
@@ -190,7 +194,7 @@ function Setting() {
           >
             <div className="flex flex-col gap-2 justify-center h-full">
               <Image src={SVG.Logout} alt="Logout" width={42} height={42} />
-              <span className="font-semibold">Logout</span>
+              <span className="font-semibold text-white">Logout</span>
             </div>
           </div>
         </div>

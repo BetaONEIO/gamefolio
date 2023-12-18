@@ -55,11 +55,11 @@ function Badges({ handleCloseModal }: BadgesProps) {
         className="fixed inset-0 flex items-center justify-center z-50"
       >
         <div className="fixed inset-0 flex items-center z-50">
-          <div className="modal-container sm:w-80 w-[340px] mx-auto lg:w-[340px] z-50 overflow-y-auto no-scrollbar border dark:border-[#586769]">
-            <div className="relative text-center rounded-lg dark:bg-[#091619]">
+          <div className="modal-container sm:w-80 w-[340px] mx-auto lg:w-[340px] z-50 overflow-y-auto no-scrollbar border border-[#586769]">
+            <div className="relative text-center rounded-lg bg-[#091619]">
               <button
                 type="button"
-                className="text-white-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover-text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover-text-white"
+                className="text-white-400 absolute top-2.5 right-2.5 bg-transparent hover-text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover-text-white"
                 onClick={handleCloseModal}
               >
                 <Image src={SVG.Exit} alt="exit" width={30} height={30} />
@@ -86,7 +86,7 @@ function Badges({ handleCloseModal }: BadgesProps) {
                           className="h-full w-full"
                         />
                       </div>
-                      <span className="text-lg">{items.name}</span>
+                      <span className="text-lg text-white">{items.name}</span>
                     </div>
                   ))}
                 </div>
@@ -95,14 +95,14 @@ function Badges({ handleCloseModal }: BadgesProps) {
                   style={sectionStyle}
                   className="flex flex-col bg-[#091619] h-screen"
                 >
-                  <p className="text-left mx-2 my-1 font-bold">
+                  <p className="text-left mx-2 my-1 font-bold text-white">
                     Upcoming Badges
                   </p>
 
                   {dummy.map((items, index) => (
                     <div
                       key={index}
-                      className="p-2 m-2 text-sm text-left rounded-lg dark:bg-[#091619] border-2 border-[#1C2C2E]"
+                      className="p-2 m-2 text-sm text-left rounded-lg bg-[#091619] border-2 border-[#1C2C2E]"
                     >
                       <div className="flex items-center">
                         <Image
@@ -113,10 +113,10 @@ function Badges({ handleCloseModal }: BadgesProps) {
                           height={60}
                         />
                         <div>
-                          <span className="text-base font-semibold">
+                          <span className="text-base font-semibold text-white">
                             {items.userName}
                           </span>
-                          <p>{items.Name}</p>
+                          <p className="text-white">{items.Name}</p>
                         </div>
                       </div>
                     </div>

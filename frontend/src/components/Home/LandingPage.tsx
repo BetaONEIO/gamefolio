@@ -63,11 +63,11 @@ const LandingPage = () => {
           </div>
         </button>
 
-        <p className="text-sm font-light text-center text-gray-500 dark:text-gray-300">
+        <p className="text-sm font-light text-center  text-gray-300">
           Already have an account?{" "}
           <a
             href="/login"
-            className="font-medium text-primary-600 hover:underline dark:text-primary-500 dark:text-green-400"
+            className="font-medium text-primary-600 hover:underline text-primary-500 text-green-400"
           >
             Login
           </a>
