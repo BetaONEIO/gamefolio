@@ -82,7 +82,7 @@ function SideBar() {
                     </defs>
                   </svg>
                   <div className="flex flex-row w-48 justify-between">
-                    <span className="ml-3">Home</span>
+                    <span className="ml-4">Home</span>
                     {isItemActive("/main") && (
                       <hr className="w-1 h-6 bg-[#fff] rounded-lg" />
                     )}
@@ -246,7 +246,7 @@ function SideBar() {
                   </svg>
 
                   <div className="flex flex-row w-48 justify-between">
-                    <span className="ml-3">My Gamefolio</span>
+                    <span className="ml-5 text-gray-50">My Gamefolio</span>
                     {isItemActive("/gamefolio") && (
                       <hr className="w-1 h-6 bg-[#fff] rounded-lg" />
                     )}

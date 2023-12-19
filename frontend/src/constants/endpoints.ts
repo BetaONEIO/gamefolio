@@ -19,8 +19,9 @@ export const PATH = {
     updatePassword: "user/password/update",
     followUser: "user/follower/create",
     removeFollow: "user/follower/delete",
-    // removeFollowing: "user/following/delete",
+    removeFollowing: "user/following/delete",
     blockUser: "user/block/create",
+    unBlockUser: "user/block/delete",
     reportUser: "user/report/create",
   },
 

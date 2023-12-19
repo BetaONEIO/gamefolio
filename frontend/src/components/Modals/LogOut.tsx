@@ -38,11 +38,13 @@ function LogOut({ handleCloseModal }: LogOutProps) {
             <h1
               className={`${leagueGothic.className} text-3xl mb-7  text-white`}
             >
-              ∆ LOG OUT
+              LOG OUT
             </h1>
 
             <div className="w-full mb-4  sm:mb-5">
-              <p className="text-md">Are you sure you want to logout?</p>
+              <p className="text-md text-gray-50">
+                Are you sure you want to logout?
+              </p>
             </div>
 
             <div className="flex flex-col items-center mb-2 sm:mb-2 ">

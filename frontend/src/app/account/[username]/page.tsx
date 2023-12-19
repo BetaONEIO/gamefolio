@@ -51,9 +51,13 @@ const MyVideosSection: React.FC<MyVideosSectionProps> = ({
   const [videoStates, setVideoStates] = useState<{ [key: string]: VideoState }>(
     {}
   );
+  console.log("authState", authState);
+  console.log("postState", postState);
   const userVideos = postState.videos.filter(
     (post: any) => post?.userID?._id === authState._id
   );
+
+  console.log("userVideos", userVideos);
 
   const handleVideoClick = (
     event: React.MouseEvent<HTMLVideoElement, MouseEvent>

@@ -94,6 +94,20 @@ const userSchema = new mongoose.Schema({
       },
     },
   ],
+  coins: [
+    {
+      coinType: {
+        type: String,
+      },
+      coinAmount: {
+        type: Number,
+      },
+      date: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
 });
 
 // hash user's password with salt before saving document to db

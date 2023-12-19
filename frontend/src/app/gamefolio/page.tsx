@@ -81,7 +81,7 @@ function ExploreVideo() {
       <div className="flex items-center py-2 bg-[#091619]">
         <div className="flex justify-between items-center w-full mx-4">
           <div>
-            <h1 className={`${leagueGothic.className} text-4xl`}>
+            <h1 className={`${leagueGothic.className} text-4xl text-gray-50`}>
               MY GAMEFOLIO
             </h1>
           </div>
@@ -94,7 +94,7 @@ function ExploreVideo() {
                 width={30}
                 height={30}
               />
-              <p className="font-semibold pr-2">GG COIN</p>
+              <p className="font-semibold pr-2 text-gray-50">GG COIN</p>
             </div>
             <Link href="/account/settings">
               <Image

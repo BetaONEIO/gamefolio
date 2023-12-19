@@ -6,7 +6,7 @@ import { dispatch, useSelector } from "@/store";
 import Image from "next/image";
 import { useState } from "react";
 import { toastError, toastSuccess } from "../Toast/Toast";
-import { removeFollow } from "@/store/slices/userSlice";
+import { removeFollow, removeFollowing } from "@/store/slices/userSlice";
 
 interface FollowingProps {
   handleCloseModal: () => void;
@@ -43,10 +43,10 @@ function Following({ handleCloseModal, followingData }: FollowingProps) {
     backdropFilter: "blur(8px)",
   };
 
-  const handleRemoveFollowing = async (followerID: any) => {
+  const handleRemoveFollowing = async (followingID: any) => {
     const payload = {
       userId: authState._id,
-      followerID: followerID,
+      followingID: followingID,
     };
 
     const successCallback = (response: any) => {
@@ -63,7 +63,7 @@ function Following({ handleCloseModal, followingData }: FollowingProps) {
       errorCallback,
     };
 
-    dispatch(removeFollow(params));
+    dispatch(removeFollowing(params));
   };
 
   return (
