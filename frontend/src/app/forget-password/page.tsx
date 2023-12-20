@@ -26,38 +26,36 @@ const ForgetPassword = () => {
             password.
           </p>
 
-          <form className="space-y-4 md:space-y-6" action="#">
-            <div>
-              <label
-                htmlFor="email"
-                className="block mb-2 text-sm font-medium text-white"
-              >
-                Email
-              </label>
-              <input
-                type="email"
-                name="email"
-                id="email"
-                className="bg-[#162423] sm:text-sm outline-none rounded-lg block w-full p-3 text-white"
-                placeholder="Email Address"
-                required
-              />
-            </div>
+          <div>
+            <label
+              htmlFor="email"
+              className="block mb-2 text-sm font-medium text-white"
+            >
+              Email
+            </label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              className="bg-[#162423] sm:text-sm outline-none rounded-lg block w-full p-3 text-white"
+              placeholder="Email Address"
+              required
+            />
+          </div>
 
-            <button className="w-full h-12 bg-[#37C535] text-white text-center rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3">
-              Send
-            </button>
+          <button className="w-full h-12 bg-[#37C535] text-white text-center rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3">
+            Send
+          </button>
 
-            <p className="text-sm font-light text-center text-gray-50">
-              Go back to{" "}
-              <a
-                href="/login"
-                className="font-medium text-primary-600 hover:underline text-[#43DD4E]"
-              >
-                Login
-              </a>
-            </p>
-          </form>
+          <p className="text-sm font-light text-center text-gray-50">
+            Go back to{" "}
+            <a
+              href="/login"
+              className="font-medium text-primary-600 hover:underline text-[#43DD4E]"
+            >
+              Login
+            </a>
+          </p>
         </div>
       </div>
     </section>

@@ -216,7 +216,7 @@ function Main() {
 
                     <video
                       className="w-[710px] h-[185px] sm:h-[300px] my-2 sm:my-2"
-                      src={post.video}
+                      src={`${post.video}#t=0.1`}
                       style={{ aspectRatio: "16:9" }}
                       width={50}
                       height={50}
@@ -224,8 +224,8 @@ function Main() {
                       controlsList=" nodownload  noremoteplayback noplaybackrate"
                       disablePictureInPicture
                       autoPlay={false}
+                      playsInline
                       preload="metadata"
-                      // loading="lazy"
                     />
 
                     <div className="flex items-center my-3 mx-2">

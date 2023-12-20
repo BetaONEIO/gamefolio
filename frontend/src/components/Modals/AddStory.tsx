@@ -67,12 +67,12 @@ function AddStory({ handleCloseModal }: AddStoryProps) {
     const file = e.target.files ? e.target.files[0] : null;
     if (file) {
       setSelectedVideo(file);
-      if (selectedOptionMusic.trim() === "") {
-        setError("Please select music");
-        return toastSuccess("Please select music");
-      } else {
-        setError(null);
-      }
+      // if (selectedOptionMusic.trim() === "") {
+      //   setError("Please select music");
+      //   return toastSuccess("Please select music");
+      // } else {
+      //   setError(null);
+      // }
       try {
         const formData = new FormData();
         formData.append("file", file);

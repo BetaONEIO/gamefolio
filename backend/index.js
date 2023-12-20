@@ -19,7 +19,6 @@ const authMiddleware = require("./middleware/authMiddleware");
 const app = express();
 const port = 4000;
 require("./Authentication/googleAuth");
-require("./Authentication/facebookAuth");
 require("./Authentication/twitterAuth");
 
 myDbConnection();
@@ -54,7 +53,7 @@ socket.init(server);
 
 // Now, set up your Google authentication routes and other middleware as needed.
 
-// Google auth
+// Google authentication
 app.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["email", "profile"] })
@@ -68,29 +67,7 @@ app.get(
   })
 );
 
-app.get("/main", (req, res) => {
-  res.send("Successfully authenticated");
-});
-
-//facebook authentication
-app.get(
-  "/auth/facebook",
-  passport.authenticate("facebook", { scope: ["user_friends", "manage_pages"] })
-);
-
-app.get(
-  "/auth/facebook/callback",
-  passport.authenticate("facebook", {
-    successRedirect: "/api/store-token",
-    failureRedirect: "/auth/facebook/failure",
-  })
-);
-
-app.get("/main", (req, res) => {
-  res.send("Successfully authenticated");
-});
-
-//twitter authentication
+// Twitter authentication
 app.get("/auth/twitter", passport.authenticate("twitter"));
 
 app.get(

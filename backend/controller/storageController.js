@@ -24,13 +24,13 @@ const uploadVideo = async (req, res) => {
   }
 
   var file = req.file;
-  const musicName = req.body.music;
+  const musicName = req.body.music || "none";
+  console.log("file: ", file);
+  console.log("musicname: ", musicName);
 
   const s3VideoFileUpload = (file) => {
     const uniqueFileName = `${uuidv4()}-${file.originalname}`; // Generating a unique filename
     const fileStream = fs.createReadStream(file.path);
-
-    console.log("uniqueFileName: ", uniqueFileName);
 
     const params = {
       Bucket: bucketName,
@@ -98,8 +98,16 @@ const uploadVideo = async (req, res) => {
     // For example, you can pass it to the addAudioToVideo function
     const customAudioPath = `audio/${musicName}.mp3`; // dynamic
     const outputVideoPath = `output/${videoFile.originalname}`;
-
-    addAudioToVideo(videoPath, customAudioPath, outputVideoPath, videoDuration);
+    if (musicName !== "none") {
+      addAudioToVideo(
+        videoPath,
+        customAudioPath,
+        outputVideoPath,
+        videoDuration
+      );
+    } else {
+      s3VideoFileUpload(file);
+    }
   });
 };
 

@@ -43,19 +43,6 @@ const LandingPage = () => {
           </div>
         </button>
 
-        <button className="w-80 h-[50] bg-[#3C599F] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3">
-          <div className="flex items-center gap-2">
-            <Image
-              src={SVG.Facebook}
-              alt="Email"
-              width={20}
-              height={20}
-              style={{ width: "20px", height: "20px" }}
-            />
-            <Link href={`${BASE_URL2}/auth/facebook`}>Login with Facebook</Link>
-          </div>
-        </button>
-
         <button className="w-80 h-[50] bg-[#32CCFE] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3">
           <div className="flex items-center gap-2">
             <Image src={SVG.Twitter} alt="Email" width={20} height={20} />
