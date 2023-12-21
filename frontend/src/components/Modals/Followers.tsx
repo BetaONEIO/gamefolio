@@ -1,10 +1,11 @@
 "use client";
-import { useState } from "react";
-import { useSelector } from "@/store";
+import { dispatch, useSelector } from "@/store";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
 import Image from "next/image";
+import { toastError, toastSuccess } from "../Toast/Toast";
+import { removeFollow } from "@/store/slices/userSlice";
 
 interface FollowerProps {
   handleCloseModal: () => void;
@@ -13,34 +14,36 @@ interface FollowerProps {
 
 function Followers({ handleCloseModal, followerData }: FollowerProps) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
-  const initialUsers = [
-    { id: 1, name: "Mark Johnson", username: "john_smith", isFollowed: false },
-    { id: 2, name: "Alice Smith", username: "alice", isFollowed: false },
-    { id: 3, name: "Bob Williams", username: "bob", isFollowed: false },
-    { id: 4, name: "Mark Johnson", username: "john_smith", isFollowed: false },
-    { id: 5, name: "Alice Smith", username: "alice", isFollowed: false },
-    { id: 6, name: "Bob Williams", username: "bob", isFollowed: false },
-    { id: 7, name: "Mark Johnson", username: "john_smith", isFollowed: false },
-    { id: 8, name: "Alice Smith", username: "alice", isFollowed: false },
-    { id: 9, name: "Bob Williams", username: "bob", isFollowed: false },
-    // Add more users as needed
-  ];
-
-  console.log("authstate", authState);
-  console.log("followerData", followerData);
-
-  const [users, setUsers] = useState(initialUsers);
-
-  const handleUserButtonClick = (id: any) => {
-    const updatedUsers = users.map((user) =>
-      user.id === id ? { ...user, isFollowed: !user.isFollowed } : user
-    );
-    setUsers(updatedUsers);
-  };
 
   const myBGStyleModal = {
     backgroundColor: "rgba(0, 0, 0, 0.6)",
     backdropFilter: "blur(8px)",
+  };
+
+  const handleRemoveFollow = async (followerID: any) => {
+    const payload = {
+      userId: authState._id,
+      followerID: followerID,
+    };
+
+    console.log("authState._id:", authState._id);
+    console.log("followerID:", followerID);
+
+    const successCallback = (response: any) => {
+      toastSuccess(response.message);
+    };
+
+    const errorCallback = (error: string) => {
+      toastError(error);
+    };
+
+    const params = {
+      payload,
+      successCallback,
+      errorCallback,
+    };
+
+    dispatch(removeFollow(params));
   };
 
   return (
@@ -97,14 +100,12 @@ function Followers({ handleCloseModal, followerData }: FollowerProps) {
                       </div>
                       <div>
                         <button
-                          onClick={() => handleUserButtonClick(user?._id)}
-                          className={`${
-                            authState?.isFollowed
-                              ? "w-[150px] h-[50] font-bold bg-[#37C535] text-white text-center py-[5px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] "
-                              : "w-[150px] h-[50] font-bold bg-[#162423] text-white text-center py-[5px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] "
-                          } rounded-lg p-2`}
+                          onClick={() => handleRemoveFollow(user?.userID?._id)}
+                          className={
+                            "w-[150px] h-[50] font-bold bg-[#162423] text-white text-center py-[5px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] "
+                          }
                         >
-                          {user?.isFollowed ? "Follow" : "Remove"}
+                          {"Remove"}
                         </button>
                       </div>
                     </div>

@@ -7,12 +7,14 @@ import Modal from "./Modal";
 import Report from "./Report";
 import BlockPopup from "./BlockPopup";
 import ShareProfile from "./ShareProfile";
+import BlockUser from "./BlockUser";
 
 interface MoreOptionProps {
   handleCloseModal: () => void;
+  data: any;
 }
 
-function MoreOptions({ handleCloseModal }: MoreOptionProps) {
+function MoreOptions({ handleCloseModal, data }: MoreOptionProps) {
   const [modalState, setModalState] = useState({
     isProfileShareOpen: false,
     isReportModalOpen: false,
@@ -52,7 +54,7 @@ function MoreOptions({ handleCloseModal }: MoreOptionProps) {
             </button>
 
             <h1
-              className={`${leagueGothic.className} text-3xl mb-7  text-white`}
+              className={`${leagueGothic.className} text-3xl mb-7 dark:text-white`}
             >
               MORE
             </h1>
@@ -70,7 +72,7 @@ function MoreOptions({ handleCloseModal }: MoreOptionProps) {
               className="text-sm text-left rounded-lg mb-3 sm:mb-5"
               onClick={() => handleModalToggle("isReportModalOpen")}
             >
-              <p className="pl-4 text-base text-white font-semibold mb-4  hover:opacity-80 cursor-pointer">
+              <p className="pl-4 text-base text-white font-semibold mb-4 hover:opacity-80 cursor-pointer">
                 Report
               </p>
               <hr className="border-t border-gray-600" />
@@ -79,7 +81,7 @@ function MoreOptions({ handleCloseModal }: MoreOptionProps) {
               className="text-sm text-left rounded-lg sm:mb-5"
               onClick={() => handleModalToggle("isBlockModalOpen")}
             >
-              <p className="pl-4 text-base text-white font-semibold mb-4  hover:opacity-80 cursor-pointer">
+              <p className="pl-4 text-base text-white font-semibold mb-4 hover:opacity-80 cursor-pointer">
                 Block
               </p>
               <hr className="border-t border-gray-600" />
@@ -112,6 +114,7 @@ function MoreOptions({ handleCloseModal }: MoreOptionProps) {
       >
         <BlockPopup
           handleCloseModal={() => handleModalToggle("isBlockModalOpen")}
+          data={data}
         />
       </Modal>
     </>

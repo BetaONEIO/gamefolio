@@ -82,7 +82,7 @@ function SideBar() {
                     </defs>
                   </svg>
                   <div className="flex flex-row w-48 justify-between">
-                    <span className="ml-3">Home</span>
+                    <span className="ml-4">Home</span>
                     {isItemActive("/main") && (
                       <hr className="w-1 h-6 bg-[#fff] rounded-lg" />
                     )}
@@ -190,6 +190,64 @@ function SideBar() {
                   <div className="flex flex-row w-48 justify-between">
                     <span className="ml-3">Trending</span>
                     {isItemActive("/trending") && (
+                      <hr className="w-1 h-6 bg-[#fff] rounded-lg" />
+                    )}
+                  </div>
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  href="/gamefolio"
+                  className={`flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white  ${
+                    isItemActive("/gamefolio") ? "bg-[#162423]" : ""
+                  } dark:hover:bg-[#162423] group`}
+                >
+                  {/* <svg
+                    width="26"
+                    height="26"
+                    viewBox="0 0 26 26"
+                    xmlns="http://www.w3.org/2000/svg"
+                    style={{
+                      fill: isItemActive("/gamefolio") ? "#62C860" : "#586769",
+                    }}
+                  >
+                    <path d="M13 15.6739C17.3386 15.6739 21 16.3789 21 19.099C21 21.82 17.3146 22.5 13 22.5C8.66237 22.5 5 21.795 5 19.075C5 16.3539 8.68538 15.6739 13 15.6739ZM13 2.5C15.9391 2.5 18.294 4.85402 18.294 7.79105C18.294 10.7281 15.9391 13.0831 13 13.0831C10.0619 13.0831 7.70601 10.7281 7.70601 7.79105C7.70601 4.85402 10.0619 2.5 13 2.5Z" />
+                  </svg> */}
+
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    style={{
+                      fill: isItemActive("/gamefolio") ? "#62C860" : "#586769",
+                      stroke: isItemActive("/gamefolio")
+                        ? "#62C860"
+                        : "#586769",
+                    }}
+                  >
+                    <g clip-path="url(#clip0_133_5751)">
+                      <path
+                        d="M14.25 4.46853L13.625 4.15385L4.6875 14.4126L14.5625 13.028L14.5 10.6364L10.75 10.8252L17.9375 6.7972L14.8125 18L14.625 13.3427L3.125 18L0 15.1678L14.5625 0L16.1875 2.76923L14.25 4.46853Z"
+                        fill="#586769"
+                      />
+                      <path
+                        d="M14.8125 18.0002L14.625 13.3428L14.5625 13.0281L14.5 10.6365L10.75 10.8253L17.9375 6.79736L14.8125 18.0002Z"
+                        fill="#586769"
+                      />
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_133_5751">
+                        <rect width="18" height="18" fill="white" />
+                      </clipPath>
+                    </defs>
+                  </svg>
+
+                  <div className="flex flex-row w-48 justify-between">
+                    <span className="ml-5 text-gray-50">My Gamefolio</span>
+                    {isItemActive("/gamefolio") && (
                       <hr className="w-1 h-6 bg-[#fff] rounded-lg" />
                     )}
                   </div>

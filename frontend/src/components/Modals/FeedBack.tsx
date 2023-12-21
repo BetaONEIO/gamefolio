@@ -72,7 +72,7 @@ function FeedBack({ handleCloseModal }: FeedBackProps) {
 
             <div className="relative mb-4">
               <div className="relative inline-block text-left">
-                <p className="text-xs font-semibold text-center my-4 ">
+                <p className="text-xs font-semibold text-center my-4 text-gray-50">
                   Feel Free to share your Feedback with us.
                 </p>
                 <div className="relative">

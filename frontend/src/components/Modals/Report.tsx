@@ -1,16 +1,22 @@
 "use client";
 import { SVG } from "@/assets/SVG";
 import { leagueGothic } from "@/font/font";
+import { dispatch, useSelector } from "@/store";
+import { reportUser } from "@/store/slices/userSlice";
 import Image from "next/image";
 import { useState } from "react";
+import { toastError, toastSuccess } from "../Toast/Toast";
+import { handleClientScriptLoad } from "next/script";
 
 interface ReportProps {
   handleCloseModal: () => void;
 }
 
 function Report({ handleCloseModal }: ReportProps) {
+  const authState = useSelector((state: any) => state.auth.userData) || [];
   const [selectedOption, setSelectedOption] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [reportDescription, setReportDescription] = useState("");
 
   const optionsForGame = [
     { value: "Explicit Content", label: "Explicit Content" },
@@ -26,6 +32,32 @@ function Report({ handleCloseModal }: ReportProps) {
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleReportUser = async () => {
+    const payload = {
+      userID: authState._id, // Use the correct property for the user ID
+      report: selectedOption,
+      description: reportDescription, // Include the report description
+    };
+
+    const successCallback = (response: any) => {
+      toastSuccess(response);
+      // Close the modal or perform any other actions on success
+      handleCloseModal();
+    };
+
+    const errorCallback = (error: string) => {
+      toastError(error);
+    };
+
+    const params = {
+      payload,
+      successCallback,
+      errorCallback,
+    };
+
+    dispatch(reportUser(params));
   };
 
   return (
@@ -114,9 +146,13 @@ function Report({ handleCloseModal }: ReportProps) {
                 id="description"
                 className="inline-flex justify-between  p-2.5 w-80 h-28 text-sm  outline-none rounded-lg bg-[#1C2C2E] text-white"
                 placeholder="Type here report reason..."
+                onChange={(e) => setReportDescription(e.target.value)}
               ></textarea>
             </div>
-            <button className="font-bold justify-between w-80 h-12 bg-[#37C535] text-white text-center rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3">
+            <button
+              onClick={handleReportUser}
+              className="font-bold justify-between w-80 h-12 bg-[#37C535] text-white text-center rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3"
+            >
               Send
             </button>
           </div>

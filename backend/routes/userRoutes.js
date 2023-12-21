@@ -21,5 +21,12 @@ router.get("/getAllUsers", userController.getAllUsers);
 
 //followers
 router.post("/follower/create", userController.addFollowers);
+router.post("/follower/delete", userController.removeFollower);
+router.post("/following/delete", userController.removeFollowing);
+
+router.post("/block/create", userController.blockUser);
+router.post("/block/delete", userController.unblockUser);
+
+router.post("/report/create", userController.report);
 
 module.exports = router;

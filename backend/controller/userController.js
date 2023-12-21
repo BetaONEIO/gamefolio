@@ -180,6 +180,7 @@ const updateLoginUser = asyncHandler(async (req, res) => {
       follower: user.followers,
       following: user.following,
       block: user.block,
+      report: user.report,
       userToken: req.token,
     });
   } else {
@@ -222,6 +223,8 @@ const getUserProfile = asyncHandler(async (req, res) => {
       follower: user.followers,
       following: user.following,
       block: user.block,
+      report: user.report,
+      coins: user.coins,
     });
   } else {
     return res.status(404).json({
@@ -262,6 +265,7 @@ const getProfileInfo = asyncHandler(async (req, res) => {
       follower: user.followers,
       following: user.following,
       block: user.block,
+      report: user.report,
     });
   } else {
     return res.status(404).json({
@@ -368,6 +372,28 @@ const addFavoriteGames = asyncHandler(async (req, res) => {
   }
 });
 
+const report = asyncHandler(async (req, res) => {
+  const { userID, report, description } = req.body;
+
+  try {
+    const user = await User.findById(userID);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    await user.report.push({
+      userID,
+      reportType: report,
+      reportDescription: description,
+    });
+    await user.save();
+
+    res.status(200).json({ message: "Report updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 // Controller to update user profile
 const updateProfile = async (req, res) => {
   const {
@@ -459,9 +485,104 @@ const addFollowers = asyncHandler(async (req, res) => {
   }
 });
 
+const removeFollower = asyncHandler(async (req, res) => {
+  const { userId, followerID } = req.body;
+  console.log("req.body##: ", req.body);
+  try {
+    // Find the user who is being followed
+    const user = await User.findById(userId);
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "User not found", error: "User not found" });
+    }
+
+    // Check if the follower is in the followers list
+    const followerIndex = user.followers.findIndex(
+      (follower) => follower.userID.toString() === followerID
+    );
+
+    if (followerIndex === -1) {
+      return res
+        .status(400)
+        .json({ message: "Follower not found", error: "Follower not found" });
+    }
+
+    // Remove the follower from the user's followers list
+    user.followers.splice(followerIndex, 1);
+    await user.save();
+
+    // Use populate to retrieve additional information about the updated user
+    const updatedUser = await User.findById(userId)
+      .populate("followers.userID")
+      .populate("following.userID");
+
+    return res.status(200).json({
+      message: "Follower removed successfully",
+      updatedUser,
+    });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ message: "Server Error", error: "Server Error" });
+  }
+});
+
+// Remove Following
+
+const removeFollowing = asyncHandler(async (req, res) => {
+  const { userId, followingID } = req.body;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Check if the user is following
+    const followingIndex = user.following.findIndex(
+      (following) => following.userID.toString() === followingID
+    );
+
+    if (followingIndex === -1) {
+      return res.status(400).json({ message: "Not following user" });
+    }
+
+    // Remove the following user from the user's following list
+    user.following.splice(followingIndex, 1);
+    await user.save();
+
+    // Find the following user to remove the follower entry
+    const followingUser = await User.findById(followingID);
+    const followerIndex = followingUser.followers.findIndex(
+      (follower) => follower.userID.toString() === userId
+    );
+
+    if (followerIndex !== -1) {
+      followingUser.followers.splice(followerIndex, 1);
+      await followingUser.save();
+    }
+
+    // Use populate to retrieve additional information about the updated user
+    const updatedUser = await User.findById(userId)
+      .populate("followers.userID")
+      .populate("following.userID");
+
+    return res.status(200).json({
+      message: "Following removed successfully",
+      updatedUser,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server Error" });
+  }
+});
+
 // Block a user
 const blockUser = asyncHandler(async (req, res) => {
   const { userId, blockedUserId } = req.body;
+  console.log("req.body____: ", req.body);
 
   try {
     const user = await User.findById(userId);
@@ -500,43 +621,43 @@ const blockUser = asyncHandler(async (req, res) => {
 });
 
 // Unblock a user
-// const unblockUser = asyncHandler(async (req, res) => {
-//   const { userId, unblockedUserId } = req.body;
+const unblockUser = asyncHandler(async (req, res) => {
+  const { userId, unblockedUserId } = req.body;
+  console.log("req.body____: ", req.body);
 
-//   try {
-//     const user = await User.findById(userId);
+  try {
+    const user = await User.findById(userId);
 
-//     if (!user) {
-//       return res.status(404).json({ message: "User not found" });
-//     }
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
-//     // Check if the user is blocked
-//     const blockedUserIndex = user.block.findIndex(
-//       (blockedUser) => blockedUser.userID.toString() === unblockedUserId
-//     );
+    // Check if the user is blocked
+    const blockedUserIndex = user.block.findIndex(
+      (blockedUser) => blockedUser.userID.toString() === unblockedUserId
+    );
 
-//     if (blockedUserIndex === -1) {
-//       return res.status(400).json({ message: "User is not blocked" });
-//     }
+    if (blockedUserIndex === -1) {
+      return res.status(400).json({ message: "User is not blocked" });
+    }
 
-//     // Unblock the user
-//     const unblockedUser = user.block[blockedUserIndex];
-//     user.block.splice(blockedUserIndex, 1);
-//     await user.save();
+    // Remove the block entry for the unblocked user
+    user.block.splice(blockedUserIndex, 1);
+    await user.save();
 
-//     // Populate data for the unblocked user
-//     const userToUnblock = await User.findById(unblockedUser.userID).select(
-//       "name username profilePicture"
-//     );
+    // Populate data for the blocked user
+    const unblockedUser = await User.find()
+      .sort({ date: -1 })
+      .populate("block.userID");
 
-//     return res.status(200).json({
-//       message: "User unblocked successfully",
-//       unblockedUser: userToUnblock,
-//     });
-//   } catch (error) {
-//     return res.status(500).json({ message: "Server Error" });
-//   }
-// });
+    return res.status(200).json({
+      message: "User unblocked successfully",
+      unblockedUser: unblockedUser,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Server Error" });
+  }
+});
 
 module.exports = {
   registerUser,
@@ -550,8 +671,11 @@ module.exports = {
   verifyEmailOTP,
   addPreferences,
   addFavoriteGames,
+  report,
   updateProfile,
   addFollowers,
+  removeFollower,
+  removeFollowing,
   blockUser,
-  // unblockUser,
+  unblockUser,
 };

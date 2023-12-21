@@ -35,9 +35,9 @@ function VideoDetails({
     console.log("Comment ", payload);
 
     const successCallback = (response: any) => {
-      handlePageRefresh();
       console.log("RESPONSE COMMENT: ", response);
       toastSuccess(response);
+      handlePageRefresh();
     };
 
     const errorCallback = (error: string) => {

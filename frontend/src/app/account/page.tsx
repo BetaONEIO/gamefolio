@@ -153,7 +153,11 @@ function Page() {
     isBadgeModalOpen: false,
   });
 
-  console.log("authState", authState);
+  const userVideos = postState.videos.filter(
+    (post: any) => post?.userID?._id === authState._id
+  );
+
+  console.log("authState__", authState);
 
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
@@ -187,16 +191,18 @@ function Page() {
               </h1>
             </div>
             <div className="flex items-center my-3 mx-2">
-              <div className="flex items-center p-2 mr-2 rounded-full bg-[#162423]">
-                <Image
-                  className="mr-2"
-                  src={SVG.GGcoin}
-                  alt="GGcoin"
-                  width={30}
-                  height={30}
-                />
-                <p className="font-semibold pr-2 text-white">GG COIN</p>
-              </div>
+              <Link href="/account/my-folio">
+                <div className="flex items-center p-2 mr-2 rounded-full bg-[#162423]">
+                  <Image
+                    className="mr-2"
+                    src={SVG.GGcoin}
+                    alt="GGcoin"
+                    width={30}
+                    height={30}
+                  />
+                  <p className="font-semibold pr-2 text-white">GG COIN</p>
+                </div>
+              </Link>
               <Link href="/account/settings">
                 <Image
                   className="cursor-pointer hover:opacity-60"
@@ -260,10 +266,11 @@ function Page() {
                     <span
                       className={`${leagueGothic.className} text-lg md:text-2xl font-normal text-white`}
                     >
-                      {postState?.videos?.length || 0}
+                      {userVideos.length || 0}
                     </span>
-                    <span className="md:text-lg text-gray-400">Posts</span>
+                    <span className="md:text-lg text-gray-400"> Posts</span>
                   </div>
+
                   {/* Vertical divider */}
                   <div className="border-r border-gray-700 h-full rounded-full mx-2"></div>
                   <div
@@ -408,6 +415,7 @@ function Page() {
         >
           <MoreOptions
             handleCloseModal={() => handleModalToggle("isShareModalOpen")}
+            data={authState?.userID}
           />
         </Modal>
 

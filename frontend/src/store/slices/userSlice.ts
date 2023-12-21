@@ -16,7 +16,7 @@ export type InitialState = {
 const initialState: InitialState = {
   error: null,
   loading: false,
-  profileUserInfo:{},
+  profileUserInfo: {},
   userList: [],
   profile: null,
 };
@@ -121,7 +121,7 @@ export function getProfileInfo(params: ActionParams) {
       const [ok, response] = await API(options);
       if (!ok || !response) return;
       console.log("response: >:::: USESLICES    ", response);
-      
+
       dispatch(slice.actions.setSearchUserInfo(response));
     } catch (error) {
     } finally {
@@ -129,8 +129,6 @@ export function getProfileInfo(params: ActionParams) {
     }
   };
 }
-
-
 
 export function followUser(params: ActionParams) {
   return async () => {
@@ -145,6 +143,126 @@ export function followUser(params: ActionParams) {
     const options: APIParams = {
       method: "POST",
       endpoint: PATH.user.followUser,
+      isToken: false,
+      payload,
+    };
+
+    try {
+      const [ok, response] = await API(options);
+      if (!ok || !response) return errorCallback(response.message);
+      successCallback(response);
+      // dispatch(getSingleUser(params));
+    } catch (error) {
+      errorCallback(error);
+    } finally {
+      dispatch(slice.actions.stopLoading());
+    }
+  };
+}
+
+export function removeFollow(params: ActionParams) {
+  return async () => {
+    const {
+      successCallback = () => {},
+      errorCallback = () => {},
+      payload,
+    } = params;
+
+    dispatch(slice.actions.startLoading());
+
+    const options: APIParams = {
+      method: "POST",
+      endpoint: PATH.user.removeFollow,
+      isToken: false,
+      payload,
+    };
+
+    try {
+      const [ok, response] = await API(options);
+      if (!ok || !response) return errorCallback(response.message);
+      successCallback(response);
+      // dispatch(getSingleUser(params));
+    } catch (error) {
+      errorCallback(error);
+    } finally {
+      dispatch(slice.actions.stopLoading());
+    }
+  };
+}
+
+export function removeFollowing(params: ActionParams) {
+  return async () => {
+    const {
+      successCallback = () => {},
+      errorCallback = () => {},
+      payload,
+    } = params;
+
+    dispatch(slice.actions.startLoading());
+
+    const options: APIParams = {
+      method: "POST",
+      endpoint: PATH.user.removeFollowing,
+      isToken: false,
+      payload,
+    };
+
+    try {
+      const [ok, response] = await API(options);
+      if (!ok || !response) return errorCallback(response.message);
+      successCallback(response);
+      // dispatch(getSingleUser(params));
+    } catch (error) {
+      errorCallback(error);
+    } finally {
+      dispatch(slice.actions.stopLoading());
+    }
+  };
+}
+
+export function blockUser(params: ActionParams) {
+  return async () => {
+    const {
+      successCallback = () => {},
+      errorCallback = () => {},
+      payload,
+    } = params;
+
+    dispatch(slice.actions.startLoading());
+
+    const options: APIParams = {
+      method: "POST",
+      endpoint: PATH.user.blockUser,
+      isToken: false,
+      payload,
+    };
+
+    try {
+      const [ok, response] = await API(options);
+      if (!ok || !response) return errorCallback(response.message);
+      successCallback(response);
+      // dispatch(getSingleUser(params));
+    } catch (error) {
+      errorCallback(error);
+    } finally {
+      dispatch(slice.actions.stopLoading());
+    }
+  };
+}
+
+export function unBlockUser(params: ActionParams) {
+  return async () => {
+    const {
+      successCallback = () => {},
+      errorCallback = () => {},
+      payload,
+    } = params;
+
+    dispatch(slice.actions.startLoading());
+
+    const options: APIParams = {
+      method: "POST",
+      endpoint: PATH.user.unBlockUser,
       isToken: false,
       payload,
     };
@@ -213,6 +331,38 @@ export function addUser(params: ActionParams) {
       if (!ok || !response) return;
       successCallback(response);
     } catch (error) {
+    } finally {
+      dispatch(slice.actions.stopLoading());
+    }
+  };
+}
+
+export function reportUser(params: ActionParams) {
+  const {
+    successCallback = () => {},
+    errorCallback = () => {},
+    payload,
+  } = params;
+  return async () => {
+    dispatch(slice.actions.startLoading());
+
+    const options: APIParams = {
+      method: "POST",
+      endpoint: PATH.user.reportUser,
+      payload: payload,
+      isToken: false,
+    };
+    try {
+      const [ok, response] = await API(options);
+      console.log(response);
+      if (!ok || !response) return errorCallback(response.message);
+
+      console.log("repsonse:::: ", response);
+
+      successCallback(response.message);
+    } catch (error) {
+      console.log("error", error);
+      errorCallback();
     } finally {
       dispatch(slice.actions.stopLoading());
     }

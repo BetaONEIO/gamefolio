@@ -113,7 +113,9 @@ const Edit = () => {
       <div className="flex items-center py-6 bg-[#091619]">
         <div className="flex justify-between items-center w-full mx-4">
           <div className="flex gap-4 items-center">
-            <h1 className={`${leagueGothic.className} text-2xl sm:text-4xl`}>
+            <h1
+              className={`${leagueGothic.className} text-2xl sm:text-4xl text-gray-50`}
+            >
               EDIT PROFILE
             </h1>
           </div>
@@ -239,7 +241,9 @@ const Edit = () => {
               </div>
 
               <div>
-                <p className="mb-2 text-sm font-bold ">Account Type</p>
+                <p className="mb-2 text-sm font-bold text-gray-50">
+                  Account Type
+                </p>
                 <div className="flex justify-center w-full gap-2">
                   <button
                     type="button"

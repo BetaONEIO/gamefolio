@@ -2,9 +2,11 @@
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
-import { useSelector } from "@/store";
+import { dispatch, useSelector } from "@/store";
 import Image from "next/image";
 import { useState } from "react";
+import { toastError, toastSuccess } from "../Toast/Toast";
+import { unBlockUser } from "@/store/slices/userSlice";
 
 interface BlockUserProps {
   handleCloseModal: () => void; // Define handleCloseModal as a function
@@ -28,6 +30,8 @@ function BlockUser({ handleCloseModal }: BlockUserProps) {
 
   console.log("authstate", authState);
 
+  // console.log("block user>>>>", blockData);
+
   const handleUserButtonClick = (id: any) => {
     const updatedUsers = users.map((user) =>
       user.id === id ? { ...user, isBlocked: !user.isBlocked } : user
@@ -38,6 +42,32 @@ function BlockUser({ handleCloseModal }: BlockUserProps) {
   const myBGStyleModal = {
     backgroundColor: "rgba(0, 0, 0, 0.6)",
     backdropFilter: "blur(8px)",
+  };
+
+  const handleRemoveFollow = async (unblockedUserId: any) => {
+    const payload = {
+      userId: authState._id,
+      unblockedUserId: unblockedUserId,
+    };
+
+    console.log("authState._id:", authState._id);
+    console.log("followerID:", unblockedUserId);
+
+    const successCallback = (response: any) => {
+      toastSuccess(response.message);
+    };
+
+    const errorCallback = (error: string) => {
+      toastError(error);
+    };
+
+    const params = {
+      payload,
+      successCallback,
+      errorCallback,
+    };
+
+    dispatch(unBlockUser(params));
   };
 
   return (
@@ -79,22 +109,22 @@ function BlockUser({ handleCloseModal }: BlockUserProps) {
                     <div className="flex items-center justify-between w-full sm:w-full">
                       <div>
                         <span className="ml-2 sm:ml-4 text-sm font-bold sm:text-sm">
-                          {user.name}
+                          {user?.userID?.name}
                         </span>
                         <p className="ml-2 sm:ml-4 text-xs text-left">
-                          {user.username}
+                          {user?.userID?.username}
                         </p>
                       </div>
                       <div>
                         <button
-                          onClick={() => handleUserButtonClick(user.id)}
+                          onClick={() => handleRemoveFollow(user?.userID?._id)}
                           className={`${
                             user.isBlocked
                               ? "w-[100px] h-[50] font-bold bg-[#37C535] text-white text-center py-[5px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] "
                               : "w-[100px] h-[50] font-bold bg-[#162423] text-white text-center py-[5px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] "
                           } rounded-lg p-2`}
                         >
-                          {user.isBlocked ? "Unblock" : "Block"}
+                          {"Unblock"}
                         </button>
                       </div>
                     </div>

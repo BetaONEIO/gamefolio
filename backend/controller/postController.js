@@ -1,4 +1,5 @@
 const Posts = require("../models/Posts.js"); // Import your Mongoose model
+const User = require("../models/Users.js");
 
 // Create a new post
 const postVideo = async (req, res) => {
@@ -14,6 +15,13 @@ const postVideo = async (req, res) => {
     });
 
     const post = await newPost.save();
+    const user = await User.findByIdAndUpdate(
+      userID,
+      {
+        $push: { coins: { coinType: "Upload a video", coinAmount: 5 } },
+      },
+      { new: true }
+    );
 
     res.status(201).json({ data: post, message: "Post created successfully" });
   } catch (error) {
@@ -129,6 +137,13 @@ const createVideoReaction = async (req, res) => {
 
     post.reactions.push(newReaction);
     const updatedPost = await post.save();
+    const user = await User.findByIdAndUpdate(
+      userID,
+      {
+        $push: { coins: { coinType: "Like a video", coinAmount: 1 } },
+      },
+      { new: true }
+    );
 
     res.status(201).json({
       data: updatedPost,
@@ -189,6 +204,13 @@ const createComment = async (req, res) => {
 
     post.comments.push(newComment);
     const updatedPost = await post.save();
+    const user = await User.findByIdAndUpdate(
+      userID,
+      {
+        $push: { coins: { coinType: "Comment a video", coinAmount: 2 } },
+      },
+      { new: true }
+    );
 
     res
       .status(201)

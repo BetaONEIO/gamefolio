@@ -1,4 +1,5 @@
 "use client";
+import React, { Suspense, useState } from "react";
 import { SVG } from "@/assets/SVG";
 import Layout from "@/components/CustomLayout/layout";
 import BlockUser from "@/components/Modals/BlockUser";
@@ -12,7 +13,6 @@ import Verifications from "@/components/Modals/Verifications";
 import { leagueGothic } from "@/font/font";
 import Image from "next/image";
 import Link from "next/link";
-import React, { Suspense, useState } from "react";
 import Loading from "./loading";
 import { toastError } from "@/components/Toast/Toast";
 import { ToastContainer } from "react-toastify";

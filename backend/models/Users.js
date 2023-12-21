@@ -79,6 +79,35 @@ const userSchema = new mongoose.Schema({
       type: String,
     },
   ],
+
+  report: [
+    {
+      userID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Users",
+      },
+      reportType: {
+        type: String,
+      },
+      reportDescription: {
+        type: String,
+      },
+    },
+  ],
+  coins: [
+    {
+      coinType: {
+        type: String,
+      },
+      coinAmount: {
+        type: Number,
+      },
+      date: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
 });
 
 // hash user's password with salt before saving document to db
