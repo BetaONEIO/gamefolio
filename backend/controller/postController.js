@@ -18,7 +18,7 @@ const postVideo = async (req, res) => {
     const user = await User.findByIdAndUpdate(
       userID,
       {
-        $push: { coins: { coinType: "uploadVideo", coinAmount: 5 } },
+        $push: { coins: { coinType: "Upload a video", coinAmount: 5 } },
       },
       { new: true }
     );
@@ -140,7 +140,7 @@ const createVideoReaction = async (req, res) => {
     const user = await User.findByIdAndUpdate(
       userID,
       {
-        $push: { coins: { coinType: "likeVideo", coinAmount: 1 } },
+        $push: { coins: { coinType: "Like a video", coinAmount: 1 } },
       },
       { new: true }
     );
@@ -207,7 +207,7 @@ const createComment = async (req, res) => {
     const user = await User.findByIdAndUpdate(
       userID,
       {
-        $push: { coins: { coinType: "commentVideo", coinAmount: 2 } },
+        $push: { coins: { coinType: "Comment a video", coinAmount: 2 } },
       },
       { new: true }
     );

@@ -1,14 +1,13 @@
 "use client";
 import { SVG } from "@/assets/SVG";
 import { leagueGothic } from "@/font/font";
+import { dispatch } from "@/store";
+import { updatePassword } from "@/store/slices/authSlice";
 import Image from "next/image";
-import { use, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { toastError, toastSuccess } from "../Toast/Toast";
-import { dispatch } from "@/store";
 import { ToastContainer } from "react-toastify";
-import { updatePassword } from "@/store/slices/authSlice";
+import { toastError, toastSuccess } from "../Toast/Toast";
 
 interface ChangePasswordProps {
   handleCloseModal: (error?: string) => void;

@@ -1,13 +1,35 @@
-import * as React from "react";
-import Image from "next/image";
-import Layout from "@/components/CustomLayout/layout";
-import { leagueGothic } from "@/font/font";
+"use client";
+import { useState } from "react";
 import { SVG } from "@/assets/SVG";
-import Link from "next/link";
+import Layout from "@/components/CustomLayout/layout";
+import Modal from "@/components/Modals/Modal";
+import Statement from "@/components/Modals/Statement";
+import { leagueGothic } from "@/font/font";
+import { useSelector } from "@/store";
+import { format } from "date-fns";
+import Image from "next/image";
 
 function Page() {
+  const authState = useSelector((state: any) => state.auth.userData) || [];
+  const [modalState, setModalState] = useState({
+    isStatementModalOpen: false,
+  });
+  console.log("authState!!", authState);
+
+  // Calculate total coin amount
+  const totalCoinAmount = authState?.coins?.reduce(
+    (total: any, user: any) => total + user.coinAmount,
+    0
+  );
   const sectionStyle = {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 50%)`,
+  };
+
+  const handleModalToggle = (modalName: keyof typeof modalState) => {
+    setModalState((prevState) => ({
+      ...prevState,
+      [modalName]: !prevState[modalName],
+    }));
   };
   return (
     <Layout>
@@ -18,7 +40,10 @@ function Page() {
             <h1 className={`${leagueGothic.className} text-4xl`}>MY FOLIO</h1>
           </div>
           <div className="flex items-center my-3 mx-2">
-            <div className="flex items-center p-2 mr-2 rounded-full bg-[#162423]">
+            <div
+              onClick={() => handleModalToggle("isStatementModalOpen")}
+              className="flex items-center p-2 mr-2 rounded-full bg-[#162423]"
+            >
               <Image
                 className="mr-2"
                 src={SVG.Statement}
@@ -35,7 +60,9 @@ function Page() {
             <span className="text-black text-sm font-normal">
               Your Coin Balance
             </span>
-            <span className="text-black text-xl font-bold">1000.00</span>
+            <span className="text-black text-xl font-bold">
+              {totalCoinAmount}.00
+            </span>
           </div>
         </div>
       </div>
@@ -48,28 +75,30 @@ function Page() {
         <div className="flex flex-col w-7/12  p-2">
           <span className="text-white">Transcation History</span>
           {/* Coins section */}
-          <div className="flex flex-col gap-2">
-            {/* Coins Item */}
-            <div className="flex gap-2 justify-between items-center py-4 px-4 border-b border-gray-600">
-              <Image
-                src={SVG.CoinsDeduct}
-                alt="GGcoin"
-                width={42}
-                height={42}
-              />
-              <span className="text-white">Spend to John Smith</span>
-              <span className="text-[#7C7F80]">22 Mar, 2022 - 3:20 PM</span>
-              <span className="text-white">3 Coins</span>
+          {authState?.coins?.map((user: any) => (
+            <div key={user.id} className="flex flex-col gap-2">
+              {/* Coins Item */}
+              <div className="flex gap-2 justify-between items-center py-4 px-4 border-b border-gray-600">
+                <Image src={SVG.CoinsAdd} alt="GGcoin" width={42} height={42} />
+                <span className="text-white">{user.coinType}</span>
+                <span className="text-[#7C7F80]">
+                  {format(new Date(user.date), "dd MMM, yyyy - h:mm a")}
+                </span>
+                <span className="text-white">{user.coinAmount} Coins</span>
+              </div>
             </div>
-            <div className="flex gap-2 justify-between items-center py-4 px-4 border-b border-gray-600">
-              <Image src={SVG.CoinsAdd} alt="GGcoin" width={42} height={42} />
-              <span className="text-white">Spend to John Smith</span>
-              <span className="text-[#7C7F80]">22 Mar, 2022 - 3:20 PM</span>
-              <span className="text-white">3 Coins</span>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
+
+      <Modal
+        isOpen={modalState.isStatementModalOpen}
+        handleClose={() => handleModalToggle("isStatementModalOpen")}
+      >
+        <Statement
+          handleCloseModal={() => handleModalToggle("isStatementModalOpen")}
+        />
+      </Modal>
     </Layout>
   );
 }

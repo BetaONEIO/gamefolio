@@ -19,7 +19,6 @@ import { getAllPostVideos } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import { copyToClipboard } from "@/utils/helpers";
 import { ToastContainer } from "react-toastify";
-import BlockUser from "@/components/Modals/BlockUser";
 
 const popular = [
   { id: 1, IMAGE: IMAGES.Popular },
@@ -158,7 +157,7 @@ function Page() {
     (post: any) => post?.userID?._id === authState._id
   );
 
-  console.log("authState", authState);
+  console.log("authState__", authState);
 
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
@@ -192,16 +191,18 @@ function Page() {
               </h1>
             </div>
             <div className="flex items-center my-3 mx-2">
-              <div className="flex items-center p-2 mr-2 rounded-full bg-[#162423]">
-                <Image
-                  className="mr-2"
-                  src={SVG.GGcoin}
-                  alt="GGcoin"
-                  width={30}
-                  height={30}
-                />
-                <p className="font-semibold pr-2 text-white">GG COIN</p>
-              </div>
+              <Link href="/account/my-folio">
+                <div className="flex items-center p-2 mr-2 rounded-full bg-[#162423]">
+                  <Image
+                    className="mr-2"
+                    src={SVG.GGcoin}
+                    alt="GGcoin"
+                    width={30}
+                    height={30}
+                  />
+                  <p className="font-semibold pr-2 text-white">GG COIN</p>
+                </div>
+              </Link>
               <Link href="/account/settings">
                 <Image
                   className="cursor-pointer hover:opacity-60"

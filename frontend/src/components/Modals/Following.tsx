@@ -6,7 +6,7 @@ import { dispatch, useSelector } from "@/store";
 import Image from "next/image";
 import { useState } from "react";
 import { toastError, toastSuccess } from "../Toast/Toast";
-import { removeFollow, removeFollowing } from "@/store/slices/userSlice";
+import { removeFollowing } from "@/store/slices/userSlice";
 
 interface FollowingProps {
   handleCloseModal: () => void;
@@ -14,29 +14,7 @@ interface FollowingProps {
 }
 function Following({ handleCloseModal, followingData }: FollowingProps) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
-  const initialUsers = [
-    { id: 1, name: "Mark Johnson", username: "john_smith", isFollowing: false },
-    { id: 2, name: "Alice Smith", username: "alice", isFollowing: false },
-    { id: 3, name: "Bob Williams", username: "bob", isFollowing: false },
-    { id: 4, name: "Mark Johnson", username: "john_smith", isFollowing: false },
-    { id: 5, name: "Alice Smith", username: "alice", isFollowing: false },
-    { id: 6, name: "Bob Williams", username: "bob", isFollowing: false },
-    { id: 7, name: "Mark Johnson", username: "john_smith", isFollowing: false },
-    { id: 8, name: "Alice Smith", username: "alice", isFollowing: false },
-    { id: 9, name: "Bob Williams", username: "bob", isFollowing: false },
-    // Add more users as needed
-  ];
-
   console.log("authstate", authState);
-
-  const [users, setUsers] = useState(initialUsers);
-
-  const handleUserButtonClick = (id: any) => {
-    const updatedUsers = users.map((user) =>
-      user.id === id ? { ...user, isFollowing: !user.isFollowing } : user
-    );
-    setUsers(updatedUsers);
-  };
 
   const myBGStyleModal = {
     backgroundColor: "rgba(0, 0, 0, 0.6)",

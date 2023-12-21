@@ -39,6 +39,7 @@ interface MyVideosSectionProps {
   data: Array<any>;
   authState: any; // Add authState as a prop
   postState: any; // Add postState as a prop
+  profileInfoState: any; // Add profileInfoState as a prop
 }
 interface VideoState {
   isMuted?: boolean;
@@ -47,17 +48,18 @@ interface VideoState {
 const MyVideosSection: React.FC<MyVideosSectionProps> = ({
   authState,
   postState,
+  profileInfoState,
 }) => {
   const [videoStates, setVideoStates] = useState<{ [key: string]: VideoState }>(
     {}
   );
   console.log("authState", authState);
   console.log("postState", postState);
+  console.log("profileInfoState...", profileInfoState);
   const userVideos = postState.videos.filter(
-    (post: any) => post?.userID?._id === authState._id
+    (post: any) =>
+      post?.userID?.username === profileInfoState.profileUserInfo.username
   );
-
-  console.log("userVideos", userVideos);
 
   const handleVideoClick = (
     event: React.MouseEvent<HTMLVideoElement, MouseEvent>
@@ -275,7 +277,8 @@ function Page({ params }: any) {
   };
 
   const userVideos = postState.videos.filter(
-    (post: any) => post?.userID?._id === authState._id
+    (post: any) =>
+      post?.userID?.username === profileInfoState.profileUserInfo.username
   );
 
   const handleFollowUser = async (userId: any) => {
@@ -669,6 +672,7 @@ function Page({ params }: any) {
               data={popular}
               authState={authState}
               postState={postState}
+              profileInfoState={profileInfoState}
             />
           ) : selectedSection === "bookmarks" ? (
             <ClipsSection data={popular} />

@@ -224,6 +224,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
       following: user.following,
       block: user.block,
       report: user.report,
+      coins: user.coins,
     });
   } else {
     return res.status(404).json({
