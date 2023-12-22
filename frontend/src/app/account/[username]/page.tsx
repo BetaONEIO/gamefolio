@@ -217,6 +217,7 @@ function Page({ params }: any) {
   const postState = useSelector((state: any) => state.post) || [];
   const [open, setOpen] = useState(false);
   const [selectedSection, setSelectedSection] = useState("videos");
+  const [isPrivateAccount, setIsPrivateAccount] = useState(false);
   const [modalState, setModalState] = useState({
     isShareModalOpen: false,
     isFollowerModalOpen: false,
@@ -224,6 +225,7 @@ function Page({ params }: any) {
   });
 
   console.log("authState****", authState);
+  console.log("profileInfoState****", profileInfoState);
 
   const router = useRouter();
 
@@ -239,6 +241,13 @@ function Page({ params }: any) {
     dispatch(getProfileInfo({ payload: params }));
     dispatch(getAllPostVideos());
   }, [postState.refresh]);
+
+  useEffect(() => {
+    // Assuming there's a property like accountType in the profileInfoState
+    setIsPrivateAccount(
+      profileInfoState?.profileUserInfo?.accountType === "private"
+    );
+  }, [profileInfoState]);
 
   const handleModalToggle = (modalName: keyof typeof modalState) => {
     setModalState((prevState) => ({
@@ -667,19 +676,27 @@ function Page({ params }: any) {
           {/* green line */}
 
           {/* Content Section */}
-          {selectedSection === "videos" ? (
-            <MyVideosSection
-              data={popular}
-              authState={authState}
-              postState={postState}
-              profileInfoState={profileInfoState}
-            />
-          ) : selectedSection === "bookmarks" ? (
-            <ClipsSection data={popular} />
-          ) : selectedSection === "clips" ? (
-            <StorySection data={popular} />
+          {isPrivateAccount ? (
+            // Content for private account
+            <p>This is a private account.</p>
           ) : (
-            <MyBookmarkSection data={popular} />
+            // Content for public account
+            <div>
+              {selectedSection === "videos" ? (
+                <MyVideosSection
+                  data={popular}
+                  authState={authState}
+                  postState={postState}
+                  profileInfoState={profileInfoState}
+                />
+              ) : selectedSection === "bookmarks" ? (
+                <ClipsSection data={popular} />
+              ) : selectedSection === "clips" ? (
+                <StorySection data={popular} />
+              ) : (
+                <MyBookmarkSection data={popular} />
+              )}
+            </div>
           )}
         </div>
       </div>

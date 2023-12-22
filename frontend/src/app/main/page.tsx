@@ -6,7 +6,7 @@ import DeletePost from "@/components/Modals/DeletePost";
 import Modal from "@/components/Modals/Modal";
 import SharePost from "@/components/Modals/SharePost";
 import VideoDetails from "@/components/Modals/VideoDetails";
-import { toastError, toastSuccess } from "@/components/Toast/Toast";
+import { toastError } from "@/components/Toast/Toast";
 import AllStories from "@/components/story/AllStories";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
@@ -18,11 +18,12 @@ import {
 } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
-import { Suspense, VideoHTMLAttributes, useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 function Main() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const postState = useSelector((state: any) => state.post) || [];
+  const profileInfoState = useSelector((state: any) => state.user) || [];
   const [postID, setPostID] = useState("");
   const [detailedPost, setDetailedPost] = useState("");
 
@@ -39,7 +40,9 @@ function Main() {
 
   console.log("secondtime");
 
+  console.log("authState", authState);
   console.log("postState", postState);
+  console.log("profileInfoState", profileInfoState);
 
   const [modalState, setModalState] = useState({
     isPostShareOpen: false,
@@ -61,6 +64,13 @@ function Main() {
   };
 
   console.log("POSTID ****: ", postID);
+
+  // const handleFollowingVideo =
+  //   profileInfoState?.profileUserInfo?.follower?.filter(
+  //     (following: any) => following.name === authState.following.name
+  //   );
+
+  // console.log("handleFollowingVideo: ", handleFollowingVideo);
 
   const sectionStyle = {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,

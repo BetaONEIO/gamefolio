@@ -289,20 +289,6 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-const getAllUsersProfile = asyncHandler(async (req, res) => {
-  // req.user was set in authMiddleware.js
-
-  console.log("yess api called");
-  const users = await User.find();
-
-  if (users) {
-    res.json(users);
-  } else {
-    res.status(404);
-    throw new Error("User not found");
-  }
-});
-
 const updatePassword = asyncHandler(async (req, res) => {
   const { userID, password, newPassword } = req.body; // Assuming password and newPassword are sent in the request body
   try {

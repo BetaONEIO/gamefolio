@@ -1,13 +1,13 @@
 "use client";
+import { useState } from "react";
 import { SVG } from "@/assets/SVG";
 import { leagueGothic } from "@/font/font";
 import Image from "next/image";
-import { useState } from "react";
+import { toastSuccess } from "../Toast/Toast";
+import BlockPopup from "./BlockPopup";
 import Modal from "./Modal";
 import Report from "./Report";
-import BlockPopup from "./BlockPopup";
 import ShareProfile from "./ShareProfile";
-import BlockUser from "./BlockUser";
 
 interface MoreOptionProps {
   handleCloseModal: () => void;
@@ -61,7 +61,21 @@ function MoreOptions({ handleCloseModal, data }: MoreOptionProps) {
 
             <div
               className="text-sm text-left rounded-lg mb-3 sm:mb-5"
-              onClick={() => handleModalToggle("isProfileShareOpen")}
+              // onClick={() => handleModalToggle("isProfileShareOpen")}
+              onClick={() => {
+                const currentURL = window.location.href;
+                navigator.clipboard
+                  .writeText(currentURL)
+                  .then(() => {
+                    toastSuccess("URL copied to clipboard");
+                    console.log("URL copied to clipboard:", currentURL);
+                    // You can also show a success message here
+                  })
+                  .catch((error) => {
+                    console.error("Failed to copy URL to clipboard:", error);
+                    // You can also show an error message here
+                  });
+              }}
             >
               <p className="pl-4 text-base font-semibold mb-4 hover:opacity-80 cursor-pointer text-white">
                 Share this Profile

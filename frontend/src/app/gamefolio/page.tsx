@@ -1,5 +1,11 @@
 "use client";
-import React, { useRef, useEffect, useCallback, useState } from "react";
+import React, {
+  useRef,
+  useEffect,
+  useCallback,
+  useState,
+  Suspense,
+} from "react";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import { getAllPostVideos } from "@/store/slices/postSlice";
@@ -9,6 +15,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { SVG } from "@/assets/SVG";
 import { leagueGothic } from "@/font/font";
+import Loading from "./loading";
 // import Loading from "./loading";
 
 function ExploreVideo() {
@@ -76,61 +83,64 @@ function ExploreVideo() {
 
   return (
     <Layout>
-      {/* <Suspense fallback={<Loading />}> */}
-      {/* Header */}
-      <div className="flex items-center py-2 bg-[#091619]">
-        <div className="flex justify-between items-center w-full mx-4">
-          <div>
-            <h1 className={`${leagueGothic.className} text-4xl text-gray-50`}>
-              MY GAMEFOLIO
-            </h1>
-          </div>
-          <div className="flex items-center my-3 mx-2">
-            <div className="flex items-center p-2 mr-2 rounded-full bg-[#162423]">
-              <Image
-                className="mr-2"
-                src={SVG.GGcoin}
-                alt="GGcoin"
-                width={30}
-                height={30}
-              />
-              <p className="font-semibold pr-2 text-gray-50">GG COIN</p>
+      <Suspense fallback={<Loading />}>
+        {/* Header */}
+        <div className="flex items-center py-2 bg-[#091619]">
+          <div className="flex justify-between items-center w-full mx-4">
+            <div>
+              <h1 className={`${leagueGothic.className} text-4xl text-gray-50`}>
+                MY GAMEFOLIO
+              </h1>
             </div>
-            <Link href="/account/settings">
-              <Image
-                className="cursor-pointer hover:opacity-60"
-                src={SVG.Setting}
-                alt="Setting"
-                width={24}
-                height={24}
-              />
-            </Link>
+            <div className="flex items-center my-3 mx-2">
+              <Link href="/account/my-folio">
+                <div className="flex items-center p-2 mr-2 rounded-full bg-[#162423]">
+                  <Image
+                    className="mr-2"
+                    src={SVG.GGcoin}
+                    alt="GGcoin"
+                    width={30}
+                    height={30}
+                  />
+                  <p className="font-semibold pr-2 text-white">GG COIN</p>
+                </div>
+              </Link>
+              <Link href="/account/settings">
+                <Image
+                  className="cursor-pointer hover:opacity-60"
+                  src={SVG.Setting}
+                  alt="Setting"
+                  width={24}
+                  height={24}
+                />
+              </Link>
+            </div>
           </div>
         </div>
-      </div>
-      <hr className="border-t border-gray-600" />
+        <hr className="border-t border-gray-600" />
 
-      <div className="flex flex-wrap justify-start items-start mx-3 my-4">
-        {postState.videos.map((item: any, index: number) => (
-          <div key={item.id} className="relative my-1 mx-3">
-            <video
-              ref={(el) => (videoRefs.current[index] = el)}
-              src={item.video}
-              className="w-96 h-44 sm:w-52 sm:h-28 rounded-xl hover:opacity-80"
-              width={20}
-              height={20}
-              controls={false}
-              autoPlay={false}
-              preload="metadata"
-              onClick={handleVideoClick}
-              // onTimeUpdate={handleTimeUpdate}
-            />
-            <span className="absolute bottom-2 right-2">
-              {formatTime(currentTime[index] || 0)}
-            </span>
-          </div>
-        ))}
-      </div>
+        <div className="flex flex-wrap justify-start items-start mx-3 my-4 cursor-pointer">
+          {postState.videos.map((item: any, index: number) => (
+            <div key={item.id} className="relative my-1 mx-3">
+              <video
+                ref={(el) => (videoRefs.current[index] = el)}
+                src={item.video}
+                className="w-96 h-44 sm:w-52 sm:h-28 rounded-xl hover:opacity-80"
+                width={20}
+                height={20}
+                controls={false}
+                autoPlay={false}
+                preload="metadata"
+                onClick={handleVideoClick}
+                // onTimeUpdate={handleTimeUpdate}
+              />
+              <span className="absolute bottom-2 right-2">
+                {formatTime(currentTime[index] || 0)}
+              </span>
+            </div>
+          ))}
+        </div>
+      </Suspense>
     </Layout>
   );
 }

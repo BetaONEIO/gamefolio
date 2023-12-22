@@ -1,16 +1,16 @@
 "use client";
 import { SVG } from "@/assets/SVG";
 import { leagueGothic } from "@/font/font";
+import { BASE_URL } from "@/services/api";
 import { dispatch, useSelector } from "@/store";
-import { getAllMusic, postVideo, refreshPage } from "@/store/slices/postSlice";
+import { getAllMusic, refreshPage } from "@/store/slices/postSlice";
+import { postStory } from "@/store/slices/storySlice";
+import axios from "axios";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import { ToastContainer } from "react-toastify";
 import { toastError, toastSuccess } from "../Toast/Toast";
-import axios from "axios";
-import { CountdownCircleTimer } from "react-countdown-circle-timer";
-import { postStory } from "@/store/slices/storySlice";
-import { BASE_URL } from "@/services/api";
 
 interface AddStoryProps {
   handleCloseModal: () => void;
@@ -36,6 +36,34 @@ function AddStory({ handleCloseModal }: AddStoryProps) {
     { value: "game2", label: "Game 2" },
     { value: "game3", label: "Game 3" },
   ];
+
+  const [searchText, setSearchText] = useState("");
+  const [filteredOptions, setFilteredOptions] = useState(optionsForGame);
+
+  const handleSearch = (e: any) => {
+    const inputValue = e.target.value.toLowerCase();
+    setSearchText(inputValue);
+
+    const filtered = optionsForGame.filter((option) =>
+      option.label.toLowerCase().includes(inputValue)
+    );
+
+    setFilteredOptions(filtered);
+  };
+
+  const [searchTextMusic, setSearchTextMusic] = useState("");
+  const [filteredOptionsMusic, setFilteredOptionsMusic] = useState(musicState);
+
+  const handleSearchMusic = (e: any) => {
+    const inputValue = e.target.value.toLowerCase();
+    setSearchTextMusic(inputValue);
+
+    const filtered = musicState.filter((option: any) =>
+      option.toLowerCase().includes(inputValue)
+    );
+
+    setFilteredOptionsMusic(filtered);
+  };
 
   const handleSelectMusic = (value: any) => {
     setSelectedOptionMusic(value);
@@ -242,7 +270,7 @@ function AddStory({ handleCloseModal }: AddStoryProps) {
               <div className="w-full md:w-full lg:w-2/5 px-8 sm:px-0">
                 {/* Game Selection */}
                 <div className="mb-2 sm:mb-4">
-                  <label className="block mb-2  text-gray-200">
+                  <label className="block mb-2 text-gray-200">
                     Select Game
                   </label>
                   <div className="relative inline-block text-left w-full">
@@ -251,7 +279,7 @@ function AddStory({ handleCloseModal }: AddStoryProps) {
                         <button
                           onClick={toggleDropdown}
                           type="button"
-                          className="w-full md:w-72 sm:w-96 inline-flex justify-between px-4 py-3  rounded-lg bg-[#1C2C2E] text-white"
+                          className="w-full md:w-80 sm:w-96 inline-flex justify-between px-4 py-3 rounded-t-lg bg-[#1C2C2E] text-white"
                           aria-selected={true}
                         >
                           {selectedOption || "Game"}
@@ -267,9 +295,23 @@ function AddStory({ handleCloseModal }: AddStoryProps) {
                     </div>
 
                     {isDropdownOpen && (
-                      <div className="absolute overflow-y-auto h-40 z-50 mt-2w-full md:w-72 sm:w-96 rounded-md shadow-lg">
-                        <ul className="py-1  bg-[#1C2C2E] text-white rounded-b-lg">
-                          {optionsForGame.map((option) => (
+                      <div className="absolute z-50 w-full md:w-80 sm:w-96 rounded-md shadow-lg">
+                        <div className="bg-[#1C2C2E] flex gap-2 p-2 sm:p-3 items-center border border-[#162423]">
+                          <Image
+                            src={SVG.Search}
+                            alt="logo"
+                            width={25}
+                            height={25}
+                          />
+                          <input
+                            className="w-full md:w-80 sm:w-96 bg-[#1C2C2E] outline-none text-white flex-grow text-sm sm:text-base"
+                            placeholder="Search"
+                            value={searchText}
+                            onChange={handleSearch}
+                          />
+                        </div>
+                        <ul className="py-1 bg-[#1C2C2E] text-white divide-y divide-[#162423] rounded-b-lg">
+                          {filteredOptions.map((option) => (
                             <li
                               key={option.value}
                               onClick={() => handleSelect(option.value)}
@@ -311,7 +353,7 @@ function AddStory({ handleCloseModal }: AddStoryProps) {
                   <textarea
                     id="description"
                     rows={5}
-                    className="w-full md:w-72 sm:w-96 p-2  sm:text-sm outline-none rounded-lg bg-[#1C2C2E] text-white"
+                    className="w-full md:w-80 sm:w-96 p-2  sm:text-sm outline-none rounded-lg bg-[#1C2C2E] text-white"
                     placeholder="Type here..."
                   ></textarea>
                 </div>
@@ -324,7 +366,7 @@ function AddStory({ handleCloseModal }: AddStoryProps) {
                         <button
                           onClick={toggleDropdownMusic}
                           type="button"
-                          className="w-full md:w-72 sm:w-96 inline-flex justify-between  px-4 py-3 rounded-lg bg-[#1C2C2E] text-white "
+                          className="w-full md:w-80 sm:w-96 inline-flex justify-between px-4 py-3 rounded-t-lg bg-[#1C2C2E] text-white "
                           aria-selected={true}
                         >
                           {selectedOptionMusic || "Music"}
@@ -340,9 +382,23 @@ function AddStory({ handleCloseModal }: AddStoryProps) {
                     </div>
 
                     {isDropdownOpenMusic && (
-                      <div className="absolute overflow-y-auto h-40 z-50 mt-2w-full md:w-72 sm:w-96 rounded-md shadow-lg">
-                        <ul className="py-1  bg-[#1C2C2E] text-white rounded-b-lg">
-                          {musicState.map((option: any) => (
+                      <div className="absolute overflow-y-auto h-40 z-50 mt-2w-full md:w-80 sm:w-96 shadow-lg">
+                        <div className="bg-[#1C2C2E] flex gap-2 p-2 sm:p-3 items-center border border-[#162423]">
+                          <Image
+                            src={SVG.Search}
+                            alt="logo"
+                            width={25}
+                            height={25}
+                          />
+                          <input
+                            className="w-full md:w-80 sm:w-96 bg-[#1C2C2E] outline-none text-white flex-grow text-sm sm:text-base"
+                            placeholder="Search"
+                            value={searchTextMusic}
+                            onChange={handleSearchMusic}
+                          />
+                        </div>
+                        <ul className="py-1 bg-[#1C2C2E] text-white divide-y divide-[#162423] rounded-b-lg">
+                          {filteredOptionsMusic.map((option: any) => (
                             <li
                               key={option.value}
                               onClick={() => handleSelectMusic(option)}

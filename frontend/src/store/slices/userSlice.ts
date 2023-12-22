@@ -78,6 +78,7 @@ export function getUser(params: ActionParams) {
     }
   };
 }
+
 export function getAllUsers() {
   return async () => {
     dispatch(slice.actions.startLoading());
