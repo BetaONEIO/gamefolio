@@ -512,6 +512,17 @@ const removeFollower = asyncHandler(async (req, res) => {
     user.followers.splice(followerIndex, 1);
     await user.save();
 
+    // Find the follower user to remove the following entry
+    const followerUser = await User.findById(followerID);
+    const followingIndex = followerUser.following.findIndex(
+      (following) => following.userID.toString() === userId
+    );
+
+    if (followingIndex !== -1) {
+      followerUser.following.splice(followerIndex, 1);
+      await followerUser.save();
+    }
+
     // Use populate to retrieve additional information about the updated user
     const updatedUser = await User.findById(userId)
       .populate("followers.userID")

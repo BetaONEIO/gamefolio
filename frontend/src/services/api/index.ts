@@ -1,7 +1,7 @@
 import { ERRORS } from "@/labels/error";
 import { APIOption, APIParams } from "@/types/Api";
 import { getFromLocal } from "@/utils/localStorage";
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 
 // export const BASE_URL = "http://192.168.2.120:4000/api";
 export const BASE_URL = "http://localhost:4000/api";
@@ -110,6 +110,6 @@ export const API = async (params: APIParams) => {
   }
 };
 
-export const socket = io("http://localhost:8000");
+// export const socket = io("http://localhost:8000");
 
 

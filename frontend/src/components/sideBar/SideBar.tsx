@@ -228,7 +228,7 @@ function SideBar() {
                         : "#586769",
                     }}
                   >
-                    <g clip-path="url(#clip0_133_5751)">
+                    <g clipPath="url(#clip0_133_5751)">
                       <path
                         d="M14.25 4.46853L13.625 4.15385L4.6875 14.4126L14.5625 13.028L14.5 10.6364L10.75 10.8252L17.9375 6.7972L14.8125 18L14.625 13.3427L3.125 18L0 15.1678L14.5625 0L16.1875 2.76923L14.25 4.46853Z"
                         fill="#586769"
@@ -285,7 +285,7 @@ function SideBar() {
 
           <div>
             <div className="flex flex-col items-center justify-center gap-3">
-              <Link href="/chat">
+              <Link href="/main">
                 <button className="flex w-full sm:w-52 bg-[#1C2C2E] text-white py-[10px] px-[20px] rounded-full ">
                   <div className="flex self-center justify-between ">
                     <Image
