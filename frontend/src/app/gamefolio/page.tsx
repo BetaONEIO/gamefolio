@@ -13,7 +13,7 @@ import Link from "next/link";
 import React, { Suspense, useEffect, useState } from "react";
 import Loading from "./loading";
 
-function myGamefolio() {
+function Gamefolio() {
   const postState = useSelector((state: any) => state.post) || [];
   const [postID, setPostID] = useState("");
   const [detailedPost, setDetailedPost] = useState("");
@@ -162,4 +162,4 @@ function myGamefolio() {
   );
 }
 
-export default myGamefolio;
+export default Gamefolio;
