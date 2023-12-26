@@ -80,7 +80,7 @@ const MyVideosSection: React.FC<MyVideosSectionProps> = ({
           isMuted: false,
         };
         return (
-          <div key={item.id} className="relative">
+          <div key={item._id} className="relative">
             <video
               src={item.video}
               className="w-96 sm:w-96 h-52 md:h-40  rounded-xl object-cover hover:opacity-80"

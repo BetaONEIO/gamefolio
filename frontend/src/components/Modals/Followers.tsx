@@ -6,6 +6,7 @@ import { leagueGothic } from "@/font/font";
 import Image from "next/image";
 import { toastError, toastSuccess } from "../Toast/Toast";
 import { removeFollow } from "@/store/slices/userSlice";
+import { useState } from "react";
 
 interface FollowerProps {
   handleCloseModal: () => void;
@@ -14,6 +15,7 @@ interface FollowerProps {
 
 function Followers({ handleCloseModal, followerData }: FollowerProps) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const myBGStyleModal = {
     backgroundColor: "rgba(0, 0, 0, 0.6)",
@@ -46,6 +48,17 @@ function Followers({ handleCloseModal, followerData }: FollowerProps) {
     dispatch(removeFollow(params));
   };
 
+  // Filter the followerData based on the search query
+  const filteredFollowerData = followerData.filter((user: any) => {
+    const lowerCaseQuery = searchQuery.toLowerCase();
+    const userName = user?.userID?.name.toLowerCase();
+    const userUsername = user?.userID?.username.toLowerCase();
+
+    return (
+      userName.includes(lowerCaseQuery) || userUsername.includes(lowerCaseQuery)
+    );
+  });
+
   return (
     <>
       <div
@@ -75,12 +88,14 @@ function Followers({ handleCloseModal, followerData }: FollowerProps) {
               <input
                 className="w-full block p-2.5 outline-none bg-[#1C2C2E] "
                 placeholder="Search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
 
             <div className="flex flex-col w-full sm:min-h-[350px] lg:min-h-[500px] max-h-[400px] sm:max-h-[350px] lg:max-h-[500px] overflow-y-auto no-scrollbar">
-              {followerData?.map((user: any) => (
-                <div key={user?.id}>
+              {filteredFollowerData?.map((user: any) => (
+                <div key={user?._id}>
                   <div className="flex items-center my-3">
                     <Image
                       className="object-contain w-12 h-12 rounded-lg"

@@ -82,7 +82,13 @@ function SideBar() {
                     </defs>
                   </svg>
                   <div className="flex flex-row w-48 justify-between">
-                    <span className="ml-4">Home</span>
+                    <span
+                      className={`ml-5 font-semibold ${
+                        isItemActive("/main") ? "text-white" : "text-gray-400"
+                      }`}
+                    >
+                      Home
+                    </span>
                     {isItemActive("/main") && (
                       <hr className="w-1 h-6 bg-[#fff] rounded-lg" />
                     )}
@@ -114,7 +120,13 @@ function SideBar() {
                     <path d="M5.49533 4.58594H18.5657C19.0912 4.5899 19.6081 4.72023 20.0726 4.96593L19.483 3.30838C19.347 2.92395 19.0949 2.59131 18.7616 2.35654C18.4282 2.12177 18.0301 1.99649 17.6223 1.99806H6.406C5.99826 1.99649 5.60012 2.12177 5.26674 2.35654C4.93337 2.59131 4.68126 2.92395 4.54535 3.30838L3.98846 4.96593C4.453 4.72023 4.96983 4.5899 5.49533 4.58594Z" />
                   </svg>
                   <div className="flex flex-row w-48 justify-between">
-                    <span className="ml-3">Clips</span>
+                    <span
+                      className={`ml-5 font-semibold ${
+                        isItemActive("/clips") ? "text-white" : "text-gray-400"
+                      }`}
+                    >
+                      Clips
+                    </span>
                     {isItemActive("/clips") && (
                       <hr className="w-1 h-6 bg-[#fff] rounded-lg" />
                     )}
@@ -161,7 +173,15 @@ function SideBar() {
                     />
                   </svg>
                   <div className="flex flex-row w-48 justify-between">
-                    <span className="ml-3">Explore</span>
+                    <span
+                      className={`ml-5 font-semibold ${
+                        isItemActive("/explore")
+                          ? "text-white"
+                          : "text-gray-400"
+                      }`}
+                    >
+                      Explore
+                    </span>
                     {isItemActive("/explore") && (
                       <hr className="w-1 h-6 bg-[#fff] rounded-lg" />
                     )}
@@ -188,7 +208,15 @@ function SideBar() {
                     <path d="M15.432 21.7248C15.4078 22.2508 15.2351 24 13.1955 24C11.1558 24 10.6105 21.9817 10.5754 21.4317C10.4668 19.7259 11.1818 17.639 12.1159 16.6661C12.2216 16.5559 12.4031 16.621 12.4443 16.768C12.5712 17.2206 12.878 18.04 13.535 18.6069C14.5152 19.4528 15.5028 20.1793 15.432 21.7248ZM17.853 11.9928C16.8296 11.0237 15.8885 9.84106 16.3101 7.11484C16.3618 6.78052 16.0888 6.48952 15.7844 6.63718C15.3939 6.82663 15.0445 7.11461 14.8017 7.3443C14.67 7.46884 14.4184 7.38643 14.383 7.20869C14.1912 6.24583 13.7586 5.20061 14.7307 2.87823C14.8874 2.50388 14.5864 2.10459 14.2029 2.23721C10.2977 3.58758 4.72425 9.59532 5.01061 15.3844C5.155 18.3034 6.50363 21.7795 9.72285 23.2691C9.82848 23.318 9.91735 23.1632 9.83209 23.084C8.89756 22.2155 8.23516 20.9693 8.01514 19.5309C7.2741 14.6876 12.0628 10.2486 14.4523 10.5133C14.5512 10.5242 14.6145 10.614 14.5794 10.7072C14.2716 11.5248 12.543 13.7498 16.0877 16.0961C19.9239 18.6349 18.2044 21.4737 17.146 22.6861C17.0682 22.7753 17.196 22.9516 17.2983 22.8919C19.2559 21.7503 20.6557 19.8193 20.9623 17.5412C21.2729 15.2321 19.6117 13.6587 17.853 11.9928Z" />
                   </svg>
                   <div className="flex flex-row w-48 justify-between">
-                    <span className="ml-3">Trending</span>
+                    <span
+                      className={`ml-5 font-semibold ${
+                        isItemActive("/trending")
+                          ? "text-white"
+                          : "text-gray-400"
+                      }`}
+                    >
+                      Trending
+                    </span>
                     {isItemActive("/trending") && (
                       <hr className="w-1 h-6 bg-[#fff] rounded-lg" />
                     )}
@@ -203,18 +231,6 @@ function SideBar() {
                     isItemActive("/gamefolio") ? "bg-[#162423]" : ""
                   } dark:hover:bg-[#162423] group`}
                 >
-                  {/* <svg
-                    width="26"
-                    height="26"
-                    viewBox="0 0 26 26"
-                    xmlns="http://www.w3.org/2000/svg"
-                    style={{
-                      fill: isItemActive("/gamefolio") ? "#62C860" : "#586769",
-                    }}
-                  >
-                    <path d="M13 15.6739C17.3386 15.6739 21 16.3789 21 19.099C21 21.82 17.3146 22.5 13 22.5C8.66237 22.5 5 21.795 5 19.075C5 16.3539 8.68538 15.6739 13 15.6739ZM13 2.5C15.9391 2.5 18.294 4.85402 18.294 7.79105C18.294 10.7281 15.9391 13.0831 13 13.0831C10.0619 13.0831 7.70601 10.7281 7.70601 7.79105C7.70601 4.85402 10.0619 2.5 13 2.5Z" />
-                  </svg> */}
-
                   <svg
                     width="18"
                     height="18"
@@ -246,7 +262,15 @@ function SideBar() {
                   </svg>
 
                   <div className="flex flex-row w-48 justify-between">
-                    <span className="ml-5 text-gray-50">My Gamefolio</span>
+                    <span
+                      className={`ml-5 font-semibold ${
+                        isItemActive("/gamefolio")
+                          ? "text-white"
+                          : "text-gray-400"
+                      }`}
+                    >
+                      My Gamefolio
+                    </span>
                     {isItemActive("/gamefolio") && (
                       <hr className="w-1 h-6 bg-[#fff] rounded-lg" />
                     )}
@@ -273,7 +297,15 @@ function SideBar() {
                     <path d="M13 15.6739C17.3386 15.6739 21 16.3789 21 19.099C21 21.82 17.3146 22.5 13 22.5C8.66237 22.5 5 21.795 5 19.075C5 16.3539 8.68538 15.6739 13 15.6739ZM13 2.5C15.9391 2.5 18.294 4.85402 18.294 7.79105C18.294 10.7281 15.9391 13.0831 13 13.0831C10.0619 13.0831 7.70601 10.7281 7.70601 7.79105C7.70601 4.85402 10.0619 2.5 13 2.5Z" />
                   </svg>
                   <div className="flex flex-row w-48 justify-between">
-                    <span className="ml-3">Account</span>
+                    <span
+                      className={`ml-5 font-semibold ${
+                        isItemActive("/account")
+                          ? "text-white"
+                          : "text-gray-400"
+                      }`}
+                    >
+                      Account
+                    </span>
                     {isItemActive("/account") && (
                       <hr className="w-1 h-6 bg-[#fff] rounded-lg" />
                     )}

@@ -14,7 +14,11 @@ import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import { initChat } from "@/store/slices/chatSlice";
 import { getAllPostVideos } from "@/store/slices/postSlice";
-import { followUser, getProfileInfo } from "@/store/slices/userSlice";
+import {
+  followUser,
+  getAllUsers,
+  getProfileInfo,
+} from "@/store/slices/userSlice";
 import { copyToClipboard, generateUniqueRoomId } from "@/utils/helpers";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
@@ -225,7 +229,6 @@ function Page({ params }: any) {
   });
 
   console.log("authState****", authState);
-  console.log("profileInfoState****", profileInfoState);
 
   const router = useRouter();
 
@@ -240,7 +243,10 @@ function Page({ params }: any) {
     dispatch(userSession(myparams));
     dispatch(getProfileInfo({ payload: params }));
     dispatch(getAllPostVideos());
+    dispatch(getAllUsers());
   }, [postState.refresh]);
+
+  console.log("profileInfoState****", profileInfoState);
 
   useEffect(() => {
     // Assuming there's a property like accountType in the profileInfoState
@@ -288,6 +294,11 @@ function Page({ params }: any) {
   const userVideos = postState.videos.filter(
     (post: any) =>
       post?.userID?.username === profileInfoState.profileUserInfo.username
+  );
+
+  const mutualFollowers = profileInfoState?.profileUserInfo?.follower?.filter(
+    (follower: any) =>
+      authState?.following?.find((following: any) => following === follower)
   );
 
   const handleFollowUser = async (userId: any) => {
@@ -566,7 +577,7 @@ function Page({ params }: any) {
                     handleFollowUser(profileInfoState?.profileUserInfo?._id)
                   }
                 >
-                  Follow
+                  follow
                 </button>
                 <button
                   className="font-bold w-40 h-10 bg-[#37C535] text-white text-center py-[10px] px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3"
@@ -582,7 +593,7 @@ function Page({ params }: any) {
           <div className="h-10 w-full flex justify-around items-center">
             <div>
               <div
-                className={`flex justify-center gap-2 my-6 cursor-pointer ${
+                className={`flex justify-center w-16 gap-2 my-6 cursor-pointer ${
                   selectedSection === "videos" ? "text-white" : "text-gray-500"
                 }`}
                 onClick={() => setSelectedSection("videos")}
@@ -604,7 +615,7 @@ function Page({ params }: any) {
 
             <div>
               <div
-                className={`flex justify-center gap-2 my-6 cursor-pointer ${
+                className={`flex justify-center w-16 gap-2 my-6 cursor-pointer ${
                   selectedSection === "clips" ? "text-white" : "text-gray-500"
                 }`}
                 onClick={() => setSelectedSection("clips")}
@@ -620,13 +631,13 @@ function Page({ params }: any) {
                 />
               </div>
               {selectedSection === "clips" && (
-                <div className=" w-16 h-1 bg-[#62C860] rounded-lg"></div>
+                <div className="w-16 h-1 bg-[#62C860] rounded-lg"></div>
               )}
             </div>
 
             <div>
               <div
-                className={`flex justify-center gap-2 my-6 cursor-pointer ${
+                className={`flex justify-center w-16 gap-2 my-6 cursor-pointer ${
                   selectedSection === "videos" ? "text-white" : "text-gray-500"
                 }`}
                 onClick={() => setSelectedSection("story")}
@@ -648,7 +659,7 @@ function Page({ params }: any) {
 
             <div>
               <div
-                className={`flex justify-center gap-2 my-6 cursor-pointer ${
+                className={`flex justify-center w-16 gap-2 my-6 cursor-pointer ${
                   selectedSection === "bookmarked"
                     ? "text-white"
                     : "text-gray-500"
@@ -678,7 +689,7 @@ function Page({ params }: any) {
           {/* Content Section */}
           {isPrivateAccount ? (
             // Content for private account
-            <p>This is a private account.</p>
+            <p className="flex justify-center">This is a private account.</p>
           ) : (
             // Content for public account
             <div>

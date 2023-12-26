@@ -4,15 +4,38 @@ import Layout from "@/components/CustomLayout/layout";
 import ExploreHeader from "@/components/ExploreHeader/ExploreHeader";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
-import { getAllPostVideos } from "@/store/slices/postSlice";
+import { getAllPostVideos, refreshPage } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
 import Link from "next/link";
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Loading from "./loading";
+import Modal from "@/components/Modals/Modal";
+import VideoDetails from "@/components/Modals/VideoDetails";
 
 function Explore() {
   const postState = useSelector((state: any) => state.post) || [];
+  const [videoDurations, setVideoDurations] = useState<{
+    [key: string]: number;
+  }>({});
+  const [postID, setPostID] = useState("");
+  const [detailedPost, setDetailedPost] = useState("");
+  const [modalState, setModalState] = useState({
+    isVideoDetailOpen: false,
+  });
+
+  const handleModalToggle = (
+    modalName: keyof typeof modalState,
+    postID?: any,
+    detailedPost?: any
+  ) => {
+    setPostID(postID);
+    setDetailedPost(detailedPost);
+    setModalState((prevState) => ({
+      ...prevState,
+      [modalName]: !prevState[modalName],
+    }));
+  };
 
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
@@ -28,16 +51,16 @@ function Explore() {
   console.log("postState", postState);
 
   // Function to toggle play/pause on video click
-  const handleVideoClick = (
-    event: React.MouseEvent<HTMLVideoElement, MouseEvent>
-  ) => {
-    const video = event.currentTarget;
-    if (video.paused) {
-      video.play();
-    } else {
-      video.pause();
-    }
-  };
+  // const handleVideoClick = (
+  //   event: React.MouseEvent<HTMLVideoElement, MouseEvent>
+  // ) => {
+  //   const video = event.currentTarget;
+  //   if (video.paused) {
+  //     video.play();
+  //   } else {
+  //     video.pause();
+  //   }
+  // };
 
   const sectionStyle = {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
@@ -58,6 +81,31 @@ function Explore() {
     { id: 12, IMAGE: IMAGES.ExploreIMG2 },
     { id: 13, IMAGE: IMAGES.ExploreIMG3 },
   ];
+
+  const handleVideoMetadata = (
+    event: React.SyntheticEvent<HTMLVideoElement, Event>,
+    videoId: string
+  ) => {
+    const video = event.currentTarget;
+    const duration = video.duration;
+    setVideoDurations((prevDurations) => ({
+      ...prevDurations,
+      [videoId]: duration,
+    }));
+  };
+
+  const formatTime = (seconds: number): string => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    const formattedTime = `${minutes}:${
+      remainingSeconds < 10 ? "0" : ""
+    }${remainingSeconds}`;
+    return formattedTime;
+  };
+
+  const handlePageRefresh = () => {
+    dispatch(refreshPage());
+  };
 
   return (
     <Layout>
@@ -114,7 +162,13 @@ function Explore() {
 
             <div className="flex flex-wrap justify-start items-start mx-3">
               {postState.videos.map((item: any) => (
-                <div key={item.id} className="relative my-2 mx-3">
+                <div
+                  key={item._id}
+                  className="relative my-2 mx-3"
+                  onClick={() =>
+                    handleModalToggle("isVideoDetailOpen", item._id, item)
+                  }
+                >
                   <video
                     src={item.video}
                     className="w-96 h-44 sm:w-52 sm:h-28 rounded-xl hover:opacity-80"
@@ -122,17 +176,13 @@ function Explore() {
                     height={20}
                     controls={false}
                     autoPlay={false}
-                    onLoadedMetadata={(e) => {
-                      const video = e.currentTarget;
-                      const timeInSeconds = video.duration;
-
-                      console.log("Video time", timeInSeconds);
-                    }}
-                    onClick={handleVideoClick}
+                    onLoadedMetadata={(e) => handleVideoMetadata(e, item._id)}
                   />
 
                   <span className="absolute bottom-2 right-2">
-                    8:31{item.duration}
+                    {videoDurations[item._id]
+                      ? formatTime(videoDurations[item._id])
+                      : "Loading..."}
                   </span>
                 </div>
               ))}
@@ -140,6 +190,17 @@ function Explore() {
           </div>
         </div>
       </Suspense>
+      <Modal
+        isOpen={modalState.isVideoDetailOpen}
+        handleClose={() => handleModalToggle("isVideoDetailOpen")}
+      >
+        <VideoDetails
+          postID={postID}
+          detailedPost={detailedPost}
+          handleCloseModal={() => handleModalToggle("isVideoDetailOpen")}
+          handlePageRefresh={() => handlePageRefresh()}
+        />
+      </Modal>
     </Layout>
   );
 }

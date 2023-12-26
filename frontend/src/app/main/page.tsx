@@ -65,12 +65,16 @@ function Main() {
 
   console.log("POSTID ****: ", postID);
 
-  // const handleFollowingVideo =
-  //   profileInfoState?.profileUserInfo?.follower?.filter(
-  //     (following: any) => following.name === authState.following.name
-  //   );
+  // const followingVideoIDs = authState.following.map(
+  //   (followedUser: any) => followedUser._id
+  // );
+  // console.log("followingVideoIDs: ", followingVideoIDs);
 
-  // console.log("handleFollowingVideo: ", handleFollowingVideo);
+  // const followingVideos = postState.videos.filter(
+  //   (video: any) => followingVideoIDs === video.video
+  // );
+
+  // console.log("followingVideos: ", followingVideos);
 
   const sectionStyle = {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
@@ -175,12 +179,14 @@ function Main() {
                     <div className="flex items-center justify-between m-3">
                       <div className="flex items-center sm:gap-4 gap-2">
                         <Image
-                          className="w-12 h-12 rounded-lg"
+                          className="w-12 h-12 rounded-xl"
                           src={post?.userID?.profilePicture}
                           alt="Profile"
                           width={50}
                           height={50}
                           sizes="100vw"
+                          quality={80}
+                          loading="lazy"
                         />
                         <div>
                           <h1 className="w-[230px] sm:w-[350px] text-sm md:text-lg sm:text-md font-bold text-white hover:opacity-80">

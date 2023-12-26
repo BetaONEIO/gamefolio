@@ -14,6 +14,7 @@ interface FollowingProps {
 }
 function Following({ handleCloseModal, followingData }: FollowingProps) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
+  const [searchQuery, setSearchQuery] = useState<string>("");
   console.log("authstate", authState);
 
   const myBGStyleModal = {
@@ -44,6 +45,16 @@ function Following({ handleCloseModal, followingData }: FollowingProps) {
     dispatch(removeFollowing(params));
   };
 
+  const filteredFollowerData = followingData.filter((user: any) => {
+    const lowerCaseQuery = searchQuery.toLowerCase();
+    const userName = user?.userID?.name.toLowerCase();
+    const userUsername = user?.userID?.username.toLowerCase();
+
+    return (
+      userName.includes(lowerCaseQuery) || userUsername.includes(lowerCaseQuery)
+    );
+  });
+
   return (
     <>
       <div
@@ -73,12 +84,14 @@ function Following({ handleCloseModal, followingData }: FollowingProps) {
               <input
                 className="w-full block p-2.5 outline-none bg-[#1C2C2E]"
                 placeholder="Search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
 
             <div className="flex flex-col w-full sm:min-h-[350px] lg:min-h-[500px] max-h-[400px] sm:max-h-[350px] lg:max-h-[500px] overflow-y-auto no-scrollbar">
-              {followingData.map((user: any) => (
-                <div key={user?.id}>
+              {filteredFollowerData?.map((user: any) => (
+                <div key={user?._id}>
                   <div className="flex items-center my-3">
                     <Image
                       className="w-12 h-12 rounded-lg object-contain"

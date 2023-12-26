@@ -78,7 +78,7 @@ function AddNew({ handleCloseModal }: AddNewProps) {
               </div>
             </div>
 
-            <div className="p-2 mb-4 text-sm text-left rounded-lg sm:mb-5 :bg-[#162423] hover:opacity-80 cursor-pointer">
+            <div className="p-2 mb-4 text-sm text-left rounded-lg sm:mb-5 bg-[#162423] hover:opacity-80 cursor-pointer">
               <div
                 className="flex items-center"
                 onClick={() => handleModalToggle("isAddClipsOpen")}
