@@ -73,4 +73,8 @@ export const SVG = {
   King: "/king.svg",
   ChatFile: "/chat-file.svg",
   ChatMessageSent: "/chat-msg-sent.svg",
+  Facebook1: "/facebook1.svg",
+  Instagram: "/instagram.svg",
+  X: "/x.svg",
+  GamefolioCoin: "/gamefolioCoin.svg",
 };
