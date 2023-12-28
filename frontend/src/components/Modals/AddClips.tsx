@@ -99,12 +99,13 @@ function AddClips({ handleCloseModal }: AddClipProps) {
     const file = e.target.files ? e.target.files[0] : null;
     if (file) {
       setSelectedVideo(file);
-      if (selectedOptionMusic.trim() === "") {
-        setError("Please select music");
-        return toastSuccess("Please select music");
-      } else {
-        setError(null);
-      }
+      // Music is not required
+      // if (selectedOptionMusic.trim() === "") {
+      //   setError("Please select music");
+      //   return toastSuccess("Please select music");
+      // } else {
+      //   setError(null);
+      // }
       try {
         const formData = new FormData();
         formData.append("file", file);
@@ -128,7 +129,7 @@ function AddClips({ handleCloseModal }: AddClipProps) {
             },
           }
         );
-        console.log("RESPONSE ADDClip: ", response.data);
+        console.log("RESPONSE ADDVIDEO: ", response.data);
         setVideo(response.data.videoURL);
         toastSuccess(response.data.message);
       } catch (error) {

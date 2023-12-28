@@ -7,6 +7,7 @@ import Image from "next/image";
 import { toastError, toastSuccess } from "../Toast/Toast";
 import { removeFollow } from "@/store/slices/userSlice";
 import { useState } from "react";
+import Link from "next/link";
 
 interface FollowerProps {
   handleCloseModal: () => void;
@@ -105,14 +106,19 @@ function Followers({ handleCloseModal, followerData }: FollowerProps) {
                       height={50}
                     />
                     <div className="flex items-center justify-between w-full sm:w-full">
-                      <div>
-                        <span className="ml-2 sm:ml-4 text-sm sm:text-base">
-                          {user?.userID?.name || 0}
-                        </span>
-                        <p className="ml-2 sm:ml-4 text-sm text-left">
-                          {user?.userID?.username || 0}
-                        </p>
-                      </div>
+                      <Link
+                        href={`/account/${user?.userID?.username}`}
+                        key={user?._id}
+                      >
+                        <div>
+                          <span className="ml-2 sm:ml-4 text-sm sm:text-base">
+                            {user?.userID?.name || 0}
+                          </span>
+                          <p className="ml-2 sm:ml-4 text-sm text-left">
+                            {user?.userID?.username || 0}
+                          </p>
+                        </div>
+                      </Link>
                       <div>
                         <button
                           onClick={() => handleRemoveFollow(user?.userID?._id)}

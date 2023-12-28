@@ -290,7 +290,7 @@ const Portfolio = () => {
 
           <hr className="border-t border-[#162423]" />
 
-          <div className="flex justify-center items-center gap-8">
+          <div className="flex justify-center items-center gap-8 mt-4">
             <Image src={SVG.Facebook1} alt="Facebook" width={40} height={40} />
             <Image src={SVG.Instagram} alt="Facebook" width={40} height={40} />
             <Image src={SVG.X} alt="Facebook" width={40} height={40} />

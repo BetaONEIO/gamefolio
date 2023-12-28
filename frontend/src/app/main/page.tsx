@@ -18,6 +18,7 @@ import {
 } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
+import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
 
 function Main() {
@@ -79,8 +80,6 @@ function Main() {
   const sectionStyle = {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
   };
-
-  const videoLoading: "auto" | "eager" | "lazy" | undefined = "lazy";
 
   const handleCreateReaction = async (postID: any, reactionType: any) => {
     const payload = {
@@ -189,9 +188,14 @@ function Main() {
                           loading="lazy"
                         />
                         <div>
-                          <h1 className="w-[230px] sm:w-[350px] text-sm md:text-lg sm:text-md font-bold text-white hover:opacity-80">
-                            {post?.userID?.name}
-                          </h1>
+                          <Link
+                            href={`/account/${post?.userID?.username}`}
+                            key={post._id}
+                          >
+                            <h1 className="w-[230px] sm:w-[350px] text-sm md:text-lg sm:text-md font-bold text-white hover:opacity-80">
+                              {post?.userID?.name}
+                            </h1>
+                          </Link>
                           <p className="md:text-md sm:text-md text-base font-light text-gray-400">
                             {post?.date &&
                               new Date(post.date).toLocaleString("en-US", {
@@ -341,7 +345,7 @@ function Main() {
                           {post?.comment} Comments
                         </p>
                       </div>
-                      <div>
+                      {/* <div>
                         <div
                           onClick={() => handleModalToggle("isPostShareOpen")}
                         >
@@ -353,7 +357,7 @@ function Main() {
                             height={25}
                           />
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 );

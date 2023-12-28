@@ -17,7 +17,7 @@ function TopBar() {
               href="/explore-search/explore-videos"
               className="text-base font-normal  text-white"
             >
-              <div className="my-2">
+              <div className="my-2 w-full">
                 <span className="px-6">Videos</span>
               </div>
               {isItemActive("/explore-search/explore-videos") && (
@@ -31,7 +31,7 @@ function TopBar() {
               href="/explore-search/explore-user"
               className="text-base font-normal  text-white"
             >
-              <div className="my-2">
+              <div className="my-2 w-full">
                 <span className="px-6">Users</span>
               </div>
               {isItemActive("/explore-search/explore-user") && (
@@ -43,9 +43,9 @@ function TopBar() {
           <li>
             <a
               href="/explore-search/explore-games"
-              className="text-base font-normal  text-white"
+              className="text-base font-normal text-white"
             >
-              <div className="my-2">
+              <div className="my-2 w-full">
                 <span className="px-6">Games</span>
               </div>
               {isItemActive("/explore-search/explore-games") && (

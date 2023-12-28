@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { toastError, toastSuccess } from "../Toast/Toast";
+import Link from "next/link";
 
 interface VideoDetailProps {
   handleCloseModal: () => void;
@@ -119,9 +120,14 @@ function VideoDetails({
                       height={50}
                     />
                     <div>
-                      <h3 className="sm:text-lg sm:font-bold md:text-xl text-white text-base font-semibold">
-                        {detailedPost?.userID?.name}
-                      </h3>
+                      <Link
+                        href={`/account/${detailedPost?.userID?.username}`}
+                        key={detailedPost._id}
+                      >
+                        <h3 className="sm:text-lg sm:font-bold md:text-xl text-white text-base font-semibold">
+                          {detailedPost?.userID?.name}
+                        </h3>
+                      </Link>
                       <p className="sm:text-base text-sm font-light text-gray-400">
                         {detailedPost?.date &&
                           new Date(detailedPost.date).toLocaleString("en-US", {
@@ -175,7 +181,7 @@ function VideoDetails({
                       />
                     </div>
 
-                    <div>
+                    {/* <div>
                       <Image
                         className="cursor-pointer hover:opacity-80"
                         src={SVG.Share}
@@ -183,7 +189,7 @@ function VideoDetails({
                         width={25}
                         height={25}
                       />
-                    </div>
+                    </div> */}
                   </div>
                 </div>
 

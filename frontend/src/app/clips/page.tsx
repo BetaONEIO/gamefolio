@@ -16,6 +16,7 @@ import {
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
 import Loading from "./loading";
+import Link from "next/link";
 
 interface VideoState {
   isMuted?: boolean;
@@ -163,16 +164,21 @@ function Clip() {
                 <div className="absolute top-0 left-0 p-4">
                   <div className="flex items-center gap-2">
                     <Image
-                      className="hover:opacity-80 rounded-lg object-cover"
+                      className="w-12 h-12 hover:opacity-80 rounded-xl object-cover"
                       src={clip?.userID?.profilePicture}
                       alt="Profile avatar"
                       width={50}
                       height={50}
                     />
                     <div>
-                      <h1 className="w-[230px] sm:w-[350px] text-sm md:text-lg sm:text-md font-bold text-white hover:opacity-80">
-                        {clip?.userID?.name}
-                      </h1>
+                      <Link
+                        href={`/account/${clip?.userID?.username}`}
+                        key={clip?._id}
+                      >
+                        <h1 className="w-[230px] sm:w-[350px] text-sm md:text-lg sm:text-md font-bold text-white hover:opacity-80">
+                          {clip?.userID?.name}
+                        </h1>
+                      </Link>
                       <p className="text-sm md:text-md sm:text-md font-light text-gray-400 ">
                         {clip?.date &&
                           new Date(clip.date).toLocaleString("en-US", {
@@ -186,7 +192,7 @@ function Clip() {
                     </div>
                   </div>
                 </div>
-                <div
+                {/* <div
                   className="cursor-pointer absolute top-1.5 right-0 p-4 justify-self-center"
                   onClick={() => handleModalToggle("isClipShareOpen")}
                 >
@@ -197,7 +203,7 @@ function Clip() {
                     width={30}
                     height={30}
                   />
-                </div>
+                </div> */}
                 <div className="absolute top-20 mx-4 md:mx-5">
                   <p className="font-light text-xs sm:text-sm">
                     {clip?.description}
@@ -223,7 +229,7 @@ function Clip() {
                 </div>
                 <div className="absolute inset-x-0 bottom-14 p-4 flex items-center justify-between">
                   <p className="font-light text-xs sm:text-sm hover:opacity-80">
-                    {clip.music}
+                    {clip?.music}
                   </p>
                 </div>
 
@@ -271,7 +277,7 @@ function Clip() {
                       />
                     </div>
                   </div>
-                  <div className="absolute bottom-1 right-2">
+                  <div className="absolute bottom-2 right-3">
                     <button
                       className="cursor-pointer hover:opacity-80"
                       onClick={() => handleToggleMute(clip._id)}

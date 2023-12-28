@@ -20,6 +20,7 @@ import DeletePost from "@/components/Modals/DeletePost";
 import { toastError } from "@/components/Toast/Toast";
 import { leagueGothic } from "@/font/font";
 import Loading from "./loading";
+import Link from "next/link";
 
 function Trending() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
@@ -192,9 +193,14 @@ function Trending() {
                           sizes="100vw"
                         />
                         <div>
-                          <h1 className="w-[230px] sm:w-[350px] text-sm md:text-lg sm:text-md font-bold text-white hover:opacity-80">
-                            {post?.userID?.name}
-                          </h1>
+                          <Link
+                            href={`/account/${post?.userID?.username}`}
+                            key={post._id}
+                          >
+                            <h1 className="w-[230px] sm:w-[350px] text-sm md:text-lg sm:text-md font-bold text-white hover:opacity-80">
+                              {post?.userID?.name}
+                            </h1>
+                          </Link>
                           <p className=" md:text-md sm:text-md text-base font-light text-gray-400">
                             {post?.date &&
                               new Date(post.date).toLocaleString("en-US", {
@@ -341,7 +347,7 @@ function Trending() {
                           Comments
                         </p>
                       </div>
-                      <div>
+                      {/* <div>
                         <div
                           onClick={() => handleModalToggle("isPostShareOpen")}
                         >
@@ -353,7 +359,7 @@ function Trending() {
                             height={25}
                           />
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 );
