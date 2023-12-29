@@ -56,4 +56,6 @@ router.delete("/comment/delete", postController.deleteComment);
 // Delete a share by ID
 router.delete("/share/delete", postController.deleteShare);
 
+router.post("/bookmark/create", postController.addBookmark);
+
 module.exports = router;

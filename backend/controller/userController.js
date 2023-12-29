@@ -208,7 +208,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
       path: "block.userID",
       select: "name username profilePicture", // Specify the fields you want to retrieve
     });
-  console.log("user: ", user);
+  console.log("user:.. ", user);
   if (user) {
     res.json({
       _id: user._id,

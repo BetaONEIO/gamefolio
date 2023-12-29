@@ -6,11 +6,12 @@ import DeletePost from "@/components/Modals/DeletePost";
 import Modal from "@/components/Modals/Modal";
 import SharePost from "@/components/Modals/SharePost";
 import VideoDetails from "@/components/Modals/VideoDetails";
-import { toastError } from "@/components/Toast/Toast";
+import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import AllStories from "@/components/story/AllStories";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import {
+  createBookmark,
   createVideoReaction,
   deleteVideoReaction,
   getAllPostVideos,
@@ -79,6 +80,33 @@ function Main() {
 
   const sectionStyle = {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
+  };
+
+  const handleCreateBookmark = async (postID: any) => {
+    const payload = {
+      userID: authState._id,
+      postID: postID,
+    };
+
+    console.log("My Payload CREATE Reaction: >><> ", payload);
+
+    const successCallback = (response: any) => {
+      console.log("RESPONSE ADDVIDEO: ", response);
+      handlePageRefresh();
+      toastSuccess(response);
+    };
+
+    const errorCallback = (error: string) => {
+      toastError(error);
+    };
+
+    const params = {
+      payload,
+      successCallback,
+      errorCallback,
+    };
+
+    dispatch(createBookmark(params));
   };
 
   const handleCreateReaction = async (postID: any, reactionType: any) => {
@@ -210,13 +238,18 @@ function Main() {
                       </div>
 
                       <div className="flex items-center m-3">
-                        <Image
-                          className="ml-3 cursor-pointer hover:opacity-80"
-                          src={SVG.Bookmark}
-                          alt="Bookmark"
-                          width={20}
-                          height={20}
-                        />
+                        <div
+                          className="mr-3"
+                          onClick={() => handleCreateBookmark(post._id)}
+                        >
+                          <Image
+                            className="ml-3 cursor-pointer hover:opacity-80"
+                            src={SVG.Bookmark}
+                            alt="Bookmark"
+                            width={20}
+                            height={20}
+                          />
+                        </div>
                         <Image
                           className="ml-3 cursor-pointer hover:opacity-80"
                           src={SVG.Threedots}

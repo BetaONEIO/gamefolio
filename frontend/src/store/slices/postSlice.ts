@@ -376,6 +376,41 @@ export function logout(params: ActionParams) {
   };
 }
 
+export function createBookmark(params: ActionParams) {
+  return async () => {
+    const {
+      successCallback = () => {},
+      errorCallback = () => {},
+      payload,
+    } = params;
+
+    console.log("))) 00: ", payload);
+
+    dispatch(slice.actions.startLoading());
+
+    const options: APIParams = {
+      method: "POST",
+      endpoint: PATH.bookmark.create,
+      payload: payload,
+      isToken: false,
+    };
+    try {
+      const [ok, response] = await API(options);
+      console.log(response);
+      if (!ok || !response) return errorCallback(response.message);
+
+      console.log("repsonse:::: ", response);
+
+      successCallback(response);
+    } catch (error) {
+      console.log("error", error);
+      errorCallback();
+    } finally {
+      dispatch(slice.actions.stopLoading());
+    }
+  };
+}
+
 export function resetPassword(params: ActionParams) {
   return async () => {
     const {

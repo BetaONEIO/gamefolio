@@ -74,4 +74,8 @@ export const PATH = {
     init: "v1/chat/init",
     getUserMessages: "v1/chat/messages/get",
   },
+
+  bookmark: {
+    create: "post/bookmark/create",
+  },
 };

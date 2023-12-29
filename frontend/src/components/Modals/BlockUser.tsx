@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { toastError, toastSuccess } from "../Toast/Toast";
 import { unBlockUser } from "@/store/slices/userSlice";
+import Link from "next/link";
 
 interface BlockUserProps {
   handleCloseModal: () => void; // Define handleCloseModal as a function
@@ -14,30 +15,6 @@ interface BlockUserProps {
 
 function BlockUser({ handleCloseModal }: BlockUserProps) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
-  const initialUsers = [
-    { id: 1, name: "Mark Johnson", username: "mark_john", isBlocked: false },
-    { id: 2, name: "Alice Smith", username: "alice", isBlocked: false },
-    { id: 3, name: "Bob Williams", username: "bob", isBlocked: false },
-    { id: 4, name: "Mark Johnson", username: "john_smith", isBlocked: false },
-    { id: 5, name: "Alice Smith", username: "alice", isBlocked: false },
-    { id: 6, name: "Bob Williams", username: "bob", isBlocked: false },
-    { id: 7, name: "Mark Johnson", username: "john_smith", isBlocked: false },
-    { id: 8, name: "Alice Smith", username: "alice", isBlocked: false },
-    { id: 9, name: "Bob Williams", username: "bob", isBlocked: false },
-    // Add more users as needed
-  ];
-  const [users, setUsers] = useState(initialUsers);
-
-  console.log("authstate", authState);
-
-  // console.log("block user>>>>", blockData);
-
-  const handleUserButtonClick = (id: any) => {
-    const updatedUsers = users.map((user) =>
-      user.id === id ? { ...user, isBlocked: !user.isBlocked } : user
-    );
-    setUsers(updatedUsers);
-  };
 
   const myBGStyleModal = {
     backgroundColor: "rgba(0, 0, 0, 0.6)",
@@ -100,21 +77,26 @@ function BlockUser({ handleCloseModal }: BlockUserProps) {
                 <div key={user.id}>
                   <div className="flex items-center my-3">
                     <Image
-                      className="object-contain w-12 h-12 rounded-lg"
+                      className="w-12 h-12 object-contain rounded-lg"
                       src={user?.userID?.profilePicture || IMAGES.Profile}
                       alt="Profile"
-                      width={50}
-                      height={50}
+                      width={30}
+                      height={30}
                     />
                     <div className="flex items-center justify-between w-full sm:w-full">
-                      <div>
-                        <span className="ml-2 sm:ml-4 text-sm font-bold sm:text-sm">
-                          {user?.userID?.name}
-                        </span>
-                        <p className="ml-2 sm:ml-4 text-xs text-left">
-                          {user?.userID?.username}
-                        </p>
-                      </div>
+                      <Link
+                        href={`/account/${user?.userID?.username}`}
+                        key={user._id}
+                      >
+                        <div>
+                          <span className="ml-2 sm:ml-4 text-sm font-bold sm:text-sm">
+                            {user?.userID?.name}
+                          </span>
+                          <p className="ml-2 sm:ml-4 text-xs text-left">
+                            {user?.userID?.username}
+                          </p>
+                        </div>
+                      </Link>
                       <div>
                         <button
                           onClick={() => handleRemoveFollow(user?.userID?._id)}

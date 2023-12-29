@@ -423,6 +423,49 @@ const updateShare = async (req, res) => {
   }
 };
 
+const addBookmark = async (req, res) => {
+  try {
+    const { postID, userID } = req.body;
+
+    console.log({ hello: postID, hello: userID });
+
+    const post = await Posts.findById(postID);
+    if (!post) {
+      return res.status(404).json({ error: "Post not found." });
+    }
+
+    // Check if the user has already reacted to the post
+    const existingBookmark = post.bookmarks.some(
+      (bookmarks) => bookmarks.userID.toString() === userID.toString()
+    );
+
+    if (existingBookmark) {
+      return res.status(400).json({
+        error: "User has already bookmark to this post.",
+        message: "User has already bookmark to this post.",
+      });
+    }
+
+    const newBookmark = {
+      userID,
+    };
+
+    post.bookmarks.push(newBookmark);
+    const updatedPost = await post.save();
+
+    res.status(201).json({
+      data: updatedPost,
+      message: "Successfully Created Bookmark",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Could not create the Bookmark.",
+      message: "Could not create the Bookmark.",
+    });
+  }
+};
+
 module.exports = {
   postVideo,
   getAllPostVideos,
@@ -441,4 +484,5 @@ module.exports = {
   updateReaction,
   updateComment,
   updateShare,
+  addBookmark,
 };

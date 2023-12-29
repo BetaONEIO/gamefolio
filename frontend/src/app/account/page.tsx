@@ -303,7 +303,7 @@ function Page() {
             </div>
 
             <div
-              className="bg-gray-800 py-4 w-full rounded-xl flex items-center hover:opacity-80 cursor-pointer"
+              className="bg-[#FFFFFF1F] py-4 w-full rounded-xl flex items-center hover:opacity-80 cursor-pointer"
               onClick={() => handleModalToggle("isBadgeModalOpen")}
             >
               <div className="flex justify-between flex-1  items-center px-4 text-white ">
