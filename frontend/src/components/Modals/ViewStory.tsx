@@ -1,16 +1,13 @@
 "use client";
-import { SVG } from "@/assets/SVG";
-import { IMAGES } from "@/assets/images";
-import Image from "next/image";
-import ReactInstaStories from "react-insta-stories";
-import Layout from "@/components/CustomLayout/layout";
-import { Suspense, useEffect } from "react";
-import { dispatch, useSelector } from "@/store";
-import { getAllStories, getUserStories } from "@/store/slices/storySlice";
-import Link from "next/link";
 import Loading from "@/app/view-story/loading";
-import { toastError, toastSuccess } from "../Toast/Toast";
+import { SVG } from "@/assets/SVG";
+import { dispatch, useSelector } from "@/store";
+import { getUserStories } from "@/store/slices/storySlice";
+import Image from "next/image";
+import { Suspense, useEffect } from "react";
+import ReactInstaStories from "react-insta-stories";
 import { ToastContainer } from "react-toastify";
+import { toastError } from "../Toast/Toast";
 
 interface ViewStoryProps {
   storyUserID?: any;

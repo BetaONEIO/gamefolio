@@ -253,14 +253,15 @@ function Page() {
                       alt="Copy Username"
                     />
                   </div>
-                  <div
+                  {/* <div
                     className="cursor-pointer hover:opacity-80"
-                    onClick={() => handleModalToggle("isShareModalOpen")}
+                    // onClick={() => handleModalToggle("isShareModalOpen")}
                   >
                     <Image src={SVG.Share} width={16} height={16} alt="Share" />
-                  </div>
+                  </div> */}
                 </div>
                 <span className="text-gray-400">{authState?.bio}</span>
+
                 <div className="flex h-8 items-center justify-center md:gap-8">
                   <div className="flex items-center gap-2 ">
                     <span

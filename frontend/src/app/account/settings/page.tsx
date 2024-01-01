@@ -108,7 +108,7 @@ function Setting() {
           {/* Box 3 */}
           <div
             className="hover:opacity-80 cursor-pointer bg-[#08191D] h-40 sm:h-44 md:h-44 lg:h-44 xl:h-44 p-4 rounded-xl"
-            onClick={() => handleModalToggle("isTermsModalOpen")}
+            // onClick={() => handleModalToggle("isTermsModalOpen")}
           >
             <div className="flex flex-col gap-2 justify-center h-full">
               <Image
@@ -126,7 +126,7 @@ function Setting() {
           {/* Box 4 */}
           <div
             className="hover:opacity-80 cursor-pointer bg-[#08191D] h-40 sm:h-44 md:h-44 lg:h-44 xl:h-44 p-4 rounded-xl"
-            onClick={() => handleModalToggle("isTermsModalOpen")}
+            // onClick={() => handleModalToggle("isTermsModalOpen")}
           >
             <div className="flex flex-col gap-2 justify-center h-full">
               <Image
@@ -142,7 +142,7 @@ function Setting() {
           {/* Box 5 */}
           <div
             className="hover:opacity-80 cursor-pointer bg-[#08191D] h-40 sm:h-44 md:h-44 lg:h-44 xl:h-44 p-4 rounded-xl"
-            onClick={() => handleModalToggle("isVerificationModalOpen")}
+            // onClick={() => handleModalToggle("isVerificationModalOpen")}
           >
             <div className="flex flex-col gap-2 justify-center h-full">
               <Image
@@ -158,7 +158,7 @@ function Setting() {
           {/* Box 6 */}
           <div
             className="hover:opacity-80 cursor-pointer bg-[#08191D] h-40 sm:h-44 md:h-44 lg:h-44 xl:h-44 p-4 rounded-xl"
-            onClick={() => handleModalToggle("isSendFeedbackModalOpen")}
+            // onClick={() => handleModalToggle("isSendFeedbackModalOpen")}
           >
             <div className="flex flex-col gap-2 justify-center h-full">
               <Image

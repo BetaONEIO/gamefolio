@@ -224,7 +224,7 @@ function Main() {
                               {post?.userID?.name}
                             </h1>
                           </Link>
-                          <p className="md:text-md sm:text-md text-base font-light text-gray-400">
+                          <p className="text-sm md:text-lg sm:text-md font-light text-gray-400">
                             {post?.date &&
                               new Date(post.date).toLocaleString("en-US", {
                                 hour: "numeric",
@@ -237,29 +237,28 @@ function Main() {
                         </div>
                       </div>
 
-                      <div className="flex items-center m-3">
-                        <div
-                          className="mr-3"
-                          onClick={() => handleCreateBookmark(post._id)}
-                        >
+                      <div className="flex items-center gap-3">
+                        <div onClick={() => handleCreateBookmark(post._id)}>
                           <Image
-                            className="ml-3 cursor-pointer hover:opacity-80"
+                            className="cursor-pointer hover:opacity-80"
                             src={SVG.Bookmark}
                             alt="Bookmark"
                             width={20}
                             height={20}
                           />
                         </div>
-                        <Image
-                          className="ml-3 cursor-pointer hover:opacity-80"
-                          src={SVG.Threedots}
-                          alt="Threedots"
-                          width={5}
-                          height={5}
-                          onClick={() =>
-                            handleModalToggle("isPostDeleteOpen", post._id)
-                          }
-                        />
+                        <div>
+                          <Image
+                            className="cursor-pointer hover:opacity-80"
+                            src={SVG.Threedots}
+                            alt="Threedots"
+                            width={5}
+                            height={5}
+                            onClick={() =>
+                              handleModalToggle("isPostDeleteOpen", post._id)
+                            }
+                          />
+                        </div>
                       </div>
                     </div>
 

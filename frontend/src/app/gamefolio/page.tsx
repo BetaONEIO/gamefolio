@@ -138,9 +138,11 @@ function Gamefolio() {
                 onLoadedMetadata={(e) => handleVideoMetadata(e, item._id)}
               />
               <span className="absolute bottom-2 right-2">
-                {videoDurations[item._id]
-                  ? formatTime(videoDurations[item._id])
-                  : "Loading..."}
+                {videoDurations[item._id] ? (
+                  formatTime(videoDurations[item._id])
+                ) : (
+                  <Loading />
+                )}
               </span>
             </div>
           ))}

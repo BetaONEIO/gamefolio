@@ -1,7 +1,7 @@
 "use client";
 import { SVG } from "@/assets/SVG";
 import { dispatch, useSelector } from "@/store";
-import { createComment } from "@/store/slices/postSlice";
+import { createComment, refreshPage } from "@/store/slices/postSlice";
 import Image from "next/image";
 import { useState } from "react";
 import { ToastContainer } from "react-toastify";
@@ -19,8 +19,8 @@ function VideoDetails({
   handleCloseModal,
   postID,
   detailedPost,
-  handlePageRefresh,
-}: VideoDetailProps) {
+}: // handlePageRefresh,
+VideoDetailProps) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const [comments, setComments] = useState("");
 
@@ -36,9 +36,9 @@ function VideoDetails({
     console.log("Comment ", payload);
 
     const successCallback = (response: any) => {
+      handlePageRefresh();
       console.log("RESPONSE COMMENT: ", response);
       toastSuccess(response);
-      handlePageRefresh();
     };
 
     const errorCallback = (error: string) => {
@@ -57,6 +57,32 @@ function VideoDetails({
   const handleChange = (e: any) => {
     setComments(e.target.value);
   };
+
+  const handlePageRefresh = () => {
+    dispatch(refreshPage());
+  };
+
+  function formatRelativeDate(commentDate: any): string {
+    const currentDate = new Date();
+    const commentDateTime = new Date(commentDate);
+
+    const timeDifference: number =
+      currentDate.getTime() - commentDateTime.getTime();
+    const seconds: number = Math.floor(timeDifference / 1000);
+    const minutes: number = Math.floor(seconds / 60);
+    const hours: number = Math.floor(minutes / 60);
+    const days: number = Math.floor(hours / 24);
+
+    if (days > 0) {
+      return `${days}d`;
+    } else if (hours > 0) {
+      return `${hours}h`;
+    } else if (minutes > 0) {
+      return `${minutes}m`;
+    } else {
+      return `${seconds}s`;
+    }
+  }
 
   const myBGStyleModal = {
     backgroundColor: "rgba(0, 0, 0, 0.6)",
@@ -199,7 +225,7 @@ function VideoDetails({
                   {detailedPost?.comments.map((comment: any) => (
                     <div key={comment._id} className="flex flex-row gap-2 mt-3">
                       <Image
-                        className="w-12 h-12"
+                        className="w-12 h-12 rounded-lg"
                         src={comment?.userID?.profilePicture}
                         alt="Profile avatar"
                         width={40}
@@ -216,7 +242,7 @@ function VideoDetails({
                         </div>
                         <div className="flex items-center text-base font-light sm:text-sm text-gray-50 gap-2">
                           <p className="cursor-pointer sm:text-sm text-xs">
-                            1d
+                            {formatRelativeDate(comment?.date)}
                           </p>
                           <p className="cursor-pointer sm:text-sm text-xs">
                             {comment?.like} likes
