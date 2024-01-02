@@ -95,7 +95,7 @@ function Following({ handleCloseModal, followingData }: FollowingProps) {
                 <div key={user?._id}>
                   <div className="flex items-center my-3">
                     <Image
-                      className="w-12 h-12 rounded-lg object-contain"
+                      className="w-12 h-12 rounded-lg"
                       src={user?.userID?.profilePicture || IMAGES.Profile}
                       alt="Profile"
                       width={50}

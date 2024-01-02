@@ -39,7 +39,7 @@ function AllStories() {
 
   return (
     <>
-      <div className="flex items-center h-32 py-4 bg-[#091619]">
+      <div className="flex items-center sm:h-32 h-24 py-4 bg-[#091619]">
         <div className="flex items-center overflow-scroll no-scrollbar gap-6 px-4 py-8">
           <div className="flex flex-col justify-center items-center gap-2 hover:opacity-80">
             <div

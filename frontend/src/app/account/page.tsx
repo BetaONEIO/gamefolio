@@ -186,13 +186,15 @@ function Page() {
         <div className="flex items-center py-2 bg-[#091619]">
           <div className="flex justify-between items-center w-full mx-4">
             <div>
-              <h1 className={`${leagueGothic.className} text-4xl text-white`}>
+              <h1
+                className={`${leagueGothic.className} text-2xl sm:text-4xl lg:text-4xl text-white`}
+              >
                 ACCOUNT
               </h1>
             </div>
             <div className="flex items-center my-3 mx-2">
               <Link href="/account/my-folio">
-                <div className="flex items-center p-2 mr-2 rounded-full bg-[#162423]">
+                <div className="flex items-center p-1 mr-2 rounded-full bg-[#162423]">
                   <Image
                     className="mr-2"
                     src={SVG.GGcoin}

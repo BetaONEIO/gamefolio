@@ -68,15 +68,9 @@ function Main() {
   console.log("POSTID ****: ", postID);
 
   // const followingVideoIDs = authState.following.map(
-  //   (followedUser: any) => followedUser._id
+  //   (followedUser: any) => followedUser.name
   // );
   // console.log("followingVideoIDs: ", followingVideoIDs);
-
-  // const followingVideos = postState.videos.filter(
-  //   (video: any) => followingVideoIDs === video.video
-  // );
-
-  // console.log("followingVideos: ", followingVideos);
 
   const sectionStyle = {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,

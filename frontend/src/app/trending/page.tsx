@@ -148,7 +148,11 @@ function Trending() {
       <Suspense fallback={<Loading />}>
         <div style={headerStyle} className="py-4 bg-[#46A541]">
           <div className="mx-4">
-            <h1 className={`${leagueGothic.className} text-4xl`}>TRENDING</h1>
+            <h1
+              className={`${leagueGothic.className} text-2xl sm:text-4xl lg:text-4xl text-white`}
+            >
+              TRENDING
+            </h1>
           </div>
         </div>
 
@@ -201,7 +205,7 @@ function Trending() {
                               {post?.userID?.name}
                             </h1>
                           </Link>
-                          <p className=" md:text-md sm:text-md text-base font-light text-gray-400">
+                          <p className="text-sm md:text-lg sm:text-md font-light text-gray-400">
                             {post?.date &&
                               new Date(post.date).toLocaleString("en-US", {
                                 hour: "numeric",
@@ -214,24 +218,28 @@ function Trending() {
                         </div>
                       </div>
 
-                      <div className="flex items-center m-3">
-                        <Image
-                          className="ml-3 cursor-pointer hover:opacity-80"
-                          src={SVG.Bookmark}
-                          alt="Bookmark"
-                          width={20}
-                          height={20}
-                        />
-                        <Image
-                          className="ml-3 cursor-pointer hover:opacity-80"
-                          src={SVG.Threedots}
-                          alt="Threedots"
-                          width={5}
-                          height={5}
-                          onClick={() =>
-                            handleModalToggle("isPostDeleteOpen", post._id)
-                          }
-                        />
+                      <div className="flex items-center gap-3">
+                        <div>
+                          <Image
+                            className="cursor-pointer hover:opacity-80"
+                            src={SVG.Bookmark}
+                            alt="Bookmark"
+                            width={20}
+                            height={20}
+                          />
+                        </div>
+                        <div>
+                          <Image
+                            className="cursor-pointer hover:opacity-80"
+                            src={SVG.Threedots}
+                            alt="Threedots"
+                            width={5}
+                            height={5}
+                            onClick={() =>
+                              handleModalToggle("isPostDeleteOpen", post._id)
+                            }
+                          />
+                        </div>
                       </div>
                     </div>
 

@@ -99,7 +99,7 @@ function Followers({ handleCloseModal, followerData }: FollowerProps) {
                 <div key={user?._id}>
                   <div className="flex items-center my-3">
                     <Image
-                      className="object-contain w-12 h-12 rounded-lg"
+                      className="w-12 h-12 rounded-lg"
                       src={user?.userID?.profilePicture || IMAGES.Profile}
                       alt="Profile"
                       width={50}

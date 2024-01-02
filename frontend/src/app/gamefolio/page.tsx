@@ -87,21 +87,25 @@ function Gamefolio() {
         <div className="flex items-center py-2 bg-[#091619]">
           <div className="flex justify-between items-center w-full mx-4">
             <div>
-              <h1 className={`${leagueGothic.className} text-4xl text-gray-50`}>
+              <h1
+                className={`${leagueGothic.className} text-2xl sm:text-4xl lg:text-4xl text-white`}
+              >
                 MY GAMEFOLIO
               </h1>
             </div>
-            <div className="flex items-center my-3 mx-2">
+            <div className="flex items-center my-3 mx-2 gap-1">
               <Link href="/account/my-folio">
-                <div className="flex items-center p-2 mr-2 rounded-full bg-[#162423]">
+                <div className="flex items-center p-1  rounded-full bg-[#162423]">
                   <Image
-                    className="mr-2"
+                    className="sm:w-8 sm:h-8 w-5 h-5"
                     src={SVG.GGcoin}
                     alt="GGcoin"
                     width={30}
                     height={30}
                   />
-                  <p className="font-semibold pr-2 text-white">GG COIN</p>
+                  <p className="sm:font-semibold font-medium  pr-2 text-white">
+                    GG COIN
+                  </p>
                 </div>
               </Link>
               <Link href="/account/settings">
