@@ -14,7 +14,7 @@ export type InitialState = {
   error: null;
   loading: boolean;
   chat: any; //
-  messages:  Array<any>;
+  messages: Array<any>;
   token: string;
   userCredits: Credit | null;
   gallery: ImageResponse[] | null;
@@ -26,7 +26,7 @@ export type InitialState = {
 const initialState: InitialState = {
   error: null,
   loading: false,
-  chat:{},
+  chat: {},
   messages: [],
   token: "",
   userCredits: null,
@@ -80,15 +80,22 @@ export const slice = createSlice({
       state.chat = action.payload;
     },
     updateSelectedChat(state, action) {
-      console.log("state.chat: ", state)
+      console.log("state.chat: ", state);
       // state.chat.push(action.payload);
       state.chat.messages = [...state.chat.messages, action.payload];
-    }
+    },
   },
 });
 
-export const { startLoading, stopLoading, getCredits, refreshPage, getAllMessages, setSelectedChat, updateSelectedChat } =
-  slice.actions;
+export const {
+  startLoading,
+  stopLoading,
+  getCredits,
+  refreshPage,
+  getAllMessages,
+  setSelectedChat,
+  updateSelectedChat,
+} = slice.actions;
 
 export function initChat(params: ActionParams) {
   return async () => {
@@ -108,7 +115,7 @@ export function initChat(params: ActionParams) {
     };
     try {
       const [ok, response] = await API(options);
-      console.log("response chatslice: ", response)
+      console.log("response chatslice: ", response);
       if (!ok || !response) return errorCallback(response.message);
 
       successCallback(response.message);
@@ -129,7 +136,7 @@ export function getUserMessages(params: ActionParams) {
       payload,
     } = params;
 
-    console.log("payload chatSlice.ts: ", payload)
+    console.log("payload chatSlice.ts: ", payload);
 
     dispatch(slice.actions.startLoading());
 
@@ -141,7 +148,7 @@ export function getUserMessages(params: ActionParams) {
     };
     try {
       const [ok, response] = await API(options);
-      console.log("response chatslice: ", response)
+      console.log("response chatslice: ", response);
       if (!ok || !response) return errorCallback(response.message);
 
       successCallback(response.message);
@@ -154,30 +161,5 @@ export function getUserMessages(params: ActionParams) {
     }
   };
 }
-
-// export function getAllPostVideos() {
-//   return async () => {
-//     dispatch(slice.actions.startLoading());
-
-//     const options: APIParams = {
-//       method: "GET",
-//       endpoint: PATH.post.get,
-//       payload: {},
-//       isToken: false,
-//     };
-
-//     try {
-//       const [ok, response] = await API(options);
-
-//       dispatch(slice.actions.getAllPostVideos(response.data));
-//     } catch (error) {
-//       console.log(error);
-//     } finally {
-//       dispatch(slice.actions.stopLoading());
-//     }
-//   };
-// }
-
-
 
 export default slice.reducer;

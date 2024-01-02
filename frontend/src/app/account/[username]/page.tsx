@@ -262,34 +262,34 @@ function Page({ params }: any) {
     }));
   };
 
-  const handleMessage = async () => {
-    const payload = {
-      roomID: generateUniqueRoomId(),
-      sender: authState._id,
-      receiver: profileInfoState?.profileUserInfo?._id,
-      content: "Hello",
-      isSocket: false,
-    };
+  // const handleMessage = async () => {
+  //   const payload = {
+  //     roomID: generateUniqueRoomId(),
+  //     sender: authState._id,
+  //     receiver: profileInfoState?.profileUserInfo?._id,
+  //     content: "Hello",
+  //     isSocket: false,
+  //   };
 
-    const successCallback = (response: any) => {
-      toastSuccess(response);
-      setTimeout(() => {
-        router.push("/chat");
-      }, 4000);
-    };
+  //   const successCallback = (response: any) => {
+  //     toastSuccess(response);
+  //     setTimeout(() => {
+  //       router.push("/chat");
+  //     }, 4000);
+  //   };
 
-    const errorCallback = (error: string) => {
-      toastError(error);
-    };
+  //   const errorCallback = (error: string) => {
+  //     toastError(error);
+  //   };
 
-    const params = {
-      payload,
-      successCallback,
-      errorCallback,
-    };
+  //   const params = {
+  //     payload,
+  //     successCallback,
+  //     errorCallback,
+  //   };
 
-    dispatch(initChat(params));
-  };
+  //   dispatch(initChat(params));
+  // };
 
   const userVideos = postState.videos.filter(
     (post: any) =>
@@ -581,7 +581,7 @@ function Page({ params }: any) {
                 </button>
                 <button
                   className="font-bold w-40 h-10 bg-[#37C535] text-white text-center py-[10px] px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3"
-                  onClick={handleMessage}
+                  // onClick={handleMessage}
                 >
                   Message
                 </button>
@@ -689,7 +689,9 @@ function Page({ params }: any) {
           {/* Content Section */}
           {isPrivateAccount ? (
             // Content for private account
-            <p className="flex justify-center">This is a private account.</p>
+            <div className="flex justify-center h-28">
+              <p>This is a private account.</p>
+            </div>
           ) : (
             // Content for public account
             <div>

@@ -5,18 +5,23 @@ const postSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Users",
   },
+
   description: {
     type: String,
   },
+
   game: {
     type: String,
   },
+
   music: {
     type: String,
   },
+
   video: {
     type: String,
   },
+
   reactions: [
     {
       userID: {
@@ -29,6 +34,7 @@ const postSchema = new mongoose.Schema({
       },
     },
   ],
+
   comments: [
     {
       userID: {
@@ -44,6 +50,7 @@ const postSchema = new mongoose.Schema({
       },
     },
   ],
+
   share: [
     {
       userID: {

@@ -26,5 +26,4 @@ export const IMAGES = {
   Ellipse3: "/ellipse3.png",
   Post2: "/post2.png",
   Profile2: "/profile2.png",
-
 };

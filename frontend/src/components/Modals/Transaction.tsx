@@ -5,6 +5,8 @@ import { useSelector } from "@/store";
 import { format } from "date-fns";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+// import { PDFDocument, rgb } from "pdf-lib";
+// import { saveAs } from "file-saver";
 
 interface TransactionProps {
   handleCloseModal: () => void;
@@ -40,6 +42,51 @@ function Transaction({
     setFilteredCoins(filteredCoins);
   }, [authState, startDate, endDate]);
   console.log("filteredCoins", filteredCoins);
+
+  // const handleDownload = async () => {
+  //   const pdfDoc = await PDFDocument.create();
+  //   const page = pdfDoc.addPage();
+
+  //   // Customize the PDF content here
+  //   const { width, height } = page.getSize();
+  //   const fontSize = 15;
+  //   const text = "Transaction History\n\n";
+
+  //   // Assuming leagueGothic contains the font data
+  //   const font = await pdfDoc.embedFont(leagueGothic.className, {
+  //     subset: true,
+  //   });
+
+  //   page.drawText(text, {
+  //     x: 50,
+  //     y: height - 4 * fontSize,
+  //     font,
+  //     color: rgb(1, 1, 1),
+  //   });
+
+  //   let yOffset = height - 6 * fontSize;
+
+  //   filteredCoins.forEach((coin: any) => {
+  //     const coinText = `${coin.coinType} - ${coin.coinAmount} Coin - ${format(
+  //       new Date(coin?.date),
+  //       "dd MMM, yyyy - h:mm a"
+  //     )}\n`;
+
+  //     page.drawText(coinText, {
+  //       x: 50,
+  //       y: yOffset,
+  //       font,
+  //       color: rgb(1, 1, 1),
+  //     });
+
+  //     yOffset -= 2 * fontSize;
+  //   });
+
+  //   const pdfBytes = await pdfDoc.save();
+  //   const blob = new Blob([pdfBytes], { type: "application/pdf" });
+
+  //   saveAs(blob, "transaction_history.pdf");
+  // };
 
   return (
     <>
@@ -121,7 +168,10 @@ function Transaction({
             </div>
 
             <div className="flex items-center w-full my-5">
-              <button className="w-full sm:text-base font-semibold bg-[#37C535] py-[10px] px-[30px] text-white text-center rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]">
+              <button
+                // onClick={handleDownload}
+                className="w-full sm:text-base font-semibold bg-[#37C535] py-[10px] px-[30px] text-white text-center rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
+              >
                 Download
               </button>
             </div>

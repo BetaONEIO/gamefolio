@@ -22,12 +22,15 @@ const userSchema = new mongoose.Schema({
   profilePicture: {
     type: String,
   },
+
   dateOfBirth: {
     type: String,
   },
+
   bio: {
     type: String,
   },
+
   followers: [
     {
       userID: {
@@ -36,6 +39,7 @@ const userSchema = new mongoose.Schema({
       },
     },
   ],
+
   following: [
     {
       userID: {
@@ -44,6 +48,7 @@ const userSchema = new mongoose.Schema({
       },
     },
   ],
+
   block: [
     {
       userID: {
@@ -58,11 +63,13 @@ const userSchema = new mongoose.Schema({
     enum: ["public", "private"],
     default: "public",
   },
+
   accountStatus: {
     type: String,
     enum: ["active", "deactive"],
     default: "active",
   },
+
   signupMethod: {
     type: String,
     enum: ["email", "twitter", "google", "facebook"],
@@ -95,6 +102,7 @@ const userSchema = new mongoose.Schema({
       },
     },
   ],
+
   coins: [
     {
       coinType: {

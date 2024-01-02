@@ -8,6 +8,7 @@ const chatSchema = new mongoose.Schema({
       required: true,
     },
   ],
+
   roomID: {
     type: String,
     required: true,
