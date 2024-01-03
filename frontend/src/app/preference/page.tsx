@@ -49,7 +49,6 @@ const Preference = () => {
   };
 
   const handleNext = () => {
-    // toastSuccess(message);
     if (activeTabs.length < 3) {
       toastError("Please pick at least three");
       return;

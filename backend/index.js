@@ -49,8 +49,6 @@ const server = require("http").createServer(app);
 socket.init(server);
 // --------------
 
-// ...
-
 // Now, set up your Google authentication routes and other middleware as needed.
 
 // Google authentication

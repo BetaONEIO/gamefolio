@@ -4,7 +4,6 @@ import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
 import { dispatch, useSelector } from "@/store";
 import Image from "next/image";
-import { useState } from "react";
 import { toastError, toastSuccess } from "../Toast/Toast";
 import { unBlockUser } from "@/store/slices/userSlice";
 import Link from "next/link";
@@ -74,7 +73,7 @@ function BlockUser({ handleCloseModal }: BlockUserProps) {
 
             <div className="flex flex-col w-full sm:min-h-[350px] lg:min-h-[500px] max-h-[400px] sm:max-h-[350px] lg:max-h-[500px] overflow-y-auto no-scrollbar">
               {authState?.block?.map((user: any) => (
-                <div key={user.id}>
+                <div key={user._id}>
                   <div className="flex items-center my-3">
                     <Image
                       className="w-12 h-12 object-contain rounded-lg"
@@ -89,7 +88,7 @@ function BlockUser({ handleCloseModal }: BlockUserProps) {
                         key={user._id}
                       >
                         <div>
-                          <span className="ml-2 sm:ml-4 text-sm font-bold sm:text-sm">
+                          <span className="ml-2 sm:ml-4 font-bold sm:text-sm">
                             {user?.userID?.name}
                           </span>
                           <p className="ml-2 sm:ml-4 text-xs text-left">

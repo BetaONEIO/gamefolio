@@ -1,10 +1,12 @@
 "use client";
-import { Suspense, useEffect, useState } from "react";
 import { SVG } from "@/assets/SVG";
-import { IMAGES } from "@/assets/images";
 import Layout from "@/components/CustomLayout/layout";
+import DeletePost from "@/components/Modals/DeletePost";
 import Modal from "@/components/Modals/Modal";
 import SharePost from "@/components/Modals/SharePost";
+import VideoDetails from "@/components/Modals/VideoDetails";
+import { toastError } from "@/components/Toast/Toast";
+import { leagueGothic } from "@/font/font";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import {
@@ -15,12 +17,9 @@ import {
 } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
-import VideoDetails from "@/components/Modals/VideoDetails";
-import DeletePost from "@/components/Modals/DeletePost";
-import { toastError } from "@/components/Toast/Toast";
-import { leagueGothic } from "@/font/font";
-import Loading from "./loading";
 import Link from "next/link";
+import { Suspense, useEffect, useState } from "react";
+import Loading from "./loading";
 
 function Trending() {
   const authState = useSelector((state: any) => state.auth.userData) || [];

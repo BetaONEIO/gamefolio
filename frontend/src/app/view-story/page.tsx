@@ -1,14 +1,13 @@
 "use client";
 import { SVG } from "@/assets/SVG";
-import { IMAGES } from "@/assets/images";
-import Image from "next/image";
-import ReactInstaStories from "react-insta-stories";
 import Layout from "@/components/CustomLayout/layout";
-import { Suspense, useEffect } from "react";
 import { dispatch, useSelector } from "@/store";
 import { getAllStories } from "@/store/slices/storySlice";
-import Loading from "./loading";
+import Image from "next/image";
 import Link from "next/link";
+import { Suspense, useEffect } from "react";
+import ReactInstaStories from "react-insta-stories";
+import Loading from "./loading";
 
 function ViewStory() {
   const storyState = useSelector((state: any) => state.story) || [];
@@ -38,7 +37,7 @@ function ViewStory() {
     }
   };
 
-  console.log("storyState: ", storyState);
+  // console.log("storyState: ", storyState);
   const customStoryLayout = (story: any) => {
     const timeAgoString: string = timeAgo(story.date);
     return (

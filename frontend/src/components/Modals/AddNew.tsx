@@ -94,7 +94,7 @@ function AddNew({ handleCloseModal }: AddNewProps) {
                   <span className="text-base font-semibold text-white">
                     Post Clips
                   </span>
-                  <p className="text-white"> Description dummy text here...</p>
+                  <p className="text-white">Description dummy text here...</p>
                 </div>
               </div>
             </div>

@@ -425,7 +425,7 @@ const updateShare = async (req, res) => {
 
 const addBookmark = async (req, res) => {
   try {
-    const { postID, userID } = req.body;
+    const { postID, userID, name, username, profilePicture, video } = req.body;
 
     console.log({ hello: postID, hello: userID });
 
