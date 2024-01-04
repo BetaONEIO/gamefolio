@@ -2,6 +2,13 @@
 import { Suspense, useEffect, useState } from "react";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
+import { leagueGothic } from "@/font/font";
+import { dispatch, useSelector } from "@/store";
+import { userSession } from "@/store/slices/authSlice";
+import { getAllPostVideos } from "@/store/slices/postSlice";
+import { getCookieValue, getFromLocal } from "@/utils/localStorage";
+import { copyToClipboard } from "@/utils/helpers";
+import { ToastContainer } from "react-toastify";
 import Layout from "@/components/CustomLayout/layout";
 import Badges from "@/components/Modals/Badges";
 import Followers from "@/components/Modals/Followers";
@@ -12,13 +19,6 @@ import AllStories from "@/components/story/AllStories";
 import Image from "next/image";
 import Link from "next/link";
 import Loading from "./loading";
-import { leagueGothic } from "@/font/font";
-import { dispatch, useSelector } from "@/store";
-import { userSession } from "@/store/slices/authSlice";
-import { getAllPostVideos } from "@/store/slices/postSlice";
-import { getCookieValue, getFromLocal } from "@/utils/localStorage";
-import { copyToClipboard } from "@/utils/helpers";
-import { ToastContainer } from "react-toastify";
 
 const popular = [
   { id: 1, IMAGE: IMAGES.Popular },

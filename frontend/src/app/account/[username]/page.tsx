@@ -296,10 +296,10 @@ function Page({ params }: any) {
       post?.userID?.username === profileInfoState.profileUserInfo.username
   );
 
-  const mutualFollowers = profileInfoState?.profileUserInfo?.follower?.filter(
-    (follower: any) =>
-      authState?.following?.find((following: any) => following === follower)
-  );
+  // const mutualFollowers = profileInfoState?.profileUserInfo?.follower?.filter(
+  //   (follower: any) =>
+  //     authState?.following?.find((following: any) => following === follower)
+  // );
 
   const handleFollowUser = async (userId: any) => {
     const payload = {
@@ -403,6 +403,7 @@ function Page({ params }: any) {
                   <p className="text-white">
                     ({profileInfoState?.profileUserInfo?.username})
                   </p>
+
                   <Image
                     className="cursor-pointer hover:opacity-80"
                     src={SVG.AccountCopyUsername}
@@ -577,7 +578,13 @@ function Page({ params }: any) {
                     handleFollowUser(profileInfoState?.profileUserInfo?._id)
                   }
                 >
-                  follow
+                  {authState?.following?.some(
+                    (user: any) =>
+                      user?.userID?._id ===
+                      profileInfoState?.profileUserInfo?._id
+                  )
+                    ? "Unfollow"
+                    : "Follow"}
                 </button>
                 <button
                   className="font-bold w-40 h-10 bg-[#37C535] text-white text-center py-[10px] px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3"
@@ -687,13 +694,11 @@ function Page({ params }: any) {
           {/* green line */}
 
           {/* Content Section */}
-          {isPrivateAccount ? (
-            // Content for private account
-            <div className="flex justify-center h-28">
-              <p>This is a private account.</p>
-            </div>
-          ) : (
-            // Content for public account
+          {authState?.following?.some(
+            (user: any) =>
+              user?.userID?._id === profileInfoState?.profileUserInfo?._id
+          ) ? (
+            // User is following, show videos
             <div>
               {selectedSection === "videos" ? (
                 <MyVideosSection
@@ -703,12 +708,17 @@ function Page({ params }: any) {
                   profileInfoState={profileInfoState}
                 />
               ) : selectedSection === "bookmarks" ? (
-                <ClipsSection data={popular} />
-              ) : selectedSection === "clips" ? (
-                <StorySection data={popular} />
-              ) : (
                 <MyBookmarkSection data={popular} />
+              ) : selectedSection === "clips" ? (
+                <ClipsSection data={popular} />
+              ) : (
+                <StorySection data={popular} />
               )}
+            </div>
+          ) : (
+            // User is not following, show private account message
+            <div className="flex justify-center h-28">
+              <p>This is a private account.</p>
             </div>
           )}
         </div>
