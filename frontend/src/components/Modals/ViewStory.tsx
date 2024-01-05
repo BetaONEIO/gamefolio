@@ -80,7 +80,6 @@ function ViewStory({ storyUserID, handleCloseModal }: ViewStoryProps) {
     );
   }
 
-  // 'stories' now contains an array of objects with 'content' functions
   const customStoryLayout = (story: any) => {
     const timeAgoString: string = timeAgo(story.date);
     return (
@@ -113,14 +112,7 @@ function ViewStory({ storyUserID, handleCloseModal }: ViewStoryProps) {
             height={30}
           />
         </div>
-        {/* 
-        <Image
-          className="w-full h-full rounded"
-          alt="Story"
-          src={IMAGES.Story}
-          width={432}
-          height={768}
-        /> */}
+
         <div className="flex justify-center items-center h-full">
           <video
             src={story.video}

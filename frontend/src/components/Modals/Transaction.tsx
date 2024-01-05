@@ -24,7 +24,6 @@ function Transaction({
   const contentRef = useRef(null);
 
   useEffect(() => {
-    // Set the time part of startDate and endDate to 00:00:00
     const startDateTime = new Date(startDate);
     startDateTime.setHours(0, 0, 0, 0);
 

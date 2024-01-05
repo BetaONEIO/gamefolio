@@ -6,7 +6,6 @@ import { reportUser } from "@/store/slices/userSlice";
 import Image from "next/image";
 import { useState } from "react";
 import { toastError, toastSuccess } from "../Toast/Toast";
-import { handleClientScriptLoad } from "next/script";
 
 interface ReportProps {
   handleCloseModal: () => void;
@@ -36,14 +35,13 @@ function Report({ handleCloseModal }: ReportProps) {
 
   const handleReportUser = async () => {
     const payload = {
-      userID: authState._id, // Use the correct property for the user ID
+      userID: authState._id,
       report: selectedOption,
-      description: reportDescription, // Include the report description
+      description: reportDescription,
     };
 
     const successCallback = (response: any) => {
       toastSuccess(response);
-      // Close the modal or perform any other actions on success
       handleCloseModal();
     };
 

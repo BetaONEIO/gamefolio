@@ -66,9 +66,9 @@ function Followers({ handleCloseModal, followerData }: FollowerProps) {
         style={myBGStyleModal}
         className="fixed inset-0 flex items-center justify-center z-50"
       >
-        <div className="modal-container sm:w-96 mx-auto lg:w-2/5 z-50 overflow-y-auto">
+        <div className="modal-container sm:w-96 lg:w-2/5 mx-auto z-50 overflow-y-auto ">
           {/* Modal content */}
-          <div className="relative text-center  rounded-lg bg-[#091619] py-3 px-3 sm:py-4 sm:px-8 border border-[#586769]">
+          <div className="relative text-center rounded-lg bg-[#091619] py-3 px-3 sm:py-4 sm:px-8 border border-[#586769]">
             <button
               type="button"
               className="text-white-400 absolute top-2.5 right-2.5 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white"
@@ -79,7 +79,7 @@ function Followers({ handleCloseModal, followerData }: FollowerProps) {
             </button>
 
             <h1
-              className={`${leagueGothic.className} text-center text-3xl mb-5  text-white`}
+              className={`${leagueGothic.className} text-center text-3xl mb-5 text-white`}
             >
               FOLLOWERS
             </h1>

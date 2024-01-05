@@ -1,11 +1,9 @@
-"use client";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import Image from "next/image";
-import { useState } from "react";
 
 interface AddNewProps {
-  handleCloseModal: () => void; // Define handleCloseModal as a function
+  handleCloseModal: () => void;
 }
 
 function StoryView({ handleCloseModal }: AddNewProps) {

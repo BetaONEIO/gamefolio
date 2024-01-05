@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useState } from "react";
 
 interface ShareProfileProps {
-  handleCloseModal: () => void; // Define handleCloseModal as a function
+  handleCloseModal: () => void;
 }
 
 function ShareProfile({ handleCloseModal }: ShareProfileProps) {

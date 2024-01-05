@@ -7,7 +7,7 @@ import Modal from "./Modal";
 import Transaction from "./Transaction";
 
 interface StatementProps {
-  handleCloseModal: any; // Define handleCloseModal as a function
+  handleCloseModal: any;
 }
 
 function Statement({ handleCloseModal }: StatementProps) {

@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 
 interface AddNewProps {
-  handleCloseModal: () => void; // Define handleCloseModal as a function
+  handleCloseModal: () => void;
 }
 
 function TestStoryView({ handleCloseModal }: AddNewProps) {
