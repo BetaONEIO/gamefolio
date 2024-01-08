@@ -13,10 +13,6 @@ function Badges({ handleCloseModal }: BadgesProps) {
     { name: "CURRENT" },
     { name: "CURRENT" },
     { name: "CURRENT" },
-    { name: "CURRENT" },
-    { name: "CURRENT" },
-    { name: "CURRENT" },
-    { name: "CURRENT" },
   ];
 
   const dummy = [

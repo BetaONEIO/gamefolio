@@ -230,6 +230,8 @@ function Page({ params }: any) {
 
   console.log("authState****", authState);
 
+  // if (profileInfoState.loading) return <Loading />;
+
   const router = useRouter();
 
   const payload = {

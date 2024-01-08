@@ -36,7 +36,7 @@ function ExploreGame() {
                 width="100"
                 height="133"
                 sizes="100vw"
-                className=" h-56 w-44 object-cover rounded-xl  focus:ring-primary-600 focus:border-primary-600 bg-gray-700 border-gray-600 placeholder-gray-400  focus:ring-primary-500 focus:border-primary-500"
+                className="h-56 w-full object-cover rounded-xl focus:ring-primary-600 focus:border-primary-600 bg-gray-700 border-gray-600 placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500"
               />
               <span className="absolute bottom-1 right-2">8:31</span>
             </div>

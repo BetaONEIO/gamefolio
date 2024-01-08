@@ -4,7 +4,6 @@ import { leagueGothic } from "@/font/font";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import ProgressBar from "@ramonak/react-progress-bar";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import { ToastContainer } from "react-toastify";
 import { toastError, toastSuccess } from "../Toast/Toast";
