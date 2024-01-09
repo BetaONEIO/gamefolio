@@ -1,10 +1,10 @@
 "use client";
+import { useState } from "react";
+import Image from "next/image";
 import { SVG } from "@/assets/SVG";
 import { leagueGothic } from "@/font/font";
 import { dispatch, useSelector } from "@/store";
 import { reportUser } from "@/store/slices/userSlice";
-import Image from "next/image";
-import { useState } from "react";
 import { toastError, toastSuccess } from "../Toast/Toast";
 
 interface ReportProps {
@@ -75,7 +75,7 @@ function Report({ handleCloseModal }: ReportProps) {
             </button>
 
             <h1
-              className={`${leagueGothic.className} text-3xl mb-7  text-white`}
+              className={`${leagueGothic.className} text-3xl mb-7 text-white`}
             >
               REPORT
             </h1>
@@ -87,7 +87,7 @@ function Report({ handleCloseModal }: ReportProps) {
                     <button
                       onClick={toggleDropdown}
                       type="button"
-                      className="inline-flex justify-between w-80 px-4 py-2   bg-[#1C2C2E] border-gray-700 text-white hover:bg-[#1C2C2E] rounded-lg"
+                      className="inline-flex justify-between w-80 px-4 py-2 bg-[#1C2C2E] border-gray-700 text-white hover:bg-[#1C2C2E] rounded-lg"
                       aria-selected={true}
                     >
                       {selectedOption || "Select Reason"}
@@ -104,7 +104,7 @@ function Report({ handleCloseModal }: ReportProps) {
 
                 {isDropdownOpen && (
                   <div className="absolute z-50 mt-2 w-full rounded-md shadow-lg">
-                    <ul className="py-1 border  bg-[#1C2C2E] border-gray-700 text-white border-t-0 rounded-b-lg">
+                    <ul className="py-1 border bg-[#1C2C2E] border-gray-700 text-white border-t-0 rounded-b-lg">
                       {optionsForGame.map((option) => (
                         <li
                           key={option.value}
@@ -142,7 +142,7 @@ function Report({ handleCloseModal }: ReportProps) {
             <div className="mb-4 sm:col-span-2">
               <textarea
                 id="description"
-                className="inline-flex justify-between  p-2.5 w-80 h-28 text-sm  outline-none rounded-lg bg-[#1C2C2E] text-white"
+                className="inline-flex justify-between p-2.5 w-80 h-28 text-sm outline-none rounded-lg bg-[#1C2C2E] text-white"
                 placeholder="Type here report reason..."
                 onChange={(e) => setReportDescription(e.target.value)}
               ></textarea>

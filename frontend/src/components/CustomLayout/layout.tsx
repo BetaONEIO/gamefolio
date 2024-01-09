@@ -1,11 +1,11 @@
 "use client";
+import React, { ReactNode, Suspense, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import SideBar from "@/components/sideBar/SideBar";
 import { ROUTES } from "@/labels/routes";
-import { dispatch, useSelector } from "@/store";
+import { dispatch } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
-import { useRouter } from "next/navigation";
-import React, { ReactNode, Suspense, useEffect } from "react";
 
 const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const router = useRouter();
@@ -32,7 +32,7 @@ const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
         <SideBar />
         {/* Main Page */}
         <main className="md:ml-64 h-auto ">
-          <div className=" rounded-lg border-gray-600 h-screen overflow-y-scroll no-scrollbar">
+          <div className="rounded-lg border-gray-600 h-screen overflow-y-scroll no-scrollbar">
             {children}
           </div>
         </main>

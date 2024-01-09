@@ -1,15 +1,14 @@
 "use client";
 import { Suspense, useState } from "react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
-import Image from "next/image";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import { ROUTES } from "@/labels/routes";
-import { useRouter } from "next/navigation";
 import { ToastContainer } from "react-toastify";
 import { createPreferences } from "@/store/slices/authSlice";
 import { dispatch } from "@/store";
-import { useSelector } from "react-redux";
 import { getFromLocal } from "@/utils/localStorage";
 import Loading from "./loading";
 
@@ -36,7 +35,7 @@ const Preference = () => {
   const router = useRouter();
   const [activeTabs, setActiveTabs] = useState<string[]>([]);
 
-  console.log("userData preference: ", userData);
+  // console.log("userData preference: ", userData);
 
   const handleTabClick = (tabId: string) => {
     if (activeTabs.includes(tabId)) {

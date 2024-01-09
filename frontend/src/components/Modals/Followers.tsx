@@ -1,13 +1,13 @@
 "use client";
+import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import { dispatch, useSelector } from "@/store";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
-import Image from "next/image";
 import { toastError, toastSuccess } from "../Toast/Toast";
 import { removeFollow } from "@/store/slices/userSlice";
-import { useState } from "react";
-import Link from "next/link";
 
 interface FollowerProps {
   handleCloseModal: () => void;
@@ -29,8 +29,8 @@ function Followers({ handleCloseModal, followerData }: FollowerProps) {
       followerID: followerID,
     };
 
-    console.log("authState._id:", authState._id);
-    console.log("followerID:", followerID);
+    // console.log("authState._id:", authState._id);
+    // console.log("followerID:", followerID);
 
     const successCallback = (response: any) => {
       toastSuccess(response.message);
@@ -66,7 +66,7 @@ function Followers({ handleCloseModal, followerData }: FollowerProps) {
         style={myBGStyleModal}
         className="fixed inset-0 flex items-center justify-center z-50"
       >
-        <div className="modal-container sm:w-96 lg:w-2/5 mx-auto z-50 overflow-y-auto ">
+        <div className="modal-container sm:w-96 lg:w-2/5 mx-auto z-50 overflow-y-auto">
           {/* Modal content */}
           <div className="relative text-center rounded-lg bg-[#091619] py-3 px-3 sm:py-4 sm:px-8 border border-[#586769]">
             <button
@@ -87,7 +87,7 @@ function Followers({ handleCloseModal, followerData }: FollowerProps) {
             <div className="bg-[#1C2C2E] flex gap-2 px-4 items-center w-full sm:w-full rounded-lg overflow-hidden mb-2">
               <Image src={SVG.Search} alt="search" width={30} height={30} />
               <input
-                className="w-full block p-2.5 outline-none bg-[#1C2C2E] "
+                className="w-full block p-2.5 outline-none bg-[#1C2C2E]"
                 placeholder="Search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -123,7 +123,7 @@ function Followers({ handleCloseModal, followerData }: FollowerProps) {
                         <button
                           onClick={() => handleRemoveFollow(user?.userID?._id)}
                           className={
-                            "w-[150px] h-[50] font-bold bg-[#162423] text-white text-center py-[5px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] "
+                            "w-[150px] h-[50] font-bold bg-[#162423] text-white text-center py-[5px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
                           }
                         >
                           {"Remove"}

@@ -1,5 +1,7 @@
 "use client";
 import React, { Suspense, useEffect, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import { SVG } from "@/assets/SVG";
 import Layout from "@/components/CustomLayout/layout";
 import Modal from "@/components/Modals/Modal";
@@ -14,9 +16,7 @@ import {
   refreshPage,
 } from "@/store/slices/clipSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
-import Image from "next/image";
 import Loading from "./loading";
-import Link from "next/link";
 
 interface VideoState {
   isMuted?: boolean;

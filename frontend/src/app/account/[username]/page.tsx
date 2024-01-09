@@ -1,6 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import Layout from "@/components/CustomLayout/layout";
@@ -21,8 +23,6 @@ import {
 } from "@/store/slices/userSlice";
 import { copyToClipboard, generateUniqueRoomId } from "@/utils/helpers";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
-import Image from "next/image";
-import Link from "next/link";
 import { ToastContainer } from "react-toastify";
 import Loading from "../loading";
 

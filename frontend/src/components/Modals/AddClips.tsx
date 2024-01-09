@@ -1,8 +1,8 @@
 "use client";
+import { useEffect, useState } from "react";
+import Image from "next/image";
 import { SVG } from "@/assets/SVG";
 import { leagueGothic } from "@/font/font";
-import Image from "next/image";
-import { useEffect, useState } from "react";
 import axios from "axios";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import { ToastContainer } from "react-toastify";

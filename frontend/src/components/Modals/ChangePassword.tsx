@@ -1,9 +1,9 @@
 "use client";
+import Image from "next/image";
 import { SVG } from "@/assets/SVG";
 import { leagueGothic } from "@/font/font";
 import { dispatch } from "@/store";
 import { updatePassword } from "@/store/slices/authSlice";
-import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";

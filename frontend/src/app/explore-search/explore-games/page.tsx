@@ -1,5 +1,5 @@
-import { IMAGES } from "@/assets/images";
 import Image from "next/image";
+import { IMAGES } from "@/assets/images";
 
 function ExploreGame() {
   const games = [

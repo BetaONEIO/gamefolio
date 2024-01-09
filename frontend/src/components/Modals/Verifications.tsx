@@ -1,9 +1,9 @@
 "use client";
+import { useState } from "react";
+import Image from "next/image";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
-import Image from "next/image";
-import { useState } from "react";
 
 interface VerificationProps {
   handleCloseModal: () => void;
@@ -39,9 +39,9 @@ function Verifications({ handleCloseModal }: VerificationProps) {
         style={myBGStyleModal}
         className="fixed inset-0 flex items-center justify-center z-50"
       >
-        <div className="modal-container sm:w-96 lg:w-1/3 lg-rounded z-50 ">
+        <div className="modal-container sm:w-96 lg:w-1/3 lg-rounded z-50">
           {/* Modal content */}
-          <div className="relative text-center  rounded-lg bg-[#091619] py-2 sm:py-4 px-6 sm:px-10 border border-[#586769]">
+          <div className="relative text-center rounded-lg bg-[#091619] py-2 sm:py-4 px-6 sm:px-10 border border-[#586769]">
             <button
               type="button"
               className="text-white-400 absolute top-2.5 right-2.5 bg-transparent  rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white"
@@ -52,12 +52,12 @@ function Verifications({ handleCloseModal }: VerificationProps) {
             </button>
 
             <h1
-              className={`${leagueGothic.className} text-center text-3xl mb-5  text-white`}
+              className={`${leagueGothic.className} text-center text-3xl mb-5 text-white`}
             >
               VERIFICATIONS
             </h1>
 
-            <div className="flex flex-col w-full no-scrollbar overflow-scroll ">
+            <div className="flex flex-col w-full no-scrollbar overflow-scroll">
               {checkboxes.map((checkbox) => (
                 <div key={checkbox.id}>
                   <div className="flex items-center my-3">

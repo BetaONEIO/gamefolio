@@ -1,10 +1,14 @@
 import { REGEX } from "@/constants/regex";
 import { ERRORS } from "@/labels/error";
 
-export const validateRegister = ({ name = "", username ="", email = "", password = "" }) => {
+export const validateRegister = ({
+  name = "",
+  username = "",
+  email = "",
+  password = "",
+}) => {
   if (REGEX.name.test(name) === false) return ERRORS.enterName;
   if (REGEX.username.test(username) === false) return ERRORS.enterUserName;
-
 
   if (REGEX.email.test(email) === false) return ERRORS.enterEmail;
 

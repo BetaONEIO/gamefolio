@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Image from "next/image";
 import { SVG } from "@/assets/SVG";
 import Layout from "@/components/CustomLayout/layout";
 import Modal from "@/components/Modals/Modal";
@@ -7,7 +8,6 @@ import Statement from "@/components/Modals/Statement";
 import { leagueGothic } from "@/font/font";
 import { useSelector } from "@/store";
 import { format } from "date-fns";
-import Image from "next/image";
 
 function Page() {
   const authState = useSelector((state: any) => state.auth.userData) || [];

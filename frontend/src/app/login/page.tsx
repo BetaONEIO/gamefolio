@@ -1,13 +1,13 @@
 "use client";
-import { IMAGES } from "@/assets/images";
-import { leagueGothic } from "@/font/font";
+import { ChangeEvent, useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useEffect, useState } from "react";
+import { IMAGES } from "@/assets/images";
+import { leagueGothic } from "@/font/font";
 import { RootState, dispatch, useSelector } from "@/store";
 import { ROUTES } from "@/labels/routes";
 import { login } from "@/store/slices/authSlice";
-import { getFromLocal, setToLocal } from "@/utils/localStorage";
+import { getFromLocal } from "@/utils/localStorage";
 import { validateLogin } from "@/validation";
 import { ToastContainer } from "react-toastify";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";

@@ -1,8 +1,8 @@
 "use client";
+import { useState } from "react";
+import Image from "next/image";
 import { SVG } from "@/assets/SVG";
 import { leagueGothic } from "@/font/font";
-import Image from "next/image";
-import { useState } from "react";
 import Modal from "./Modal";
 import AddClips from "./AddClips";
 import AddVideo from "./AddVideo";

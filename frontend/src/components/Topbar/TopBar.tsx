@@ -4,7 +4,6 @@ import { usePathname } from "next/navigation";
 
 function TopBar() {
   const currentRoute = usePathname();
-  // Define a function to determine if a sidebar item is active based on the current route
   const isItemActive = (path: string) => {
     return currentRoute === path ? true : false;
   };
@@ -29,7 +28,7 @@ function TopBar() {
           <li>
             <a
               href="/explore-search/explore-user"
-              className="text-base font-normal  text-white"
+              className="text-base font-normal text-white"
             >
               <div className="my-2 w-full">
                 <span className="px-6">Users</span>

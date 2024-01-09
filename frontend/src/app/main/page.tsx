@@ -1,4 +1,7 @@
 "use client";
+import { Suspense, useEffect, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import Loading from "@/app/main/loading";
 import { SVG } from "@/assets/SVG";
 import Layout from "@/components/CustomLayout/layout";
@@ -18,9 +21,6 @@ import {
   refreshPage,
 } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
-import Image from "next/image";
-import Link from "next/link";
-import { Suspense, useEffect, useState } from "react";
 
 function Main() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
@@ -39,8 +39,6 @@ function Main() {
     dispatch(userSession(params));
     dispatch(getAllPostVideos());
   }, [postState.refresh]);
-
-  console.log("secondtime");
 
   console.log("authState", authState);
   console.log("postState", postState);
@@ -65,7 +63,7 @@ function Main() {
     }));
   };
 
-  console.log("POSTID ****: ", postID);
+  // console.log("POSTID ****: ", postID);
 
   // const followingVideoIDs = authState.following.map(
   //   (followedUser: any) => followedUser.name
@@ -267,7 +265,7 @@ function Main() {
                       width={50}
                       height={50}
                       controls
-                      controlsList=" nodownload  noremoteplayback noplaybackrate"
+                      controlsList="nodownload noremoteplayback noplaybackrate"
                       disablePictureInPicture
                       autoPlay={false}
                       playsInline

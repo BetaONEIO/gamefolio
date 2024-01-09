@@ -1,5 +1,7 @@
 "use client";
 import { Suspense, useEffect, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
@@ -16,8 +18,6 @@ import Following from "@/components/Modals/Following";
 import Modal from "@/components/Modals/Modal";
 import MoreOptions from "@/components/Modals/MoreOptions";
 import AllStories from "@/components/story/AllStories";
-import Image from "next/image";
-import Link from "next/link";
 import Loading from "./loading";
 
 const popular = [

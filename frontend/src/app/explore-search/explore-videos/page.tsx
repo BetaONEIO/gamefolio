@@ -1,12 +1,12 @@
 "use client";
-import React, { useRef, useEffect, useCallback, useState } from "react";
+import React, { useEffect, useState } from "react";
+import Modal from "@/components/Modals/Modal";
+import VideoDetails from "@/components/Modals/VideoDetails";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import { getAllPostVideos, refreshPage } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Loading from "./loading";
-import VideoDetails from "@/components/Modals/VideoDetails";
-import Modal from "@/components/Modals/Modal";
 
 function ExploreVideo() {
   const postState = useSelector((state: any) => state.post) || [];
@@ -41,11 +41,9 @@ function ExploreVideo() {
   };
 
   useEffect(() => {
-    console.log("FirstTime");
     dispatch(userSession(params));
     dispatch(getAllPostVideos());
   }, []);
-  console.log("SecondTime");
 
   if (postState.loading) return <Loading />;
 

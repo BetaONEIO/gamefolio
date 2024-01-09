@@ -1,10 +1,10 @@
 import { leagueGothic } from "@/font/font";
 
-// interface DeleteAccountProps {
-//   handleCloseModal: () => void; // Define handleCloseModal as a function
-// }
+interface DeleteAccountProps {
+  handleCloseModal: () => void; // Define handleCloseModal as a function
+}
 
-function DeleteAccount() {
+function DeleteAccount({ handleCloseModal }: DeleteAccountProps) {
   const myBGStyleModal = {
     backgroundColor: "rgba(0, 0, 0, 0.6)",
     backdropFilter: "blur(8px)",
@@ -35,10 +35,13 @@ function DeleteAccount() {
             </div>
 
             <div className="flex flex-col items-center mb-2 sm:mb-2 ">
-              <button className="w-1/2 h-[50] font-bold bg-[#162423] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3">
+              <button className="w-1/2 h-[50] font-bold bg-[#162423] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3 hover:opacity-80 cursor-pointer">
                 Confirm
               </button>
-              <button className="w-1/2 h-[50] font-bold bg-[#37C535] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] ">
+              <button
+                onClick={() => handleCloseModal()}
+                className="w-1/2 h-[50] font-bold bg-[#37C535] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] hover:opacity-80 cursor-pointer"
+              >
                 Cancel
               </button>
             </div>

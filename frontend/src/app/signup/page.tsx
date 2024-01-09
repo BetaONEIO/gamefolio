@@ -1,4 +1,7 @@
 "use client";
+import { ChangeEvent, useState } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { IMAGES } from "@/assets/images";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import { leagueGothic } from "@/font/font";
@@ -6,9 +9,6 @@ import { ROUTES } from "@/labels/routes";
 import { RootState, dispatch, useSelector } from "@/store";
 import { register } from "@/store/slices/authSlice";
 import { validateRegister } from "@/validation";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { ChangeEvent, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -90,7 +90,7 @@ const Signup = () => {
             <div>
               <label
                 htmlFor="name"
-                className="block mb-2 text-sm font-medium  text-white"
+                className="block mb-2 text-sm font-medium text-white"
               >
                 Name
               </label>
@@ -106,7 +106,7 @@ const Signup = () => {
             <div>
               <label
                 htmlFor="username"
-                className="block mb-2 text-sm font-medium  text-white"
+                className="block mb-2 text-sm font-medium text-white"
               >
                 Username
               </label>
@@ -123,7 +123,7 @@ const Signup = () => {
             <div>
               <label
                 htmlFor="email"
-                className="block mb-2 text-sm font-medium  text-white"
+                className="block mb-2 text-sm font-medium text-white"
               >
                 Email
               </label>
@@ -140,7 +140,7 @@ const Signup = () => {
             <div>
               <label
                 htmlFor="password"
-                className="block mb-2 text-sm font-medium  text-white"
+                className="block mb-2 text-sm font-medium text-white"
               >
                 Password
               </label>
@@ -161,7 +161,7 @@ const Signup = () => {
             >
               SignUp
             </button>
-            <p className="text-sm font-light text-center  text-gray-50">
+            <p className="text-sm font-light text-center text-gray-50">
               Already have an account?{" "}
               <a
                 href="/login"

@@ -5,18 +5,23 @@ const storySchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Users",
   },
+
   description: {
     type: String,
   },
+
   game: {
     type: String,
   },
+
   music: {
     type: String,
   },
+
   video: {
     type: String,
   },
+
   reactions: [
     {
       userID: {
@@ -29,6 +34,7 @@ const storySchema = new mongoose.Schema({
       },
     },
   ],
+
   share: [
     {
       userID: {
@@ -36,6 +42,7 @@ const storySchema = new mongoose.Schema({
       },
     },
   ],
+
   date: {
     type: Date,
     default: Date.now,

@@ -1,13 +1,13 @@
 "use client";
+import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
 import { dispatch, useSelector } from "@/store";
-import Image from "next/image";
-import { useState } from "react";
 import { toastError, toastSuccess } from "../Toast/Toast";
 import { removeFollowing } from "@/store/slices/userSlice";
-import Link from "next/link";
 
 interface FollowingProps {
   handleCloseModal: () => void;
@@ -16,7 +16,7 @@ interface FollowingProps {
 function Following({ handleCloseModal, followingData }: FollowingProps) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const [searchQuery, setSearchQuery] = useState<string>("");
-  console.log("authstate", authState);
+  // console.log("authstate", authState);
 
   const myBGStyleModal = {
     backgroundColor: "rgba(0, 0, 0, 0.6)",
@@ -75,7 +75,7 @@ function Following({ handleCloseModal, followingData }: FollowingProps) {
             </button>
 
             <h1
-              className={`${leagueGothic.className} text-center text-3xl mb-5  text-white`}
+              className={`${leagueGothic.className} text-center text-3xl mb-5 text-white`}
             >
               FOLLOWING
             </h1>
@@ -121,7 +121,7 @@ function Following({ handleCloseModal, followingData }: FollowingProps) {
                             handleRemoveFollowing(user?.userID?._id)
                           }
                           className={
-                            "w-[150px] h-[50] font-bold bg-[#37C535] text-white text-center py-[5px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] "
+                            "w-[150px] h-[50] font-bold bg-[#37C535] text-white text-center py-[5px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
                           }
                         >
                           {"Following"}

@@ -1,5 +1,5 @@
-import { leagueGothic } from "@/font/font";
 import React from "react";
+import { leagueGothic } from "@/font/font";
 
 const TermsCondition = () => {
   return (

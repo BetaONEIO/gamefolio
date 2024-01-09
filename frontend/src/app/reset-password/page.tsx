@@ -1,10 +1,10 @@
+import Image from "next/image";
 import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
-import Image from "next/image";
 
 const ResetPassword = () => {
   return (
-    <section className=" bg-[#091619] min-h-screen flex flex-col justify-center">
+    <section className="bg-[#091619] min-h-screen flex flex-col justify-center">
       <div className="flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
         <Image
           src={IMAGES.logo}

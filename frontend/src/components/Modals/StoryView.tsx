@@ -1,6 +1,6 @@
+import Image from "next/image";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
-import Image from "next/image";
 
 interface AddNewProps {
   handleCloseModal: () => void;

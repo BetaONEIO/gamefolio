@@ -1,9 +1,9 @@
 "use client";
+import { useState } from "react";
+import Image from "next/image";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
-import Image from "next/image";
-import { useState } from "react";
 
 interface SharePostProps {
   handleCloseModal: () => void;
@@ -58,11 +58,11 @@ function SharePost({ handleCloseModal }: SharePostProps) {
             </button>
 
             <h1
-              className={`${leagueGothic.className} text-center text-3xl mb-5  text-white`}
+              className={`${leagueGothic.className} text-center text-3xl mb-5 text-white`}
             >
               SHARE POST
             </h1>
-            <div className="bg-[#1C2C2E] flex gap-2 p-3  sm:p-3 items-center w-full rounded-lg overflow-hidden">
+            <div className="bg-[#1C2C2E] flex gap-2 p-3 sm:p-3 items-center w-full rounded-lg overflow-hidden">
               <Image src={SVG.Search} alt="logo" width={24} height={24} />
               <input
                 className="bg-[#1C2C2E] outline-none text-white"

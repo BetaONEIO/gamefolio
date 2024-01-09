@@ -1,4 +1,7 @@
 "use client";
+import { Suspense, useEffect, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { SVG } from "@/assets/SVG";
 import Layout from "@/components/CustomLayout/layout";
 import DeletePost from "@/components/Modals/DeletePost";
@@ -16,9 +19,6 @@ import {
   refreshPage,
 } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
-import Image from "next/image";
-import Link from "next/link";
-import { Suspense, useEffect, useState } from "react";
 import Loading from "./loading";
 
 function Trending() {
@@ -38,7 +38,7 @@ function Trending() {
     dispatch(getAllPostVideos());
   }, [postState.refresh]);
 
-  console.log("postState", postState);
+  // console.log("postState", postState);
 
   const [modalState, setModalState] = useState({
     isPostShareOpen: false,

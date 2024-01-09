@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
+import Image from "next/image";
 import { SVG } from "@/assets/SVG";
 import { leagueGothic } from "@/font/font";
-import Image from "next/image";
 import { toastSuccess } from "../Toast/Toast";
 import BlockPopup from "./BlockPopup";
 import Modal from "./Modal";
@@ -42,7 +42,7 @@ function MoreOptions({ handleCloseModal, data }: MoreOptionProps) {
         <div className="modal-container w-72 sm:w-96 lg-rounded z-50 overflow-y-auto">
           {/* Modal content */}
 
-          <div className="relative p-4 text-center rounded-lg  bg-[#091619] sm:p-5 border border-[#586769]">
+          <div className="relative p-4 text-center rounded-lg bg-[#091619] sm:p-5 border border-[#586769]">
             <button
               type="button"
               className="text-white-400 absolute top-2.5 right-2.5 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white"

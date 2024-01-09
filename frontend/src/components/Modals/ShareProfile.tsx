@@ -1,9 +1,9 @@
 "use client";
+import { useState } from "react";
+import Image from "next/image";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
-import Image from "next/image";
-import { useState } from "react";
 
 interface ShareProfileProps {
   handleCloseModal: () => void;
@@ -109,7 +109,7 @@ function ShareProfile({ handleCloseModal }: ShareProfileProps) {
               ))}
             </div>
 
-            <div className="flex items-center  justify-between w-full my-3">
+            <div className="flex items-center justify-between w-full my-3">
               <span className="text-white"> 3 Selected</span>
               <button className="font-bold w-40 sm:w-1/3 h-10 sm:h-6/12 text-base sm:text-base bg-[#37C535] text-white text-center  sm:py-[7px] rounded-tl-[20px] sm:rounded-tl-[20px] rounded-br-[20px] sm:rounded-br-[20px] rounded-tr-[5px] sm:rounded-tr-[5px] rounded-bl-[5px] sm:rounded-bl-[5px] hover:opacity-80">
                 Share Profile

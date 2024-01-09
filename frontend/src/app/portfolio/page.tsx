@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useState } from "react";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import { dispatch, useSelector } from "@/store";
@@ -7,12 +8,11 @@ import { getAllPostVideos } from "@/store/slices/postSlice";
 import { copyToClipboard } from "@/utils/helpers";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { Grid, Pagination } from "swiper/modules";
+import { Pagination } from "swiper/modules";
 
 interface VideoState {
   isMuted?: boolean;

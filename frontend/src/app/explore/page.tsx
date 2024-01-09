@@ -1,4 +1,7 @@
 "use client";
+import { Suspense, useEffect, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { IMAGES } from "@/assets/images";
 import Layout from "@/components/CustomLayout/layout";
 import ExploreHeader from "@/components/ExploreHeader/ExploreHeader";
@@ -6,9 +9,6 @@ import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import { getAllPostVideos, refreshPage } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
-import Image from "next/image";
-import Link from "next/link";
-import { Suspense, useEffect, useState } from "react";
 import Loading from "./loading";
 import Modal from "@/components/Modals/Modal";
 import VideoDetails from "@/components/Modals/VideoDetails";

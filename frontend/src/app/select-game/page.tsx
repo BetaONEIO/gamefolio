@@ -1,4 +1,7 @@
 "use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { IMAGES } from "@/assets/images";
 import { SVG } from "@/assets/SVG";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
@@ -7,9 +10,6 @@ import { ROUTES } from "@/labels/routes";
 import { dispatch } from "@/store";
 import { createFavoriteGame } from "@/store/slices/authSlice";
 import { getFromLocal } from "@/utils/localStorage";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { ToastContainer } from "react-toastify";
 
 const SelectGame = () => {
@@ -30,7 +30,7 @@ const SelectGame = () => {
 
   const [selectedGames, setSelectedGames] = useState<string[]>([]);
 
-  console.log("Selected Games: ", selectedGames);
+  // console.log("Selected Games: ", selectedGames);
 
   const handleCheckboxClick = (name: any) => {
     if (selectedGames.length < 3 || selectedGames.includes(name)) {
@@ -93,7 +93,7 @@ const SelectGame = () => {
           />
         </div>
 
-        <div className="flex flex-col w-full no-scrollbar  overflow-scroll">
+        <div className="flex flex-col w-full no-scrollbar overflow-scroll">
           {games.map((game) => (
             <div className="flex items-center my-3" key={game.id}>
               <Image
@@ -127,10 +127,10 @@ const SelectGame = () => {
         </div>
 
         <div className="flex justify-between items-center w-full">
-          <span className="text-white">{selectedGames.length} Selected</span>
+          <span className="text-white">{selectedGames.length}Selected</span>
           <button
             onClick={handleNext}
-            className="sm:w-6/12 sm:h-6/12 sm:text-base bg-[#37C535]  text-white text-center py-[7px]  rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3"
+            className="sm:w-6/12 sm:h-6/12 sm:text-base bg-[#37C535] text-white text-center py-[7px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3"
           >
             Save & Next
           </button>

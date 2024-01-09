@@ -1,17 +1,18 @@
 "use client";
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import { useForm } from "react-hook-form";
 import { SVG } from "@/assets/SVG";
-import { IMAGES } from "@/assets/images";
 import Layout from "@/components/CustomLayout/layout";
 import { leagueGothic } from "@/font/font";
-import { useForm } from "react-hook-form";
-import Image from "next/image";
 import { dispatch, useSelector } from "@/store";
-import { useEffect, useState } from "react";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import { updateProfile } from "@/store/slices/authSlice";
 import { ToastContainer } from "react-toastify";
 import axios from "axios";
 import { BASE_URL } from "@/services/api";
+import Modal from "@/components/Modals/Modal";
+import DeleteAccount from "@/components/Modals/DeleteAccount";
 
 const Edit = () => {
   const authState = useSelector((state: any) => state.auth.userData) || [];
@@ -35,6 +36,16 @@ const Edit = () => {
   });
   const sectionStyle = {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
+  };
+  const [modalState, setModalState] = useState({
+    isDeleteModalOpen: false,
+  });
+
+  const handleModalToggle = (modalName: keyof typeof modalState) => {
+    setModalState((prevState) => ({
+      ...prevState,
+      [modalName]: !prevState[modalName],
+    }));
   };
 
   const onUpdate = (data: any) => {
@@ -124,7 +135,7 @@ const Edit = () => {
 
       <section
         style={sectionStyle}
-        className="flex flex-col items-center  bg-[#091619] min-h-screen"
+        className="flex flex-col items-center bg-[#091619] min-h-screen"
       >
         <div className="flex justify-between px-6 py-8 md:h-screen lg:py-0">
           <div className="relative p-6 sm:p-8">
@@ -144,7 +155,7 @@ const Edit = () => {
                   <Image
                     src={SVG.Cameraupload}
                     alt="Cameraupload"
-                    className="w-6 h-6 rounded-lg"
+                    className="w-6 h-6 rounded-lg hover:opacity-80 cursor-pointer"
                     width={10}
                     height={10}
                   />
@@ -189,7 +200,7 @@ const Edit = () => {
               <div>
                 <label
                   htmlFor="username"
-                  className="block mb-2 text-sm font-bold  text-white"
+                  className="block mb-2 text-sm font-bold text-white"
                 >
                   Username
                 </label>
@@ -211,20 +222,20 @@ const Edit = () => {
               <div>
                 <label
                   htmlFor="Date of Birth"
-                  className="block mb-2 text-sm font-bold   text-white"
+                  className="block mb-2 text-sm font-bold text-white"
                 >
                   Date of Birth (optional)
                 </label>
                 <input
                   type="Date"
-                  className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-2.5 text-white"
+                  className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-2.5 text-white hover:opacity-80 cursor-pointer"
                   placeholder="Date of Birth"
                   {...register("dateOfBirth")}
                 />
               </div>
 
               <div className="mb-4">
-                <label className="block mb-2 text-sm font-bold  text-white">
+                <label className="block mb-2 text-sm font-bold text-white">
                   Bio
                 </label>
                 <textarea
@@ -261,7 +272,7 @@ const Edit = () => {
                     onClick={() => onUpdateAccountType("private")}
                     className={
                       accountTypeValue === "private"
-                        ? "text-white w-full justify-center bg-primary-700 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-[#162423] border-green-500 border "
+                        ? "text-white w-full justify-center bg-primary-700 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-[#162423] border-green-500 border"
                         : "w-full justify-center text-gray-500 items-center outline-none rounded-lg text-sm font-medium px-5 py-2.5 bg-[#162423]"
                     }
                   >
@@ -274,14 +285,14 @@ const Edit = () => {
                 Update
               </button>
             </form>
-            <p className="text-md text-center  text-gray-50">
-              <a
-                href="/login"
-                className="font-bold text-primary-600 underline "
+            <div className="text-md text-center text-gray-50">
+              <p
+                className="font-bold text-primary-600 underline hover:opacity-80 cursor-pointer"
+                onClick={() => handleModalToggle("isDeleteModalOpen")}
               >
                 Deactivate Account
-              </a>
-            </p>
+              </p>
+            </div>
           </div>
         </div>
         <ToastContainer
@@ -297,6 +308,15 @@ const Edit = () => {
           theme="dark"
         />
       </section>
+
+      <Modal
+        isOpen={modalState.isDeleteModalOpen}
+        handleClose={() => handleModalToggle("isDeleteModalOpen")}
+      >
+        <DeleteAccount
+          handleCloseModal={() => handleModalToggle("isDeleteModalOpen")}
+        />
+      </Modal>
     </Layout>
   );
 };

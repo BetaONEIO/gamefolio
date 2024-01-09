@@ -1,8 +1,8 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { IMAGES } from "@/assets/images";
 import { SVG } from "@/assets/SVG";
-import Image from "next/image";
 import { BASE_URL2 } from "@/services/api";
 
 const LandingPage = () => {
@@ -50,7 +50,7 @@ const LandingPage = () => {
           </div>
         </button>
 
-        <p className="text-sm font-light text-center  text-gray-300">
+        <p className="text-sm font-light text-center text-gray-300">
           Already have an account?{" "}
           <a
             href="/login"

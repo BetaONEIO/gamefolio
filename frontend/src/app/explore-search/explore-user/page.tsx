@@ -1,13 +1,13 @@
 "use client";
+import { useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { IMAGES } from "@/assets/images";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import { getAllUsers } from "@/store/slices/userSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
-import Image from "next/image";
-import { useEffect } from "react";
 import Loading from "./loading";
-import Link from "next/link";
 
 function ExploreUser() {
   const userState = useSelector((state: any) => state.user) || [];
@@ -24,7 +24,7 @@ function ExploreUser() {
 
   if (userState.loading) return <Loading />;
 
-  console.log("userState:: ", userState);
+  // console.log("userState:: ", userState);
 
   return (
     <div className="flow-root w-96 sm:1/3 mx-auto">

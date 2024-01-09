@@ -72,20 +72,17 @@ export const imgProps = (
   };
 };
 
-export const copyToClipboard = async (textToCopy:string) => {
+export const copyToClipboard = async (textToCopy: string) => {
   try {
     await navigator.clipboard.writeText(textToCopy);
     toastSuccess("Copied to clipboard");
   } catch (err) {
-    console.error('Failed to copy:', err);
+    console.error("Failed to copy:", err);
     toastError("Failed to copy");
   }
 };
 
 export const generateUniqueRoomId = () => {
-
-    const uniqueNumber =  Math.floor(Math.random() * 9000) + 1000;
-    return uniqueNumber;
- 
-
-}
+  const uniqueNumber = Math.floor(Math.random() * 9000) + 1000;
+  return uniqueNumber;
+};

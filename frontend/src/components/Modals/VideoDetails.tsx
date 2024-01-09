@@ -1,12 +1,14 @@
 "use client";
+import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { SVG } from "@/assets/SVG";
 import { dispatch, useSelector } from "@/store";
 import { createComment, refreshPage } from "@/store/slices/postSlice";
-import Image from "next/image";
-import { useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { toastError, toastSuccess } from "../Toast/Toast";
-import Link from "next/link";
+// import data from "@emoji-mart/data";
+// import Picker from "@emoji-mart/react";
 
 interface VideoDetailProps {
   handleCloseModal: () => void;
@@ -23,8 +25,9 @@ function VideoDetails({
 VideoDetailProps) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const [comments, setComments] = useState("");
+  const [emoji, setEmoji] = useState(false);
 
-  console.log("POST statewww####: VideoDetails.tsx ", detailedPost);
+  // console.log("POST statewww####: VideoDetails.tsx ", detailedPost);
 
   const handleCreateComment = async (postID: any, comment: any) => {
     const payload = {
@@ -33,11 +36,11 @@ VideoDetailProps) {
       commentText: comment,
     };
 
-    console.log("Comment ", payload);
+    // console.log("Comment ", payload);
 
     const successCallback = (response: any) => {
       handlePageRefresh();
-      console.log("RESPONSE COMMENT: ", response);
+      // console.log("RESPONSE COMMENT: ", response);
       toastSuccess(response);
     };
 
@@ -88,6 +91,28 @@ VideoDetailProps) {
     backgroundColor: "rgba(0, 0, 0, 0.6)",
     backdropFilter: "blur(8px)",
   };
+
+  //   // toggle emoji
+  // const toggleEmoji = () => {
+  //   setEmoji(!emoji);
+  // };
+  // // toggle emoji
+  // const toggleModal = () => {
+  //   setEmoji(!emoji);
+  // };
+
+  //   // handle emoji
+  // const handleEmojiSelect = (selectedEmoji: any) => {
+  //   // Get the current value of the message input field
+  //   const currentMessage = watch("message");
+
+  //   // Append the selected emoji to the current message value
+  //   const updatedMessage = currentMessage + selectedEmoji;
+
+  //   // Set the updated message value to the input field using setValue
+  //   setValue("message", updatedMessage);
+  // };
+
   return (
     <>
       <div
@@ -232,7 +257,7 @@ VideoDetailProps) {
                         height={40}
                       />
                       <div>
-                        <div className="flex flex-row mb-1">
+                        <div className="flex flex-row items-center mb-1">
                           <p className="sm:text-lg sm:font-bold md:text-xl text-white text-base font-semibold">
                             {comment?.userID?.name}
                           </p>
@@ -245,7 +270,7 @@ VideoDetailProps) {
                             {formatRelativeDate(comment?.date)}
                           </p>
                           <p className="cursor-pointer sm:text-sm text-xs">
-                            {comment?.like} likes
+                            {comment?.like} like
                           </p>
                           <p className="cursor-pointer sm:text-sm text-xs">
                             Reply
@@ -264,6 +289,16 @@ VideoDetailProps) {
                       width={40}
                       height={40}
                     />
+                    {/* <button onClick={toggleEmoji}>😀</button>
+//             {emoji && (
+              <div className="absolute bottom-10 right-0">
+                <Picker
+                  data={data}
+                  onEmojiSelect={(data: any) => handleEmojiSelect(data.native)}
+                  previewPosition="none"
+                />
+              </div>
+            )} */}
                   </div>
                   <input
                     type="Post"

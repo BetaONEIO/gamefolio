@@ -1,7 +1,7 @@
+import React from "react";
+import Image from "next/image";
 import { SVG } from "@/assets/SVG";
 import { leagueGothic } from "@/font/font";
-import Image from "next/image";
-import React from "react";
 
 function ExploreHeader() {
   return (

@@ -1,11 +1,11 @@
 "use client";
+import { useState } from "react";
+import Image from "next/image";
 import { SVG } from "@/assets/SVG";
 import { leagueGothic } from "@/font/font";
-import Image from "next/image";
-import { useState } from "react";
 
 interface FeedBackProps {
-  handleCloseModal: () => void; // Define handleCloseModal as a function
+  handleCloseModal: () => void;
 }
 
 function FeedBack({ handleCloseModal }: FeedBackProps) {
@@ -54,7 +54,7 @@ function FeedBack({ handleCloseModal }: FeedBackProps) {
         <div className="modal-container w-[410px] mx-auto lg-rounded z-50">
           {/* Modal content */}
 
-          <div className="relative text-center justify-center rounded-lg  bg-[#091619] p-5 sm:p-5 border border-[#586769]">
+          <div className="relative text-center justify-center rounded-lg bg-[#091619] p-5 sm:p-5 border border-[#586769]">
             <button
               type="button"
               className="text-white-400 absolute top-2.5 right-2.5 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white"
@@ -65,7 +65,7 @@ function FeedBack({ handleCloseModal }: FeedBackProps) {
             </button>
 
             <h1
-              className={`${leagueGothic.className} text-3xl mb-2  text-white`}
+              className={`${leagueGothic.className} text-3xl mb-2 text-white`}
             >
               SEND FEEDBACK
             </h1>
@@ -80,7 +80,7 @@ function FeedBack({ handleCloseModal }: FeedBackProps) {
                     <button
                       onClick={toggleDropdown}
                       type="button"
-                      className="inline-flex justify-between w-80 px-4 py-2  bg-[#1C2C2E] border-gray-700 text-white hover:bg-[#1C2C2E] rounded-lg"
+                      className="inline-flex justify-between w-80 px-4 py-2 bg-[#1C2C2E] border-gray-700 text-white hover:bg-[#1C2C2E] rounded-lg"
                       aria-selected={true}
                     >
                       {selectedOption || "Select Reason"}
@@ -97,7 +97,7 @@ function FeedBack({ handleCloseModal }: FeedBackProps) {
 
                 {isDropdownOpen && (
                   <div className="absolute z-50 mt-2 w-full rounded-md shadow-lg">
-                    <ul className="py-1  border  bg-[#1C2C2E] border-gray-700 text-white border-t-0 rounded-b-lg">
+                    <ul className="py-1 border bg-[#1C2C2E] border-gray-700 text-white border-t-0 rounded-b-lg">
                       {optionsForReason.map((option) => (
                         <li
                           key={option.value}
@@ -136,7 +136,7 @@ function FeedBack({ handleCloseModal }: FeedBackProps) {
               <div className="relative">
                 <textarea
                   id="description"
-                  className="inline-flex justify-between p-2.5 w-80 h-28 text-sm  outline-none rounded-lg bg-[#1C2C2E] text-white"
+                  className="inline-flex justify-between p-2.5 w-80 h-28 text-sm outline-none rounded-lg bg-[#1C2C2E] text-white"
                   placeholder="Type here report reason..."
                   value={text}
                   onChange={handleChange}

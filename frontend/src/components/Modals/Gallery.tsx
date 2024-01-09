@@ -1,9 +1,9 @@
 "use client";
+import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
-import Image from "next/image";
-import React, { useEffect, useState } from "react";
 
 function Gallery() {
   const [isModalOpen, setIsModalOpen] = useState(false);

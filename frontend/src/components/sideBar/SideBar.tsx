@@ -1,11 +1,11 @@
 "use client";
+import React, { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
-import Image from "next/image";
-import React, { useState } from "react";
 import AddNew from "../Modals/AddNew";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
 import { useSelector } from "react-redux";
 
 function SideBar() {
@@ -24,7 +24,6 @@ function SideBar() {
     setIsModalOpen(false);
   };
 
-  // Define a function to determine if a sidebar item is active based on the current route
   const isItemActive = (path: string) => {
     return currentRoute === path ? true : false;
   };
@@ -45,7 +44,7 @@ function SideBar() {
         id="sidebar-notification"
         className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-[#091619]"
       >
-        <div className="flex flex-col justify-between h-full overflow-y-auto no-scrollbar py-4 px-3 border-r  bg-[#050E10] border-[#050E10]">
+        <div className="flex flex-col justify-between h-full overflow-y-auto no-scrollbar py-4 px-3 border-r bg-[#050E10] border-[#050E10]">
           <div className="mb-16">
             <div className="flex flex-col items-center px-6 py-8 mb-6 lg:py-0">
               <Image width={100} height={100} src={IMAGES.logo} alt="logo" />
@@ -55,7 +54,7 @@ function SideBar() {
               <li>
                 <Link
                   href="/main"
-                  className={`flex items-center p-2 text-base font-normal  rounded-lg text-white  ${
+                  className={`flex items-center p-2 text-base font-normal rounded-lg text-white  ${
                     isItemActive("/main") ? "bg-[#162423]" : ""
                   } hover:bg-[#162423] group`}
                 >
@@ -99,7 +98,7 @@ function SideBar() {
               <li>
                 <Link
                   href="/clips"
-                  className={`flex items-center p-2 text-base font-normal  rounded-lg text-white  ${
+                  className={`flex items-center p-2 text-base font-normal rounded-lg text-white ${
                     isItemActive("/clips") ? "bg-[#162423]" : ""
                   } hover:bg-[#162423] group`}
                 >
@@ -137,7 +136,7 @@ function SideBar() {
               <li>
                 <Link
                   href="/explore"
-                  className={`flex items-center p-2 text-base font-normal  rounded-lg text-white  ${
+                  className={`flex items-center p-2 text-base font-normal rounded-lg text-white ${
                     isItemActive("/explore") ? "bg-[#162423]" : ""
                   } hover:bg-[#162423] group`}
                 >
@@ -192,7 +191,7 @@ function SideBar() {
               <li>
                 <Link
                   href="/trending"
-                  className={`flex items-center p-2 text-base font-normal  rounded-lg text-white  ${
+                  className={`flex items-center p-2 text-base font-normal rounded-lg text-white ${
                     isItemActive("/trending") ? "bg-[#162423]" : ""
                   } hover:bg-[#162423] group`}
                 >
@@ -281,7 +280,7 @@ function SideBar() {
               <li>
                 <Link
                   href="/account"
-                  className={`flex items-center p-2 text-base font-normal  rounded-lg text-white  ${
+                  className={`flex items-center p-2 text-base font-normal rounded-lg text-white ${
                     isItemActive("/account") ? "bg-[#162423]" : ""
                   } hover:bg-[#162423] group`}
                 >
@@ -318,7 +317,7 @@ function SideBar() {
           <div>
             <div className="flex flex-col items-center justify-center gap-3">
               {/* <Link href="/main"> */}
-              <button className="flex w-full sm:w-52 bg-[#1C2C2E] text-white py-[10px] px-[20px] rounded-full ">
+              <button className="flex w-full sm:w-52 bg-[#1C2C2E] text-white py-[10px] px-[20px] rounded-full">
                 <div className="flex self-center justify-between ">
                   <Image
                     width={20}
@@ -352,7 +351,7 @@ function SideBar() {
 
             <div
               key={authState?.userID}
-              className="flex flex-col items-center justify-center p-3  rounded-lg border  bg-[#1C2C2E] border-gray-600"
+              className="flex flex-col items-center justify-center p-3 rounded-lg border bg-[#1C2C2E] border-gray-600"
             >
               <Image
                 src={authState?.profilePicture}
@@ -363,10 +362,10 @@ function SideBar() {
                 alt="account"
               />
 
-              <dt className="text-xs sm:text-sm mb-2 font-semibold leading-none  text-white">
+              <dt className="text-xs sm:text-sm mb-2 font-semibold leading-none text-white">
                 {authState?.name}
               </dt>
-              <dd className=" text-gray-400">({authState.username})</dd>
+              <dd className="text-gray-400">({authState.username})</dd>
             </div>
           </div>
         </div>
