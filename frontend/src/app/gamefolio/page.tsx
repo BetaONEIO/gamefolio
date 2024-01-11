@@ -46,11 +46,9 @@ function Gamefolio() {
   };
 
   useEffect(() => {
-    console.log("FirstTime");
     dispatch(userSession(params));
     dispatch(getAllPostVideos());
   }, []);
-  console.log("SecondTime");
 
   if (postState.loading) return <Loading />;
 

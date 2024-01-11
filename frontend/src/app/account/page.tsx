@@ -19,6 +19,7 @@ import Modal from "@/components/Modals/Modal";
 import MoreOptions from "@/components/Modals/MoreOptions";
 import AllStories from "@/components/story/AllStories";
 import Loading from "./loading";
+import VideoDetails from "@/components/Modals/VideoDetails";
 
 const popular = [
   { id: 1, IMAGE: IMAGES.Popular },
@@ -37,6 +38,7 @@ interface MyVideosSectionProps {
   data: Array<any>;
   authState: any; // Add authState as a prop
   postState: any; // Add postState as a prop
+  handleVideoDetailOpen: (postID: any, detailedPost: any) => void;
 }
 interface VideoState {
   isMuted?: boolean;
@@ -45,6 +47,7 @@ interface VideoState {
 const MyVideosSection: React.FC<MyVideosSectionProps> = ({
   authState,
   postState,
+  handleVideoDetailOpen,
 }) => {
   const [videoStates, setVideoStates] = useState<{ [key: string]: VideoState }>(
     {}
@@ -52,26 +55,6 @@ const MyVideosSection: React.FC<MyVideosSectionProps> = ({
   const userVideos = postState.videos.filter(
     (post: any) => post?.userID?._id === authState._id
   );
-
-  const handleVideoClick = (
-    event: React.MouseEvent<HTMLVideoElement, MouseEvent>
-  ) => {
-    const video = event.currentTarget;
-    if (video.paused) {
-      video.play();
-    } else {
-      video.pause();
-    }
-  };
-  const handleToggleMute = (clipID: string) => {
-    setVideoStates((prevStates) => ({
-      ...prevStates,
-      [clipID]: {
-        ...prevStates[clipID],
-        isMuted: !prevStates[clipID]?.isMuted,
-      },
-    }));
-  };
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
@@ -87,18 +70,14 @@ const MyVideosSection: React.FC<MyVideosSectionProps> = ({
               width={20}
               height={20}
               controls={false}
-              onClick={handleVideoClick}
-              muted={videoState.isMuted}
+              onClick={() => handleVideoDetailOpen(item._id, item)}
             />
             <div className="absolute bottom-1 right-2">
-              <button
-                className="cursor-pointer hover:opacity-80"
-                onClick={() => handleToggleMute(item._id)}
-              >
+              <button className="cursor-pointer hover:opacity-80">
                 {videoState.isMuted ? (
-                  <Image src={SVG.Mute} alt="Mute" width={40} height={40} />
-                ) : (
                   <Image src={SVG.UnMute} alt="Unmute" width={40} height={40} />
+                ) : (
+                  <Image src={SVG.Mute} alt="Mute" width={40} height={40} />
                 )}
               </button>
             </div>
@@ -146,11 +125,14 @@ function Page() {
   const postState = useSelector((state: any) => state.post) || [];
   const [open, setOpen] = useState(false);
   const [selectedSection, setSelectedSection] = useState("videos");
+  const [postID, setPostID] = useState("");
+  const [detailedPost, setDetailedPost] = useState("");
   const [modalState, setModalState] = useState({
     isShareModalOpen: false,
     isFollowerModalOpen: false,
     isFollowingModalOpen: false,
     isBadgeModalOpen: false,
+    isVideoDetailOpen: false,
   });
 
   const userVideos = postState.videos.filter(
@@ -178,6 +160,19 @@ function Page() {
       [modalName]: !prevState[modalName],
     }));
   };
+
+  const handleVideoDetailOpen = (postID: string, detailedPost: any) => {
+    setPostID(postID);
+    setDetailedPost(detailedPost);
+    setModalState((prevState) => ({
+      ...prevState,
+      isVideoDetailOpen: true,
+    }));
+  };
+
+  function handlePageRefresh(): void {
+    throw new Error("Function not implemented.");
+  }
 
   return (
     <Layout>
@@ -405,6 +400,7 @@ function Page() {
                 data={popular}
                 authState={authState}
                 postState={postState}
+                handleVideoDetailOpen={handleVideoDetailOpen}
               />
             ) : (
               <MyBookmarkSection data={popular} />
@@ -448,6 +444,18 @@ function Page() {
         >
           <Badges
             handleCloseModal={() => handleModalToggle("isBadgeModalOpen")}
+          />
+        </Modal>
+
+        <Modal
+          isOpen={modalState.isVideoDetailOpen}
+          handleClose={() => handleModalToggle("isVideoDetailOpen")}
+        >
+          <VideoDetails
+            postID={postID}
+            detailedPost={detailedPost}
+            handleCloseModal={() => handleModalToggle("isVideoDetailOpen")}
+            handlePageRefresh={() => handlePageRefresh()}
           />
         </Modal>
       </Suspense>

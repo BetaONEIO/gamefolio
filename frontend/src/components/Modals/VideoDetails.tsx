@@ -7,6 +7,9 @@ import { dispatch, useSelector } from "@/store";
 import { createComment, refreshPage } from "@/store/slices/postSlice";
 import { ToastContainer } from "react-toastify";
 import { toastError, toastSuccess } from "../Toast/Toast";
+import Modal from "./Modal";
+import DeletePost from "./DeletePost";
+import Report from "./Report";
 // import data from "@emoji-mart/data";
 // import Picker from "@emoji-mart/react";
 
@@ -26,8 +29,12 @@ VideoDetailProps) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const [comments, setComments] = useState("");
   const [emoji, setEmoji] = useState(false);
+  const [modalState, setModalState] = useState({
+    isPostDeleteOpen: false,
+    isReportModalOpen: false,
+  });
 
-  // console.log("POST statewww####: VideoDetails.tsx ", detailedPost);
+  console.log("Detail: ", detailedPost);
 
   const handleCreateComment = async (postID: any, comment: any) => {
     const payload = {
@@ -86,6 +93,29 @@ VideoDetailProps) {
       return `${seconds}s`;
     }
   }
+
+  const handleModalToggle = (
+    modalName: keyof typeof modalState,
+    postID?: any,
+    detailedPost?: any
+  ) => {
+    console.log(`Toggling modal ${modalName}`);
+    setModalState((prevState) => ({
+      ...prevState,
+      [modalName]: !prevState[modalName],
+    }));
+  };
+
+  const handleThreedotsClick = (postId: any) => {
+    console.log("authState._id:", authState._id);
+    console.log("detailedPost?.userID?._id:", detailedPost?.userID?._id);
+    // Call the appropriate modal based on conditions
+    if (authState._id == detailedPost?.userID?._id) {
+      handleModalToggle("isPostDeleteOpen", postId);
+    } else {
+      handleModalToggle("isReportModalOpen", postId);
+    }
+  };
 
   const myBGStyleModal = {
     backgroundColor: "rgba(0, 0, 0, 0.6)",
@@ -170,27 +200,43 @@ VideoDetailProps) {
                       width={50}
                       height={50}
                     />
-                    <div>
-                      <Link
-                        href={`/account/${detailedPost?.userID?.username}`}
-                        key={detailedPost._id}
-                      >
-                        <h3 className="sm:text-lg sm:font-bold md:text-xl text-white text-base font-semibold">
-                          {detailedPost?.userID?.name}
-                        </h3>
-                      </Link>
-                      <p className="sm:text-base text-sm font-light text-gray-400">
-                        {detailedPost?.date &&
-                          new Date(detailedPost.date).toLocaleString("en-US", {
-                            hour: "numeric",
-                            minute: "numeric",
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric",
-                          })}
-                      </p>
+                    <div className="flex items-center justify-between w-full">
+                      <div>
+                        <Link
+                          href={`/account/${detailedPost?.userID?.username}`}
+                          key={detailedPost._id}
+                        >
+                          <h3 className="sm:text-lg sm:font-bold md:text-xl text-white text-base font-semibold">
+                            {detailedPost?.userID?.name}
+                          </h3>
+                        </Link>
+                        <p className="sm:text-base text-sm font-light text-gray-400">
+                          {detailedPost?.date &&
+                            new Date(detailedPost.date).toLocaleString(
+                              "en-US",
+                              {
+                                hour: "numeric",
+                                minute: "numeric",
+                                day: "numeric",
+                                month: "short",
+                                year: "numeric",
+                              }
+                            )}
+                        </p>
+                      </div>
+                      <div>
+                        <Image
+                          className="cursor-pointer hover:opacity-80"
+                          src={SVG.Threedots}
+                          alt="Threedots"
+                          width={5}
+                          height={5}
+                          onClick={() => handleThreedotsClick(detailedPost._id)}
+                        />
+                      </div>
                     </div>
                   </div>
+
                   <div className="mx-4 my-2">
                     <p className="text-base font-light text-gray-200">
                       {detailedPost?.description}
@@ -231,16 +277,6 @@ VideoDetailProps) {
                         height={50}
                       />
                     </div>
-
-                    {/* <div>
-                      <Image
-                        className="cursor-pointer hover:opacity-80"
-                        src={SVG.Share}
-                        alt="Share"
-                        width={25}
-                        height={25}
-                      />
-                    </div> */}
                   </div>
                 </div>
 
@@ -303,7 +339,7 @@ VideoDetailProps) {
                   <input
                     type="Post"
                     id="default-search"
-                    className="w-[16rem] lg:w-[28rem] block p-4 ml-10 text-sm bg-[#091619] outline-none sm:text-sm text-white"
+                    className="w-[16rem] lg:w-[28rem] block p-4 ml-10 text-sm bg-[#091619] outline-none sm:text-sm text-white overflow-hidden"
                     placeholder="Add a comment..."
                     onChange={handleChange}
                     value={comments}
@@ -312,7 +348,7 @@ VideoDetailProps) {
                   <button
                     onClick={() => handleCreateComment(postID, comments)}
                     type="submit"
-                    className="text-[#43DD4E] absolute -right-36 sm:-right-12 bottom-2 bg-primary-700 font-medium text-sm px-4 py-2 bg-primary-600 "
+                    className="text-[#43DD4E] absolute -right-36 sm:-right-12 bottom-2 bg-primary-700 font-medium text-sm px-4 py-2 bg-primary-600"
                   >
                     Post
                   </button>
@@ -334,6 +370,26 @@ VideoDetailProps) {
           theme="dark"
         />
       </div>
+
+      <Modal
+        isOpen={modalState.isPostDeleteOpen}
+        handleClose={() => handleModalToggle("isPostDeleteOpen")}
+      >
+        <DeletePost
+          postID={postID}
+          handleCloseModal={() => handleModalToggle("isPostDeleteOpen")}
+          handlePageRefresh={() => handlePageRefresh()}
+        />
+      </Modal>
+
+      <Modal
+        isOpen={modalState.isReportModalOpen}
+        handleClose={() => handleModalToggle("isReportModalOpen")}
+      >
+        <Report
+          handleCloseModal={() => handleModalToggle("isReportModalOpen")}
+        />
+      </Modal>
     </>
   );
 }

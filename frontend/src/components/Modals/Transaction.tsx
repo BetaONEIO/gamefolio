@@ -5,13 +5,29 @@ import { SVG } from "@/assets/SVG";
 import { leagueGothic } from "@/font/font";
 import { useSelector } from "@/store";
 import { format } from "date-fns";
-// import { PDFDocument, rgb } from "pdf-lib";
-// import { saveAs } from "file-saver";
+import { saveAs } from "file-saver";
+import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 
 interface TransactionProps {
   handleCloseModal: () => void;
   startDate: string;
   endDate: string;
+}
+
+async function embedCustomFont(pdfDoc: any) {
+  try {
+    // Embed the standard Times Roman font
+    const timesRomanFont = await pdfDoc.embedFont(StandardFonts.TimesRoman);
+    return timesRomanFont;
+  } catch (error) {
+    console.error("Error embedding font:", error);
+    throw error; // Rethrow the error to handle it in the calling function
+  }
+}
+
+async function createPdfDocument() {
+  const pdfDoc = await PDFDocument.create();
+  return pdfDoc;
 }
 
 function Transaction({
@@ -21,71 +37,84 @@ function Transaction({
 }: TransactionProps) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const [filteredCoins, setFilteredCoins] = useState<any[]>([]);
+  const [dataFetched, setDataFetched] = useState<boolean>(false);
   const contentRef = useRef(null);
 
   useEffect(() => {
-    const startDateTime = new Date(startDate);
-    startDateTime.setHours(0, 0, 0, 0);
+    const fetchData = async () => {
+      try {
+        const startDateTime = new Date(startDate);
+        startDateTime.setHours(0, 0, 0, 0);
 
-    const endDateTime = new Date(endDate);
-    endDateTime.setHours(0, 0, 0, 0);
+        const endDateTime = new Date(endDate);
+        endDateTime.setHours(0, 0, 0, 0);
 
-    // Filter transactions based on the user-provided date range
-    const filteredCoins = authState?.coins?.filter((coin: any) => {
-      const coinDateTime = new Date(coin.date);
-      coinDateTime.setHours(0, 0, 0, 0);
+        const filteredCoins = authState?.coins?.filter((coin: any) => {
+          const coinDateTime = new Date(coin.date);
+          coinDateTime.setHours(0, 0, 0, 0);
 
-      return coinDateTime >= startDateTime && coinDateTime <= endDateTime;
-    });
-    // Update state with filtered coins
-    setFilteredCoins(filteredCoins);
+          return coinDateTime >= startDateTime && coinDateTime <= endDateTime;
+        });
+
+        setFilteredCoins(filteredCoins);
+        setDataFetched(true);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
   }, [authState, startDate, endDate]);
-  console.log("filteredCoins", filteredCoins);
 
-  // const handleDownload = async () => {
-  //   const pdfDoc = await PDFDocument.create();
-  //   const page = pdfDoc.addPage();
+  const handleDownload = async () => {
+    try {
+      if (!dataFetched) {
+        console.log("Data is not fetched yet");
+        return;
+      }
 
-  //   // Customize the PDF content here
-  //   const { width, height } = page.getSize();
-  //   const fontSize = 15;
-  //   const text = "Transaction History\n\n";
+      const pdfDoc = await createPdfDocument();
+      const page = pdfDoc.addPage();
 
-  //   // Assuming leagueGothic contains the font data
-  //   const font = await pdfDoc.embedFont(leagueGothic.className, {
-  //     subset: true,
-  //   });
+      const { width, height } = page.getSize();
+      const fontSize = 15;
+      const text = "Transaction History\n\n";
 
-  //   page.drawText(text, {
-  //     x: 50,
-  //     y: height - 4 * fontSize,
-  //     font,
-  //     color: rgb(1, 1, 1),
-  //   });
+      const font = await embedCustomFont(pdfDoc);
 
-  //   let yOffset = height - 6 * fontSize;
+      page.drawText(text, {
+        x: 50,
+        y: height - 4 * fontSize,
+        font,
+        color: rgb(1, 1, 1),
+      });
 
-  //   filteredCoins.forEach((coin: any) => {
-  //     const coinText = `${coin.coinType} - ${coin.coinAmount} Coin - ${format(
-  //       new Date(coin?.date),
-  //       "dd MMM, yyyy - h:mm a"
-  //     )}\n`;
+      let yOffset = height - 6 * fontSize;
 
-  //     page.drawText(coinText, {
-  //       x: 50,
-  //       y: yOffset,
-  //       font,
-  //       color: rgb(1, 1, 1),
-  //     });
+      filteredCoins.forEach((coin: any) => {
+        const coinText = `${coin.coinType} - ${coin.coinAmount} Coin - ${format(
+          new Date(coin?.date),
+          "dd MMM, yyyy - h:mm a"
+        )}\n`;
 
-  //     yOffset -= 2 * fontSize;
-  //   });
+        page.drawText(coinText, {
+          x: 50,
+          y: yOffset,
+          font,
+          color: rgb(1, 1, 1),
+        });
 
-  //   const pdfBytes = await pdfDoc.save();
-  //   const blob = new Blob([pdfBytes], { type: "application/pdf" });
+        yOffset -= 2 * fontSize;
+      });
 
-  //   saveAs(blob, "transaction_history.pdf");
-  // };
+      const pdfBytes = await pdfDoc.save();
+      const blob = new Blob([pdfBytes], { type: "application/pdf" });
+
+      saveAs(blob, "transaction_history.pdf");
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    }
+  };
 
   return (
     <>
@@ -146,7 +175,7 @@ function Transaction({
                     />
                     <div className="flex items-center justify-between w-full sm:w-full">
                       <div>
-                        <p className="mx-2 sm:mx-4 text-sm font-light sm:text-base">
+                        <p className="flex items-start mx-2 sm:mx-4 text-sm font-light sm:text-base">
                           {coin.coinType}
                         </p>
                         <p className="mx-2 sm:mx-4 text-sm font-light text-left text-[#7C7F80]">
@@ -168,7 +197,7 @@ function Transaction({
 
             <div className="flex items-center w-full my-5">
               <button
-                // onClick={handleDownload}
+                onClick={handleDownload}
                 className="w-full sm:text-base font-semibold bg-[#37C535] py-[10px] px-[30px] text-white text-center rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
               >
                 Download
