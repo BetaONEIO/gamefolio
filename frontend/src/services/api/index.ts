@@ -125,7 +125,7 @@ console.log("client_id: ## ", client_id);
 // Function to get the OAuth token from Twitch
 async function getOAuthToken(): Promise<string> {
   const url = 'https://id.twitch.tv/oauth2/token';
-  const params = {
+  const params:{[key:string]:any} = {
     client_id,
     client_secret,
     grant_type: 'client_credentials',
@@ -158,11 +158,11 @@ async function getOAuthToken(): Promise<string> {
 // Function to fetch top games from Twitch
 async function fetchGames(access_token: string, cursor: string | null = null): Promise<any> {
   const url = 'https://api.twitch.tv/helix/games/top';
-  const headers = {
+  const headers :{ [key: string]: any } = {
     'Client-ID': client_id,
     'Authorization': `Bearer ${access_token}`,
   };
-  const params: { [key: string]: string | number | null } = {
+  const params:{[key:string]:any}= {
     first: 100, // Number of games to fetch per request
   };
 
@@ -181,7 +181,7 @@ async function fetchGames(access_token: string, cursor: string | null = null): P
       const errorData = await response.json();
       throw new Error(`Failed to fetch games. Status code: ${response.status}. Response: ${JSON.stringify(errorData)}`);
     }
-  } catch (error) {
+  } catch (error: any) {
     throw new Error(`Failed to fetch games. Error: ${error.message}`);
   }
 }

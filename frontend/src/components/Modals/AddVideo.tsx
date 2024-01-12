@@ -67,7 +67,7 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
     const inputValue = e.target.value.toLowerCase();
     setSearchText(inputValue);
 
-    const filtered = optionsForGame.filter((option) =>
+    const filtered = optionsForGame.filter((option: any) =>
       option.name.toLowerCase().includes(inputValue)
     );
 
@@ -375,7 +375,7 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
                         </div>
                         <ul className="py-1 bg-[#1C2C2E] text-white divide-y divide-[#162423] rounded-b-lg">
                           {}
-                          {filteredOptions[0].map((option) => {
+                          {filteredOptions[0].map((option: any) => {
                             console.log("option: ###", option.name);
 
                             return (
