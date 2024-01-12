@@ -15,7 +15,7 @@ import { leagueGothic } from "@/font/font";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import { initChat } from "@/store/slices/chatSlice";
-import { getAllPostVideos } from "@/store/slices/postSlice";
+import { getAllPostVideos, getUserBookmark } from "@/store/slices/postSlice";
 import {
   followUser,
   getAllUsers,
@@ -190,15 +190,16 @@ interface MyBookmarkSectionProps {
 const MyBookmarkSection: React.FC<MyBookmarkSectionProps> = ({ data }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
-      {data.map((game) => (
-        <div key={game.id} className="relative">
-          <Image
-            src={game.IMAGE}
-            alt="My Bookmarked"
+      {data?.map((bookmarkPost) => (
+        <div key={bookmarkPost.post._id} className="relative">
+          <video
+            src={bookmarkPost.post.video}
+            className="w-96 sm:w-96 h-52 md:h-40  rounded-xl object-cover hover:opacity-80"
             width={0}
             height={0}
-            sizes="100vw"
-            className="w-full h-52 md:h-40  rounded-xl object-cover hover:opacity-80"
+            controls={false}
+            // onClick={handleVideoClick}
+            // muted={videoState.isMuted}
           />
           <Image
             className="absolute top-2 right-2 hover:opacity-70"
@@ -244,11 +245,13 @@ function Page({ params }: any) {
   useEffect(() => {
     dispatch(userSession(myparams));
     dispatch(getProfileInfo({ payload: params }));
+    dispatch(getUserBookmark(params));
     dispatch(getAllPostVideos());
     dispatch(getAllUsers());
   }, [postState.refresh]);
 
   console.log("profileInfoState****", profileInfoState);
+  console.log("isPrivateAccount****", isPrivateAccount);
 
   useEffect(() => {
     // Assuming there's a property like accountType in the profileInfoState

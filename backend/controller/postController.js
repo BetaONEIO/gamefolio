@@ -1,5 +1,6 @@
 const Posts = require("../models/Posts.js"); // Import your Mongoose model
 const User = require("../models/Users.js");
+const jwt = require("jsonwebtoken");
 
 // Create a new post
 const postVideo = async (req, res) => {
@@ -48,6 +49,45 @@ const getAllPostVideos = async (req, res) => {
     res.status(500).json({
       error: "Could not retrieve posts.",
       message: "Could not retrieve posts.",
+    });
+  }
+};
+
+// Get posts from users that the current user is following
+const getFollowingPosts = async (req, res) => {
+  try {
+    // Get the current user's ID (assuming it's available in the request object)
+    const { userToken } = req.body;
+    const decoded = jwt.verify(userToken, process.env.JWT_SECRET); // getting userID from token
+
+    // Find the user document for the current user
+    const currentUser = await User.findById(decoded.id);
+
+    if (!currentUser) {
+      return res.status(404).json({
+        error: "User not found",
+        message: "User not found",
+      });
+    }
+
+    // Get the IDs of users that the current user is following
+    const followingIDs = currentUser.following.map((user) => user.userID);
+
+    // Retrieve posts from users that the current user is following
+    const posts = await Posts.find({ userID: { $in: followingIDs } })
+      .sort({ date: -1 })
+      .populate("userID")
+      .populate({ path: "comments.userID" });
+    console.log("post: ", posts);
+    res.status(200).json({
+      data: posts,
+      message: "Successfully retrieved posts from users you are following",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Could not retrieve following posts.",
+      message: "Could not retrieve following posts.",
     });
   }
 };
@@ -465,10 +505,48 @@ const addBookmark = async (req, res) => {
     });
   }
 };
+const getUserBookmark = async (req, res) => {
+  try {
+    const { userToken } = req.body;
+    const decoded = jwt.verify(userToken, process.env.JWT_SECRET); // getting userID from token
+
+    const userBookmarkedPosts = await Posts.find({
+      "bookmarks.userID": decoded.id,
+    }).populate("bookmarks.userID", "name username profilePicture");
+
+    if (!userBookmarkedPosts || userBookmarkedPosts.length === 0) {
+      return res
+        .status(404)
+        .json({ error: "Bookmarked posts not found for the specified user." });
+    }
+
+    const bookmarks = userBookmarkedPosts.map((post) => {
+      const bookmarkInfo = post.bookmarks.find(
+        (b) => b.userID.toString() === decoded.id
+      );
+      return {
+        post: post,
+        bookmarkInfo: bookmarkInfo,
+      };
+    });
+
+    res.status(200).json({
+      data: bookmarks,
+      message: "Successfully retrieved bookmarks for the specified user.",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Could not retrieve bookmarks.",
+      message: "Could not retrieve bookmarks.",
+    });
+  }
+};
 
 module.exports = {
   postVideo,
   getAllPostVideos,
+  getFollowingPosts,
   getPostById,
   updatePost,
   deletePost,
@@ -485,4 +563,5 @@ module.exports = {
   updateComment,
   updateShare,
   addBookmark,
+  getUserBookmark,
 };

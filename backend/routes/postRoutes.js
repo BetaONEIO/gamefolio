@@ -8,6 +8,9 @@ router.post("/video/create", postController.postVideo);
 // Get all posts
 router.get("/video/get", postController.getAllPostVideos);
 
+// Get all current user following post
+router.post("/video/following/get", postController.getFollowingPosts);
+
 // Delete a video post by ID
 router.post("/video/delete", postController.deletePost);
 
@@ -57,5 +60,6 @@ router.delete("/comment/delete", postController.deleteComment);
 router.delete("/share/delete", postController.deleteShare);
 
 router.post("/bookmark/create", postController.addBookmark);
+router.post("/bookmark/get", postController.getUserBookmark);
 
 module.exports = router;

@@ -38,6 +38,7 @@ export const PATH = {
   post: {
     create: "post/video/create",
     get: "post/video/get",
+    getFollowingPosts: "post/video/following/get",
     delete: "post/video/delete",
   },
 
@@ -77,5 +78,6 @@ export const PATH = {
 
   bookmark: {
     create: "post/bookmark/create",
+    get: "post/bookmark/get",
   },
 };

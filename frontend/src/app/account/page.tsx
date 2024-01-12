@@ -7,7 +7,7 @@ import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
-import { getAllPostVideos } from "@/store/slices/postSlice";
+import { getAllPostVideos, getUserBookmark } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import { copyToClipboard } from "@/utils/helpers";
 import { ToastContainer } from "react-toastify";
@@ -19,6 +19,7 @@ import Modal from "@/components/Modals/Modal";
 import MoreOptions from "@/components/Modals/MoreOptions";
 import AllStories from "@/components/story/AllStories";
 import Loading from "./loading";
+import { toastError } from "@/components/Toast/Toast";
 
 const popular = [
   { id: 1, IMAGE: IMAGES.Popular },
@@ -112,20 +113,19 @@ interface MyBookmarkSectionProps {
   data: Array<any>;
 }
 
-const MyBookmarkSection: React.FC<MyBookmarkSectionProps> = ({
-  data = [{ id: 1, IMAGE: "test" }],
-}) => {
+const MyBookmarkSection: React.FC<MyBookmarkSectionProps> = ({ data }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
-      {data.map((game) => (
-        <div key={game.id} className="relative">
-          <Image
-            src={game.IMAGE}
-            alt="My Bookmarked"
+      {data?.map((bookmarkPost) => (
+        <div key={bookmarkPost.post._id} className="relative">
+          <video
+            src={bookmarkPost.post.video}
+            className="w-96 sm:w-96 h-52 md:h-40  rounded-xl object-cover hover:opacity-80"
             width={0}
             height={0}
-            sizes="100vw"
-            className="w-96 sm:w-96 h-52 md:h-40  rounded-xl object-cover hover:opacity-80"
+            controls={false}
+            // onClick={handleVideoClick}
+            // muted={videoState.isMuted}
           />
           <Image
             className="absolute top-2 right-2 hover:opacity-70"
@@ -157,7 +157,7 @@ function Page() {
     (post: any) => post?.userID?._id === authState._id
   );
 
-  console.log("authState__", authState);
+  console.log("postStates:1: ", postState);
 
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
@@ -167,6 +167,7 @@ function Page() {
   };
   useEffect(() => {
     dispatch(userSession(params));
+    dispatch(getUserBookmark(params));
     dispatch(getAllPostVideos());
   }, [postState.refresh]);
 
@@ -407,7 +408,7 @@ function Page() {
                 postState={postState}
               />
             ) : (
-              <MyBookmarkSection data={popular} />
+              <MyBookmarkSection data={postState.bookmarks} />
             )}
           </div>
         </div>
