@@ -173,7 +173,7 @@ function Main() {
         >
           <div className="flex justify-center">
             <div className="w-11/12 sm:w-9/12 flex flex-col gap-8 rounded-lg">
-              {postState.followingVideos.map((post: any) => {
+              {postState?.followingVideos?.map((post: any) => {
                 // Check if the current user has reacted with "like" or "love"
                 const hasLikeReacted = post.reactions.some(
                   (reaction: any) =>
