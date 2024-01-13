@@ -45,7 +45,6 @@ app.use(passport.session());
 
 // Starting Socket.IO
 const socket = require("./utils/socket.js");
-const sendEmail = require("./utils/sendEmail");
 const server = require("http").createServer(app);
 socket.init(server);
 // --------------

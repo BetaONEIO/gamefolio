@@ -7,7 +7,6 @@ const sendEmail = require("../utils/sendEmail.js");
 
 const registerUser = asyncHandler(async (req, res) => {
   const { name, username, email, password } = req.body;
-  console.log("req.body: ", req.body);
 
   // check if email exists in db
   const userExists = await User.findOne({ email });
@@ -27,7 +26,7 @@ const registerUser = asyncHandler(async (req, res) => {
   });
 
   if (user) {
-    console.log("API CALLED");
+    sendEmail(user);
     res.status(201).json({
       _id: user._id,
       AccountStatus: user.accountStatus,

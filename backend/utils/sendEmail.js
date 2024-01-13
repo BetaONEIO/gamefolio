@@ -1,24 +1,60 @@
 const nodemailer = require("nodemailer");
 const generateOTP = require("./generateOtp");
 
-const { AUTH_EMAIL, AUTH_PASS } = process.env;
-const sendEmail = (email, otp) => {
+const { BREVO_HOST, BREVO_PORT, BREVO_USER, BREVO_PASS } = process.env;
+const sendEmail = (user, otp) => {
   return new Promise((resolve, reject) => {
     let transporter = nodemailer.createTransport({
-      host: "smtp-relay.brevo.com",
-      port: 587,
+      host: BREVO_HOST,
+      port: BREVO_PORT,
       secure: false, // true for 465, false for other ports
       auth: {
-        user: "hello@gamefolio.gg", // generated ethereal user
-        pass: "sGfE0OXFAkvMa5gV", // generated ethereal password
+        user: BREVO_USER,
+        pass: BREVO_PASS,
       },
     });
 
-    var mailOptions = {
+    // HTML content for the welcome email
+    const welcomeEmail = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to Gamefolio!</title>
+</head>
+<body>
+  <h1>Welcome to Gamefolio!</h1>
+  <p>Dear {{username}},</p>
+  <p>Thank you for joining Gamefolio! We're excited to have you as part of our community.</p>
+  <p>Your account has been successfully created. Here are some important details:</p>
+  <ul>
+    <li><strong>Username:</strong> {{username}}</li>
+    <li><strong>Email:</strong> {{email}}</li>
+  </ul>
+  <p>Feel free to explore our platform and discover the features we offer. If you have any questions or need assistance, don't hesitate to contact our support team.</p>
+  <p>Thank you again for choosing Gamefolio!</p>
+  <p>Best regards,<br>Your Gamefolio Team</p>
+</body>
+</html>
+`;
+
+    // Replace placeholders with actual user data
+    const userData = {
+      username: user.username,
+      email: user.email,
+    };
+
+    // Replace placeholders in the email template
+    const formattedEmail = welcomeEmail
+      .replace(/{{username}}/g, userData.username)
+      .replace(/{{email}}/g, userData.email);
+
+    const mailOptions = {
       from: '"Gamefolio" noreply@gamefolio.com', // sender address
-      to: "hamzashaikhwork@gmail.com",
-      subject: "Hello ✔", // Subject line
-      text: "Hello {{ contact.FIRSTNAME }} , This is an SMTP message with customizations", // plain text body
+      to: userData.email,
+      subject: "Welcome to Gamefolio", // Subject line
+      html: formattedEmail,
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
