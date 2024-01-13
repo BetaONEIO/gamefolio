@@ -8,8 +8,11 @@ router.post("/story/create", storyController.postStory);
 // Get user stories
 router.post("/story/get-user", storyController.getUserAllStories);
 
-// Get all posts
+// Get all stories
 router.get("/story/get", storyController.getAllStories);
+
+// Get all following stories
+router.post("/story/following/get", storyController.getFollowingStories);
 
 // Delete a story post by ID
 router.post("/story/delete", storyController.deletePost);

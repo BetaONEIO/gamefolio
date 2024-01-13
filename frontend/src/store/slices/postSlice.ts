@@ -10,6 +10,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { dispatch } from "..";
 import { PATH } from "@/constants/endpoints";
 
+
 export type InitialState = {
   error: null;
   loading: boolean;
@@ -18,6 +19,8 @@ export type InitialState = {
   userCredits: Credit | null;
   gallery: ImageResponse[] | null;
   videos: Array<any>;
+  followingVideos: Array<any>;
+  bookmarks: Array<any>;
   allMusic: Array<any>;
   refresh: boolean;
 };
@@ -30,6 +33,8 @@ const initialState: InitialState = {
   userCredits: null,
   gallery: null,
   videos: [],
+  followingVideos: [],
+  bookmarks: [],
   allMusic: [],
   refresh: false,
 };
@@ -64,6 +69,12 @@ export const slice = createSlice({
     },
     getAllPostVideos(state, action) {
       state.videos = action.payload;
+    },
+    getFollowingPost(state, action) {
+      state.followingVideos = action.payload;
+    },
+    getUserBookmarks(state, action) {
+      state.bookmarks = action.payload;
     },
     getAllMusic(state, action) {
       state.allMusic = action.payload;
@@ -134,6 +145,39 @@ export function getAllPostVideos() {
     }
   };
 }
+
+
+export function getFollowingPostOnly(params: ActionParams) {
+  return async () => {
+    const {
+      payload,
+    } = params;
+
+    console.log("getFollowingPost: ", payload);
+
+    dispatch(slice.actions.startLoading());
+
+    const options: APIParams = {
+      method: "POST",
+      endpoint: PATH.post.getFollowingPosts,
+      payload: payload,
+      isToken: false,
+    };
+    try {
+      const [ok, response] = await API(options);
+      console.log(response);
+
+      dispatch(slice.actions.getFollowingPost(response.data));
+
+
+    } catch (error) {
+      console.log("error", error);
+    } finally {
+      dispatch(slice.actions.stopLoading());
+    }
+  };
+}
+
 
 export function deleteVideo(params: ActionParams) {
   return async () => {
@@ -375,7 +419,7 @@ export function logout(params: ActionParams) {
     }
   };
 }
-
+// Bookmark 
 export function createBookmark(params: ActionParams) {
   return async () => {
     const {
@@ -383,9 +427,6 @@ export function createBookmark(params: ActionParams) {
       errorCallback = () => {},
       payload,
     } = params;
-
-    console.log("))) 00: ", payload);
-
     dispatch(slice.actions.startLoading());
 
     const options: APIParams = {
@@ -399,8 +440,6 @@ export function createBookmark(params: ActionParams) {
       console.log(response);
       if (!ok || !response) return errorCallback(response.message);
 
-      console.log("repsonse:::: ", response);
-
       successCallback(response);
     } catch (error) {
       console.log("error", error);
@@ -410,6 +449,31 @@ export function createBookmark(params: ActionParams) {
     }
   };
 }
+export function getUserBookmark(params: ActionParams) {
+  return async () => {
+    const { errorCallback = () => {},payload} = params;
+    dispatch(slice.actions.startLoading());
+
+    const options: APIParams = {
+      method: "POST",
+      endpoint: PATH.bookmark.get,
+      payload: payload,
+      isToken: false,
+    };
+
+    try {
+      const [ok, response] = await API(options);
+      if (!ok || !response) return errorCallback(response.message);
+
+      dispatch(slice.actions.getUserBookmarks(response.data));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(slice.actions.stopLoading());
+    }
+  };
+}
+
 
 export function resetPassword(params: ActionParams) {
   return async () => {

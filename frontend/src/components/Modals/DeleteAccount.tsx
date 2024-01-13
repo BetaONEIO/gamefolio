@@ -1,13 +1,53 @@
 import { leagueGothic } from "@/font/font";
+import { toastError, toastSuccess } from "../Toast/Toast";
+import { dispatch, useSelector } from "@/store";
+import { ToastContainer } from "react-toastify";
+import { deactivateAccount } from "@/store/slices/userSlice";
+import { removeCookie, removeFromLocal } from "@/utils/localStorage";
+import { ROUTES } from "@/labels/routes";
+import { useRouter } from "next/navigation";
 
 interface DeleteAccountProps {
   handleCloseModal: () => void; // Define handleCloseModal as a function
 }
 
 function DeleteAccount({ handleCloseModal }: DeleteAccountProps) {
+  const router = useRouter();
+  const authState = useSelector((state: any) => state.auth.userData) || [];
   const myBGStyleModal = {
     backgroundColor: "rgba(0, 0, 0, 0.6)",
     backdropFilter: "blur(8px)",
+  };
+
+  // handle logout
+  const handleLogout = () => {
+    removeCookie("connect.sid");
+    removeCookie("gfoliotoken");
+    removeFromLocal("@token");
+    removeFromLocal("@userData");
+    router.replace(ROUTES.login);
+  };
+  // handleDeactivateAccount
+  const handleDeactivateAccount = (data: any) => {
+    const payload = {
+      userID: authState._id,
+    };
+
+    const successCallback = (response: any) => {
+      toastSuccess(response);
+      handleLogout();
+    };
+
+    const errorCallback = (error: string) => {
+      toastError(error);
+    };
+
+    const params = {
+      payload,
+      successCallback,
+      errorCallback,
+    };
+    dispatch(deactivateAccount(params));
   };
 
   return (
@@ -35,7 +75,10 @@ function DeleteAccount({ handleCloseModal }: DeleteAccountProps) {
             </div>
 
             <div className="flex flex-col items-center mb-2 sm:mb-2 ">
-              <button className="w-1/2 h-[50] font-bold bg-[#162423] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3 hover:opacity-80 cursor-pointer">
+              <button
+                className="w-1/2 h-[50] font-bold bg-[#162423] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3 hover:opacity-80 cursor-pointer"
+                onClick={handleDeactivateAccount}
+              >
                 Confirm
               </button>
               <button
@@ -48,6 +91,18 @@ function DeleteAccount({ handleCloseModal }: DeleteAccountProps) {
           </div>
         </div>
       </div>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </>
   );
 }

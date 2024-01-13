@@ -9,8 +9,8 @@ import DeletePost from "@/components/Modals/DeletePost";
 import Modal from "@/components/Modals/Modal";
 import SharePost from "@/components/Modals/SharePost";
 import VideoDetails from "@/components/Modals/VideoDetails";
+import FollowingStories from "@/components/story/FollowingStories";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
-import AllStories from "@/components/story/AllStories";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import {
@@ -18,6 +18,7 @@ import {
   createVideoReaction,
   deleteVideoReaction,
   getAllPostVideos,
+  getFollowingPostOnly,
   refreshPage,
 } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
@@ -38,7 +39,8 @@ function Main() {
   };
   useEffect(() => {
     dispatch(userSession(params));
-    dispatch(getAllPostVideos());
+    // dispatch(getAllPostVideos());
+    dispatch(getFollowingPostOnly(params));
   }, [postState.refresh]);
 
   console.log("authState", authState);
@@ -176,7 +178,7 @@ function Main() {
 
   return (
     <Layout>
-      <AllStories />
+      <FollowingStories />
       <Suspense fallback={<Loading />}>
         <div
           style={sectionStyle}
@@ -184,7 +186,7 @@ function Main() {
         >
           <div className="flex justify-center">
             <div className="w-11/12 sm:w-9/12 flex flex-col gap-8 rounded-lg">
-              {postState.videos.map((post: any) => {
+              {postState?.followingVideos?.map((post: any) => {
                 // Check if the current user has reacted with "like" or "love"
                 const hasLikeReacted = post.reactions.some(
                   (reaction: any) =>

@@ -1,5 +1,6 @@
-const { get } = require("mongoose");
-const Story = require("../models/Story.js"); // Import your Mongoose model
+const Story = require("../models/Story.js");
+const jwt = require("jsonwebtoken"); // Import your Mongoose model
+const User = require("../models/Users.js");
 
 // Create a new story
 const postStory = async (req, res) => {
@@ -87,6 +88,43 @@ const getAllStories = async (req, res) => {
     res.status(500).json({
       error: "Could not retrieve stories.",
       message: "Could not retrieve stories.",
+    });
+  }
+};
+
+// Controller function to get stories from users that the current user is following
+const getFollowingStories = async (req, res) => {
+  try {
+    // Get the current user's ID (assuming it's available in the request object)
+    const { userToken } = req.body;
+    const decoded = jwt.verify(userToken, process.env.JWT_SECRET); // getting userID from token
+
+    // Find the user document for the current user
+    const currentUser = await User.findById(decoded.id);
+
+    if (!currentUser) {
+      return res.status(404).json({
+        error: "User not found",
+        message: "User not found",
+      });
+    }
+
+    // Get the IDs of users that the current user is following
+    const followingIDs = currentUser.following.map((user) => user.userID);
+
+    // Retrieve stories from users that the current user is following
+    const stories = await Story.find({ userID: { $in: followingIDs } })
+      .sort({ date: -1 })
+      .populate("userID");
+    res.status(200).json({
+      data: stories,
+      message: "Successfully retrieved stories from users you are following",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Could not retrieve following stories.",
+      message: "Could not retrieve following stories.",
     });
   }
 };
@@ -452,6 +490,7 @@ module.exports = {
   postStory,
   getUserAllStories,
   getAllStories,
+  getFollowingStories,
   getPostById,
   updatePost,
   deletePost,

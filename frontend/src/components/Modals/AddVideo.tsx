@@ -9,7 +9,8 @@ import { ToastContainer } from "react-toastify";
 import { toastError, toastSuccess } from "../Toast/Toast";
 import { getAllMusic, postVideo, refreshPage } from "@/store/slices/postSlice";
 import { dispatch, useSelector } from "@/store";
-import { BASE_URL } from "@/services/api";
+import { BASE_URL, fetchGameList } from "@/services/api";
+import { set } from "date-fns";
 
 interface FileUploadState {
   fileName: string;
@@ -22,6 +23,7 @@ interface AddVideoProps {
 function AddVideo({ handleCloseModal }: AddVideoProps) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const musicState = useSelector((state: any) => state.post.allMusic) || [];
+  const gameState = useSelector((state: any) => state.post.gameList) || [];
   const [video, setVideo] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [description, setDescription] = useState("");
@@ -41,11 +43,22 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
 
   console.log("musicState: ", musicState);
 
-  const optionsForGame = [
-    { value: "game1", label: "Game 1" },
-    { value: "game2", label: "Game 2" },
-    { value: "game3", label: "Game 3" },
+  const optionsForGame: any = [
+    // { value: "game1", label: "Game 1" },
+    // { value: "game2", label: "Game 2" },
+    // { value: "game3", label: "Game 3" },
   ];
+
+  const handleGameList = async () => {
+    const gettingGameList = await fetchGameList();
+    return gettingGameList;
+  };
+  handleGameList().then((res) => {
+    console.log("res: ", res);
+    optionsForGame.push(res);
+  });
+  console.log("gameState: ", gameState);
+  console.log("optionsForGame: ", optionsForGame);
 
   const [searchText, setSearchText] = useState("");
   const [filteredOptions, setFilteredOptions] = useState(optionsForGame);
@@ -54,8 +67,8 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
     const inputValue = e.target.value.toLowerCase();
     setSearchText(inputValue);
 
-    const filtered = optionsForGame.filter((option) =>
-      option.label.toLowerCase().includes(inputValue)
+    const filtered = optionsForGame.filter((option: any) =>
+      option.name.toLowerCase().includes(inputValue)
     );
 
     setFilteredOptions(filtered);
@@ -361,35 +374,40 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
                           />
                         </div>
                         <ul className="py-1 bg-[#1C2C2E] text-white divide-y divide-[#162423] rounded-b-lg">
-                          {filteredOptions.map((option) => (
-                            <li
-                              key={option.value}
-                              onClick={() => handleSelect(option.value)}
-                              className="cursor-pointer select-none relative px-4 py-2 text-gray-200 rounded-b-lg"
-                              role="option"
-                              aria-selected={false}
-                            >
-                              <span
-                                className={`${
-                                  option.value === selectedOption
-                                    ? "font-semibold"
-                                    : ""
-                                } block truncate`}
+                          {}
+                          {filteredOptions[0].map((option: any) => {
+                            console.log("option: ###", option.name);
+
+                            return (
+                              <li
+                                key={option.id}
+                                onClick={() => handleSelect(option.name)}
+                                className="cursor-pointer select-none relative px-4 py-2 text-gray-200 rounded-b-lg"
+                                role="option"
+                                aria-selected={false}
                               >
-                                {option.label}
-                              </span>
-                              {option.value === selectedOption && (
-                                <Image
-                                  className="absolute w-5 h-5 text-green-500 right-3 top-2/4 transform -translate-y-2/4"
-                                  src={SVG.Tick}
-                                  alt="tick"
-                                  width={30}
-                                  height={30}
-                                />
-                              )}
-                              <hr className="border-t border-[#1C2C2E]" />
-                            </li>
-                          ))}
+                                <span
+                                  className={`${
+                                    option.name === selectedOption
+                                      ? "font-semibold"
+                                      : ""
+                                  } block truncate`}
+                                >
+                                  {option.name}
+                                </span>
+                                {option.name === selectedOption && (
+                                  <Image
+                                    className="absolute w-5 h-5 text-green-500 right-3 top-2/4 transform -translate-y-2/4"
+                                    src={SVG.Tick}
+                                    alt="tick"
+                                    width={30}
+                                    height={30}
+                                  />
+                                )}
+                                <hr className="border-t border-[#1C2C2E]" />
+                              </li>
+                            );
+                          })}
                         </ul>
                       </div>
                     )}

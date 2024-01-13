@@ -281,6 +281,35 @@ export function unBlockUser(params: ActionParams) {
   };
 }
 
+export function deactivateAccount(params: ActionParams) {
+  return async () => {
+    const {
+      successCallback = () => {},
+      errorCallback = () => {},
+      payload,
+    } = params;
+
+    dispatch(slice.actions.startLoading());
+
+    const options: APIParams = {
+      method: "POST",
+      endpoint: PATH.user.deactiveAccount,
+      isToken: false,
+      payload,
+    };
+
+    try {
+      const [ok, response] = await API(options);
+      if (!ok || !response) return errorCallback(response.message);
+      successCallback(response.message);
+    } catch (error) {
+      errorCallback(error);
+    } finally {
+      dispatch(slice.actions.stopLoading());
+    }
+  };
+}
+
 export function updateTutorial(params: ActionParams) {
   return async () => {
     const {

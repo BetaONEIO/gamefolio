@@ -69,6 +69,10 @@ const userSchema = new mongoose.Schema({
     enum: ["active", "deactive"],
     default: "active",
   },
+  deactivatedAt: {
+    type: Date,
+    default: null,
+  },
 
   signupMethod: {
     type: String,
