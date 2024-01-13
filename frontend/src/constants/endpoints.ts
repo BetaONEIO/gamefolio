@@ -22,6 +22,7 @@ export const PATH = {
     removeFollowing: "user/following/delete",
     blockUser: "user/block/create",
     unBlockUser: "user/block/delete",
+    deactiveAccount: "user/deactivate",
     reportUser: "user/report/create",
   },
 

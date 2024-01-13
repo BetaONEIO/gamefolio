@@ -393,8 +393,6 @@ export function userSession(params: ActionParams) {
     const { payload } = params;
     dispatch(slice.actions.startLoading());
 
-    console.log("payload:", payload);
-
     const options: APIParams = {
       method: "POST",
       endpoint: PATH.user.getUser,

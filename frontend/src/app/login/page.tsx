@@ -46,6 +46,7 @@ const Page = () => {
       // }
 
       toastSuccess(response.message);
+
       setTimeout(() => {
         if (response.favoriteGames.length === 0) {
           router.push(ROUTES.selectGame);
