@@ -294,9 +294,14 @@ VideoDetailProps) {
                       />
                       <div>
                         <div className="flex flex-row items-center mb-1">
-                          <p className="sm:text-lg sm:font-bold md:text-xl text-white text-base font-semibold">
-                            {comment?.userID?.name}
-                          </p>
+                          <Link
+                            href={`/account/${comment?.userID?.name}`}
+                            key={comment?._id}
+                          >
+                            <p className="sm:text-lg sm:font-bold md:text-xl text-white text-base font-semibold">
+                              {comment?.userID?.name}
+                            </p>
+                          </Link>
                           <p className="ml-2 font-light md:text-md text-gray-200">
                             {comment?.commentText}
                           </p>

@@ -21,6 +21,7 @@ import {
   refreshPage,
 } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
+import Report from "@/components/Modals/Report";
 
 function Main() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
@@ -48,6 +49,7 @@ function Main() {
     isPostShareOpen: false,
     isVideoDetailOpen: false,
     isPostDeleteOpen: false,
+    isReportModalOpen: false,
   });
 
   const handleModalToggle = (
@@ -62,6 +64,17 @@ function Main() {
       [modalName]: !prevState[modalName],
     }));
   };
+
+  // const handleThreedotsClick = (postId: any) => {
+  //   console.log("authState._id:", authState._id);
+  //   console.log("detailedPost?.userID?._id:", detailedPost?.userID?._id);
+  //   // Call the appropriate modal based on conditions
+  //   if (authState._id == detailedPost?.userID?._id) {
+  //     handleModalToggle("isPostDeleteOpen", postId);
+  //   } else {
+  //     handleModalToggle("isReportModalOpen", postId);
+  //   }
+  // };
 
   // console.log("POSTID ****: ", postID);
 
@@ -247,7 +260,7 @@ function Main() {
                             width={5}
                             height={5}
                             onClick={() =>
-                              handleModalToggle("isPostDeleteOpen", post._id)
+                              handleModalToggle("isReportModalOpen", post._id)
                             }
                           />
                         </div>
@@ -420,6 +433,15 @@ function Main() {
           postID={postID}
           handleCloseModal={() => handleModalToggle("isPostDeleteOpen")}
           handlePageRefresh={() => handlePageRefresh()}
+        />
+      </Modal>
+
+      <Modal
+        isOpen={modalState.isReportModalOpen}
+        handleClose={() => handleModalToggle("isReportModalOpen")}
+      >
+        <Report
+          handleCloseModal={() => handleModalToggle("isReportModalOpen")}
         />
       </Modal>
     </Layout>

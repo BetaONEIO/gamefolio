@@ -58,9 +58,17 @@ function Report({ handleCloseModal }: ReportProps) {
     dispatch(reportUser(params));
   };
 
+  const myBGStyleModal = {
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    backdropFilter: "blur(8px)",
+  };
+
   return (
     <>
-      <div className="fixed inset-0 flex items-center justify-center z-50">
+      <div
+        style={myBGStyleModal}
+        className="fixed inset-0 flex items-center justify-center z-50"
+      >
         <div className="modal-container w-full sm:w-96 mx-auto lg-rounded z-50 overflow-y-auto">
           {/* Modal content */}
           <div className="relative p-4 text-center rounded-lg bg-[#091619] sm:p-5 border border-[#586769]">

@@ -125,7 +125,7 @@ function Explore() {
               </div>
               <div className="flex items-center">
                 <Link
-                  href="/explore-search"
+                  href="/explore-search/explore-games"
                   className="text-md sm:text-md lg:text-md hover:opacity-80 cursor-pointer text-white"
                 >
                   View All

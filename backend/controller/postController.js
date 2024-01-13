@@ -88,18 +88,72 @@ const updatePost = async (req, res) => {
 };
 
 // Delete a post by ID
+// const deletePost = async (req, res) => {
+//   try {
+//     const { postID, userID } = req.body;
+
+//     // Find the post and check if the authenticated user is the owner
+//     const post = await Posts.findById(postID);
+//     if (!post) {
+//       return res.status(404).json({
+//         error: "Post not found.",
+//         message: "Post not found.",
+//       });
+//     }
+//      // Check if the authenticated user is the owner of the post
+//      if (post.userID.toString() !== authUserID) {
+//       return res.status(403).json({
+//         error: "Unauthorized",
+//         message: "You are not authorized to delete this post.",
+//       });
+//     }
+
+//     // User is authorized, proceed with post deletion
+//     const deletedPost = await Posts.findByIdAndDelete(postID);
+
+//     console.log("pID: ", postID);
+//     // const post = await Posts.findByIdAndDelete(postID);
+//     // if (!post) {
+//     //   return res
+//     //     .status(404)
+//     //     .json({ error: "Post not found.", message: "Post not found." });
+//     // }
+
+//     res.status(200).json({ data: post, message: "Successfully Video Deleted" });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: "Could not delete the post." });
+//   }
+// };
+// Delete a post by ID
 const deletePost = async (req, res) => {
   try {
-    const { postID } = req.body;
-    console.log("pID: ", postID);
-    const post = await Posts.findByIdAndDelete(postID);
+    const { postID, userID } = req.body;
+
+    // Find the post and check if the authenticated user is the owner
+    const post = await Posts.findById(postID);
     if (!post) {
-      return res
-        .status(404)
-        .json({ error: "Post not found.", message: "Post not found." });
+      return res.status(404).json({
+        error: "Post not found.",
+        message: "Post not found.",
+      });
     }
 
-    res.status(200).json({ data: post, message: "Successfully Video Deleted" });
+    // Check if the authenticated user is the owner of the post
+    if (post.userID.toString() !== userID) {
+      return res.status(403).json({
+        error: "Unauthorized",
+        message: "You are not authorized to delete this post.",
+      });
+    }
+
+    // User is authorized, proceed with post deletion
+    const deletedPost = await Posts.findByIdAndDelete(postID);
+
+    res.status(200).json({
+      data: deletedPost,
+      message: "Successfully Video Deleted",
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Could not delete the post." });

@@ -25,6 +25,7 @@ import { copyToClipboard, generateUniqueRoomId } from "@/utils/helpers";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import { ToastContainer } from "react-toastify";
 import Loading from "../loading";
+import VideoDetails from "@/components/Modals/VideoDetails";
 
 const popular = [
   { id: 1, IMAGE: IMAGES.Popular },
@@ -44,6 +45,7 @@ interface MyVideosSectionProps {
   authState: any; // Add authState as a prop
   postState: any; // Add postState as a prop
   profileInfoState: any; // Add profileInfoState as a prop
+  handleVideoDetailOpen: (postID: any, detailedPost: any) => void;
 }
 interface VideoState {
   isMuted?: boolean;
@@ -53,6 +55,7 @@ const MyVideosSection: React.FC<MyVideosSectionProps> = ({
   authState,
   postState,
   profileInfoState,
+  handleVideoDetailOpen,
 }) => {
   const [videoStates, setVideoStates] = useState<{ [key: string]: VideoState }>(
     {}
@@ -65,25 +68,25 @@ const MyVideosSection: React.FC<MyVideosSectionProps> = ({
       post?.userID?.username === profileInfoState.profileUserInfo.username
   );
 
-  const handleVideoClick = (
-    event: React.MouseEvent<HTMLVideoElement, MouseEvent>
-  ) => {
-    const video = event.currentTarget;
-    if (video.paused) {
-      video.play();
-    } else {
-      video.pause();
-    }
-  };
-  const handleToggleMute = (clipID: string) => {
-    setVideoStates((prevStates) => ({
-      ...prevStates,
-      [clipID]: {
-        ...prevStates[clipID],
-        isMuted: !prevStates[clipID]?.isMuted,
-      },
-    }));
-  };
+  // const handleVideoClick = (
+  //   event: React.MouseEvent<HTMLVideoElement, MouseEvent>
+  // ) => {
+  //   const video = event.currentTarget;
+  //   if (video.paused) {
+  //     video.play();
+  //   } else {
+  //     video.pause();
+  //   }
+  // };
+  // const handleToggleMute = (clipID: string) => {
+  //   setVideoStates((prevStates) => ({
+  //     ...prevStates,
+  //     [clipID]: {
+  //       ...prevStates[clipID],
+  //       isMuted: !prevStates[clipID]?.isMuted,
+  //     },
+  //   }));
+  // };
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
@@ -99,18 +102,14 @@ const MyVideosSection: React.FC<MyVideosSectionProps> = ({
               width={20}
               height={20}
               controls={false}
-              onClick={handleVideoClick}
-              muted={videoState.isMuted}
+              onClick={() => handleVideoDetailOpen(item._id, item)}
             />
             <div className="absolute bottom-1 right-2">
-              <button
-                className="cursor-pointer hover:opacity-80"
-                onClick={() => handleToggleMute(item._id)}
-              >
+              <button className="cursor-pointer hover:opacity-80">
                 {videoState.isMuted ? (
-                  <Image src={SVG.Mute} alt="Mute" width={40} height={40} />
-                ) : (
                   <Image src={SVG.UnMute} alt="Unmute" width={40} height={40} />
+                ) : (
+                  <Image src={SVG.Mute} alt="Mute" width={40} height={40} />
                 )}
               </button>
             </div>
@@ -222,10 +221,13 @@ function Page({ params }: any) {
   const [open, setOpen] = useState(false);
   const [selectedSection, setSelectedSection] = useState("videos");
   const [isPrivateAccount, setIsPrivateAccount] = useState(false);
+  const [postID, setPostID] = useState("");
+  const [detailedPost, setDetailedPost] = useState("");
   const [modalState, setModalState] = useState({
     isShareModalOpen: false,
     isFollowerModalOpen: false,
     isFollowingModalOpen: false,
+    isVideoDetailOpen: false,
   });
 
   console.log("authState****", authState);
@@ -263,6 +265,19 @@ function Page({ params }: any) {
       [modalName]: !prevState[modalName],
     }));
   };
+
+  const handleVideoDetailOpen = (postID: string, detailedPost: any) => {
+    setPostID(postID);
+    setDetailedPost(detailedPost);
+    setModalState((prevState) => ({
+      ...prevState,
+      isVideoDetailOpen: true,
+    }));
+  };
+
+  function handlePageRefresh(): void {
+    throw new Error("Function not implemented.");
+  }
 
   // const handleMessage = async () => {
   //   const payload = {
@@ -698,7 +713,8 @@ function Page({ params }: any) {
           {/* Content Section */}
           {authState?.following?.some(
             (user: any) =>
-              user?.userID?._id === profileInfoState?.profileUserInfo?._id
+              user?.userID?._id === profileInfoState?.profileUserInfo?._id ||
+              !isPrivateAccount
           ) ? (
             // User is following, show videos
             <div>
@@ -708,6 +724,7 @@ function Page({ params }: any) {
                   authState={authState}
                   postState={postState}
                   profileInfoState={profileInfoState}
+                  handleVideoDetailOpen={handleVideoDetailOpen}
                 />
               ) : selectedSection === "bookmarks" ? (
                 <MyBookmarkSection data={popular} />
@@ -719,7 +736,7 @@ function Page({ params }: any) {
             </div>
           ) : (
             // User is not following, show private account message
-            <div className="flex justify-center h-28">
+            <div className="flex justify-center">
               <p>This is a private account.</p>
             </div>
           )}
@@ -752,6 +769,18 @@ function Page({ params }: any) {
         <Following
           handleCloseModal={() => handleModalToggle("isFollowingModalOpen")}
           followingData={profileInfoState?.profileUserInfo?.following}
+        />
+      </Modal>
+
+      <Modal
+        isOpen={modalState.isVideoDetailOpen}
+        handleClose={() => handleModalToggle("isVideoDetailOpen")}
+      >
+        <VideoDetails
+          postID={postID}
+          detailedPost={detailedPost}
+          handleCloseModal={() => handleModalToggle("isVideoDetailOpen")}
+          handlePageRefresh={() => handlePageRefresh()}
         />
       </Modal>
 
