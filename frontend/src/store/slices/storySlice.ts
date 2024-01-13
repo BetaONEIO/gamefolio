@@ -18,6 +18,7 @@ export type InitialState = {
   userCredits: Credit | null;
   gallery: ImageResponse[] | null;
   stories: Array<any>;
+  followingStories: Array<any>;
   userStories: Array<any>;
   allMusic: Array<any>;
   refresh: boolean;
@@ -31,6 +32,7 @@ const initialState: InitialState = {
   userCredits: null,
   gallery: null,
   stories: [],
+  followingStories:[],
   userStories: [],
   allMusic: [],
   refresh: false,
@@ -66,6 +68,9 @@ export const slice = createSlice({
     },
     getStory(state, action) {
       state.stories = action.payload;
+    },
+    getFollowingStory(state, action) {
+      state.followingStories = action.payload;
     },
     getUserStory(state, action) {
       state.userStories = action.payload;
@@ -164,6 +169,33 @@ export function getAllStories() {
     }
   };
 }
+export function getFollowingStories(params: ActionParams) {
+  return async () => {
+    const {
+      payload,
+    } = params;
+
+    dispatch(slice.actions.startLoading());
+
+    const options: APIParams = {
+      method: "POST",
+      endpoint: PATH.story.getFollowingStories,
+      payload: payload,
+      isToken: false,
+    };
+    try {
+      const [ok, response] = await API(options);
+      console.log("following stories res: ", response);
+      dispatch(slice.actions.getFollowingStory(response.data));
+    } catch (error) {
+      console.log("error", error);
+    } finally {
+      dispatch(slice.actions.stopLoading());
+    }
+  };
+}
+
+
 export function deleteVideo(params: ActionParams) {
   return async () => {
     const {

@@ -9,8 +9,8 @@ import DeletePost from "@/components/Modals/DeletePost";
 import Modal from "@/components/Modals/Modal";
 import SharePost from "@/components/Modals/SharePost";
 import VideoDetails from "@/components/Modals/VideoDetails";
+import FollowingStories from "@/components/story/FollowingStories";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
-import AllStories from "@/components/story/AllStories";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import {
@@ -165,7 +165,7 @@ function Main() {
 
   return (
     <Layout>
-      <AllStories />
+      <FollowingStories />
       <Suspense fallback={<Loading />}>
         <div
           style={sectionStyle}

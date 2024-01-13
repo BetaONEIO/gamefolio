@@ -52,6 +52,7 @@ export const PATH = {
   story: {
     create: "stories/story/create",
     get: "stories/story/get",
+    getFollowingStories: "stories/story/following/get",
     getUser: "stories/story/get-user",
     delete: "stories/story/delete",
   },

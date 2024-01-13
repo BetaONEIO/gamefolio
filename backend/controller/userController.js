@@ -61,6 +61,7 @@ const loginUser = asyncHandler(async (req, res) => {
     if (user.accountStatus === "deactive") {
       // If the account is deactivated, update the status to "active"
       user.accountStatus = "active";
+      user.deactivatedAt = null;
       await user.save();
     }
 
