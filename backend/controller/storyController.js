@@ -129,6 +129,52 @@ const getFollowingStories = async (req, res) => {
   }
 };
 
+// Controller function to get the latest story of the current user
+const getCurrentUserStories = async (req, res) => {
+  try {
+    // Get the current user's ID (assuming it's available in the request object)
+    const { userToken } = req.body;
+    const decoded = jwt.verify(userToken, process.env.JWT_SECRET); // getting userID from token
+
+    // Find the user document for the current user
+    const currentUser = await User.findById(decoded.id);
+
+    if (!currentUser) {
+      return res.status(404).json({
+        error: "User not found",
+        message: "User not found",
+      });
+    }
+
+    // Retrieve the latest story for the current user and wrap it in an array
+    const userLatestStory = [
+      await Story.findOne({
+        userID: currentUser._id,
+      })
+        .sort({ date: -1 })
+        .populate("userID"),
+    ];
+
+    if (!userLatestStory[0]) {
+      return res.status(404).json({
+        message: "No stories found for this user.",
+        error: "No stories found for this user.",
+      });
+    }
+
+    res.status(200).json({
+      data: userLatestStory,
+      message: "Successfully retrieved the latest story of the current user",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Could not retrieve the current user's latest story.",
+      message: "Could not retrieve the current user's latest story.",
+    });
+  }
+};
+
 // Get a single post by ID
 const getPostById = async (req, res) => {
   try {
@@ -491,6 +537,7 @@ module.exports = {
   getUserAllStories,
   getAllStories,
   getFollowingStories,
+  getCurrentUserStories,
   getPostById,
   updatePost,
   deletePost,

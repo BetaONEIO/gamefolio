@@ -17,9 +17,8 @@ import Followers from "@/components/Modals/Followers";
 import Following from "@/components/Modals/Following";
 import Modal from "@/components/Modals/Modal";
 import MoreOptions from "@/components/Modals/MoreOptions";
-import AllStories from "@/components/story/AllStories";
+import CurrentUserStories from "@/components/story/CurrentUserStories";
 import Loading from "./loading";
-import { toastError } from "@/components/Toast/Toast";
 
 const popular = [
   { id: 1, IMAGE: IMAGES.Popular },
@@ -341,7 +340,7 @@ function Page() {
               </div>
             </div>
 
-            <AllStories />
+            <CurrentUserStories />
             {/* Top Bar */}
             <div className="h-10 w-full flex justify-around items-center">
               <div>
