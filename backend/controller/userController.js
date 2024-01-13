@@ -57,6 +57,12 @@ const loginUser = asyncHandler(async (req, res) => {
     //   res.status(402).send("Please verify your email first");
     //   throw new Error("Please verify your email first");
     // }
+    // Check if the user account is deactivated
+    if (user.accountStatus === "deactive") {
+      // If the account is deactivated, update the status to "active"
+      user.accountStatus = "active";
+      await user.save();
+    }
 
     // verified token returns user id
     const decoded = jwt.verify(generateToken(user._id), process.env.JWT_SECRET);
@@ -655,6 +661,41 @@ const unblockUser = asyncHandler(async (req, res) => {
   }
 });
 
+// Deactivate user account
+const deactivateAccount = asyncHandler(async (req, res) => {
+  const { userID } = req.body;
+
+  try {
+    const user = await User.findById(userID);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Check if the user account is already deactivated
+    if (user.accountStatus === "deactive") {
+      return res
+        .status(400)
+        .json({ message: "User account is already deactivated" });
+    }
+
+    // Deactivate the user account and set the deactivation timestamp
+    user.accountStatus = "deactive";
+    user.deactivatedAt = new Date();
+    await user.save();
+
+    // You may want to perform additional actions here, such as logging out the user, etc.
+
+    return res.status(200).json({
+      message: "User account deactivated successfully",
+      // deactivatedUser: user,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server Error. Try again later" });
+  }
+});
+
 module.exports = {
   registerUser,
   loginUser,
@@ -674,4 +715,5 @@ module.exports = {
   removeFollowing,
   blockUser,
   unblockUser,
+  deactivateAccount,
 };
