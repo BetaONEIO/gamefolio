@@ -53,6 +53,41 @@ const getAllPostVideos = async (req, res) => {
   }
 };
 
+const getTrendingPosts = async (req, res) => {
+  try {
+    // Fetch posts with basic details and populate user details
+    const posts = await Posts.find()
+      .sort({ date: -1 })
+      .populate("userID")
+      .populate({ path: "comments.userID" });
+
+    // Sort posts by counts and date
+    const sortedPosts = posts.sort((a, b) => {
+      const getLength = (array) => (array ? array.length : 0);
+      const likesDiff = getLength(b.reactions) - getLength(a.reactions);
+      const commentsDiff = getLength(b.comments) - getLength(a.comments);
+      const bookmarksDiff = getLength(b.bookmarks) - getLength(a.bookmarks);
+
+      if (likesDiff !== 0) return likesDiff;
+      if (commentsDiff !== 0) return commentsDiff;
+      if (bookmarksDiff !== 0) return bookmarksDiff;
+
+      return b.date - a.date;
+    });
+
+    res.status(200).json({
+      data: sortedPosts,
+      message: "Successfully retrieved trending posts",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Could not retrieve trending posts.",
+      message: "Could not retrieve trending posts.",
+    });
+  }
+};
+
 // Get posts from users that the current user is following
 const getFollowingPosts = async (req, res) => {
   try {
@@ -512,7 +547,9 @@ const getUserBookmark = async (req, res) => {
 
     const userBookmarkedPosts = await Posts.find({
       "bookmarks.userID": decoded.id,
-    }).populate("bookmarks.userID", "name username profilePicture");
+    }).populate("userID", "name username profilePicture");
+
+    console.log("userBookmarkedPosts: ", userBookmarkedPosts);
 
     if (!userBookmarkedPosts || userBookmarkedPosts.length === 0) {
       return res
@@ -546,6 +583,7 @@ const getUserBookmark = async (req, res) => {
 module.exports = {
   postVideo,
   getAllPostVideos,
+  getTrendingPosts,
   getFollowingPosts,
   getPostById,
   updatePost,

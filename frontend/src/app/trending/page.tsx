@@ -16,6 +16,7 @@ import {
   createVideoReaction,
   deleteVideoReaction,
   getAllPostVideos,
+  getTrendingPosts,
   refreshPage,
 } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
@@ -35,7 +36,7 @@ function Trending() {
   };
   useEffect(() => {
     dispatch(userSession(params));
-    dispatch(getAllPostVideos());
+    dispatch(getTrendingPosts());
   }, [postState.refresh]);
 
   // console.log("postState", postState);
@@ -65,22 +66,22 @@ function Trending() {
     }));
   };
 
-  const trendingPosts = postState.videos.slice(); // Create a copy of the array
+  // const trendingPosts = postState.videos.slice(); // Create a copy of the array
 
-  trendingPosts.sort((a: any, b: any) => {
-    // You can adjust the ranking algorithm based on your criteria
-    const aReactions = a.reactions || [];
-    const bReactions = b.reactions || [];
-    const aComments = a.comment || [];
-    const bComments = b.comment || [];
+  // trendingPosts.sort((a: any, b: any) => {
+  //   // You can adjust the ranking algorithm based on your criteria
+  //   const aReactions = a.reactions || [];
+  //   const bReactions = b.reactions || [];
+  //   const aComments = a.comment || [];
+  //   const bComments = b.comment || [];
 
-    const aScore = aReactions.length + aComments.length;
-    const bScore = bReactions.length + bComments.length;
+  //   const aScore = aReactions.length + aComments.length;
+  //   const bScore = bReactions.length + bComments.length;
 
-    return bScore - aScore; // Sort in descending order
-  });
+  //   return bScore - aScore; // Sort in descending order
+  // });
 
-  const top10TrendingPosts = trendingPosts.slice(0, 10);
+  // const top10TrendingPosts = trendingPosts.slice(0, 10);
 
   const handleCreateReaction = async (postID: any, reactionType: any) => {
     const payload = {
@@ -161,7 +162,7 @@ function Trending() {
         >
           <div className="flex justify-center">
             <div className="w-11/12 sm:w-9/12 flex flex-col gap-8 rounded-lg">
-              {top10TrendingPosts.map((post: any) => {
+              {postState?.trendingVideos?.map((post: any) => {
                 // Check if the current user has reacted with "like" or "love"
                 const hasLikeReacted = post.reactions.some(
                   (reaction: any) =>

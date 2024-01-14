@@ -39,6 +39,7 @@ export const PATH = {
   post: {
     create: "post/video/create",
     get: "post/video/get",
+    getTrendingPosts: "post/video/trending/get",
     getFollowingPosts: "post/video/following/get",
     delete: "post/video/delete",
   },
