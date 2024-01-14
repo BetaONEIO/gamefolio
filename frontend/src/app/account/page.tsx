@@ -90,9 +90,13 @@ const MyVideosSection: React.FC<MyVideosSectionProps> = ({
 };
 interface MyBookmarkSectionProps {
   data: Array<any>;
+  handleVideoDetailOpen: (postID: any, detailedPost: any) => void;
 }
 
-const MyBookmarkSection: React.FC<MyBookmarkSectionProps> = ({ data }) => {
+const MyBookmarkSection: React.FC<MyBookmarkSectionProps> = ({
+  data,
+  handleVideoDetailOpen,
+}) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
       {data?.map((bookmarkPost) => (
@@ -103,11 +107,12 @@ const MyBookmarkSection: React.FC<MyBookmarkSectionProps> = ({ data }) => {
             width={0}
             height={0}
             controls={false}
-            // onClick={handleVideoClick}
-            // muted={videoState.isMuted}
+            onClick={() =>
+              handleVideoDetailOpen(bookmarkPost.post._id, bookmarkPost.post)
+            }
           />
           <Image
-            className="absolute top-2 right-2 hover:opacity-70"
+            className="absolute top-2 right-2 cursor-pointer hover:opacity-70"
             src={SVG.Bookmark}
             alt="Play"
             width={24}
@@ -404,7 +409,10 @@ function Page() {
                 handleVideoDetailOpen={handleVideoDetailOpen}
               />
             ) : (
-              <MyBookmarkSection data={postState.bookmarks} />
+              <MyBookmarkSection
+                data={postState.bookmarks}
+                handleVideoDetailOpen={handleVideoDetailOpen}
+              />
             )}
           </div>
         </div>

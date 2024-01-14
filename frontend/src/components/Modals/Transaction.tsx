@@ -5,7 +5,7 @@ import { SVG } from "@/assets/SVG";
 import { leagueGothic } from "@/font/font";
 import { useSelector } from "@/store";
 import { format } from "date-fns";
-import { saveAs } from "file-saver";
+import download from "downloadjs";
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 
 interface TransactionProps {
@@ -16,18 +16,22 @@ interface TransactionProps {
 
 async function embedCustomFont(pdfDoc: any) {
   try {
-    // Embed the standard Times Roman font
     const timesRomanFont = await pdfDoc.embedFont(StandardFonts.TimesRoman);
     return timesRomanFont;
   } catch (error) {
     console.error("Error embedding font:", error);
-    throw error; // Rethrow the error to handle it in the calling function
+    throw error;
   }
 }
 
 async function createPdfDocument() {
-  const pdfDoc = await PDFDocument.create();
-  return pdfDoc;
+  try {
+    const pdfDoc = await PDFDocument.create();
+    return pdfDoc;
+  } catch (error) {
+    console.error("Error creating PDF document:", error);
+    throw error;
+  }
 }
 
 function Transaction({
@@ -66,55 +70,94 @@ function Transaction({
     fetchData();
   }, [authState, startDate, endDate]);
 
+  console.log("filteredCoins", filteredCoins);
+
   const handleDownload = async () => {
     try {
-      if (!dataFetched) {
-        console.log("Data is not fetched yet");
-        return;
-      }
-
-      const pdfDoc = await createPdfDocument();
+      const pdfDoc = await PDFDocument.create();
       const page = pdfDoc.addPage();
-
-      const { width, height } = page.getSize();
-      const fontSize = 15;
-      const text = "Transaction History\n\n";
-
       const font = await embedCustomFont(pdfDoc);
 
-      page.drawText(text, {
+      page.drawText("Hello, World!", {
         x: 50,
-        y: height - 4 * fontSize,
+        y: 500,
         font,
         color: rgb(1, 1, 1),
       });
 
-      let yOffset = height - 6 * fontSize;
-
-      filteredCoins.forEach((coin: any) => {
-        const coinText = `${coin.coinType} - ${coin.coinAmount} Coin - ${format(
-          new Date(coin?.date),
-          "dd MMM, yyyy - h:mm a"
-        )}\n`;
-
-        page.drawText(coinText, {
-          x: 50,
-          y: yOffset,
-          font,
-          color: rgb(1, 1, 1),
-        });
-
-        yOffset -= 2 * fontSize;
-      });
-
       const pdfBytes = await pdfDoc.save();
-      const blob = new Blob([pdfBytes], { type: "application/pdf" });
+      console.log("PDF Bytes:", pdfBytes);
 
-      saveAs(blob, "transaction_history.pdf");
+      const blob = new Blob([pdfBytes], { type: "application/pdf" });
+      const docUrl = URL.createObjectURL(blob);
+      console.log("docUrl:", docUrl);
     } catch (error) {
       console.error("Error generating PDF:", error);
     }
   };
+
+  // const handleDownload = async () => {
+  //   try {
+  //     if (!dataFetched || !filteredCoins || filteredCoins.length === 0) {
+  //       console.log("Data is not fetched yet or is empty");
+  //       return;
+  //     }
+
+  //     const pdfDoc = await createPdfDocument();
+  //     console.log("Result of createPdfDocument:", pdfDoc);
+
+  //     const page = pdfDoc.addPage();
+  //     const font = await embedCustomFont(pdfDoc);
+  //     console.log("Embedded Font:", font);
+
+  //     if (!font) {
+  //       console.log("Font embedding failed");
+  //       return;
+  //     }
+
+  //     const { width, height } = page.getSize();
+  //     console.log("Page dimensions:", width, height);
+
+  //     const fontSize = 15;
+  //     const text = "Transaction History\n\n";
+
+  //     page.drawText(text, {
+  //       x: 50,
+  //       y: height - 4 * fontSize,
+  //       font,
+  //       color: rgb(1, 1, 1),
+  //     });
+
+  //     let yOffset = height - 6 * fontSize;
+
+  //     filteredCoins.forEach((coin: any) => {
+  //       const coinText = `${coin.coinType} - ${coin.coinAmount} Coin - ${format(
+  //         new Date(coin?.date),
+  //         "dd MMM, yyyy - h:mm a"
+  //       )}\n`;
+
+  //       page.drawText(coinText, {
+  //         x: 50,
+  //         y: yOffset,
+  //         font,
+  //         color: rgb(1, 1, 1),
+  //       });
+
+  //       yOffset -= 2 * fontSize;
+  //     });
+
+  //     const pdfBytes = await pdfDoc.save();
+  //     console.log("PDF Bytes:", pdfBytes);
+
+  //     // Use saveAs from file-saver to trigger download
+  //     saveAs(
+  //       new Blob([pdfBytes], { type: "application/pdf" }),
+  //       "transaction_history.pdf"
+  //     );
+  //   } catch (error) {
+  //     console.error("Error generating PDF:", error);
+  //   }
+  // };
 
   return (
     <>
