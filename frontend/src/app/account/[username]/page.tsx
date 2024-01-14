@@ -143,7 +143,7 @@ const ClipsSection: React.FC<ClipsProps> = ({
 };
 
 interface StoryProps {
-  data: Array<any>; // You can replace 'any' with the actual type of data you expect.
+  data: Array<any>;
 }
 
 const StorySection: React.FC<StoryProps> = ({ data }) => {
@@ -174,7 +174,7 @@ const StorySection: React.FC<StoryProps> = ({ data }) => {
 };
 
 interface MyBookmarkSectionProps {
-  data: Array<any>; // You can replace 'any' with the actual type of data you expect.
+  data: Array<any>;
   handleVideoDetailOpen: (postID: any, detailedPost: any) => void;
 }
 

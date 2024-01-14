@@ -1,37 +1,22 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { SVG } from "@/assets/SVG";
 import { leagueGothic } from "@/font/font";
 import { useSelector } from "@/store";
+import {
+  Document,
+  PDFDownloadLink,
+  Page,
+  Text,
+  View,
+} from "@react-pdf/renderer";
 import { format } from "date-fns";
-import download from "downloadjs";
-import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 
 interface TransactionProps {
   handleCloseModal: () => void;
   startDate: string;
   endDate: string;
-}
-
-async function embedCustomFont(pdfDoc: any) {
-  try {
-    const timesRomanFont = await pdfDoc.embedFont(StandardFonts.TimesRoman);
-    return timesRomanFont;
-  } catch (error) {
-    console.error("Error embedding font:", error);
-    throw error;
-  }
-}
-
-async function createPdfDocument() {
-  try {
-    const pdfDoc = await PDFDocument.create();
-    return pdfDoc;
-  } catch (error) {
-    console.error("Error creating PDF document:", error);
-    throw error;
-  }
 }
 
 function Transaction({
@@ -42,7 +27,6 @@ function Transaction({
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const [filteredCoins, setFilteredCoins] = useState<any[]>([]);
   const [dataFetched, setDataFetched] = useState<boolean>(false);
-  const contentRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,95 +53,6 @@ function Transaction({
 
     fetchData();
   }, [authState, startDate, endDate]);
-
-  console.log("filteredCoins", filteredCoins);
-
-  const handleDownload = async () => {
-    try {
-      const pdfDoc = await PDFDocument.create();
-      const page = pdfDoc.addPage();
-      const font = await embedCustomFont(pdfDoc);
-
-      page.drawText("Hello, World!", {
-        x: 50,
-        y: 500,
-        font,
-        color: rgb(1, 1, 1),
-      });
-
-      const pdfBytes = await pdfDoc.save();
-      console.log("PDF Bytes:", pdfBytes);
-
-      const blob = new Blob([pdfBytes], { type: "application/pdf" });
-      const docUrl = URL.createObjectURL(blob);
-      console.log("docUrl:", docUrl);
-    } catch (error) {
-      console.error("Error generating PDF:", error);
-    }
-  };
-
-  // const handleDownload = async () => {
-  //   try {
-  //     if (!dataFetched || !filteredCoins || filteredCoins.length === 0) {
-  //       console.log("Data is not fetched yet or is empty");
-  //       return;
-  //     }
-
-  //     const pdfDoc = await createPdfDocument();
-  //     console.log("Result of createPdfDocument:", pdfDoc);
-
-  //     const page = pdfDoc.addPage();
-  //     const font = await embedCustomFont(pdfDoc);
-  //     console.log("Embedded Font:", font);
-
-  //     if (!font) {
-  //       console.log("Font embedding failed");
-  //       return;
-  //     }
-
-  //     const { width, height } = page.getSize();
-  //     console.log("Page dimensions:", width, height);
-
-  //     const fontSize = 15;
-  //     const text = "Transaction History\n\n";
-
-  //     page.drawText(text, {
-  //       x: 50,
-  //       y: height - 4 * fontSize,
-  //       font,
-  //       color: rgb(1, 1, 1),
-  //     });
-
-  //     let yOffset = height - 6 * fontSize;
-
-  //     filteredCoins.forEach((coin: any) => {
-  //       const coinText = `${coin.coinType} - ${coin.coinAmount} Coin - ${format(
-  //         new Date(coin?.date),
-  //         "dd MMM, yyyy - h:mm a"
-  //       )}\n`;
-
-  //       page.drawText(coinText, {
-  //         x: 50,
-  //         y: yOffset,
-  //         font,
-  //         color: rgb(1, 1, 1),
-  //       });
-
-  //       yOffset -= 2 * fontSize;
-  //     });
-
-  //     const pdfBytes = await pdfDoc.save();
-  //     console.log("PDF Bytes:", pdfBytes);
-
-  //     // Use saveAs from file-saver to trigger download
-  //     saveAs(
-  //       new Blob([pdfBytes], { type: "application/pdf" }),
-  //       "transaction_history.pdf"
-  //     );
-  //   } catch (error) {
-  //     console.error("Error generating PDF:", error);
-  //   }
-  // };
 
   return (
     <>
@@ -239,12 +134,32 @@ function Transaction({
             </div>
 
             <div className="flex items-center w-full my-5">
-              <button
-                onClick={handleDownload}
-                className="w-full sm:text-base font-semibold bg-[#37C535] py-[10px] px-[30px] text-white text-center rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
-              >
-                Download
-              </button>
+              {dataFetched &&
+                (filteredCoins.length > 0 ? (
+                  <PDFDownloadLink
+                    document={<TransactionPDF filteredCoins={filteredCoins} />}
+                    fileName="transaction_history.pdf"
+                    style={{
+                      width: "100%",
+                      fontSize: "1rem",
+                      fontWeight: 600,
+                      backgroundColor: "#37C535",
+                      padding: "10px",
+                      color: "#fff",
+                      textAlign: "center",
+                      borderTopLeftRadius: "20px",
+                      borderBottomRightRadius: "20px",
+                      borderTopRightRadius: "5px",
+                      borderBottomLeftRadius: "5px",
+                    }}
+                  >
+                    {({ blob, url, loading, error }) =>
+                      loading ? "Loading document..." : "Download PDF"
+                    }
+                  </PDFDownloadLink>
+                ) : (
+                  <p>No data available for the selected date range.</p>
+                ))}
             </div>
           </div>
         </div>
@@ -252,5 +167,24 @@ function Transaction({
     </>
   );
 }
+const TransactionPDF = ({ filteredCoins }: { filteredCoins: any[] }) => (
+  <Document>
+    <Page size="A4">
+      <Text style={{ fontSize: 20, marginBottom: 10, textAlign: "center" }}>
+        Transaction History
+      </Text>
+      {filteredCoins.map((coin: any) => (
+        <View key={coin._id}>
+          <Text style={{ fontSize: 12, marginBottom: 5 }}>
+            {`${coin.coinType} - ${coin.coinAmount} Coin - ${format(
+              new Date(coin?.date),
+              "dd MMM, yyyy - h:mm a"
+            )}`}
+          </Text>
+        </View>
+      ))}
+    </Page>
+  </Document>
+);
 
 export default Transaction;
