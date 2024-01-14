@@ -142,7 +142,7 @@ const Page = () => {
             </button>
 
             <p className="text-sm font-light text-center text-gray-300">
-              <a href="./forget-password">Forget Password?</a>
+              <a href="./forgot-password">Forget Password?</a>
             </p>
 
             <p className="text-sm font-light text-center text-gray-50">

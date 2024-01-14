@@ -3,7 +3,7 @@ const User = require("../models/Users.js");
 const jwt = require("jsonwebtoken");
 const generateToken = require("../utils/generateToken.js");
 const generateOTP = require("../utils/generateOtp.js");
-const sendEmail = require("../utils/sendEmail.js");
+const { sendEmail, sendForgetOtpEmail } = require("../utils/sendEmail.js");
 
 const registerUser = asyncHandler(async (req, res) => {
   const { name, username, email, password } = req.body;
@@ -155,6 +155,83 @@ const verifyEmailOTP = asyncHandler(async (req, res) => {
     }
   } else {
     return res.status(401).send("Something went wrong");
+  }
+});
+
+const sendForgotPasswordOTP = asyncHandler(async (req, res) => {
+  try {
+    const { email } = req.body;
+    console.log("Received request for forget password with email:", email);
+
+    // Check if user with the provided email exists in the database
+    const user = await User.findOne({ email: email });
+
+    // Check if user exists and has signupMethod as 'email'
+    if (user && user.signupMethod === "email") {
+      const otp = generateOTP(6);
+      const emailSent = await sendForgetOtpEmail(email, otp);
+      user.forgotOTP = otp;
+      await user.save();
+
+      if (emailSent) {
+        return res.json({ message: "OTP sent successfully" });
+      } else {
+        return res
+          .status(500)
+          .json({ message: "Failed to send OTP. Please try again later." });
+      }
+    } else {
+      return res.status(404).json({
+        message: "Invalid email ",
+      });
+    }
+  } catch (error) {
+    console.error("Error :", error);
+    return res
+      .status(500)
+      .json({ message: "Internal server error. Please try again later." });
+  }
+});
+
+const verifyForgetPasswordOTP = asyncHandler(async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+
+    console.log(
+      "Received request to verify OTP for forget password with email:",
+      email,
+      otp
+    );
+
+    // Check if user with the provided email exists in the database
+    const user = await User.findOne({ email: email });
+
+    // Check if user exists and has signupMethod as 'email'
+    if (user && user.signupMethod === "email") {
+      // Check if the provided OTP matches the stored OTP
+      if (otp === user.forgotOTP) {
+        // If OTP is valid, you can implement the logic for resetting the password here
+        // For example, redirect the user to a password reset page
+        res.json({
+          message:
+            "OTP verified successfully. You can now reset your password.",
+        });
+      } else {
+        res
+          .status(404)
+          .json({ message: "Invalid OTP. Please check and try again." });
+      }
+    } else {
+      res.status(404).json({
+        message:
+          "Invalid email or signup method. Make sure you signed up with an email.",
+      });
+    }
+  } catch (error) {
+    console.error("Error in verifyForgetPasswordOtp:", error);
+    res
+      .status(500)
+      .json({ message: "Internal server error. Please try again later." });
   }
 });
 
@@ -707,6 +784,8 @@ module.exports = {
   getAllUsers,
   sendEmailOTP,
   verifyEmailOTP,
+  sendForgotPasswordOTP,
+  verifyForgetPasswordOTP,
   addPreferences,
   addFavoriteGames,
   report,
