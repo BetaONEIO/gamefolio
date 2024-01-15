@@ -76,7 +76,7 @@ function ExploreVideo() {
   return (
     <>
       <div className="flex flex-wrap justify-start items-start mx-3">
-        {postState.videos.map((item: any, index: number) => (
+        {postState.videos.map((item: any) => (
           <div
             key={item._id}
             className="relative my-1 mx-3"

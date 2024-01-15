@@ -1,6 +1,5 @@
 "use client";
 import { Suspense, useEffect, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { IMAGES } from "@/assets/images";
 import Layout from "@/components/CustomLayout/layout";
@@ -124,16 +123,16 @@ function Explore() {
 
           <div className="flex items-center my-4">
             <div className="flex items-center overflow-scroll no-scrollbar gap-2 px-4 ">
-              {games.map((items) => (
+              {postState.videos.slice(0, 20).map((items: any) => (
                 <div key={items.id}>
                   <div className="w-28 h-44">
-                    <Image
-                      src={items.IMAGE}
-                      alt="explore by games"
+                    <video
+                      src={items.video}
                       width="100"
                       height="133"
-                      sizes="100vw"
-                      className="w-28 h-44 object-cover rounded-xl "
+                      controls={false}
+                      autoPlay={false}
+                      className="w-28 h-44 object-cover rounded-xl"
                     />
                   </div>
                 </div>

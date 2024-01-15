@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -26,19 +26,8 @@ import { ToastContainer } from "react-toastify";
 import Loading from "../loading";
 import VideoDetails from "@/components/Modals/VideoDetails";
 import { getAllClipVideos } from "@/store/slices/clipSlice";
-
-const popular = [
-  { id: 1, IMAGE: IMAGES.Popular },
-  { id: 2, IMAGE: IMAGES.Popular1 },
-  { id: 3, IMAGE: IMAGES.Popular1 },
-  { id: 4, IMAGE: IMAGES.ExploreIMG1 },
-  { id: 5, IMAGE: IMAGES.Popular1 },
-  { id: 6, IMAGE: IMAGES.Popular1 },
-  { id: 7, IMAGE: IMAGES.ExploreIMG1 },
-  { id: 8, IMAGE: IMAGES.Popular1 },
-  { id: 9, IMAGE: IMAGES.Popular1 },
-  { id: 10, IMAGE: IMAGES.Popular1 },
-];
+import { getCurrentUserStories } from "@/store/slices/storySlice";
+import ViewStory from "@/components/Modals/ViewStory";
 
 interface MyVideosSectionProps {
   authState: any; // Add authState as a prop
@@ -62,27 +51,29 @@ const MyVideosSection: React.FC<MyVideosSectionProps> = ({
   );
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
-      {userVideos.map((item: any) => {
-        return (
-          <div key={item.id} className="relative">
-            <video
-              src={item.video}
-              className="w-96 sm:w-96 h-52 md:h-40  rounded-xl object-cover hover:opacity-80"
-              width={20}
-              height={20}
-              controls={false}
-              onClick={() => handleVideoDetailOpen(item._id, item)}
-            />
-            <div className="absolute bottom-1 right-2">
-              <button className="cursor-pointer hover:opacity-80">
-                <Image src={SVG.Mute} alt="Mute" width={40} height={40} />
-              </button>
+    <Suspense fallback={<Loading />}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
+        {userVideos.map((item: any) => {
+          return (
+            <div key={item.id} className="relative">
+              <video
+                src={item.video}
+                className="w-96 sm:w-96 h-52 md:h-40  rounded-xl object-cover hover:opacity-80"
+                width={20}
+                height={20}
+                controls={false}
+                onClick={() => handleVideoDetailOpen(item._id, item)}
+              />
+              <div className="absolute bottom-1 right-2">
+                <button className="cursor-pointer hover:opacity-80">
+                  <Image src={SVG.Mute} alt="Mute" width={40} height={40} />
+                </button>
+              </div>
             </div>
-          </div>
-        );
-      })}
-    </div>
+          );
+        })}
+      </div>
+    </Suspense>
   );
 };
 
@@ -105,61 +96,69 @@ const ClipsSection: React.FC<ClipsProps> = ({
   );
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
-      {userVideos.map((clip: any) => (
-        <div
-          key={clip.id}
-          className="relative"
-          onClick={() => handleVideoDetailOpen(clip._id, clip)}
-        >
-          <video
-            src={clip.video}
-            width={0}
-            height={0}
-            className="w-full h-52 md:h-40 rounded-xl object-cover hover:opacity-80"
-          />
-          <Image
-            className="absolute bottom-2 right-2 hover:opacity-70"
-            src={SVG.Mute}
-            alt="Play"
-            width={32}
-            height={32}
-            sizes="100vw"
-          />
-        </div>
-      ))}
-    </div>
+    <Suspense fallback={<Loading />}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
+        {userVideos.map((clip: any) => (
+          <div
+            key={clip.id}
+            className="relative"
+            onClick={() => handleVideoDetailOpen(clip._id, clip)}
+          >
+            <video
+              src={clip.video}
+              width={0}
+              height={0}
+              className="w-full h-52 md:h-40 rounded-xl object-cover hover:opacity-80"
+            />
+            <Image
+              className="absolute bottom-2 right-2 hover:opacity-70"
+              src={SVG.Mute}
+              alt="Play"
+              width={32}
+              height={32}
+              sizes="100vw"
+            />
+          </div>
+        ))}
+      </div>
+    </Suspense>
   );
 };
 
 interface StoryProps {
   data: Array<any>;
+  // isStoryModalOpen: () => void;
 }
 
 const StorySection: React.FC<StoryProps> = ({ data }) => {
+  const [isStoryModalOpen, setIsStoryModalOpen] = useState(false);
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
-      {data.map((game) => (
-        <div key={game.id} className="relative">
-          <Image
-            src={game.IMAGE}
-            alt="Popular"
-            width={0}
-            height={0}
-            sizes="100vw"
-            className="w-full h-52 md:h-40  rounded-xl object-cover hover:opacity-80"
-          />
-          <Image
-            className="absolute bottom-2 right-2 hover:opacity-70"
-            src={SVG.Mute}
-            alt="Play"
-            width={32}
-            height={32}
-            sizes="100vw"
-          />
-        </div>
-      ))}
-    </div>
+    <Suspense fallback={<Loading />}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
+        {data?.map((item: any) => (
+          <div key={item.id} className="relative">
+            <video
+              src={item.video}
+              width={0}
+              height={0}
+              className="w-full h-52 md:h-40  rounded-xl object-cover hover:opacity-80"
+              onClick={() => {
+                setIsStoryModalOpen(true);
+              }}
+            />
+            <Image
+              className="absolute bottom-2 right-2 hover:opacity-70"
+              src={SVG.Mute}
+              alt="Play"
+              width={32}
+              height={32}
+              sizes="100vw"
+            />
+          </div>
+        ))}
+      </div>
+    </Suspense>
   );
 };
 
@@ -172,32 +171,33 @@ const MyBookmarkSection: React.FC<MyBookmarkSectionProps> = ({
   data,
   handleVideoDetailOpen,
 }) => {
-  console.log("data", data);
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
-      {data?.map((bookmarkPost) => (
-        <div key={bookmarkPost.post._id} className="relative">
-          <video
-            src={bookmarkPost.post.video}
-            className="w-96 sm:w-96 h-52 md:h-40 rounded-xl object-cover hover:opacity-80"
-            width={0}
-            height={0}
-            controls={false}
-            onClick={() =>
-              handleVideoDetailOpen(bookmarkPost.post._id, bookmarkPost.post)
-            }
-          />
-          <Image
-            className="absolute top-2 right-2 hover:opacity-70"
-            src={SVG.Bookmark}
-            alt="Play"
-            width={24}
-            height={24}
-            sizes="100vw"
-          />
-        </div>
-      ))}
-    </div>
+    <Suspense fallback={<Loading />}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
+        {data?.map((bookmarkPost) => (
+          <div key={bookmarkPost.post._id} className="relative">
+            <video
+              src={bookmarkPost.post.video}
+              className="w-96 sm:w-96 h-52 md:h-40 rounded-xl object-cover hover:opacity-80"
+              width={0}
+              height={0}
+              controls={false}
+              onClick={() =>
+                handleVideoDetailOpen(bookmarkPost.post._id, bookmarkPost.post)
+              }
+            />
+            <Image
+              className="absolute top-2 right-2 hover:opacity-70"
+              src={SVG.Bookmark}
+              alt="Play"
+              width={24}
+              height={24}
+              sizes="100vw"
+            />
+          </div>
+        ))}
+      </div>
+    </Suspense>
   );
 };
 
@@ -207,16 +207,19 @@ function Page({ params }: any) {
   const profileInfoState = useSelector((state: any) => state.user) || [];
   const postState = useSelector((state: any) => state.post) || [];
   const clipState = useSelector((state: any) => state.clip) || [];
+  const storyState = useSelector((state: any) => state.story) || [];
   const [open, setOpen] = useState(false);
   const [selectedSection, setSelectedSection] = useState("videos");
   const [isPrivateAccount, setIsPrivateAccount] = useState(false);
   const [postID, setPostID] = useState("");
+  const [storyUserID, setStoryUserID] = useState("");
   const [detailedPost, setDetailedPost] = useState("");
   const [modalState, setModalState] = useState({
     isShareModalOpen: false,
     isFollowerModalOpen: false,
     isFollowingModalOpen: false,
     isVideoDetailOpen: false,
+    isStoryModalOpen: false,
   });
 
   console.log("authState****", authState);
@@ -237,6 +240,7 @@ function Page({ params }: any) {
     dispatch(getAllPostVideos());
     dispatch(getAllClipVideos());
     dispatch(getAllUsers());
+    dispatch(getCurrentUserStories(params));
   }, [postState.refresh]);
 
   console.log("profileInfoState****", profileInfoState);
@@ -584,7 +588,7 @@ function Page({ params }: any) {
                   handleVideoDetailOpen={handleVideoDetailOpen}
                 />
               ) : (
-                <StorySection data={popular} />
+                <StorySection data={storyState.currentUserStories} />
               )}
             </div>
           ) : (
@@ -634,6 +638,16 @@ function Page({ params }: any) {
           detailedPost={detailedPost}
           handleCloseModal={() => handleModalToggle("isVideoDetailOpen")}
           handlePageRefresh={() => handlePageRefresh()}
+        />
+      </Modal>
+
+      <Modal
+        isOpen={modalState.isStoryModalOpen}
+        handleClose={() => handleModalToggle("isStoryModalOpen")}
+      >
+        <ViewStory
+          storyUserID={storyUserID}
+          handleCloseModal={() => handleModalToggle("isStoryModalOpen")}
         />
       </Modal>
 

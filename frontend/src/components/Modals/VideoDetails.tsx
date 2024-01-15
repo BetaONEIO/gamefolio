@@ -10,8 +10,9 @@ import { toastError, toastSuccess } from "../Toast/Toast";
 import Modal from "./Modal";
 import DeletePost from "./DeletePost";
 import Report from "./Report";
-// import data from "@emoji-mart/data";
-// import Picker from "@emoji-mart/react";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
+import { useForm } from "react-hook-form";
 
 interface VideoDetailProps {
   handleCloseModal: () => void;
@@ -24,8 +25,7 @@ function VideoDetails({
   handleCloseModal,
   postID,
   detailedPost,
-}: // handlePageRefresh,
-VideoDetailProps) {
+}: VideoDetailProps) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const [comments, setComments] = useState("");
   const [emoji, setEmoji] = useState(false);
@@ -33,8 +33,13 @@ VideoDetailProps) {
     isPostDeleteOpen: false,
     isReportModalOpen: false,
   });
+  const { setValue, watch } = useForm({
+    defaultValues: {
+      message: "",
+    },
+  });
 
-  console.log("Detail: ", detailedPost);
+  // console.log("Detail: ", detailedPost);
 
   const handleCreateComment = async (postID: any, comment: any) => {
     const payload = {
@@ -99,7 +104,7 @@ VideoDetailProps) {
     postID?: any,
     detailedPost?: any
   ) => {
-    console.log(`Toggling modal ${modalName}`);
+    // console.log(`Toggling modal ${modalName}`);
     setModalState((prevState) => ({
       ...prevState,
       [modalName]: !prevState[modalName],
@@ -107,9 +112,6 @@ VideoDetailProps) {
   };
 
   const handleThreedotsClick = (postId: any) => {
-    console.log("authState._id:", authState._id);
-    console.log("detailedPost?.userID?._id:", detailedPost?.userID?._id);
-    // Call the appropriate modal based on conditions
     if (authState._id == detailedPost?.userID?._id) {
       handleModalToggle("isPostDeleteOpen", postId);
     } else {
@@ -122,26 +124,26 @@ VideoDetailProps) {
     backdropFilter: "blur(8px)",
   };
 
-  //   // toggle emoji
-  // const toggleEmoji = () => {
-  //   setEmoji(!emoji);
-  // };
-  // // toggle emoji
-  // const toggleModal = () => {
-  //   setEmoji(!emoji);
-  // };
+  // toggle emoji
+  const toggleEmoji = () => {
+    setEmoji(!emoji);
 
-  //   // handle emoji
-  // const handleEmojiSelect = (selectedEmoji: any) => {
-  //   // Get the current value of the message input field
-  //   const currentMessage = watch("message");
+    console.log("Emoji....: ", emoji);
+  };
 
-  //   // Append the selected emoji to the current message value
-  //   const updatedMessage = currentMessage + selectedEmoji;
+  console.log("Emoji: ", emoji);
 
-  //   // Set the updated message value to the input field using setValue
-  //   setValue("message", updatedMessage);
-  // };
+  // handle emoji
+  const handleEmojiSelect = (selectedEmoji: any) => {
+    // Get the current value of the message input field
+    const currentMessage = watch("message");
+
+    // Append the selected emoji to the current message value
+    const updatedMessage = currentMessage + selectedEmoji;
+
+    // Set the updated message value to the input field using setValue
+    setValue("message", updatedMessage);
+  };
 
   return (
     <>
@@ -324,22 +326,25 @@ VideoDetailProps) {
 
                 <div className="flex w-5/12 absolute bg-[#091619] bottom-12 sm:bottom-14 mx-2">
                   <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none">
+                    {/* <button onClick={toggleEmoji}> */}
                     <Image
                       src={SVG.Emoji}
                       alt="Profile avatar"
                       width={40}
                       height={40}
                     />
-                    {/* <button onClick={toggleEmoji}>😀</button>
-//             {emoji && (
-              <div className="absolute bottom-10 right-0">
-                <Picker
-                  data={data}
-                  onEmojiSelect={(data: any) => handleEmojiSelect(data.native)}
-                  previewPosition="none"
-                />
-              </div>
-            )} */}
+                    {/* </button> */}
+                    {emoji && (
+                      <div className="absolute bottom-10 right-0">
+                        <Picker
+                          data={data}
+                          onEmojiSelect={(data: any) =>
+                            handleEmojiSelect(data.native)
+                          }
+                          previewPosition="none"
+                        />
+                      </div>
+                    )}
                   </div>
                   <input
                     type="Post"

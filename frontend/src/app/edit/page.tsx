@@ -34,9 +34,11 @@ const Edit = () => {
       profilePicture: "",
     },
   });
+
   const sectionStyle = {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
   };
+
   const [modalState, setModalState] = useState({
     isDeleteModalOpen: false,
   });
@@ -57,7 +59,7 @@ const Edit = () => {
   };
 
   const onUpdateAccountType = (value: string) => {
-    setValue("accountType", value); // Set the value of accountType when the button is clicked
+    setValue("accountType", value);
   };
 
   const onUpdateProfilePicture = (value: string) => {
@@ -77,7 +79,7 @@ const Edit = () => {
     };
 
     const successCallback = (response: any) => {
-      console.log("response: ", response);
+      // console.log("response: ", response);
       toastSuccess(response);
     };
 
@@ -113,7 +115,7 @@ const Edit = () => {
         onUpdateProfilePicture(response.data.imageURL);
         toastSuccess(response.data.message);
       } catch (error) {
-        console.error("Error uploading file:", error);
+        // console.error("Error uploading file:", error);
         toastError(error);
       }
     }

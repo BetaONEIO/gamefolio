@@ -35,13 +35,9 @@ const popular = [
 ];
 
 interface MyVideosSectionProps {
-  data: Array<any>;
   authState: any; // Add authState as a prop
   postState: any; // Add postState as a prop
   handleVideoDetailOpen: (postID: any, detailedPost: any) => void;
-}
-interface VideoState {
-  isMuted?: boolean;
 }
 
 const MyVideosSection: React.FC<MyVideosSectionProps> = ({
@@ -49,9 +45,6 @@ const MyVideosSection: React.FC<MyVideosSectionProps> = ({
   postState,
   handleVideoDetailOpen,
 }) => {
-  const [videoStates, setVideoStates] = useState<{ [key: string]: VideoState }>(
-    {}
-  );
   const userVideos = postState.videos.filter(
     (post: any) => post?.userID?._id === authState._id
   );
@@ -59,9 +52,6 @@ const MyVideosSection: React.FC<MyVideosSectionProps> = ({
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
       {userVideos.map((item: any) => {
-        const videoState = videoStates[item._id] || {
-          isMuted: false,
-        };
         return (
           <div key={item._id} className="relative">
             <video
@@ -74,11 +64,7 @@ const MyVideosSection: React.FC<MyVideosSectionProps> = ({
             />
             <div className="absolute bottom-1 right-2">
               <button className="cursor-pointer hover:opacity-80">
-                {videoState.isMuted ? (
-                  <Image src={SVG.UnMute} alt="Unmute" width={40} height={40} />
-                ) : (
-                  <Image src={SVG.Mute} alt="Mute" width={40} height={40} />
-                )}
+                <Image src={SVG.Mute} alt="Mute" width={40} height={40} />
               </button>
             </div>
           </div>
@@ -255,12 +241,6 @@ function Page() {
                       alt="Copy Username"
                     />
                   </div>
-                  {/* <div
-                    className="cursor-pointer hover:opacity-80"
-                    // onClick={() => handleModalToggle("isShareModalOpen")}
-                  >
-                    <Image src={SVG.Share} width={16} height={16} alt="Share" />
-                  </div> */}
                 </div>
                 <span className="text-gray-400">{authState?.bio}</span>
 
@@ -402,7 +382,6 @@ function Page() {
             {/* Content Section */}
             {selectedSection === "videos" ? (
               <MyVideosSection
-                data={popular}
                 authState={authState}
                 postState={postState}
                 handleVideoDetailOpen={handleVideoDetailOpen}
