@@ -10,7 +10,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import { dispatch } from "..";
 import { PATH } from "@/constants/endpoints";
 
-
 export type InitialState = {
   error: null;
   loading: boolean;
@@ -172,12 +171,9 @@ export function getTrendingPosts() {
   };
 }
 
-
 export function getFollowingPostOnly(params: ActionParams) {
   return async () => {
-    const {
-      payload,
-    } = params;
+    const { payload } = params;
 
     console.log("getFollowingPost: ", payload);
 
@@ -194,8 +190,6 @@ export function getFollowingPostOnly(params: ActionParams) {
       console.log(response);
 
       dispatch(slice.actions.getFollowingPost(response.data));
-
-
     } catch (error) {
       console.log("error", error);
     } finally {
@@ -203,7 +197,6 @@ export function getFollowingPostOnly(params: ActionParams) {
     }
   };
 }
-
 
 export function deleteVideo(params: ActionParams) {
   return async () => {
@@ -445,7 +438,7 @@ export function logout(params: ActionParams) {
     }
   };
 }
-// Bookmark 
+// Bookmark
 export function createBookmark(params: ActionParams) {
   return async () => {
     const {
@@ -477,7 +470,7 @@ export function createBookmark(params: ActionParams) {
 }
 export function getUserBookmark(params: ActionParams) {
   return async () => {
-    const { errorCallback = () => {},payload} = params;
+    const { errorCallback = () => {}, payload } = params;
     dispatch(slice.actions.startLoading());
 
     const options: APIParams = {
@@ -500,66 +493,28 @@ export function getUserBookmark(params: ActionParams) {
   };
 }
 
-
-export function resetPassword(params: ActionParams) {
+export function removeUserBookmark(params: ActionParams) {
   return async () => {
     const {
       successCallback = () => {},
       errorCallback = () => {},
       payload,
-      token,
     } = params;
     dispatch(slice.actions.startLoading());
 
     const options: APIParams = {
-      method: "POST",
-      endpoint: `${PATH.auth.resetPasswordByVerfToken}/${token}`,
+      method: "DELETE",
+      endpoint: PATH.bookmark.remove,
       payload: payload,
       isToken: false,
     };
+
     try {
       const [ok, response] = await API(options);
-      // console.log(response);
       if (!ok || !response) return errorCallback(response.message);
-
       successCallback(response.message);
     } catch (error) {
-    } finally {
-      dispatch(slice.actions.stopLoading());
-    }
-  };
-}
-
-
-
-export function onVerifyLink(params: ActionParams) {
-  return async () => {
-    const {
-      successCallback = () => {},
-      errorCallback = () => {},
-      payload,
-    } = params;
-
-    dispatch(slice.actions.startLoading());
-
-    const options: APIParams = {
-      method: "POST",
-      endpoint: PATH.auth.verifyEmail,
-      payload: payload,
-      isToken: false,
-    };
-    try {
-      const [ok, response] = await API(options);
-      if (!ok || !response) return errorCallback(response.message);
-
-      successCallback(response.messgae);
-
-      setToLocal("@token", response.token);
-      setToLocal("@userData", response.data);
-      dispatch(slice.actions.getUser(response.data));
-      dispatch(slice.actions.getToken(response.token));
-    } catch (error) {
-      errorCallback();
+      console.log(error);
     } finally {
       dispatch(slice.actions.stopLoading());
     }

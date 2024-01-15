@@ -7,7 +7,11 @@ import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
-import { getAllPostVideos, getUserBookmark } from "@/store/slices/postSlice";
+import {
+  getAllPostVideos,
+  getUserBookmark,
+  removeUserBookmark,
+} from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import { copyToClipboard } from "@/utils/helpers";
 import { ToastContainer } from "react-toastify";
@@ -19,6 +23,7 @@ import Modal from "@/components/Modals/Modal";
 import MoreOptions from "@/components/Modals/MoreOptions";
 import CurrentUserStories from "@/components/story/CurrentUserStories";
 import Loading from "./loading";
+import { toastError, toastSuccess } from "@/components/Toast/Toast";
 
 const popular = [
   { id: 1, IMAGE: IMAGES.Popular },
@@ -113,6 +118,32 @@ interface MyBookmarkSectionProps {
 }
 
 const MyBookmarkSection: React.FC<MyBookmarkSectionProps> = ({ data }) => {
+  const authState = useSelector((state: any) => state.auth.userData) || [];
+  const handleRemoveBookmark = async (postID: any) => {
+    const payload = {
+      authUserID: authState._id,
+      userID: data[0]?.bookmarkInfo?.userID,
+      postID: postID,
+    };
+
+    const successCallback = (response: any) => {
+      // handlePageRefresh();
+      toastSuccess(response);
+    };
+
+    const errorCallback = (error: string) => {
+      toastError(error);
+    };
+
+    const params = {
+      payload,
+      successCallback,
+      errorCallback,
+    };
+
+    dispatch(removeUserBookmark(params));
+  };
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
       {data?.map((bookmarkPost) => (
@@ -133,9 +164,22 @@ const MyBookmarkSection: React.FC<MyBookmarkSectionProps> = ({ data }) => {
             width={24}
             height={24}
             sizes="100vw"
+            onClick={() => handleRemoveBookmark(bookmarkPost.post._id)}
           />
         </div>
       ))}
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </div>
   );
 };

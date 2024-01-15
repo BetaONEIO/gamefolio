@@ -85,5 +85,6 @@ export const PATH = {
   bookmark: {
     create: "post/bookmark/create",
     get: "post/bookmark/get",
+    remove: "post/bookmark/remove",
   },
 };
