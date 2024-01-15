@@ -55,7 +55,7 @@ function AttachmentView({ handleCloseModal }: AttachmentViewProps) {
                 </div>
               </div>
 
-              <div className="p-4 sm:mb-5 ">
+              <div className="p-4 sm:mb-5">
                 <div className="flex flex-col items-center">
                   <Image
                     className="my-2"

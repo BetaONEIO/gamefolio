@@ -1,6 +1,6 @@
+import Image from "next/image";
 import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
-import Image from "next/image";
 
 const ForgetPassword = () => {
   return (

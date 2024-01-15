@@ -24,8 +24,6 @@ function ExploreUser() {
 
   if (userState.loading) return <Loading />;
 
-  // console.log("userState:: ", userState);
-
   return (
     <div className="flow-root w-96 sm:1/3 mx-auto">
       <div className="divide-y divide-gray-700">

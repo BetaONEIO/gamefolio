@@ -50,18 +50,6 @@ function Explore() {
 
   console.log("postState", postState);
 
-  // Function to toggle play/pause on video click
-  // const handleVideoClick = (
-  //   event: React.MouseEvent<HTMLVideoElement, MouseEvent>
-  // ) => {
-  //   const video = event.currentTarget;
-  //   if (video.paused) {
-  //     video.play();
-  //   } else {
-  //     video.pause();
-  //   }
-  // };
-
   const sectionStyle = {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
   };

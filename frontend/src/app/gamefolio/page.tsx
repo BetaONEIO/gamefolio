@@ -1,4 +1,5 @@
 "use client";
+import React, { Suspense, useEffect, useState } from "react";
 import { SVG } from "@/assets/SVG";
 import Layout from "@/components/CustomLayout/layout";
 import Modal from "@/components/Modals/Modal";
@@ -10,7 +11,6 @@ import { getAllPostVideos, refreshPage } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
 import Link from "next/link";
-import React, { Suspense, useEffect, useState } from "react";
 import Loading from "./loading";
 
 function Gamefolio() {

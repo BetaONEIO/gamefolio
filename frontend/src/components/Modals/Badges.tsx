@@ -51,7 +51,7 @@ function Badges({ handleCloseModal }: BadgesProps) {
         className="fixed inset-0 flex items-center justify-center z-50"
       >
         <div className="fixed inset-0 flex items-center z-50">
-          <div className="modal-container sm:w-80 w-[340px] mx-auto lg:w-[340px] z-50 overflow-y-auto no-scrollbar border border-[#586769]">
+          <div className="modal-container sm:w-80 w-[340px] mx-auto lg:w-[340px] z-50 no-scrollbar border border-[#586769] overflow-hidden">
             <div className="relative text-center rounded-lg bg-[#091619]">
               <button
                 type="button"

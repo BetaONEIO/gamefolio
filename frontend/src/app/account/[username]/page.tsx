@@ -56,12 +56,6 @@ const MyVideosSection: React.FC<MyVideosSectionProps> = ({
   profileInfoState,
   handleVideoDetailOpen,
 }) => {
-  const [videoStates, setVideoStates] = useState<{ [key: string]: VideoState }>(
-    {}
-  );
-  console.log("authState", authState);
-  console.log("postState", postState);
-  console.log("profileInfoState...", profileInfoState);
   const userVideos = postState.videos.filter(
     (post: any) =>
       post?.userID?.username === profileInfoState.profileUserInfo.username
@@ -105,15 +99,11 @@ const ClipsSection: React.FC<ClipsProps> = ({
   profileInfoState,
   handleVideoDetailOpen,
 }) => {
-  console.log("authState.....$", authState);
-  console.log("postState....$", clipState);
-  console.log("profileInfoState..$.", profileInfoState);
   const userVideos = clipState.videos.filter(
     (post: any) =>
       post?.userID?.username === profileInfoState.profileUserInfo.username
   );
 
-  console.log("userVideos", userVideos);
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
       {userVideos.map((clip: any) => (
@@ -126,7 +116,7 @@ const ClipsSection: React.FC<ClipsProps> = ({
             src={clip.video}
             width={0}
             height={0}
-            className="w-full h-52 md:h-40  rounded-xl object-cover hover:opacity-80"
+            className="w-full h-52 md:h-40 rounded-xl object-cover hover:opacity-80"
           />
           <Image
             className="absolute bottom-2 right-2 hover:opacity-70"
@@ -231,8 +221,6 @@ function Page({ params }: any) {
 
   console.log("authState****", authState);
 
-  // if (profileInfoState.loading) return <Loading />;
-
   const router = useRouter();
 
   const payload = {
@@ -255,7 +243,6 @@ function Page({ params }: any) {
   console.log("isPrivateAccount****", isPrivateAccount);
 
   useEffect(() => {
-    // Assuming there's a property like accountType in the profileInfoState
     setIsPrivateAccount(
       profileInfoState?.profileUserInfo?.accountType === "private"
     );
@@ -281,44 +268,10 @@ function Page({ params }: any) {
     throw new Error("Function not implemented.");
   }
 
-  // const handleMessage = async () => {
-  //   const payload = {
-  //     roomID: generateUniqueRoomId(),
-  //     sender: authState._id,
-  //     receiver: profileInfoState?.profileUserInfo?._id,
-  //     content: "Hello",
-  //     isSocket: false,
-  //   };
-
-  //   const successCallback = (response: any) => {
-  //     toastSuccess(response);
-  //     setTimeout(() => {
-  //       router.push("/chat");
-  //     }, 4000);
-  //   };
-
-  //   const errorCallback = (error: string) => {
-  //     toastError(error);
-  //   };
-
-  //   const params = {
-  //     payload,
-  //     successCallback,
-  //     errorCallback,
-  //   };
-
-  //   dispatch(initChat(params));
-  // };
-
   const userVideos = postState.videos.filter(
     (post: any) =>
       post?.userID?.username === profileInfoState.profileUserInfo.username
   );
-
-  // const mutualFollowers = profileInfoState?.profileUserInfo?.follower?.filter(
-  //   (follower: any) =>
-  //     authState?.following?.find((following: any) => following === follower)
-  // );
 
   const handleFollowUser = async (userId: any) => {
     const payload = {

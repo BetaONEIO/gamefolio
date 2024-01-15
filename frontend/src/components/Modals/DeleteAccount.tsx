@@ -8,7 +8,7 @@ import { ROUTES } from "@/labels/routes";
 import { useRouter } from "next/navigation";
 
 interface DeleteAccountProps {
-  handleCloseModal: () => void; // Define handleCloseModal as a function
+  handleCloseModal: () => void;
 }
 
 function DeleteAccount({ handleCloseModal }: DeleteAccountProps) {
@@ -27,6 +27,7 @@ function DeleteAccount({ handleCloseModal }: DeleteAccountProps) {
     removeFromLocal("@userData");
     router.replace(ROUTES.login);
   };
+
   // handleDeactivateAccount
   const handleDeactivateAccount = (data: any) => {
     const payload = {

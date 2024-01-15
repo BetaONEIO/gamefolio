@@ -17,6 +17,7 @@ function DeletePost({
   handlePageRefresh,
 }: DeletePostProps) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
+
   const myBGStyleModal = {
     backgroundColor: "rgba(0, 0, 0, 0.6)",
     backdropFilter: "blur(8px)",
@@ -28,10 +29,10 @@ function DeletePost({
       postID: postID,
     };
 
-    console.log("My Payload DeletePost: >><> ", payload);
+    // console.log("My Payload DeletePost: >><> ", payload);
 
     const successCallback = (response: any) => {
-      console.log("delete post ", response);
+      // console.log("delete post ", response);
       handlePageRefresh();
       toastSuccess(response);
       handleCloseModal();

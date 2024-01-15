@@ -30,8 +30,6 @@ const Portfolio = () => {
     isBadgeModalOpen: false,
   });
 
-  console.log("authState", authState);
-
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
   };
@@ -42,8 +40,6 @@ const Portfolio = () => {
     dispatch(userSession(params));
     dispatch(getAllPostVideos());
   }, [postState.refresh]);
-
-  console.log("postState", postState);
 
   const handleModalToggle = (modalName: keyof typeof modalState) => {
     setModalState((prevState) => ({

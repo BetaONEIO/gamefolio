@@ -19,7 +19,6 @@ const Page = () => {
     email: "",
     password: "",
   });
-  // console.log("####123", authState);
 
   const { email, password } = formData;
 

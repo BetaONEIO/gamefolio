@@ -15,19 +15,11 @@ interface BlockUserProps {
 function BlockUser({ handleCloseModal }: BlockUserProps) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
 
-  const myBGStyleModal = {
-    backgroundColor: "rgba(0, 0, 0, 0.6)",
-    backdropFilter: "blur(8px)",
-  };
-
   const handleRemoveFollow = async (unblockedUserId: any) => {
     const payload = {
       userId: authState._id,
       unblockedUserId: unblockedUserId,
     };
-
-    // console.log("authState._id:", authState._id);
-    // console.log("followerID:", unblockedUserId);
 
     const successCallback = (response: any) => {
       toastSuccess(response.message);
@@ -44,6 +36,11 @@ function BlockUser({ handleCloseModal }: BlockUserProps) {
     };
 
     dispatch(unBlockUser(params));
+  };
+
+  const myBGStyleModal = {
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    backdropFilter: "blur(8px)",
   };
 
   return (
