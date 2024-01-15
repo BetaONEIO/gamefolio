@@ -596,6 +596,51 @@ const getUserBookmark = async (req, res) => {
     });
   }
 };
+const removeBookmark = async (req, res) => {
+  try {
+    const { postID, userID, authUserID } = req.body;
+
+    // Check if the authenticated user matches the user who bookmarked the post
+    if (authUserID !== userID) {
+      return res.status(403).json({
+        error: "Permission denied. You can't perform this action.",
+        message: "Permission denied. You can't perform this action.",
+      });
+    }
+
+    const post = await Posts.findById(postID);
+    if (!post) {
+      return res.status(404).json({ error: "Post not found." });
+    }
+
+    // Check if the user has bookmarked the post
+    const existingBookmarkIndex = post.bookmarks.findIndex(
+      (bookmark) => bookmark.userID.toString() === userID.toString()
+    );
+
+    if (existingBookmarkIndex === -1) {
+      return res.status(400).json({
+        error: "User has not bookmarked this post.",
+        message: "User has not bookmarked this post.",
+      });
+    }
+
+    // Remove the bookmark
+    post.bookmarks.splice(existingBookmarkIndex, 1);
+    const updatedPost = await post.save();
+
+    res.status(200).json({
+      data: updatedPost,
+      message: "Successfully Removed Bookmark",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Could not remove the Bookmark.",
+      message: "Could not remove the Bookmark.",
+    });
+  }
+};
 
 module.exports = {
   postVideo,
@@ -619,4 +664,5 @@ module.exports = {
   updateShare,
   addBookmark,
   getUserBookmark,
+  removeBookmark,
 };

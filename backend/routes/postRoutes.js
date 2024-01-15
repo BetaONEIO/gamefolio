@@ -64,5 +64,6 @@ router.delete("/share/delete", postController.deleteShare);
 
 router.post("/bookmark/create", postController.addBookmark);
 router.post("/bookmark/get", postController.getUserBookmark);
+router.delete("/bookmark/remove", postController.removeBookmark);
 
 module.exports = router;
