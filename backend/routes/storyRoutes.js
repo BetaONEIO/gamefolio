@@ -14,6 +14,9 @@ router.get("/story/get", storyController.getAllStories);
 // Get all following stories
 router.post("/story/following/get", storyController.getFollowingStories);
 
+// Get all current user stories
+router.post("/story/user/get", storyController.getCurrentUserStories);
+
 // Delete a story post by ID
 router.post("/story/delete", storyController.deletePost);
 

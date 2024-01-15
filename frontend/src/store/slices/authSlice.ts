@@ -138,6 +138,9 @@ export function login(params: ActionParams) {
     }
   };
 }
+
+
+
 export function createPreferences(params: ActionParams) {
   const {
     successCallback = () => {},
@@ -324,7 +327,7 @@ export function resetPassword(params: ActionParams) {
   };
 }
 
-export function forgotPassword(params: ActionParams) {
+export function forgotPasswordOTP(params: ActionParams) {
   return async () => {
     const {
       successCallback = () => {},
@@ -332,20 +335,44 @@ export function forgotPassword(params: ActionParams) {
       payload,
     } = params;
 
-    console.log(payload);
     dispatch(slice.actions.startLoading());
     const options: APIParams = {
       method: "POST",
-      endpoint: PATH.auth.forgotPassword,
+      endpoint: PATH.auth.sendForgotPasswordOTP,
       payload: payload,
       isToken: false,
     };
     try {
       const [ok, response] = await API(options);
-      // console.log(response);
       if (!ok || !response) return errorCallback(response.message);
+      successCallback(response.message);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(slice.actions.stopLoading());
+    }
+  };
+}
+export function verifyForgotPasswordOTP(params: ActionParams) {
+  return async () => {
+    const {
+      successCallback = () => {},
+      errorCallback = () => {},
+      payload,
+    } = params;
 
-      successCallback(response);
+    dispatch(slice.actions.startLoading());
+    const options: APIParams = {
+      method: "POST",
+      endpoint: PATH.auth.verifyForgotPasswordOTP,
+      payload: payload,
+      isToken: false,
+    };
+    try {
+      const [ok, response] = await API(options);
+      console.log("response: ",response.message);
+      if (!ok || !response) return errorCallback(response.message);
+      successCallback(response.message);
     } catch (error) {
       console.log(error);
     } finally {

@@ -8,6 +8,9 @@ router.post("/video/create", postController.postVideo);
 // Get all posts
 router.get("/video/get", postController.getAllPostVideos);
 
+// Get trending posts
+router.get("/video/trending/get", postController.getTrendingPosts);
+
 // Get all current user following post
 router.post("/video/following/get", postController.getFollowingPosts);
 

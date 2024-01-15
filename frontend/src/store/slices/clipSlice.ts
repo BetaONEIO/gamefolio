@@ -406,35 +406,6 @@ export function resetPassword(params: ActionParams) {
   };
 }
 
-export function forgotPassword(params: ActionParams) {
-  return async () => {
-    const {
-      successCallback = () => {},
-      errorCallback = () => {},
-      payload,
-    } = params;
-
-    console.log(payload);
-    dispatch(slice.actions.startLoading());
-    const options: APIParams = {
-      method: "POST",
-      endpoint: PATH.auth.forgotPassword,
-      payload: payload,
-      isToken: false,
-    };
-    try {
-      const [ok, response] = await API(options);
-      // console.log(response);
-      if (!ok || !response) return errorCallback(response.message);
-
-      successCallback(response);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      dispatch(slice.actions.stopLoading());
-    }
-  };
-}
 
 export function onVerifyLink(params: ActionParams) {
   return async () => {

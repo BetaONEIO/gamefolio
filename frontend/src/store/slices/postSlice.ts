@@ -19,6 +19,7 @@ export type InitialState = {
   userCredits: Credit | null;
   gallery: ImageResponse[] | null;
   videos: Array<any>;
+  trendingVideos: Array<any>;
   followingVideos: Array<any>;
   bookmarks: Array<any>;
   allMusic: Array<any>;
@@ -33,6 +34,7 @@ const initialState: InitialState = {
   userCredits: null,
   gallery: null,
   videos: [],
+  trendingVideos: [],
   followingVideos: [],
   bookmarks: [],
   allMusic: [],
@@ -69,6 +71,9 @@ export const slice = createSlice({
     },
     getAllPostVideos(state, action) {
       state.videos = action.payload;
+    },
+    getTrendingPosts(state, action) {
+      state.trendingVideos = action.payload;
     },
     getFollowingPost(state, action) {
       state.followingVideos = action.payload;
@@ -138,6 +143,27 @@ export function getAllPostVideos() {
       const [ok, response] = await API(options);
 
       dispatch(slice.actions.getAllPostVideos(response.data));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(slice.actions.stopLoading());
+    }
+  };
+}
+export function getTrendingPosts() {
+  return async () => {
+    dispatch(slice.actions.startLoading());
+
+    const options: APIParams = {
+      method: "GET",
+      endpoint: PATH.post.getTrendingPosts,
+      payload: {},
+      isToken: false,
+    };
+
+    try {
+      const [ok, response] = await API(options);
+      dispatch(slice.actions.getTrendingPosts(response.data));
     } catch (error) {
       console.log(error);
     } finally {
@@ -504,35 +530,7 @@ export function resetPassword(params: ActionParams) {
   };
 }
 
-export function forgotPassword(params: ActionParams) {
-  return async () => {
-    const {
-      successCallback = () => {},
-      errorCallback = () => {},
-      payload,
-    } = params;
 
-    console.log(payload);
-    dispatch(slice.actions.startLoading());
-    const options: APIParams = {
-      method: "POST",
-      endpoint: PATH.auth.forgotPassword,
-      payload: payload,
-      isToken: false,
-    };
-    try {
-      const [ok, response] = await API(options);
-      // console.log(response);
-      if (!ok || !response) return errorCallback(response.message);
-
-      successCallback(response);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      dispatch(slice.actions.stopLoading());
-    }
-  };
-}
 
 export function onVerifyLink(params: ActionParams) {
   return async () => {

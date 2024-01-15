@@ -19,6 +19,7 @@ export type InitialState = {
   gallery: ImageResponse[] | null;
   stories: Array<any>;
   followingStories: Array<any>;
+  currentUserStories: Array<any>;
   userStories: Array<any>;
   allMusic: Array<any>;
   refresh: boolean;
@@ -33,6 +34,7 @@ const initialState: InitialState = {
   gallery: null,
   stories: [],
   followingStories:[],
+  currentUserStories: [],
   userStories: [],
   allMusic: [],
   refresh: false,
@@ -71,6 +73,9 @@ export const slice = createSlice({
     },
     getFollowingStory(state, action) {
       state.followingStories = action.payload;
+    },
+    getCurrentUserStory(state, action) {
+      state.currentUserStories = action.payload;
     },
     getUserStory(state, action) {
       state.userStories = action.payload;
@@ -187,6 +192,30 @@ export function getFollowingStories(params: ActionParams) {
       const [ok, response] = await API(options);
       console.log("following stories res: ", response);
       dispatch(slice.actions.getFollowingStory(response.data));
+    } catch (error) {
+      console.log("error", error);
+    } finally {
+      dispatch(slice.actions.stopLoading());
+    }
+  };
+}
+export function getCurrentUserStories(params: ActionParams) {
+  return async () => {
+    const {
+      payload,
+    } = params;
+
+    dispatch(slice.actions.startLoading());
+
+    const options: APIParams = {
+      method: "POST",
+      endpoint: PATH.story.getCurrentUserStories,
+      payload: payload,
+      isToken: false,
+    };
+    try {
+      const [ok, response] = await API(options);
+      dispatch(slice.actions.getCurrentUserStory(response.data));
     } catch (error) {
       console.log("error", error);
     } finally {
@@ -466,35 +495,7 @@ export function resetPassword(params: ActionParams) {
   };
 }
 
-export function forgotPassword(params: ActionParams) {
-  return async () => {
-    const {
-      successCallback = () => {},
-      errorCallback = () => {},
-      payload,
-    } = params;
 
-    console.log(payload);
-    dispatch(slice.actions.startLoading());
-    const options: APIParams = {
-      method: "POST",
-      endpoint: PATH.auth.forgotPassword,
-      payload: payload,
-      isToken: false,
-    };
-    try {
-      const [ok, response] = await API(options);
-      // console.log(response);
-      if (!ok || !response) return errorCallback(response.message);
-
-      successCallback(response);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      dispatch(slice.actions.stopLoading());
-    }
-  };
-}
 
 export function onVerifyLink(params: ActionParams) {
   return async () => {
