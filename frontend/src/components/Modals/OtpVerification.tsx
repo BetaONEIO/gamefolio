@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import { toastError, toastSuccess } from "../Toast/Toast";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface ChangePasswordProps {
   email: string;
@@ -27,6 +28,8 @@ interface FormData {
 function OtpVerification({ email, handleCloseModal }: ChangePasswordProps) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const [otp, setOtp] = useState("");
+
+  const router = useRouter();
 
   console.log("OTP", otp);
 
@@ -52,6 +55,9 @@ function OtpVerification({ email, handleCloseModal }: ChangePasswordProps) {
 
     const successCallback = (response: any) => {
       toastSuccess(response);
+      setTimeout(() => {
+        router.push("/reset-password"), 3000;
+      });
     };
 
     const errorCallback = (error: string) => {

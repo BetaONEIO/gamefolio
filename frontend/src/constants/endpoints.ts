@@ -5,6 +5,7 @@ export const PATH = {
     loginTwitter: "success",
     sendForgotPasswordOTP: "user/forgot-password/otp",
     verifyForgotPasswordOTP: "user/forgot-password/otp/verify",
+    resetPassword: "user/reset-password",
     verifyEmail: "auth/verify-email",
     resetPasswordByVerfToken: "auth/reset-password/",
     logout: "auth/logout",

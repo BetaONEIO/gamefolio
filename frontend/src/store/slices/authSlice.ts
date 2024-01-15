@@ -17,6 +17,7 @@ export type InitialState = {
   token: string;
   userCredits: Credit | null;
   gallery: ImageResponse[] | null;
+  forgetPasswordRequest: Object;
 };
 
 const initialState: InitialState = {
@@ -26,6 +27,7 @@ const initialState: InitialState = {
   token: "",
   userCredits: null,
   gallery: null,
+  forgetPasswordRequest: {},
 };
 
 export const slice = createSlice({
@@ -55,6 +57,9 @@ export const slice = createSlice({
     },
     getGallery(state, action) {
       state.gallery = action.payload;
+    },
+    setForgetState(state, action) {
+      state.forgetPasswordRequest = action.payload;
     },
   },
 });
@@ -298,35 +303,6 @@ export function logout(params: ActionParams) {
   };
 }
 
-export function resetPassword(params: ActionParams) {
-  return async () => {
-    const {
-      successCallback = () => {},
-      errorCallback = () => {},
-      payload,
-      token,
-    } = params;
-    dispatch(slice.actions.startLoading());
-
-    const options: APIParams = {
-      method: "POST",
-      endpoint: `${PATH.auth.resetPasswordByVerfToken}/${token}`,
-      payload: payload,
-      isToken: false,
-    };
-    try {
-      const [ok, response] = await API(options);
-      // console.log(response);
-      if (!ok || !response) return errorCallback(response.message);
-
-      successCallback(response.message);
-    } catch (error) {
-    } finally {
-      dispatch(slice.actions.stopLoading());
-    }
-  };
-}
-
 export function forgotPasswordOTP(params: ActionParams) {
   return async () => {
     const {
@@ -373,8 +349,42 @@ export function verifyForgotPasswordOTP(params: ActionParams) {
       console.log("response: ",response.message);
       if (!ok || !response) return errorCallback(response.message);
       successCallback(response.message);
+      dispatch(slice.actions.setForgetState(payload));
     } catch (error) {
       console.log(error);
+    } finally {
+      dispatch(slice.actions.stopLoading());
+    }
+  };
+}
+
+export function resetPasswordRequest(params: ActionParams) {
+  return async () => {
+    const {
+      successCallback = () => {},
+      errorCallback = () => {},
+      payload,
+    } = params;
+
+    dispatch(slice.actions.startLoading());
+    const options: APIParams = {
+      method: "POST",
+      endpoint: PATH.auth.resetPassword,
+      payload: payload,
+      isToken: false,
+    };
+    try {
+      const [ok, response] = await API(options);
+      if (!ok || !response)  {    
+      dispatch(slice.actions.setForgetState({}));
+      return errorCallback(response.message);
+      }
+    
+      successCallback(response.message);
+      dispatch(slice.actions.setForgetState({}));
+    } catch (error) {
+      console.log(error);
+      dispatch(slice.actions.setForgetState({}));
     } finally {
       dispatch(slice.actions.stopLoading());
     }

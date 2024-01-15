@@ -70,7 +70,7 @@ const sendEmail = (user, otp) => {
   });
 };
 
-const sendForgetOtpEmail = (email, otp) => {
+const sendForgotOtpEmail = (email, otp) => {
   return new Promise((resolve, reject) => {
     let transporter = nodemailer.createTransport({
       host: BREVO_HOST,
@@ -138,4 +138,4 @@ const sendForgetOtpEmail = (email, otp) => {
   });
 };
 
-module.exports = { sendEmail, sendForgetOtpEmail };
+module.exports = { sendEmail, sendForgotOtpEmail };

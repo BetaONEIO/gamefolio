@@ -32,14 +32,30 @@ export const validateForgetPassword = ({ email = "" }) => {
   return "";
 };
 
-export const validateResetPassword = ({
-  new_password = "",
-  confirm_password = "",
-}) => {
-  if (REGEX.password.test(new_password) === false)
-    return ERRORS.passwordValidation;
 
-  if (confirm_password !== new_password) return ERRORS.enterConfirmPassword;
+export const validateResetPassword = ({
+  password = "",
+  confirmPassword = "",
+}) => {
+  if (REGEX.password.test(password) === false) {
+    return ERRORS.passwordValidation;
+  }
+
+  // Check if password is empty
+  if (!password.trim()) {
+    return ERRORS.emptyPassword;
+  }
+
+  // Check if confirmPassword is empty
+  if (!confirmPassword.trim()) {
+    return ERRORS.emptyPassword;
+  }
+
+  // Check if confirmPassword matches password
+  if (confirmPassword !== password) {
+    return ERRORS.enterConfirmPassword;
+  }
 
   return "";
 };
+

@@ -3,7 +3,7 @@ const User = require("../models/Users.js");
 const jwt = require("jsonwebtoken");
 const generateToken = require("../utils/generateToken.js");
 const generateOTP = require("../utils/generateOtp.js");
-const { sendEmail, sendForgetOtpEmail } = require("../utils/sendEmail.js");
+const { sendEmail, sendForgotOtpEmail } = require("../utils/sendEmail.js");
 
 const registerUser = asyncHandler(async (req, res) => {
   const { name, username, email, password } = req.body;
@@ -158,6 +158,7 @@ const verifyEmailOTP = asyncHandler(async (req, res) => {
   }
 });
 
+// Forgot password controllers
 const sendForgotPasswordOTP = asyncHandler(async (req, res) => {
   try {
     const { email } = req.body;
@@ -169,7 +170,7 @@ const sendForgotPasswordOTP = asyncHandler(async (req, res) => {
     // Check if user exists and has signupMethod as 'email'
     if (user && user.signupMethod === "email") {
       const otp = generateOTP(6);
-      const emailSent = await sendForgetOtpEmail(email, otp);
+      const emailSent = await sendForgotOtpEmail(email, otp);
       user.forgotOTP = otp;
       await user.save();
 
@@ -229,6 +230,57 @@ const verifyForgetPasswordOTP = asyncHandler(async (req, res) => {
     }
   } catch (error) {
     console.error("Error in verifyForgetPasswordOtp:", error);
+    res
+      .status(500)
+      .json({ message: "Internal server error. Please try again later." });
+  }
+});
+
+const resetPassword = asyncHandler(async (req, res) => {
+  try {
+    const { email, otp, password, confirmPassword } = req.body;
+
+    console.log(
+      "Received request to change password with email and OTP:",
+      email,
+      otp
+    );
+
+    // Check if user with the provided email exists in the database
+    const user = await User.findOne({ email: email });
+
+    // Check if user exists and has signupMethod as 'email'
+    if (user && user.signupMethod === "email") {
+      // Check if the provided OTP matches the stored OTP
+      if (otp === user.forgotOTP) {
+        // Verify that the new password matches the confirmed password
+        if (password === confirmPassword) {
+          // Update the password and set forgotOTP to null
+          user.password = password;
+          user.forgotOTP = null;
+
+          // Save the updated user
+          await user.save();
+
+          res.json({ message: "Password changed successfully." });
+        } else {
+          res
+            .status(400)
+            .json({ message: "Password and confirm password do not match." });
+        }
+      } else {
+        res
+          .status(401)
+          .json({ message: "Invalid OTP. Please check and try again." });
+      }
+    } else {
+      res.status(404).json({
+        message:
+          "Invalid email or signup method. Make sure you signed up with an email.",
+      });
+    }
+  } catch (error) {
+    console.error("Error in changePassword:", error);
     res
       .status(500)
       .json({ message: "Internal server error. Please try again later." });
@@ -786,6 +838,7 @@ module.exports = {
   verifyEmailOTP,
   sendForgotPasswordOTP,
   verifyForgetPasswordOTP,
+  resetPassword,
   addPreferences,
   addFavoriteGames,
   report,
