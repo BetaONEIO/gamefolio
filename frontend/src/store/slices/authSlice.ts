@@ -338,7 +338,7 @@ export function forgotPasswordOTP(params: ActionParams) {
     dispatch(slice.actions.startLoading());
     const options: APIParams = {
       method: "POST",
-      endpoint: PATH.auth.forgotPasswordOTP,
+      endpoint: PATH.auth.sendForgotPasswordOTP,
       payload: payload,
       isToken: false,
     };

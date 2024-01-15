@@ -3,7 +3,7 @@ export const PATH = {
     register: "user/signup",
     login: "user/signin",
     loginTwitter: "success",
-    forgotPasswordOTP: "user/forgot-password/otp",
+    sendForgotPasswordOTP: "user/forgot-password/otp",
     verifyForgotPasswordOTP: "user/forgot-password/otp/verify",
     verifyEmail: "auth/verify-email",
     resetPasswordByVerfToken: "auth/reset-password/",
