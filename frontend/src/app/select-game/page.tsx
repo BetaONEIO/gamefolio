@@ -55,7 +55,6 @@ const SelectGame = () => {
       return;
     }
     const successCallback = (response: any) => {
-      console.log("response: sgame:  ", response);
       toastSuccess(response);
       setTimeout(() => {
         router.push(ROUTES.main);

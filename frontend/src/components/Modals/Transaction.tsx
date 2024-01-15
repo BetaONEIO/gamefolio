@@ -1,12 +1,17 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { SVG } from "@/assets/SVG";
 import { leagueGothic } from "@/font/font";
 import { useSelector } from "@/store";
+import {
+  Document,
+  PDFDownloadLink,
+  Page,
+  Text,
+  View,
+} from "@react-pdf/renderer";
 import { format } from "date-fns";
-// import { PDFDocument, rgb } from "pdf-lib";
-// import { saveAs } from "file-saver";
 
 interface TransactionProps {
   handleCloseModal: () => void;
@@ -21,71 +26,33 @@ function Transaction({
 }: TransactionProps) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const [filteredCoins, setFilteredCoins] = useState<any[]>([]);
-  const contentRef = useRef(null);
+  const [dataFetched, setDataFetched] = useState<boolean>(false);
 
   useEffect(() => {
-    const startDateTime = new Date(startDate);
-    startDateTime.setHours(0, 0, 0, 0);
+    const fetchData = async () => {
+      try {
+        const startDateTime = new Date(startDate);
+        startDateTime.setHours(0, 0, 0, 0);
 
-    const endDateTime = new Date(endDate);
-    endDateTime.setHours(0, 0, 0, 0);
+        const endDateTime = new Date(endDate);
+        endDateTime.setHours(0, 0, 0, 0);
 
-    // Filter transactions based on the user-provided date range
-    const filteredCoins = authState?.coins?.filter((coin: any) => {
-      const coinDateTime = new Date(coin.date);
-      coinDateTime.setHours(0, 0, 0, 0);
+        const filteredCoins = authState?.coins?.filter((coin: any) => {
+          const coinDateTime = new Date(coin.date);
+          coinDateTime.setHours(0, 0, 0, 0);
 
-      return coinDateTime >= startDateTime && coinDateTime <= endDateTime;
-    });
-    // Update state with filtered coins
-    setFilteredCoins(filteredCoins);
+          return coinDateTime >= startDateTime && coinDateTime <= endDateTime;
+        });
+
+        setFilteredCoins(filteredCoins);
+        setDataFetched(true);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
   }, [authState, startDate, endDate]);
-  console.log("filteredCoins", filteredCoins);
-
-  // const handleDownload = async () => {
-  //   const pdfDoc = await PDFDocument.create();
-  //   const page = pdfDoc.addPage();
-
-  //   // Customize the PDF content here
-  //   const { width, height } = page.getSize();
-  //   const fontSize = 15;
-  //   const text = "Transaction History\n\n";
-
-  //   // Assuming leagueGothic contains the font data
-  //   const font = await pdfDoc.embedFont(leagueGothic.className, {
-  //     subset: true,
-  //   });
-
-  //   page.drawText(text, {
-  //     x: 50,
-  //     y: height - 4 * fontSize,
-  //     font,
-  //     color: rgb(1, 1, 1),
-  //   });
-
-  //   let yOffset = height - 6 * fontSize;
-
-  //   filteredCoins.forEach((coin: any) => {
-  //     const coinText = `${coin.coinType} - ${coin.coinAmount} Coin - ${format(
-  //       new Date(coin?.date),
-  //       "dd MMM, yyyy - h:mm a"
-  //     )}\n`;
-
-  //     page.drawText(coinText, {
-  //       x: 50,
-  //       y: yOffset,
-  //       font,
-  //       color: rgb(1, 1, 1),
-  //     });
-
-  //     yOffset -= 2 * fontSize;
-  //   });
-
-  //   const pdfBytes = await pdfDoc.save();
-  //   const blob = new Blob([pdfBytes], { type: "application/pdf" });
-
-  //   saveAs(blob, "transaction_history.pdf");
-  // };
 
   return (
     <>
@@ -146,7 +113,7 @@ function Transaction({
                     />
                     <div className="flex items-center justify-between w-full sm:w-full">
                       <div>
-                        <p className="mx-2 sm:mx-4 text-sm font-light sm:text-base">
+                        <p className="flex items-start mx-2 sm:mx-4 text-sm font-light sm:text-base">
                           {coin.coinType}
                         </p>
                         <p className="mx-2 sm:mx-4 text-sm font-light text-left text-[#7C7F80]">
@@ -167,12 +134,32 @@ function Transaction({
             </div>
 
             <div className="flex items-center w-full my-5">
-              <button
-                // onClick={handleDownload}
-                className="w-full sm:text-base font-semibold bg-[#37C535] py-[10px] px-[30px] text-white text-center rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
-              >
-                Download
-              </button>
+              {dataFetched &&
+                (filteredCoins.length > 0 ? (
+                  <PDFDownloadLink
+                    document={<TransactionPDF filteredCoins={filteredCoins} />}
+                    fileName="transaction_history.pdf"
+                    style={{
+                      width: "100%",
+                      fontSize: "1rem",
+                      fontWeight: 600,
+                      backgroundColor: "#37C535",
+                      padding: "10px",
+                      color: "#fff",
+                      textAlign: "center",
+                      borderTopLeftRadius: "20px",
+                      borderBottomRightRadius: "20px",
+                      borderTopRightRadius: "5px",
+                      borderBottomLeftRadius: "5px",
+                    }}
+                  >
+                    {({ blob, url, loading, error }) =>
+                      loading ? "Loading document..." : "Download PDF"
+                    }
+                  </PDFDownloadLink>
+                ) : (
+                  <p>No data available for the selected date range.</p>
+                ))}
             </div>
           </div>
         </div>
@@ -180,5 +167,24 @@ function Transaction({
     </>
   );
 }
+const TransactionPDF = ({ filteredCoins }: { filteredCoins: any[] }) => (
+  <Document>
+    <Page size="A4">
+      <Text style={{ fontSize: 20, marginBottom: 10, textAlign: "center" }}>
+        Transaction History
+      </Text>
+      {filteredCoins.map((coin: any) => (
+        <View key={coin._id}>
+          <Text style={{ fontSize: 12, marginBottom: 5 }}>
+            {`${coin.coinType} - ${coin.coinAmount} Coin - ${format(
+              new Date(coin?.date),
+              "dd MMM, yyyy - h:mm a"
+            )}`}
+          </Text>
+        </View>
+      ))}
+    </Page>
+  </Document>
+);
 
 export default Transaction;

@@ -150,7 +150,7 @@ function ViewStory() {
               loop={true}
             />
             <Image
-              className=" ml-6 hover:opacity-50"
+              className="ml-6 hover:opacity-50"
               src={SVG.StoryForward}
               alt="StoryForward"
               width={28}

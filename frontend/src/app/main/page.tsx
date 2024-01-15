@@ -22,6 +22,7 @@ import {
   refreshPage,
 } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
+import Report from "@/components/Modals/Report";
 
 function Main() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
@@ -50,6 +51,7 @@ function Main() {
     isPostShareOpen: false,
     isVideoDetailOpen: false,
     isPostDeleteOpen: false,
+    isReportModalOpen: false,
   });
 
   const handleModalToggle = (
@@ -64,13 +66,6 @@ function Main() {
       [modalName]: !prevState[modalName],
     }));
   };
-
-  // console.log("POSTID ****: ", postID);
-
-  // const followingVideoIDs = authState.following.map(
-  //   (followedUser: any) => followedUser.name
-  // );
-  // console.log("followingVideoIDs: ", followingVideoIDs);
 
   const sectionStyle = {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
@@ -110,12 +105,8 @@ function Main() {
       reactionType: reactionType,
     };
 
-    console.log("My Payload CREATE Reaction: >><> ", payload);
-
     const successCallback = (response: any) => {
-      // console.log("RESPONSE ADDVIDEO: ", response);
       handlePageRefresh();
-      // toastSuccess(response);
     };
 
     const errorCallback = (error: string) => {
@@ -138,12 +129,8 @@ function Main() {
       reactionID: reactionID,
     };
 
-    console.log("My Payload Reaction: >><> ", payload);
-
     const successCallback = (response: any) => {
-      console.log("RESPONSE ADDVIDEO: ", response);
       handlePageRefresh();
-      // toastSuccess(response);
     };
 
     const errorCallback = (error: string) => {
@@ -249,7 +236,7 @@ function Main() {
                             width={5}
                             height={5}
                             onClick={() =>
-                              handleModalToggle("isPostDeleteOpen", post._id)
+                              handleModalToggle("isReportModalOpen", post._id)
                             }
                           />
                         </div>
@@ -422,6 +409,15 @@ function Main() {
           postID={postID}
           handleCloseModal={() => handleModalToggle("isPostDeleteOpen")}
           handlePageRefresh={() => handlePageRefresh()}
+        />
+      </Modal>
+
+      <Modal
+        isOpen={modalState.isReportModalOpen}
+        handleClose={() => handleModalToggle("isReportModalOpen")}
+      >
+        <Report
+          handleCloseModal={() => handleModalToggle("isReportModalOpen")}
         />
       </Modal>
     </Layout>

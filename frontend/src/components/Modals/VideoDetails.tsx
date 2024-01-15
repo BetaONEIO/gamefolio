@@ -7,8 +7,12 @@ import { dispatch, useSelector } from "@/store";
 import { createComment, refreshPage } from "@/store/slices/postSlice";
 import { ToastContainer } from "react-toastify";
 import { toastError, toastSuccess } from "../Toast/Toast";
-// import data from "@emoji-mart/data";
-// import Picker from "@emoji-mart/react";
+import Modal from "./Modal";
+import DeletePost from "./DeletePost";
+import Report from "./Report";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
+import { useForm } from "react-hook-form";
 
 interface VideoDetailProps {
   handleCloseModal: () => void;
@@ -21,13 +25,21 @@ function VideoDetails({
   handleCloseModal,
   postID,
   detailedPost,
-}: // handlePageRefresh,
-VideoDetailProps) {
+}: VideoDetailProps) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const [comments, setComments] = useState("");
   const [emoji, setEmoji] = useState(false);
+  const [modalState, setModalState] = useState({
+    isPostDeleteOpen: false,
+    isReportModalOpen: false,
+  });
+  const { setValue, watch } = useForm({
+    defaultValues: {
+      message: "",
+    },
+  });
 
-  // console.log("POST statewww####: VideoDetails.tsx ", detailedPost);
+  // console.log("Detail: ", detailedPost);
 
   const handleCreateComment = async (postID: any, comment: any) => {
     const payload = {
@@ -87,31 +99,51 @@ VideoDetailProps) {
     }
   }
 
+  const handleModalToggle = (
+    modalName: keyof typeof modalState,
+    postID?: any,
+    detailedPost?: any
+  ) => {
+    // console.log(`Toggling modal ${modalName}`);
+    setModalState((prevState) => ({
+      ...prevState,
+      [modalName]: !prevState[modalName],
+    }));
+  };
+
+  const handleThreedotsClick = (postId: any) => {
+    if (authState._id == detailedPost?.userID?._id) {
+      handleModalToggle("isPostDeleteOpen", postId);
+    } else {
+      handleModalToggle("isReportModalOpen", postId);
+    }
+  };
+
   const myBGStyleModal = {
     backgroundColor: "rgba(0, 0, 0, 0.6)",
     backdropFilter: "blur(8px)",
   };
 
-  //   // toggle emoji
-  // const toggleEmoji = () => {
-  //   setEmoji(!emoji);
-  // };
-  // // toggle emoji
-  // const toggleModal = () => {
-  //   setEmoji(!emoji);
-  // };
+  // toggle emoji
+  const toggleEmoji = () => {
+    setEmoji(!emoji);
 
-  //   // handle emoji
-  // const handleEmojiSelect = (selectedEmoji: any) => {
-  //   // Get the current value of the message input field
-  //   const currentMessage = watch("message");
+    console.log("Emoji....: ", emoji);
+  };
 
-  //   // Append the selected emoji to the current message value
-  //   const updatedMessage = currentMessage + selectedEmoji;
+  console.log("Emoji: ", emoji);
 
-  //   // Set the updated message value to the input field using setValue
-  //   setValue("message", updatedMessage);
-  // };
+  // handle emoji
+  const handleEmojiSelect = (selectedEmoji: any) => {
+    // Get the current value of the message input field
+    const currentMessage = watch("message");
+
+    // Append the selected emoji to the current message value
+    const updatedMessage = currentMessage + selectedEmoji;
+
+    // Set the updated message value to the input field using setValue
+    setValue("message", updatedMessage);
+  };
 
   return (
     <>
@@ -170,27 +202,43 @@ VideoDetailProps) {
                       width={50}
                       height={50}
                     />
-                    <div>
-                      <Link
-                        href={`/account/${detailedPost?.userID?.username}`}
-                        key={detailedPost._id}
-                      >
-                        <h3 className="sm:text-lg sm:font-bold md:text-xl text-white text-base font-semibold">
-                          {detailedPost?.userID?.name}
-                        </h3>
-                      </Link>
-                      <p className="sm:text-base text-sm font-light text-gray-400">
-                        {detailedPost?.date &&
-                          new Date(detailedPost.date).toLocaleString("en-US", {
-                            hour: "numeric",
-                            minute: "numeric",
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric",
-                          })}
-                      </p>
+                    <div className="flex items-center justify-between w-full">
+                      <div>
+                        <Link
+                          href={`/account/${detailedPost?.userID?.username}`}
+                          key={detailedPost._id}
+                        >
+                          <h3 className="sm:text-lg sm:font-bold md:text-xl text-white text-base font-semibold">
+                            {detailedPost?.userID?.name}
+                          </h3>
+                        </Link>
+                        <p className="sm:text-base text-sm font-light text-gray-400">
+                          {detailedPost?.date &&
+                            new Date(detailedPost.date).toLocaleString(
+                              "en-US",
+                              {
+                                hour: "numeric",
+                                minute: "numeric",
+                                day: "numeric",
+                                month: "short",
+                                year: "numeric",
+                              }
+                            )}
+                        </p>
+                      </div>
+                      <div>
+                        <Image
+                          className="cursor-pointer hover:opacity-80"
+                          src={SVG.Threedots}
+                          alt="Threedots"
+                          width={5}
+                          height={5}
+                          onClick={() => handleThreedotsClick(detailedPost._id)}
+                        />
+                      </div>
                     </div>
                   </div>
+
                   <div className="mx-4 my-2">
                     <p className="text-base font-light text-gray-200">
                       {detailedPost?.description}
@@ -231,16 +279,6 @@ VideoDetailProps) {
                         height={50}
                       />
                     </div>
-
-                    {/* <div>
-                      <Image
-                        className="cursor-pointer hover:opacity-80"
-                        src={SVG.Share}
-                        alt="Share"
-                        width={25}
-                        height={25}
-                      />
-                    </div> */}
                   </div>
                 </div>
 
@@ -258,9 +296,14 @@ VideoDetailProps) {
                       />
                       <div>
                         <div className="flex flex-row items-center mb-1">
-                          <p className="sm:text-lg sm:font-bold md:text-xl text-white text-base font-semibold">
-                            {comment?.userID?.name}
-                          </p>
+                          <Link
+                            href={`/account/${comment?.userID?.name}`}
+                            key={comment?._id}
+                          >
+                            <p className="sm:text-lg sm:font-bold md:text-xl text-white text-base font-semibold">
+                              {comment?.userID?.name}
+                            </p>
+                          </Link>
                           <p className="ml-2 font-light md:text-md text-gray-200">
                             {comment?.commentText}
                           </p>
@@ -283,27 +326,30 @@ VideoDetailProps) {
 
                 <div className="flex w-5/12 absolute bg-[#091619] bottom-12 sm:bottom-14 mx-2">
                   <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none">
+                    {/* <button onClick={toggleEmoji}> */}
                     <Image
                       src={SVG.Emoji}
                       alt="Profile avatar"
                       width={40}
                       height={40}
                     />
-                    {/* <button onClick={toggleEmoji}>😀</button>
-//             {emoji && (
-              <div className="absolute bottom-10 right-0">
-                <Picker
-                  data={data}
-                  onEmojiSelect={(data: any) => handleEmojiSelect(data.native)}
-                  previewPosition="none"
-                />
-              </div>
-            )} */}
+                    {/* </button> */}
+                    {emoji && (
+                      <div className="absolute bottom-10 right-0">
+                        <Picker
+                          data={data}
+                          onEmojiSelect={(data: any) =>
+                            handleEmojiSelect(data.native)
+                          }
+                          previewPosition="none"
+                        />
+                      </div>
+                    )}
                   </div>
                   <input
                     type="Post"
                     id="default-search"
-                    className="w-[16rem] lg:w-[28rem] block p-4 ml-10 text-sm bg-[#091619] outline-none sm:text-sm text-white"
+                    className="w-[16rem] lg:w-[28rem] block p-4 ml-10 text-sm bg-[#091619] outline-none sm:text-sm text-white overflow-hidden"
                     placeholder="Add a comment..."
                     onChange={handleChange}
                     value={comments}
@@ -312,7 +358,7 @@ VideoDetailProps) {
                   <button
                     onClick={() => handleCreateComment(postID, comments)}
                     type="submit"
-                    className="text-[#43DD4E] absolute -right-36 sm:-right-12 bottom-2 bg-primary-700 font-medium text-sm px-4 py-2 bg-primary-600 "
+                    className="text-[#43DD4E] absolute -right-36 sm:-right-12 bottom-2 bg-primary-700 font-medium text-sm px-4 py-2 bg-primary-600"
                   >
                     Post
                   </button>
@@ -334,6 +380,26 @@ VideoDetailProps) {
           theme="dark"
         />
       </div>
+
+      <Modal
+        isOpen={modalState.isPostDeleteOpen}
+        handleClose={() => handleModalToggle("isPostDeleteOpen")}
+      >
+        <DeletePost
+          postID={postID}
+          handleCloseModal={() => handleModalToggle("isPostDeleteOpen")}
+          handlePageRefresh={() => handlePageRefresh()}
+        />
+      </Modal>
+
+      <Modal
+        isOpen={modalState.isReportModalOpen}
+        handleClose={() => handleModalToggle("isReportModalOpen")}
+      >
+        <Report
+          handleCloseModal={() => handleModalToggle("isReportModalOpen")}
+        />
+      </Modal>
     </>
   );
 }

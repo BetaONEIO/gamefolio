@@ -8,6 +8,7 @@ import { getUserStories } from "@/store/slices/storySlice";
 import ReactInstaStories from "react-insta-stories";
 import { ToastContainer } from "react-toastify";
 import { toastError } from "../Toast/Toast";
+import Link from "next/link";
 
 interface ViewStoryProps {
   storyUserID?: any;
@@ -84,7 +85,7 @@ function ViewStory({ storyUserID, handleCloseModal }: ViewStoryProps) {
     const timeAgoString: string = timeAgo(story.date);
     return (
       <div style={{ position: "relative" }} className="w-full h-full ">
-        <div className="absolute top-7 left-5">
+        <div className="absolute top-7 left-5 cursor-pointer">
           <div className="flex gap-2">
             <Image
               className="rounded-xl object-cover"
@@ -93,10 +94,16 @@ function ViewStory({ storyUserID, handleCloseModal }: ViewStoryProps) {
               width={50}
               height={50}
             />
+
             <div className="flex flex-col">
-              <span className="font-semibold tracking-tighter">
-                {story?.userID?.name}
-              </span>
+              <Link
+                href={`/account/${story?.userID?.username}`}
+                key={story._id}
+              >
+                <span className="font-semibold tracking-tighter cursor-pointer">
+                  {story?.userID?.name}
+                </span>
+              </Link>
               <span className="font-normal tracking-tighter">
                 {timeAgoString}
               </span>

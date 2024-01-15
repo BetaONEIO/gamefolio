@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,36 +14,26 @@ import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import { leagueGothic } from "@/font/font";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
-import { initChat } from "@/store/slices/chatSlice";
 import { getAllPostVideos, getUserBookmark } from "@/store/slices/postSlice";
 import {
   followUser,
   getAllUsers,
   getProfileInfo,
 } from "@/store/slices/userSlice";
-import { copyToClipboard, generateUniqueRoomId } from "@/utils/helpers";
+import { copyToClipboard } from "@/utils/helpers";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import { ToastContainer } from "react-toastify";
 import Loading from "../loading";
-
-const popular = [
-  { id: 1, IMAGE: IMAGES.Popular },
-  { id: 2, IMAGE: IMAGES.Popular1 },
-  { id: 3, IMAGE: IMAGES.Popular1 },
-  { id: 4, IMAGE: IMAGES.ExploreIMG1 },
-  { id: 5, IMAGE: IMAGES.Popular1 },
-  { id: 6, IMAGE: IMAGES.Popular1 },
-  { id: 7, IMAGE: IMAGES.ExploreIMG1 },
-  { id: 8, IMAGE: IMAGES.Popular1 },
-  { id: 9, IMAGE: IMAGES.Popular1 },
-  { id: 10, IMAGE: IMAGES.Popular1 },
-];
+import VideoDetails from "@/components/Modals/VideoDetails";
+import { getAllClipVideos } from "@/store/slices/clipSlice";
+import { getCurrentUserStories } from "@/store/slices/storySlice";
+import ViewStory from "@/components/Modals/ViewStory";
 
 interface MyVideosSectionProps {
-  data: Array<any>;
   authState: any; // Add authState as a prop
   postState: any; // Add postState as a prop
   profileInfoState: any; // Add profileInfoState as a prop
+  handleVideoDetailOpen: (postID: any, detailedPost: any) => void;
 }
 interface VideoState {
   isMuted?: boolean;
@@ -53,165 +43,161 @@ const MyVideosSection: React.FC<MyVideosSectionProps> = ({
   authState,
   postState,
   profileInfoState,
+  handleVideoDetailOpen,
 }) => {
-  const [videoStates, setVideoStates] = useState<{ [key: string]: VideoState }>(
-    {}
-  );
-  console.log("authState", authState);
-  console.log("postState", postState);
-  console.log("profileInfoState...", profileInfoState);
   const userVideos = postState.videos.filter(
     (post: any) =>
       post?.userID?.username === profileInfoState.profileUserInfo.username
   );
 
-  const handleVideoClick = (
-    event: React.MouseEvent<HTMLVideoElement, MouseEvent>
-  ) => {
-    const video = event.currentTarget;
-    if (video.paused) {
-      video.play();
-    } else {
-      video.pause();
-    }
-  };
-  const handleToggleMute = (clipID: string) => {
-    setVideoStates((prevStates) => ({
-      ...prevStates,
-      [clipID]: {
-        ...prevStates[clipID],
-        isMuted: !prevStates[clipID]?.isMuted,
-      },
-    }));
-  };
-
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
-      {userVideos.map((item: any) => {
-        const videoState = videoStates[item._id] || {
-          isMuted: false,
-        };
-        return (
-          <div key={item.id} className="relative">
-            <video
-              src={item.video}
-              className="w-96 sm:w-96 h-52 md:h-40  rounded-xl object-cover hover:opacity-80"
-              width={20}
-              height={20}
-              controls={false}
-              onClick={handleVideoClick}
-              muted={videoState.isMuted}
-            />
-            <div className="absolute bottom-1 right-2">
-              <button
-                className="cursor-pointer hover:opacity-80"
-                onClick={() => handleToggleMute(item._id)}
-              >
-                {videoState.isMuted ? (
+    <Suspense fallback={<Loading />}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
+        {userVideos.map((item: any) => {
+          return (
+            <div key={item.id} className="relative">
+              <video
+                src={item.video}
+                className="w-96 sm:w-96 h-52 md:h-40  rounded-xl object-cover hover:opacity-80"
+                width={20}
+                height={20}
+                controls={false}
+                onClick={() => handleVideoDetailOpen(item._id, item)}
+              />
+              <div className="absolute bottom-1 right-2">
+                <button className="cursor-pointer hover:opacity-80">
                   <Image src={SVG.Mute} alt="Mute" width={40} height={40} />
-                ) : (
-                  <Image src={SVG.UnMute} alt="Unmute" width={40} height={40} />
-                )}
-              </button>
+                </button>
+              </div>
             </div>
-          </div>
-        );
-      })}
-    </div>
+          );
+        })}
+      </div>
+    </Suspense>
   );
 };
 
 interface ClipsProps {
-  data: Array<any>; // You can replace 'any' with the actual type of data you expect.
+  authState: any; // Add authState as a prop
+  clipState: any; // Add postState as a prop
+  profileInfoState: any; // Add profileInfoState as a prop
+  handleVideoDetailOpen: (postID: any, detailedPost: any) => void;
 }
 
-const ClipsSection: React.FC<ClipsProps> = ({ data }) => {
+const ClipsSection: React.FC<ClipsProps> = ({
+  authState,
+  clipState,
+  profileInfoState,
+  handleVideoDetailOpen,
+}) => {
+  const userVideos = clipState.videos.filter(
+    (post: any) =>
+      post?.userID?.username === profileInfoState.profileUserInfo.username
+  );
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
-      {data.map((game) => (
-        <div key={game.id} className="relative">
-          <Image
-            src={game.IMAGE}
-            alt="Popular"
-            width={0}
-            height={0}
-            sizes="100vw"
-            className="w-full h-52 md:h-40  rounded-xl object-cover hover:opacity-80"
-          />
-          <Image
-            className="absolute bottom-2 right-2 hover:opacity-70"
-            src={SVG.Mute}
-            alt="Play"
-            width={32}
-            height={32}
-            sizes="100vw"
-          />
-        </div>
-      ))}
-    </div>
+    <Suspense fallback={<Loading />}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
+        {userVideos.map((clip: any) => (
+          <div
+            key={clip.id}
+            className="relative"
+            onClick={() => handleVideoDetailOpen(clip._id, clip)}
+          >
+            <video
+              src={clip.video}
+              width={0}
+              height={0}
+              className="w-full h-52 md:h-40 rounded-xl object-cover hover:opacity-80"
+            />
+            <Image
+              className="absolute bottom-2 right-2 hover:opacity-70"
+              src={SVG.Mute}
+              alt="Play"
+              width={32}
+              height={32}
+              sizes="100vw"
+            />
+          </div>
+        ))}
+      </div>
+    </Suspense>
   );
 };
 
 interface StoryProps {
-  data: Array<any>; // You can replace 'any' with the actual type of data you expect.
+  data: Array<any>;
+  // isStoryModalOpen: () => void;
 }
 
 const StorySection: React.FC<StoryProps> = ({ data }) => {
+  const [isStoryModalOpen, setIsStoryModalOpen] = useState(false);
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
-      {data.map((game) => (
-        <div key={game.id} className="relative">
-          <Image
-            src={game.IMAGE}
-            alt="Popular"
-            width={0}
-            height={0}
-            sizes="100vw"
-            className="w-full h-52 md:h-40  rounded-xl object-cover hover:opacity-80"
-          />
-          <Image
-            className="absolute bottom-2 right-2 hover:opacity-70"
-            src={SVG.Mute}
-            alt="Play"
-            width={32}
-            height={32}
-            sizes="100vw"
-          />
-        </div>
-      ))}
-    </div>
+    <Suspense fallback={<Loading />}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
+        {data?.map((item: any) => (
+          <div key={item.id} className="relative">
+            <video
+              src={item.video}
+              width={0}
+              height={0}
+              className="w-full h-52 md:h-40  rounded-xl object-cover hover:opacity-80"
+              onClick={() => {
+                setIsStoryModalOpen(true);
+              }}
+            />
+            <Image
+              className="absolute bottom-2 right-2 hover:opacity-70"
+              src={SVG.Mute}
+              alt="Play"
+              width={32}
+              height={32}
+              sizes="100vw"
+            />
+          </div>
+        ))}
+      </div>
+    </Suspense>
   );
 };
 
 interface MyBookmarkSectionProps {
-  data: Array<any>; // You can replace 'any' with the actual type of data you expect.
+  data: Array<any>;
+  handleVideoDetailOpen: (postID: any, detailedPost: any) => void;
 }
 
-const MyBookmarkSection: React.FC<MyBookmarkSectionProps> = ({ data }) => {
+const MyBookmarkSection: React.FC<MyBookmarkSectionProps> = ({
+  data,
+  handleVideoDetailOpen,
+}) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
-      {data?.map((bookmarkPost) => (
-        <div key={bookmarkPost.post._id} className="relative">
-          <video
-            src={bookmarkPost.post.video}
-            className="w-96 sm:w-96 h-52 md:h-40  rounded-xl object-cover hover:opacity-80"
-            width={0}
-            height={0}
-            controls={false}
-            // onClick={handleVideoClick}
-            // muted={videoState.isMuted}
-          />
-          <Image
-            className="absolute top-2 right-2 hover:opacity-70"
-            src={SVG.Bookmark}
-            alt="Play"
-            width={24}
-            height={24}
-            sizes="100vw"
-          />
-        </div>
-      ))}
-    </div>
+    <Suspense fallback={<Loading />}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
+        {data?.map((bookmarkPost) => (
+          <div key={bookmarkPost.post._id} className="relative">
+            <video
+              src={bookmarkPost.post.video}
+              className="w-96 sm:w-96 h-52 md:h-40 rounded-xl object-cover hover:opacity-80"
+              width={0}
+              height={0}
+              controls={false}
+              onClick={() =>
+                handleVideoDetailOpen(bookmarkPost.post._id, bookmarkPost.post)
+              }
+            />
+            <Image
+              className="absolute top-2 right-2 hover:opacity-70"
+              src={SVG.Bookmark}
+              alt="Play"
+              width={24}
+              height={24}
+              sizes="100vw"
+            />
+          </div>
+        ))}
+      </div>
+    </Suspense>
   );
 };
 
@@ -220,18 +206,23 @@ function Page({ params }: any) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const profileInfoState = useSelector((state: any) => state.user) || [];
   const postState = useSelector((state: any) => state.post) || [];
+  const clipState = useSelector((state: any) => state.clip) || [];
+  const storyState = useSelector((state: any) => state.story) || [];
   const [open, setOpen] = useState(false);
   const [selectedSection, setSelectedSection] = useState("videos");
   const [isPrivateAccount, setIsPrivateAccount] = useState(false);
+  const [postID, setPostID] = useState("");
+  const [storyUserID, setStoryUserID] = useState("");
+  const [detailedPost, setDetailedPost] = useState("");
   const [modalState, setModalState] = useState({
     isShareModalOpen: false,
     isFollowerModalOpen: false,
     isFollowingModalOpen: false,
+    isVideoDetailOpen: false,
+    isStoryModalOpen: false,
   });
 
   console.log("authState****", authState);
-
-  // if (profileInfoState.loading) return <Loading />;
 
   const router = useRouter();
 
@@ -247,14 +238,15 @@ function Page({ params }: any) {
     dispatch(getProfileInfo({ payload: params }));
     dispatch(getUserBookmark(params));
     dispatch(getAllPostVideos());
+    dispatch(getAllClipVideos());
     dispatch(getAllUsers());
+    dispatch(getCurrentUserStories(params));
   }, [postState.refresh]);
 
   console.log("profileInfoState****", profileInfoState);
   console.log("isPrivateAccount****", isPrivateAccount);
 
   useEffect(() => {
-    // Assuming there's a property like accountType in the profileInfoState
     setIsPrivateAccount(
       profileInfoState?.profileUserInfo?.accountType === "private"
     );
@@ -267,44 +259,23 @@ function Page({ params }: any) {
     }));
   };
 
-  // const handleMessage = async () => {
-  //   const payload = {
-  //     roomID: generateUniqueRoomId(),
-  //     sender: authState._id,
-  //     receiver: profileInfoState?.profileUserInfo?._id,
-  //     content: "Hello",
-  //     isSocket: false,
-  //   };
+  const handleVideoDetailOpen = (postID: string, detailedPost: any) => {
+    setPostID(postID);
+    setDetailedPost(detailedPost);
+    setModalState((prevState) => ({
+      ...prevState,
+      isVideoDetailOpen: true,
+    }));
+  };
 
-  //   const successCallback = (response: any) => {
-  //     toastSuccess(response);
-  //     setTimeout(() => {
-  //       router.push("/chat");
-  //     }, 4000);
-  //   };
-
-  //   const errorCallback = (error: string) => {
-  //     toastError(error);
-  //   };
-
-  //   const params = {
-  //     payload,
-  //     successCallback,
-  //     errorCallback,
-  //   };
-
-  //   dispatch(initChat(params));
-  // };
+  function handlePageRefresh(): void {
+    throw new Error("Function not implemented.");
+  }
 
   const userVideos = postState.videos.filter(
     (post: any) =>
       post?.userID?.username === profileInfoState.profileUserInfo.username
   );
-
-  // const mutualFollowers = profileInfoState?.profileUserInfo?.follower?.filter(
-  //   (follower: any) =>
-  //     authState?.following?.find((following: any) => following === follower)
-  // );
 
   const handleFollowUser = async (userId: any) => {
     const payload = {
@@ -466,117 +437,8 @@ function Page({ params }: any) {
                 </div>
               </div>
 
-              {/* followed by */}
-              <div className="flex h-8 items-center  my-2 gap-6 sm:gap-6 -space-x-4">
-                <div className="flex -space-x-4">
-                  <Image
-                    className="w-8 h-8 rounded-full  border-gray-800"
-                    src={IMAGES.Ellipse1}
-                    alt="Next"
-                    width={0}
-                    height={0}
-                    sizes="100vw"
-                  />
-                  <Image
-                    className="w-8 h-8 rounded-full  border-gray-800"
-                    src={IMAGES.Ellipse2}
-                    alt="Next"
-                    width={0}
-                    height={0}
-                    sizes="100vw"
-                  />
-                  <Image
-                    className="w-8 h-8 rounded-full border-gray-800"
-                    src={IMAGES.Ellipse3}
-                    alt="Next"
-                    width={0}
-                    height={0}
-                    sizes="100vw"
-                  />
-                </div>
-                <div>
-                  <p className="font-bold">Followed by mark, Smith</p>
-                </div>
-              </div>
-
-              {/* Socials */}
-              {/* <div className="flex h-8 my-4 gap-8 sm:gap-8 -space-x-4">
-                <div className="relative">
-                  <Image
-                    className="w-8 h-8 p-0.5 bg-[#FFF] rounded-lg"
-                    src={SVG.Twitch}
-                    alt="Next"
-                    width={0}
-                    height={0}
-                    sizes="100vw"
-                  />
-                  <Image
-                    className="absolute top-6 left-6"
-                    src={SVG.Verified}
-                    alt="Next"
-                    width={16}
-                    height={16}
-                    sizes="100vw"
-                  />
-                </div>
-                <div className="relative">
-                  <Image
-                    className="relative w-8 h-8 p-0.5 bg-[#FFF] rounded-lg"
-                    src={SVG.PlayStation}
-                    alt="Next"
-                    width={0}
-                    height={0}
-                    sizes="100vw"
-                  />
-                  <Image
-                    className="absolute top-6 left-6"
-                    src={SVG.Verified}
-                    alt="Next"
-                    width={16}
-                    height={16}
-                    sizes="100vw"
-                  />
-                </div>
-                <div className="relative">
-                  <Image
-                    className="relative w-8 h-8 p-0.5 bg-[#FFF] rounded-lg"
-                    src={SVG.Xbox}
-                    alt="Next"
-                    width={0}
-                    height={0}
-                    sizes="100vw"
-                  />
-                  <Image
-                    className="absolute top-6 left-6"
-                    src={SVG.Verified}
-                    alt="Next"
-                    width={16}
-                    height={16}
-                    sizes="100vw"
-                  />
-                </div>
-                <div className="relative">
-                  <Image
-                    className="relative w-8 h-8 p-0.5 bg-[#FFF] rounded-lg"
-                    src={SVG.Steam}
-                    alt="Next"
-                    width={0}
-                    height={0}
-                    sizes="100vw"
-                  />
-                  <Image
-                    className="absolute top-6 left-6"
-                    src={SVG.Verified}
-                    alt="Next"
-                    width={16}
-                    height={16}
-                    sizes="100vw"
-                  />
-                </div>
-              </div> */}
-
               {/* Buttons */}
-              <div className="flex h-8 gap-6 sm:gap-6">
+              <div className="flex h-8 gap-6 sm:gap-6 mt-3">
                 <button
                   className="font-bold w-40 h-10 bg-[#37C535] text-white text-center py-[10px] px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3"
                   onClick={() =>
@@ -701,28 +563,37 @@ function Page({ params }: any) {
           {/* Content Section */}
           {authState?.following?.some(
             (user: any) =>
-              user?.userID?._id === profileInfoState?.profileUserInfo?._id
+              user?.userID?._id === profileInfoState?.profileUserInfo?._id ||
+              !isPrivateAccount
           ) ? (
             // User is following, show videos
             <div>
               {selectedSection === "videos" ? (
                 <MyVideosSection
-                  data={popular}
                   authState={authState}
                   postState={postState}
                   profileInfoState={profileInfoState}
+                  handleVideoDetailOpen={handleVideoDetailOpen}
                 />
-              ) : selectedSection === "bookmarks" ? (
-                <MyBookmarkSection data={popular} />
+              ) : selectedSection === "bookmarked" ? (
+                <MyBookmarkSection
+                  data={postState.bookmarks}
+                  handleVideoDetailOpen={handleVideoDetailOpen}
+                />
               ) : selectedSection === "clips" ? (
-                <ClipsSection data={popular} />
+                <ClipsSection
+                  authState={authState}
+                  clipState={clipState}
+                  profileInfoState={profileInfoState}
+                  handleVideoDetailOpen={handleVideoDetailOpen}
+                />
               ) : (
-                <StorySection data={popular} />
+                <StorySection data={storyState.currentUserStories} />
               )}
             </div>
           ) : (
             // User is not following, show private account message
-            <div className="flex justify-center h-28">
+            <div className="flex justify-center">
               <p>This is a private account.</p>
             </div>
           )}
@@ -755,6 +626,28 @@ function Page({ params }: any) {
         <Following
           handleCloseModal={() => handleModalToggle("isFollowingModalOpen")}
           followingData={profileInfoState?.profileUserInfo?.following}
+        />
+      </Modal>
+
+      <Modal
+        isOpen={modalState.isVideoDetailOpen}
+        handleClose={() => handleModalToggle("isVideoDetailOpen")}
+      >
+        <VideoDetails
+          postID={postID}
+          detailedPost={detailedPost}
+          handleCloseModal={() => handleModalToggle("isVideoDetailOpen")}
+          handlePageRefresh={() => handlePageRefresh()}
+        />
+      </Modal>
+
+      <Modal
+        isOpen={modalState.isStoryModalOpen}
+        handleClose={() => handleModalToggle("isStoryModalOpen")}
+      >
+        <ViewStory
+          storyUserID={storyUserID}
+          handleCloseModal={() => handleModalToggle("isStoryModalOpen")}
         />
       </Modal>
 

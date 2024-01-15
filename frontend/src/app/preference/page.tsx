@@ -35,8 +35,6 @@ const Preference = () => {
   const router = useRouter();
   const [activeTabs, setActiveTabs] = useState<string[]>([]);
 
-  // console.log("userData preference: ", userData);
-
   const handleTabClick = (tabId: string) => {
     if (activeTabs.includes(tabId)) {
       setActiveTabs(activeTabs.filter((id) => id !== tabId));
@@ -56,7 +54,6 @@ const Preference = () => {
       return;
     }
     const successCallback = (response: any) => {
-      console.log("response: ", response);
       toastSuccess(response);
       setTimeout(() => {
         router.push(ROUTES.selectGame);
