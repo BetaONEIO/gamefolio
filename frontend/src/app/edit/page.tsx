@@ -79,7 +79,6 @@ const Edit = () => {
     };
 
     const successCallback = (response: any) => {
-      // console.log("response: ", response);
       toastSuccess(response);
     };
 
@@ -115,7 +114,6 @@ const Edit = () => {
         onUpdateProfilePicture(response.data.imageURL);
         toastSuccess(response.data.message);
       } catch (error) {
-        // console.error("Error uploading file:", error);
         toastError(error);
       }
     }

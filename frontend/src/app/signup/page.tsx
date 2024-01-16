@@ -26,14 +26,6 @@ const Signup = () => {
     return pattern.test(name);
   };
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    // Convert the input value to capitalize each word
-    // if (e.currentTarget.name === "name") {
-    //   const capitalizedValue = e.currentTarget.value.replace(/\b\w/g, (char) =>
-    //     char.toUpperCase()
-    //   );
-    //   setForm({ ...form, [e.currentTarget.name]: capitalizedValue });
-    //   return;
-    // }
     setForm({ ...form, [e.currentTarget.name]: e.currentTarget.value });
   };
 

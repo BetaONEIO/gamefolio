@@ -1,28 +1,26 @@
 "use client";
-import { Suspense, useEffect, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
 import Loading from "@/app/main/loading";
 import { SVG } from "@/assets/SVG";
 import Layout from "@/components/CustomLayout/layout";
 import DeletePost from "@/components/Modals/DeletePost";
 import Modal from "@/components/Modals/Modal";
-import SharePost from "@/components/Modals/SharePost";
+import Report from "@/components/Modals/Report";
 import VideoDetails from "@/components/Modals/VideoDetails";
-import FollowingStories from "@/components/story/FollowingStories";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
+import FollowingStories from "@/components/story/FollowingStories";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import {
   createBookmark,
   createVideoReaction,
   deleteVideoReaction,
-  getAllPostVideos,
   getFollowingPostOnly,
   refreshPage,
 } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
-import Report from "@/components/Modals/Report";
+import Image from "next/image";
+import Link from "next/link";
+import { Suspense, useEffect, useState } from "react";
 
 function Main() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
@@ -39,13 +37,8 @@ function Main() {
   };
   useEffect(() => {
     dispatch(userSession(params));
-    // dispatch(getAllPostVideos());
     dispatch(getFollowingPostOnly(params));
   }, [postState.refresh]);
-
-  console.log("authState", authState);
-  console.log("postState", postState);
-  console.log("profileInfoState", profileInfoState);
 
   const [modalState, setModalState] = useState({
     isPostShareOpen: false,
@@ -77,10 +70,7 @@ function Main() {
       postID: postID,
     };
 
-    console.log("My Payload CREATE Reaction: >><> ", payload);
-
     const successCallback = (response: any) => {
-      console.log("RESPONSE ADDVIDEO: ", response);
       handlePageRefresh();
       toastSuccess(response);
     };
@@ -379,15 +369,6 @@ function Main() {
           </div>
         </div>
       </Suspense>
-
-      <Modal
-        isOpen={modalState.isPostShareOpen}
-        handleClose={() => handleModalToggle("isPostShareOpen")}
-      >
-        <SharePost
-          handleCloseModal={() => handleModalToggle("isPostShareOpen")}
-        />
-      </Modal>
 
       <Modal
         isOpen={modalState.isVideoDetailOpen}

@@ -90,17 +90,9 @@ function AddStory({ handleCloseModal }: AddStoryProps) {
   };
 
   const handleVideoSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("selectedOptionMusic: ", selectedOptionMusic);
-
     const file = e.target.files ? e.target.files[0] : null;
     if (file) {
       setSelectedVideo(file);
-      // if (selectedOptionMusic.trim() === "") {
-      //   setError("Please select music");
-      //   return toastSuccess("Please select music");
-      // } else {
-      //   setError(null);
-      // }
       try {
         const formData = new FormData();
         formData.append("file", file);
@@ -114,17 +106,12 @@ function AddStory({ handleCloseModal }: AddStoryProps) {
               "Content-Type": "multipart/form-data",
             },
             onUploadProgress: (progressEvent: any) => {
-              console.log("progressEvent", progressEvent);
               const percentCompleted = Math.round(
                 (progressEvent.loaded * 100) / progressEvent.total
               );
-              // setFileUpload({ fileName: file.name, percentCompleted });
-              console.log(`Upload Progress : ${percentCompleted}%`);
-              // You can update a progress bar or perform other actions based on the progress
             },
           }
         );
-        console.log("RESPONSE ADDVIDEO: ", response.data);
         setVideo(response.data.videoURL);
         toastSuccess(response.data.message);
       } catch (error) {
@@ -147,10 +134,7 @@ function AddStory({ handleCloseModal }: AddStoryProps) {
       video: video,
     };
 
-    console.log("My Payload ADDVIDEO: ", payload);
-
     const successCallback = (response: any) => {
-      console.log("RESPONSE ADDVIDEO: ", response);
       handlePageRefresh();
       handleCloseModal();
       toastSuccess(response);
@@ -255,12 +239,6 @@ function AddStory({ handleCloseModal }: AddStoryProps) {
                           }}
                         </CountdownCircleTimer>
                       )}
-                      {/* <div className="w-full bg-[#37C535] h-3 rounded-lg mt-2">
-                        <div
-                          style={{ width: `${uploadProgress}%` }}
-                          className="h-full bg-green-500 rounded-lg"
-                        ></div>
-                      </div>*/}
                     </div>
                   )}
                 </div>

@@ -14,7 +14,6 @@ function Page() {
   const [modalState, setModalState] = useState({
     isStatementModalOpen: false,
   });
-  console.log("authState!!", authState);
 
   // Calculate total coin amount
   const totalCoinAmount = authState?.coins?.reduce(

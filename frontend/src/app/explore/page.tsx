@@ -47,8 +47,6 @@ function Explore() {
     dispatch(getAllPostVideos());
   }, [postState.refresh]);
 
-  console.log("postState", postState);
-
   const sectionStyle = {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
   };

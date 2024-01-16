@@ -29,9 +29,6 @@ function Followers({ handleCloseModal, followerData }: FollowerProps) {
       followerID: followerID,
     };
 
-    // console.log("authState._id:", authState._id);
-    // console.log("followerID:", followerID);
-
     const successCallback = (response: any) => {
       toastSuccess(response.message);
     };

@@ -18,8 +18,6 @@ function AllStories() {
   });
   const [storyUserID, setStoryUserID] = useState("");
 
-  console.log("storyState: ", storyState);
-
   useEffect(() => {
     dispatch(getAllStories());
   }, []);

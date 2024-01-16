@@ -39,19 +39,10 @@ const Page = () => {
     if (errorMsg) return toastError(errorMsg);
 
     const successCallback = (response: any) => {
-      // if (response.data.is_email_verified === false) {
-      //   setMessage(response.message);
-      //   return;
-      // }
-
       toastSuccess(response.message);
 
       setTimeout(() => {
-        if (response.favoriteGames.length === 0) {
-          router.push(ROUTES.selectGame);
-        } else {
-          router.push(ROUTES.main);
-        }
+        router.push(ROUTES.main);
       }, 6000);
     };
 
@@ -66,7 +57,6 @@ const Page = () => {
     };
 
     dispatch(login(params));
-    // setToLocal("@token", authState.token);
   };
 
   // Will Update in Future

@@ -40,8 +40,6 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
     dispatch(getAllMusic());
   }, []);
 
-  console.log("musicState: ", musicState);
-
   const optionsForGame: any = [
     // { value: "game1", label: "Game 1" },
     // { value: "game2", label: "Game 2" },
@@ -53,11 +51,8 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
     return gettingGameList;
   };
   handleGameList().then((res) => {
-    console.log("res: ", res);
     optionsForGame.push(res);
   });
-  console.log("gameState: ", gameState);
-  console.log("optionsForGame: ", optionsForGame);
 
   const [searchText, setSearchText] = useState("");
   const [filteredOptions, setFilteredOptions] = useState(optionsForGame);
@@ -106,18 +101,9 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
   };
 
   const handleVideoSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("selectedOptionMusic: ", selectedOptionMusic);
-
     const file = e.target.files ? e.target.files[0] : null;
     if (file) {
       setSelectedVideo(file);
-      // Music is not required
-      // if (selectedOptionMusic.trim() === "") {
-      //   setError("Please select music");
-      //   return toastSuccess("Please select music");
-      // } else {
-      //   setError(null);
-      // }
       try {
         const formData = new FormData();
         formData.append("file", file);
@@ -131,17 +117,13 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
               "Content-Type": "multipart/form-data",
             },
             onUploadProgress: (progressEvent: any) => {
-              console.log("progressEvent", progressEvent);
               const percentCompleted = Math.round(
                 (progressEvent.loaded * 100) / progressEvent.total
               );
               setFileUpload({ fileName: file.name, percentCompleted });
-              console.log(`Upload Progress : ${percentCompleted}%`);
-              // You can update a progress bar or perform other actions based on the progress
             },
           }
         );
-        console.log("RESPONSE ADDVIDEO: ", response.data);
         setVideo(response.data.videoURL);
         toastSuccess(response.data.message);
       } catch (error) {
@@ -155,46 +137,6 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
     backdropFilter: "blur(8px)",
   };
 
-  // const renderTime = ({ remainingTime }: any) => {
-  //   const currentTime = useRef(remainingTime);
-  //   const prevTime = useRef(null);
-  //   const isNewTimeFirstTick = useRef(false);
-  //   const [, setOneLastRerender] = useState(0);
-
-  //   if (currentTime.current !== remainingTime) {
-  //     isNewTimeFirstTick.current = true;
-  //     prevTime.current = currentTime.current;
-  //     currentTime.current = remainingTime;
-  //   } else {
-  //     isNewTimeFirstTick.current = false;
-  //   }
-
-  //   // force one last re-render when the time is over to tirgger the last animation
-  //   if (remainingTime === 0) {
-  //     setTimeout(() => {
-  //       setOneLastRerender((val) => val + 1);
-  //     }, 20);
-  //   }
-
-  //   const isTimeUp = isNewTimeFirstTick.current;
-
-  //   return (
-  //     <div className="time-wrapper">
-  //       <div key={remainingTime} className={`time ${isTimeUp ? "up" : ""}`}>
-  //         {remainingTime}
-  //       </div>
-  //       {prevTime.current !== null && (
-  //         <div
-  //           key={prevTime.current}
-  //           className={`time ${!isTimeUp ? "down" : ""}`}
-  //         >
-  //           {prevTime.current}
-  //         </div>
-  //       )}
-  //     </div>
-  //   );
-  // };
-
   const handleSubmitVideo = async () => {
     const payload = {
       userID: authState._id,
@@ -204,10 +146,7 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
       video: video,
     };
 
-    console.log("My Payload ADDVIDEO: ", payload);
-
     const successCallback = (response: any) => {
-      console.log("RESPONSE ADDVIDEO: ", response);
       handlePageRefresh();
       handleCloseModal();
       toastSuccess(response);
@@ -376,7 +315,6 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
                           {}
                           {filteredOptions[0].map((option: any) => {
                             console.log("option: ###", option.name);
-
                             return (
                               <li
                                 key={option.id}

@@ -174,8 +174,6 @@ function Page() {
     (post: any) => post?.userID?._id === authState._id
   );
 
-  console.log("postStates:1: ", postState);
-
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
   };
@@ -187,8 +185,6 @@ function Page() {
     dispatch(getUserBookmark(params));
     dispatch(getAllPostVideos());
   }, [postState.refresh]);
-
-  console.log("postState", postState);
 
   const handleModalToggle = (modalName: keyof typeof modalState) => {
     setModalState((prevState) => ({

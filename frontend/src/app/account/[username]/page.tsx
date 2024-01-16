@@ -202,7 +202,6 @@ const MyBookmarkSection: React.FC<MyBookmarkSectionProps> = ({
 };
 
 function Page({ params }: any) {
-  console.log("params", params);
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const profileInfoState = useSelector((state: any) => state.user) || [];
   const postState = useSelector((state: any) => state.post) || [];
@@ -222,8 +221,6 @@ function Page({ params }: any) {
     isStoryModalOpen: false,
   });
 
-  console.log("authState****", authState);
-
   const router = useRouter();
 
   const payload = {
@@ -242,9 +239,6 @@ function Page({ params }: any) {
     dispatch(getAllUsers());
     dispatch(getCurrentUserStories(params));
   }, [postState.refresh]);
-
-  console.log("profileInfoState****", profileInfoState);
-  console.log("isPrivateAccount****", isPrivateAccount);
 
   useEffect(() => {
     setIsPrivateAccount(

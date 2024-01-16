@@ -4,11 +4,11 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { SVG } from "@/assets/SVG";
 import { dispatch, useSelector } from "@/store";
-import { getAllStories, getFollowingStories } from "@/store/slices/storySlice";
+import { getFollowingStories } from "@/store/slices/storySlice";
+import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import AddStory from "../Modals/AddStory";
 import Modal from "../Modals/Modal";
 import ViewStory from "../Modals/ViewStory";
-import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 
 function FollowingStories() {
   const router = useRouter();
@@ -18,8 +18,6 @@ function FollowingStories() {
     isStoryModalOpen: false,
   });
   const [storyUserID, setStoryUserID] = useState("");
-
-  console.log("storyState: followingStories ", storyState);
 
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),

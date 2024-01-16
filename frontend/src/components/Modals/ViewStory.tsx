@@ -1,5 +1,6 @@
 "use client";
 import { Suspense, useEffect } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import Loading from "@/app/view-story/loading";
 import { SVG } from "@/assets/SVG";
@@ -8,7 +9,6 @@ import { getUserStories } from "@/store/slices/storySlice";
 import ReactInstaStories from "react-insta-stories";
 import { ToastContainer } from "react-toastify";
 import { toastError } from "../Toast/Toast";
-import Link from "next/link";
 
 interface ViewStoryProps {
   storyUserID?: any;
@@ -18,7 +18,6 @@ interface ViewStoryProps {
 function ViewStory({ storyUserID, handleCloseModal }: ViewStoryProps) {
   const storyState = useSelector((state: any) => state.story) || [];
 
-  // console.log("storyState: ", storyState);
   const timeAgo = (postTime: string) => {
     const currentTime: Date = new Date();
     const postDate: Date = new Date(postTime);
@@ -52,7 +51,6 @@ function ViewStory({ storyUserID, handleCloseModal }: ViewStoryProps) {
     };
 
     const errorCallback = (error: string) => {
-      console.log("error: ", error);
       toastError(error);
     };
 

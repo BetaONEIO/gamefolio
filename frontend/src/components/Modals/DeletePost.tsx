@@ -29,10 +29,7 @@ function DeletePost({
       postID: postID,
     };
 
-    // console.log("My Payload DeletePost: >><> ", payload);
-
     const successCallback = (response: any) => {
-      // console.log("delete post ", response);
       handlePageRefresh();
       toastSuccess(response);
       handleCloseModal();
