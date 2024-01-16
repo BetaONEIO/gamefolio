@@ -1,14 +1,10 @@
 import { ERRORS } from "@/labels/error";
 import { APIOption, APIParams } from "@/types/Api";
 import { getFromLocal } from "@/utils/localStorage";
-// import io from 'socket.io-client';
 require("dotenv").config();
 
-// export const BASE_URL = "http://192.168.2.120:4000/api";
 export const BASE_URL = "http://localhost:4000/api";
 export const BASE_URL2 = "http://localhost:4000";
-// export const BASE_URL = "https://3.10.4.157:8080/api";
-// export const BASE_URL2 = "https://3.10.4.157:8080";
 // export const BASE_URL = "https://server.gamefolio.com:8080/api";
 // export const BASE_URL2 = "https://server.gamefolio.com:8080";
 // export const BASE_URL = process.env.NEXT_PUBLIC_DEV_BASE_URL;
@@ -73,11 +69,11 @@ export const API = async (params: APIParams) => {
     throw new Error(ERRORS.noInternet);
   }
 
-  console.log(options, "options", URL);
+  // console.log(options, "options", URL);
 
   try {
     let response: Response | any = await fetch(URL, options);
-    console.log(response);
+    // console.log(response);
     const ok = response.ok;
     const headers = response.headers;
 
@@ -118,8 +114,6 @@ export const API = async (params: APIParams) => {
 const client_id = process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID;
 const client_secret = process.env.NEXT_PUBLIC_TWITCH_CLIENT_SECRET;
 
-console.log("client_id: ## ", client_id);
-
 // Function to get the OAuth token from Twitch
 async function getOAuthToken(): Promise<string> {
   const url = "https://id.twitch.tv/oauth2/token";
@@ -131,7 +125,6 @@ async function getOAuthToken(): Promise<string> {
 
   try {
     const queryString = new URLSearchParams(params).toString();
-    console.log("queryString: ", queryString);
 
     const response = await fetch(`${url}?${queryString}`, {
       method: "POST",
@@ -203,30 +196,11 @@ export async function fetchGameList() {
     }
 
     const access_token = await getOAuthToken();
-    console.log("access_token: ", access_token);
     let cursor: string | null = null;
     const gamesData = await fetchGames(access_token, cursor);
-    console.log("gamesData: ", gamesData);
 
     return gamesData.data;
-
-    // for (let i = 0; i < 5; i++) {
-    //   const gamesData = await fetchGames(access_token, cursor);
-
-    //   for (const game of gamesData.data) {
-    //     console.log(game.name);
-    //   }
-
-    //   cursor = gamesData.pagination.cursor;
-
-    //   if (!cursor) {
-    //     break;
-    //   }
-    // }
   } catch (error: any) {
     console.error(`An error occurred: ${error.message}`);
   }
 }
-
-// Run the main function
-// main();

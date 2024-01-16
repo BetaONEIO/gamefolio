@@ -40,32 +40,41 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
     dispatch(getAllMusic());
   }, []);
 
-  const optionsForGame: any = [
-    // { value: "game1", label: "Game 1" },
-    // { value: "game2", label: "Game 2" },
-    // { value: "game3", label: "Game 3" },
-  ];
+  const optionsForGame: any = [];
 
   const handleGameList = async () => {
     const gettingGameList = await fetchGameList();
     return gettingGameList;
   };
   handleGameList().then((res) => {
-    optionsForGame.push(res);
+    optionsForGame.push(...res);
   });
 
   const [searchText, setSearchText] = useState("");
   const [filteredOptions, setFilteredOptions] = useState(optionsForGame);
 
+  // Debounce function for delaying search
+  const debounce = (func: any, delay: any) => {
+    let timeoutId: any;
+    return function (...args: any) {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        func(...args);
+      }, delay);
+    };
+  };
+
+  const delayedSearch = debounce((inputValue: any) => {
+    const filtered = optionsForGame.filter((option: any) => {
+      return option?.name?.toLowerCase().includes(inputValue);
+    });
+    setFilteredOptions(filtered);
+  }, 3000); // Adjust the delay as needed
+
   const handleSearch = (e: any) => {
     const inputValue = e.target.value.toLowerCase();
     setSearchText(inputValue);
-
-    const filtered = optionsForGame.filter((option: any) =>
-      option.name.toLowerCase().includes(inputValue)
-    );
-
-    setFilteredOptions(filtered);
+    delayedSearch(inputValue);
   };
 
   const [searchTextMusic, setSearchTextMusic] = useState("");
@@ -296,7 +305,7 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
                     </div>
 
                     {isDropdownOpen && (
-                      <div className="absolute z-50 w-full md:w-80 sm:w-96 rounded-md shadow-lg">
+                      <div className="absolute overflow-y-auto h-40 z-50 mt-2w-full md:w-80 sm:w-96 shadow-lg">
                         <div className="bg-[#1C2C2E] flex gap-2 p-2 sm:p-3 items-center border border-[#162423]">
                           <Image
                             src={SVG.Search}
@@ -313,8 +322,7 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
                         </div>
                         <ul className="py-1 bg-[#1C2C2E] text-white divide-y divide-[#162423] rounded-b-lg">
                           {}
-                          {filteredOptions[0].map((option: any) => {
-                            console.log("option: ###", option.name);
+                          {filteredOptions?.map((option: any) => {
                             return (
                               <li
                                 key={option.id}
