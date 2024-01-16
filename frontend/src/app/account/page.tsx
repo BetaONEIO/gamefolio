@@ -26,19 +26,6 @@ import Loading from "./loading";
 import VideoDetails from "@/components/Modals/VideoDetails";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
 
-const popular = [
-  { id: 1, IMAGE: IMAGES.Popular },
-  { id: 2, IMAGE: IMAGES.Popular1 },
-  { id: 3, IMAGE: IMAGES.Popular1 },
-  { id: 4, IMAGE: IMAGES.ExploreIMG1 },
-  { id: 5, IMAGE: IMAGES.Popular1 },
-  { id: 6, IMAGE: IMAGES.Popular1 },
-  { id: 7, IMAGE: IMAGES.ExploreIMG1 },
-  { id: 8, IMAGE: IMAGES.Popular1 },
-  { id: 9, IMAGE: IMAGES.Popular1 },
-  { id: 10, IMAGE: IMAGES.Popular1 },
-];
-
 interface MyVideosSectionProps {
   authState: any; // Add authState as a prop
   postState: any; // Add postState as a prop
@@ -96,7 +83,6 @@ const MyBookmarkSection: React.FC<MyBookmarkSectionProps> = ({
     };
 
     const successCallback = (response: any) => {
-      // handlePageRefresh();
       toastSuccess(response);
     };
 
