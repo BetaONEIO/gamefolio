@@ -78,7 +78,13 @@ function ExploreGame() {
       <div className="mx-4 my-4">
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-6 gap-4 sm:gap-4">
           {postState.videos.map((item: any) => (
-            <div key={item._id} className="relative flex flex-col items-center">
+            <div
+              key={item._id}
+              className="relative flex flex-col items-center"
+              onClick={() =>
+                handleModalToggle("isVideoDetailOpen", item._id, item)
+              }
+            >
               <video
                 src={item.video}
                 width="100"

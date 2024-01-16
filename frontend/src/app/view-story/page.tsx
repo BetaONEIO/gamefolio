@@ -37,7 +37,6 @@ function ViewStory() {
     }
   };
 
-  // console.log("storyState: ", storyState);
   const customStoryLayout = (story: any) => {
     const timeAgoString: string = timeAgo(story.date);
     return (
@@ -129,7 +128,6 @@ function ViewStory() {
               type="button"
               className="text-white-400 absolute top-2.5 right-2.5 bg-transparent  rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white"
               data-modal-toggle="deleteAlertModal"
-              // onClick={handleCloseModal}
             >
               <Image src={SVG.Exit} alt="exit" width={30} height={30} />
               <span className="sr-only">Close modal</span>

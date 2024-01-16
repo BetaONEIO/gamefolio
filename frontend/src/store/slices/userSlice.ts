@@ -3,7 +3,6 @@ import { dispatch } from "..";
 import { API } from "@/services/api";
 import { APIParams, ActionParams } from "@/types/Api";
 import { PATH } from "@/constants/endpoints";
-import path from "path";
 
 export type InitialState = {
   error: null;
@@ -91,7 +90,6 @@ export function getAllUsers() {
 
     try {
       const [ok, response] = await API(options);
-      console.log("all users", response.data);
       dispatch(slice.actions.getAllUsers(response.data));
     } catch (error) {
       console.log(error);
@@ -103,13 +101,8 @@ export function getAllUsers() {
 
 export function getProfileInfo(params: ActionParams) {
   return async () => {
-    const {
-      // errorCallback = () => {},
-      payload,
-    }: any = params;
+    const { payload }: any = params;
     dispatch(slice.actions.startLoading());
-
-    console.log("payload: >:::: USESLICES    ", payload);
 
     const options: APIParams = {
       method: "POST",
@@ -121,7 +114,6 @@ export function getProfileInfo(params: ActionParams) {
     try {
       const [ok, response] = await API(options);
       if (!ok || !response) return;
-      console.log("response: >:::: USESLICES    ", response);
 
       dispatch(slice.actions.setSearchUserInfo(response));
     } catch (error) {
@@ -152,7 +144,6 @@ export function followUser(params: ActionParams) {
       const [ok, response] = await API(options);
       if (!ok || !response) return errorCallback(response.message);
       successCallback(response);
-      // dispatch(getSingleUser(params));
     } catch (error) {
       errorCallback(error);
     } finally {
@@ -182,7 +173,6 @@ export function removeFollow(params: ActionParams) {
       const [ok, response] = await API(options);
       if (!ok || !response) return errorCallback(response.message);
       successCallback(response);
-      // dispatch(getSingleUser(params));
     } catch (error) {
       errorCallback(error);
     } finally {
@@ -212,7 +202,6 @@ export function removeFollowing(params: ActionParams) {
       const [ok, response] = await API(options);
       if (!ok || !response) return errorCallback(response.message);
       successCallback(response);
-      // dispatch(getSingleUser(params));
     } catch (error) {
       errorCallback(error);
     } finally {
@@ -242,7 +231,6 @@ export function blockUser(params: ActionParams) {
       const [ok, response] = await API(options);
       if (!ok || !response) return errorCallback(response.message);
       successCallback(response);
-      // dispatch(getSingleUser(params));
     } catch (error) {
       errorCallback(error);
     } finally {
@@ -272,7 +260,6 @@ export function unBlockUser(params: ActionParams) {
       const [ok, response] = await API(options);
       if (!ok || !response) return errorCallback(response.message);
       successCallback(response);
-      // dispatch(getSingleUser(params));
     } catch (error) {
       errorCallback(error);
     } finally {
@@ -384,14 +371,10 @@ export function reportUser(params: ActionParams) {
     };
     try {
       const [ok, response] = await API(options);
-      console.log(response);
       if (!ok || !response) return errorCallback(response.message);
-
-      console.log("repsonse:::: ", response);
 
       successCallback(response.message);
     } catch (error) {
-      console.log("error", error);
       errorCallback();
     } finally {
       dispatch(slice.actions.stopLoading());
@@ -452,32 +435,6 @@ export function getOtherUser(params: ActionParams) {
     }
   };
 }
-
-// export function getAllUsers(params: ActionParams) {
-//   return async () => {
-//     const { successCallback = () => {}, errorCallback = () => {} } = params;
-
-//     dispatch(slice.actions.startLoading());
-
-//     const options: APIParams = {
-//       method: "GET",
-//       endpoint: "users/allUsers",
-//       isToken: false,
-//       payload: {},
-//     };
-
-//     try {
-//       const [ok, response] = await API(options);
-//       if (!ok || !response) return;
-
-//       dispatch(slice.actions.setUsers(response));
-//       successCallback(response);
-//     } catch (error) {
-//     } finally {
-//       dispatch(slice.actions.stopLoading());
-//     }
-//   };
-// }
 
 export function updateUser(params: ActionParams) {
   return async () => {

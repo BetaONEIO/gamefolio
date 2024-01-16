@@ -39,8 +39,6 @@ function VideoDetails({
     },
   });
 
-  // console.log("Detail: ", detailedPost);
-
   const handleCreateComment = async (postID: any, comment: any) => {
     const payload = {
       userID: authState._id,
@@ -48,11 +46,8 @@ function VideoDetails({
       commentText: comment,
     };
 
-    // console.log("Comment ", payload);
-
     const successCallback = (response: any) => {
       handlePageRefresh();
-      // console.log("RESPONSE COMMENT: ", response);
       toastSuccess(response);
     };
 
@@ -104,7 +99,6 @@ function VideoDetails({
     postID?: any,
     detailedPost?: any
   ) => {
-    // console.log(`Toggling modal ${modalName}`);
     setModalState((prevState) => ({
       ...prevState,
       [modalName]: !prevState[modalName],
@@ -127,21 +121,12 @@ function VideoDetails({
   // toggle emoji
   const toggleEmoji = () => {
     setEmoji(!emoji);
-
-    console.log("Emoji....: ", emoji);
   };
-
-  console.log("Emoji: ", emoji);
 
   // handle emoji
   const handleEmojiSelect = (selectedEmoji: any) => {
-    // Get the current value of the message input field
     const currentMessage = watch("message");
-
-    // Append the selected emoji to the current message value
     const updatedMessage = currentMessage + selectedEmoji;
-
-    // Set the updated message value to the input field using setValue
     setValue("message", updatedMessage);
   };
 
@@ -325,15 +310,16 @@ function VideoDetails({
                 </div>
 
                 <div className="flex w-5/12 absolute bg-[#091619] bottom-12 sm:bottom-14 mx-2">
-                  <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none">
-                    {/* <button onClick={toggleEmoji}> */}
+                  <div
+                    onClick={toggleEmoji}
+                    className="absolute inset-y-0 left-0 flex items-center"
+                  >
                     <Image
                       src={SVG.Emoji}
                       alt="Profile avatar"
                       width={40}
                       height={40}
                     />
-                    {/* </button> */}
                     {emoji && (
                       <div className="absolute bottom-10 right-0">
                         <Picker

@@ -16,7 +16,6 @@ interface FollowingProps {
 function Following({ handleCloseModal, followingData }: FollowingProps) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const [searchQuery, setSearchQuery] = useState<string>("");
-  // console.log("authstate", authState);
 
   const myBGStyleModal = {
     backgroundColor: "rgba(0, 0, 0, 0.6)",

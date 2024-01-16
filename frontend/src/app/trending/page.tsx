@@ -1,12 +1,8 @@
 "use client";
-import { Suspense, useEffect, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
 import { SVG } from "@/assets/SVG";
 import Layout from "@/components/CustomLayout/layout";
 import DeletePost from "@/components/Modals/DeletePost";
 import Modal from "@/components/Modals/Modal";
-import SharePost from "@/components/Modals/SharePost";
 import VideoDetails from "@/components/Modals/VideoDetails";
 import { toastError } from "@/components/Toast/Toast";
 import { leagueGothic } from "@/font/font";
@@ -15,11 +11,13 @@ import { userSession } from "@/store/slices/authSlice";
 import {
   createVideoReaction,
   deleteVideoReaction,
-  getAllPostVideos,
   getTrendingPosts,
   refreshPage,
 } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
+import Image from "next/image";
+import Link from "next/link";
+import { Suspense, useEffect, useState } from "react";
 import Loading from "./loading";
 
 function Trending() {
@@ -38,8 +36,6 @@ function Trending() {
     dispatch(userSession(params));
     dispatch(getTrendingPosts());
   }, [postState.refresh]);
-
-  // console.log("postState", postState);
 
   const [modalState, setModalState] = useState({
     isPostShareOpen: false,
@@ -66,23 +62,6 @@ function Trending() {
     }));
   };
 
-  // const trendingPosts = postState.videos.slice(); // Create a copy of the array
-
-  // trendingPosts.sort((a: any, b: any) => {
-  //   // You can adjust the ranking algorithm based on your criteria
-  //   const aReactions = a.reactions || [];
-  //   const bReactions = b.reactions || [];
-  //   const aComments = a.comment || [];
-  //   const bComments = b.comment || [];
-
-  //   const aScore = aReactions.length + aComments.length;
-  //   const bScore = bReactions.length + bComments.length;
-
-  //   return bScore - aScore; // Sort in descending order
-  // });
-
-  // const top10TrendingPosts = trendingPosts.slice(0, 10);
-
   const handleCreateReaction = async (postID: any, reactionType: any) => {
     const payload = {
       userID: authState._id,
@@ -90,12 +69,8 @@ function Trending() {
       reactionType: reactionType,
     };
 
-    console.log("My Payload CREATE Reaction: >><> ", payload);
-
     const successCallback = (response: any) => {
-      // console.log("RESPONSE ADDVIDEO: ", response);
       handlePageRefresh();
-      // toastSuccess(response);
     };
 
     const errorCallback = (error: string) => {
@@ -118,12 +93,8 @@ function Trending() {
       reactionID: reactionID,
     };
 
-    console.log("My Payload Reaction: >><> ", payload);
-
     const successCallback = (response: any) => {
-      console.log("RESPONSE ADDVIDEO: ", response);
       handlePageRefresh();
-      // toastSuccess(response);
     };
 
     const errorCallback = (error: string) => {
@@ -255,7 +226,6 @@ function Trending() {
                       controls
                       controlsList=" nodownload  noremoteplayback noplaybackrate foobar"
                       disablePictureInPicture
-                      onLoadedData={(e) => console.log(e)}
                     />
 
                     <div className="flex items-center my-3 mx-2">
@@ -355,19 +325,6 @@ function Trending() {
                           Comments
                         </p>
                       </div>
-                      {/* <div>
-                        <div
-                          onClick={() => handleModalToggle("isPostShareOpen")}
-                        >
-                          <Image
-                            className="hover:opacity-80 cursor-pointer"
-                            src={SVG.Share}
-                            alt="share"
-                            width={25}
-                            height={25}
-                          />
-                        </div>
-                      </div> */}
                     </div>
                   </div>
                 );
@@ -375,15 +332,6 @@ function Trending() {
             </div>
           </div>
         </div>
-
-        <Modal
-          isOpen={modalState.isPostShareOpen}
-          handleClose={() => handleModalToggle("isPostShareOpen")}
-        >
-          <SharePost
-            handleCloseModal={() => handleModalToggle("isPostShareOpen")}
-          />
-        </Modal>
 
         <Modal
           isOpen={modalState.isVideoDetailOpen}

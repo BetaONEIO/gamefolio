@@ -100,8 +100,6 @@ export function postVideo(params: ActionParams) {
       payload,
     } = params;
 
-    console.log("))) 00: ", payload);
-
     dispatch(slice.actions.startLoading());
 
     const options: APIParams = {
@@ -112,14 +110,10 @@ export function postVideo(params: ActionParams) {
     };
     try {
       const [ok, response] = await API(options);
-      console.log(response);
       if (!ok || !response) return errorCallback(response.message);
-
-      console.log("repsonse:::: ", response);
 
       successCallback(response.message);
     } catch (error) {
-      console.log("error", error);
       errorCallback();
     } finally {
       dispatch(slice.actions.stopLoading());
@@ -175,8 +169,6 @@ export function getFollowingPostOnly(params: ActionParams) {
   return async () => {
     const { payload } = params;
 
-    console.log("getFollowingPost: ", payload);
-
     dispatch(slice.actions.startLoading());
 
     const options: APIParams = {
@@ -187,7 +179,6 @@ export function getFollowingPostOnly(params: ActionParams) {
     };
     try {
       const [ok, response] = await API(options);
-      console.log(response);
 
       dispatch(slice.actions.getFollowingPost(response.data));
     } catch (error) {
@@ -206,8 +197,6 @@ export function deleteVideo(params: ActionParams) {
       payload,
     } = params;
 
-    console.log("))) 00: ", payload);
-
     dispatch(slice.actions.startLoading());
 
     const options: APIParams = {
@@ -218,14 +207,10 @@ export function deleteVideo(params: ActionParams) {
     };
     try {
       const [ok, response] = await API(options);
-      console.log(response);
       if (!ok || !response) return errorCallback(response.message);
-
-      console.log("repsonse:::: delete ", response);
 
       successCallback(response.message);
     } catch (error) {
-      console.log("error", error);
       errorCallback();
     } finally {
       dispatch(slice.actions.stopLoading());
@@ -265,8 +250,6 @@ export function createVideoReaction(params: ActionParams) {
       payload,
     } = params;
 
-    console.log("))) 00: ", payload);
-
     dispatch(slice.actions.startLoading());
 
     const options: APIParams = {
@@ -277,14 +260,11 @@ export function createVideoReaction(params: ActionParams) {
     };
     try {
       const [ok, response] = await API(options);
-      console.log(response);
-      if (!ok || !response) return errorCallback(response.message);
 
-      console.log("repsonse:::: ", response);
+      if (!ok || !response) return errorCallback(response.message);
 
       successCallback(response.message);
     } catch (error) {
-      console.log("error", error);
       errorCallback();
     } finally {
       dispatch(slice.actions.stopLoading());
@@ -300,8 +280,6 @@ export function deleteVideoReaction(params: ActionParams) {
       payload,
     } = params;
 
-    console.log("))) 00: ", payload);
-
     dispatch(slice.actions.startLoading());
 
     const options: APIParams = {
@@ -312,14 +290,11 @@ export function deleteVideoReaction(params: ActionParams) {
     };
     try {
       const [ok, response] = await API(options);
-      console.log(response);
-      if (!ok || !response) return errorCallback(response.message);
 
-      console.log("repsonse:::: ", response);
+      if (!ok || !response) return errorCallback(response.message);
 
       successCallback(response.message);
     } catch (error) {
-      console.log("error", error);
       errorCallback();
     } finally {
       dispatch(slice.actions.stopLoading());
@@ -335,8 +310,6 @@ export function createComment(params: ActionParams) {
       payload,
     } = params;
 
-    console.log("))) 00: ", payload);
-
     dispatch(slice.actions.startLoading());
 
     const options: APIParams = {
@@ -347,14 +320,11 @@ export function createComment(params: ActionParams) {
     };
     try {
       const [ok, response] = await API(options);
-      console.log(response);
-      if (!ok || !response) return errorCallback(response.message);
 
-      console.log("repsonse:::: ", response);
+      if (!ok || !response) return errorCallback(response.message);
 
       successCallback(response.message);
     } catch (error) {
-      console.log("error", error);
       errorCallback();
     } finally {
       dispatch(slice.actions.stopLoading());
@@ -381,14 +351,11 @@ export function login(params: ActionParams) {
 
     try {
       const [ok, response] = await API(options);
-      console.log("this is response login authslice: ", response);
-      console.log("this is response", ok);
 
       if (!ok && response.message)
         if (!ok || !response) return errorCallback(response.message);
 
       if (response) {
-        // Use the correct key for the token in your response
         setToLocal("@token", response.token);
         setToLocal("@userData", response);
         dispatch(slice.actions.getUser(response));
@@ -419,11 +386,9 @@ export function logout(params: ActionParams) {
 
     try {
       const [ok, response] = await API(options);
-      // console.log(response);
       if (!ok || !response) return errorCallback(response.message);
 
       if (ok || response) {
-        // console.log(ok, response);
         removeFromLocal("@token");
         removeFromLocal("@userData");
         dispatch(slice.actions.getUser(null));
@@ -456,12 +421,10 @@ export function createBookmark(params: ActionParams) {
     };
     try {
       const [ok, response] = await API(options);
-      console.log(response);
       if (!ok || !response) return errorCallback(response.message);
 
       successCallback(response);
     } catch (error) {
-      console.log("error", error);
       errorCallback();
     } finally {
       dispatch(slice.actions.stopLoading());
@@ -537,7 +500,6 @@ export function userSession() {
         const userData = getFromLocal("@userData");
         dispatch(slice.actions.getUser(userData));
       } else {
-        console.log("GET USER ===>", response);
         setToLocal("@userData", response);
         dispatch(slice.actions.getUser(response));
       }
@@ -600,7 +562,7 @@ export function updateImageContent(params: ActionParams) {
     try {
       const [ok, response] = await API(options);
       if (!ok || !response) return errorCallback(response.message);
-      console.log("Update Response ===>", response);
+
       successCallback(response);
     } catch (error) {
       errorCallback();
@@ -618,7 +580,6 @@ export function getAllImagesByUser(params: ActionParams) {
       page,
     } = params;
     dispatch(slice.actions.startLoading());
-    console.log("PAGE ===> ", page);
     const options: APIParams = {
       method: "GET",
       endpoint: `${PATH.theNextLeg.root}?page=${page}&limit=2`,
@@ -629,7 +590,6 @@ export function getAllImagesByUser(params: ActionParams) {
     try {
       const [ok, response] = await API(options);
       if (!ok || !response) return errorCallback();
-      console.log("ALL IMAGES ===>", response);
       successCallback(response.data);
       dispatch(slice.actions.getGallery(response.data.items));
     } catch (error) {

@@ -4,8 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { SVG } from "@/assets/SVG";
 import Layout from "@/components/CustomLayout/layout";
-import Modal from "@/components/Modals/Modal";
-import SharePost from "@/components/Modals/SharePost";
 import { toastError } from "@/components/Toast/Toast";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
@@ -41,8 +39,6 @@ function Clip() {
     dispatch(getAllClipVideos());
   }, [clipState.refresh]);
 
-  console.log("clipState", clipState);
-
   const [modalState, setModalState] = useState({
     isClipShareOpen: false,
   });
@@ -65,12 +61,8 @@ function Clip() {
       reactionType: reactionType,
     };
 
-    console.log("My Payload CREATE clip Reaction: >><> ", payload);
-
     const successCallback = (response: any) => {
-      // console.log("RESPONSE ADDVIDEO: ", response);
       handlePageRefresh();
-      // toastSuccess(response);
     };
 
     const errorCallback = (error: string) => {
@@ -93,12 +85,8 @@ function Clip() {
       reactionID: reactionID,
     };
 
-    console.log("My Payload Reaction: >><> ", payload);
-
     const successCallback = (response: any) => {
-      console.log("RESPONSE ADDVIDEO: ", response);
       handlePageRefresh();
-      // toastSuccess(response);
     };
 
     const errorCallback = (error: string) => {
@@ -192,18 +180,7 @@ function Clip() {
                     </div>
                   </div>
                 </div>
-                {/* <div
-                  className="cursor-pointer absolute top-1.5 right-0 p-4 justify-self-center"
-                  onClick={() => handleModalToggle("isClipShareOpen")}
-                >
-                  <Image
-                    className="w-7 h-7 hover:opacity-80 rounded-full object-cover"
-                    src={SVG.Share}
-                    alt="Story"
-                    width={30}
-                    height={30}
-                  />
-                </div> */}
+
                 <div className="absolute top-20 mx-4 md:mx-5">
                   <p className="font-light text-xs sm:text-sm">
                     {clip?.description}
@@ -218,8 +195,12 @@ function Clip() {
                   controls={false}
                   onClick={handleVideoClick}
                   muted={videoState.isMuted}
-                  preload="auto"
                   autoFocus
+                  controlsList="nodownload noremoteplayback noplaybackrate"
+                  disablePictureInPicture
+                  autoPlay={false}
+                  playsInline
+                  preload="metadata"
                 />
 
                 {/* <div className="absolute inset-x-0 bottom-20 p-4 flex items-center justify-between">
@@ -304,14 +285,6 @@ function Clip() {
             );
           })}
         </div>
-        <Modal
-          isOpen={modalState.isClipShareOpen}
-          handleClose={() => handleModalToggle("isClipShareOpen")}
-        >
-          <SharePost
-            handleCloseModal={() => handleModalToggle("isClipShareOpen")}
-          />
-        </Modal>
       </Suspense>
     </Layout>
   );

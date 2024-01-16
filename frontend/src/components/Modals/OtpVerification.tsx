@@ -1,18 +1,14 @@
 "use client";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { SVG } from "@/assets/SVG";
 import { leagueGothic } from "@/font/font";
 import { dispatch } from "@/store";
-import {
-  updatePassword,
-  verifyForgotPasswordOTP,
-} from "@/store/slices/authSlice";
-import { useForm } from "react-hook-form";
+import { verifyForgotPasswordOTP } from "@/store/slices/authSlice";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import { toastError, toastSuccess } from "../Toast/Toast";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 interface ChangePasswordProps {
   email: string;
@@ -30,8 +26,6 @@ function OtpVerification({ email, handleCloseModal }: ChangePasswordProps) {
   const [otp, setOtp] = useState("");
 
   const router = useRouter();
-
-  console.log("OTP", otp);
 
   const myBGStyleModal = {
     backgroundColor: "rgba(0, 0, 0, 0.6)",

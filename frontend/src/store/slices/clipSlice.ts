@@ -85,8 +85,6 @@ export function clipVideo(params: ActionParams) {
       payload,
     } = params;
 
-    console.log("))) 00: ", payload);
-
     dispatch(slice.actions.startLoading());
 
     const options: APIParams = {
@@ -97,14 +95,10 @@ export function clipVideo(params: ActionParams) {
     };
     try {
       const [ok, response] = await API(options);
-      console.log(response);
       if (!ok || !response) return errorCallback(response.message);
-
-      console.log("repsonse:::: ", response);
 
       successCallback(response.message);
     } catch (error) {
-      console.log("error", error);
       errorCallback();
     } finally {
       dispatch(slice.actions.stopLoading());
@@ -143,8 +137,6 @@ export function deleteClip(params: ActionParams) {
       payload,
     } = params;
 
-    console.log("))) 00: ", payload);
-
     dispatch(slice.actions.startLoading());
 
     const options: APIParams = {
@@ -155,14 +147,10 @@ export function deleteClip(params: ActionParams) {
     };
     try {
       const [ok, response] = await API(options);
-      console.log(response);
       if (!ok || !response) return errorCallback(response.message);
-
-      console.log("repsonse:::: delete ", response);
 
       successCallback(response.message);
     } catch (error) {
-      console.log("error", error);
       errorCallback();
     } finally {
       dispatch(slice.actions.stopLoading());
@@ -202,8 +190,6 @@ export function createClipReaction(params: ActionParams) {
       payload,
     } = params;
 
-    console.log("))) 00: ", payload);
-
     dispatch(slice.actions.startLoading());
 
     const options: APIParams = {
@@ -214,14 +200,10 @@ export function createClipReaction(params: ActionParams) {
     };
     try {
       const [ok, response] = await API(options);
-      console.log(response);
       if (!ok || !response) return errorCallback(response.message);
-
-      console.log("repsonse:::: ", response);
 
       successCallback(response.message);
     } catch (error) {
-      console.log("error", error);
       errorCallback();
     } finally {
       dispatch(slice.actions.stopLoading());
@@ -238,8 +220,6 @@ export function deleteClipReaction(params: ActionParams) {
       payload,
     } = params;
 
-    console.log("))) 00: ", payload);
-
     dispatch(slice.actions.startLoading());
 
     const options: APIParams = {
@@ -250,14 +230,11 @@ export function deleteClipReaction(params: ActionParams) {
     };
     try {
       const [ok, response] = await API(options);
-      console.log(response);
-      if (!ok || !response) return errorCallback(response.message);
 
-      console.log("repsonse:::: ", response);
+      if (!ok || !response) return errorCallback(response.message);
 
       successCallback(response.message);
     } catch (error) {
-      console.log("error", error);
       errorCallback();
     } finally {
       dispatch(slice.actions.stopLoading());
@@ -273,8 +250,6 @@ export function createComment(params: ActionParams) {
       payload,
     } = params;
 
-    console.log("))) 00: ", payload);
-
     dispatch(slice.actions.startLoading());
 
     const options: APIParams = {
@@ -285,14 +260,10 @@ export function createComment(params: ActionParams) {
     };
     try {
       const [ok, response] = await API(options);
-      console.log(response);
       if (!ok || !response) return errorCallback(response.message);
-
-      console.log("repsonse:::: ", response);
 
       successCallback(response.message);
     } catch (error) {
-      console.log("error", error);
       errorCallback();
     } finally {
       dispatch(slice.actions.stopLoading());
@@ -319,14 +290,11 @@ export function login(params: ActionParams) {
 
     try {
       const [ok, response] = await API(options);
-      console.log("this is response login authslice: ", response);
-      console.log("this is response", ok);
 
       if (!ok && response.message)
         if (!ok || !response) return errorCallback(response.message);
 
       if (response) {
-        // Use the correct key for the token in your response
         setToLocal("@token", response.token);
         setToLocal("@userData", response);
         dispatch(slice.actions.getUser(response));
@@ -336,7 +304,6 @@ export function login(params: ActionParams) {
       successCallback(response);
     } catch (error) {
       if (error) return errorCallback("Please check your internet");
-      if (error) console.log(error);
     } finally {
       dispatch(slice.actions.stopLoading());
     }
@@ -357,11 +324,9 @@ export function logout(params: ActionParams) {
 
     try {
       const [ok, response] = await API(options);
-      // console.log(response);
       if (!ok || !response) return errorCallback(response.message);
 
       if (ok || response) {
-        // console.log(ok, response);
         removeFromLocal("@token");
         removeFromLocal("@userData");
         dispatch(slice.actions.getUser(null));
@@ -395,7 +360,6 @@ export function resetPassword(params: ActionParams) {
     };
     try {
       const [ok, response] = await API(options);
-      // console.log(response);
       if (!ok || !response) return errorCallback(response.message);
 
       successCallback(response.message);
@@ -405,7 +369,6 @@ export function resetPassword(params: ActionParams) {
     }
   };
 }
-
 
 export function onVerifyLink(params: ActionParams) {
   return async () => {
@@ -457,7 +420,6 @@ export function userSession() {
         const userData = getFromLocal("@userData");
         dispatch(slice.actions.getUser(userData));
       } else {
-        console.log("GET USER ===>", response);
         setToLocal("@userData", response);
         dispatch(slice.actions.getUser(response));
       }
@@ -520,7 +482,6 @@ export function updateImageContent(params: ActionParams) {
     try {
       const [ok, response] = await API(options);
       if (!ok || !response) return errorCallback(response.message);
-      console.log("Update Response ===>", response);
       successCallback(response);
     } catch (error) {
       errorCallback();
@@ -538,7 +499,6 @@ export function getAllImagesByUser(params: ActionParams) {
       page,
     } = params;
     dispatch(slice.actions.startLoading());
-    console.log("PAGE ===> ", page);
     const options: APIParams = {
       method: "GET",
       endpoint: `${PATH.theNextLeg.root}?page=${page}&limit=2`,
@@ -549,7 +509,6 @@ export function getAllImagesByUser(params: ActionParams) {
     try {
       const [ok, response] = await API(options);
       if (!ok || !response) return errorCallback();
-      console.log("ALL IMAGES ===>", response);
       successCallback(response.data);
       dispatch(slice.actions.getGallery(response.data.items));
     } catch (error) {

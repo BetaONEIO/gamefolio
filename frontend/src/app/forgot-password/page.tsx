@@ -46,7 +46,6 @@ const ForgotPassword = () => {
     };
 
     const errorCallback = (error: string) => {
-      console.log("error: ", error);
       toastError(error);
     };
 

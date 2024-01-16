@@ -39,8 +39,6 @@ function AddClips({ handleCloseModal }: AddClipProps) {
     dispatch(getAllMusic());
   }, []);
 
-  console.log("musicState: ", musicState);
-
   const optionsForGame = [
     { value: "game1", label: "Game 1" },
     { value: "game2", label: "Game 2" },
@@ -94,18 +92,9 @@ function AddClips({ handleCloseModal }: AddClipProps) {
   };
 
   const handleClipSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("selectedOptionMusic: ", selectedOptionMusic);
-
     const file = e.target.files ? e.target.files[0] : null;
     if (file) {
       setSelectedVideo(file);
-      // Music is not required
-      // if (selectedOptionMusic.trim() === "") {
-      //   setError("Please select music");
-      //   return toastSuccess("Please select music");
-      // } else {
-      //   setError(null);
-      // }
       try {
         const formData = new FormData();
         formData.append("file", file);
@@ -119,21 +108,17 @@ function AddClips({ handleCloseModal }: AddClipProps) {
               "Content-Type": "multipart/form-data",
             },
             onUploadProgress: (progressEvent: any) => {
-              console.log("progressEvent", progressEvent);
               const percentCompleted = Math.round(
                 (progressEvent.loaded * 100) / progressEvent.total
               );
               setFileUpload({ fileName: file.name, percentCompleted });
-              console.log(`Upload Progress : ${percentCompleted}%`);
-              // You can update a progress bar or perform other actions based on the progress
             },
           }
         );
-        console.log("RESPONSE ADDVIDEO: ", response.data);
         setVideo(response.data.videoURL);
         toastSuccess(response.data.message);
       } catch (error) {
-        console.error("Error uploading file:", error);
+        toastError(error);
       }
     }
   };
@@ -152,10 +137,7 @@ function AddClips({ handleCloseModal }: AddClipProps) {
       video: video,
     };
 
-    console.log("My Payload ADDCLIP: ", payload);
-
     const successCallback = (response: any) => {
-      console.log("RESPONSE ADDCLIP: ", response);
       handlePageRefresh();
       handleCloseModal();
       toastSuccess(response);

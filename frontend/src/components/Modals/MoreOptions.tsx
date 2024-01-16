@@ -7,7 +7,6 @@ import { toastSuccess } from "../Toast/Toast";
 import BlockPopup from "./BlockPopup";
 import Modal from "./Modal";
 import Report from "./Report";
-import ShareProfile from "./ShareProfile";
 
 interface MoreOptionProps {
   handleCloseModal: () => void;
@@ -16,7 +15,6 @@ interface MoreOptionProps {
 
 function MoreOptions({ handleCloseModal, data }: MoreOptionProps) {
   const [modalState, setModalState] = useState({
-    isProfileShareOpen: false,
     isReportModalOpen: false,
     isBlockModalOpen: false,
   });
@@ -68,12 +66,9 @@ function MoreOptions({ handleCloseModal, data }: MoreOptionProps) {
                   .writeText(currentURL)
                   .then(() => {
                     toastSuccess("URL copied to clipboard");
-                    console.log("URL copied to clipboard:", currentURL);
-                    // You can also show a success message here
                   })
                   .catch((error) => {
                     console.error("Failed to copy URL to clipboard:", error);
-                    // You can also show an error message here
                   });
               }}
             >
@@ -103,15 +98,6 @@ function MoreOptions({ handleCloseModal, data }: MoreOptionProps) {
           </div>
         </div>
       </div>
-
-      <Modal
-        isOpen={modalState.isProfileShareOpen}
-        handleClose={() => handleModalToggle("isProfileShareOpen")}
-      >
-        <ShareProfile
-          handleCloseModal={() => handleModalToggle("isProfileShareOpen")}
-        />
-      </Modal>
 
       <Modal
         isOpen={modalState.isReportModalOpen}

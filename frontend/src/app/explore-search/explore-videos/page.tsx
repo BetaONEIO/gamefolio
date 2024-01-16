@@ -92,7 +92,6 @@ function ExploreVideo() {
               controls={false}
               autoPlay={false}
               preload="metadata"
-              // onClick={handleVideoClick}
               onLoadedMetadata={(e) => handleVideoMetadata(e, item._id)}
             />
             <span className="absolute bottom-2 right-2">

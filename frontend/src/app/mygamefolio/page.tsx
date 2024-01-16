@@ -18,7 +18,7 @@ interface VideoState {
   isMuted?: boolean;
 }
 
-const Portfolio = () => {
+const MyGamefolio = () => {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const postState = useSelector((state: any) => state.post) || [];
   const [open, setOpen] = useState(false);
@@ -251,6 +251,11 @@ const Portfolio = () => {
                               controls={false}
                               onClick={handleVideoClick}
                               muted={videoState.isMuted}
+                              controlsList="nodownload noremoteplayback noplaybackrate"
+                              disablePictureInPicture
+                              autoPlay={false}
+                              playsInline
+                              preload="metadata"
                             />
                             <div className="absolute bottom-1 right-2">
                               <button
@@ -303,4 +308,4 @@ const Portfolio = () => {
   );
 };
 
-export default Portfolio;
+export default MyGamefolio;

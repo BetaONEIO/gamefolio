@@ -9,9 +9,6 @@ import ChangePassword from "@/components/Modals/ChangePassword";
 import FeedBack from "@/components/Modals/FeedBack";
 import LogOut from "@/components/Modals/LogOut";
 import Modal from "@/components/Modals/Modal";
-import PrivacyPolicy from "@/components/Modals/PrivacyPolicy";
-import TermsModal from "@/components/Modals/TermsModal";
-import Verifications from "@/components/Modals/Verifications";
 import { leagueGothic } from "@/font/font";
 import Loading from "./loading";
 import { toastError } from "@/components/Toast/Toast";
@@ -208,35 +205,6 @@ function Setting() {
           <ChangePassword
             handleCloseModal={(error?: string) =>
               handleModalToggle("isChangePasswordOpen", error)
-            }
-          />
-        </Modal>
-
-        <Modal
-          isOpen={modalState.isTermsModalOpen}
-          handleClose={() => handleModalToggle("isTermsModalOpen")}
-        >
-          <TermsModal
-            handleCloseModal={() => handleModalToggle("isTermsModalOpen")}
-          />
-        </Modal>
-
-        <Modal
-          isOpen={modalState.isPolicyModalOpen}
-          handleClose={() => handleModalToggle("isPolicyModalOpen")}
-        >
-          <PrivacyPolicy
-            handleCloseModal={() => handleModalToggle("isPolicyModalOpen")}
-          />
-        </Modal>
-
-        <Modal
-          isOpen={modalState.isVerificationModalOpen}
-          handleClose={() => handleModalToggle("isVerificationModalOpen")}
-        >
-          <Verifications
-            handleCloseModal={() =>
-              handleModalToggle("isVerificationModalOpen")
             }
           />
         </Modal>
