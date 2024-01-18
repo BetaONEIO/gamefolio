@@ -140,7 +140,7 @@ const Page = () => {
                 href="./signup"
                 className="font-medium text-primary-600 hover:underline  text-green-400"
               >
-                SignUp
+                Sign up
               </a>
             </p>
             <ToastContainer
