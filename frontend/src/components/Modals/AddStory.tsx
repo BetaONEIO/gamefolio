@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { SVG } from "@/assets/SVG";
 import { leagueGothic } from "@/font/font";
-import { BASE_URL } from "@/services/api";
+import { BASE_URL, fetchGameList } from "@/services/api";
 import { dispatch, useSelector } from "@/store";
 import { getAllMusic, refreshPage } from "@/store/slices/postSlice";
 import { postStory } from "@/store/slices/storySlice";
@@ -31,25 +31,44 @@ function AddStory({ handleCloseModal }: AddStoryProps) {
     dispatch(getAllMusic());
   }, []);
 
-  const optionsForGame = [
-    { value: "game1", label: "Game 1" },
-    { value: "game2", label: "Game 2" },
-    { value: "game3", label: "Game 3" },
-  ];
+  // Game list
+  const optionsForGame: any = [];
+
+  const handleGameList = async () => {
+    const gettingGameList = await fetchGameList();
+    return gettingGameList;
+  };
+  handleGameList().then((res) => {
+    optionsForGame.push(...res);
+  });
 
   const [searchText, setSearchText] = useState("");
   const [filteredOptions, setFilteredOptions] = useState(optionsForGame);
 
+  // Debounce function for delaying search
+  const debounce = (func: any, delay: any) => {
+    let timeoutId: any;
+    return function (...args: any) {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        func(...args);
+      }, delay);
+    };
+  };
+
+  const delayedSearch = debounce((inputValue: any) => {
+    const filtered = optionsForGame.filter((option: any) => {
+      return option?.name?.toLowerCase().includes(inputValue);
+    });
+    setFilteredOptions(filtered);
+  }, 2000); // Adjust the delay as needed
+
   const handleSearch = (e: any) => {
     const inputValue = e.target.value.toLowerCase();
     setSearchText(inputValue);
-
-    const filtered = optionsForGame.filter((option) =>
-      option.label.toLowerCase().includes(inputValue)
-    );
-
-    setFilteredOptions(filtered);
+    delayedSearch(inputValue);
   };
+  // ------------------------------
 
   const [searchTextMusic, setSearchTextMusic] = useState("");
   const [filteredOptionsMusic, setFilteredOptionsMusic] = useState(musicState);
@@ -273,7 +292,7 @@ function AddStory({ handleCloseModal }: AddStoryProps) {
                     </div>
 
                     {isDropdownOpen && (
-                      <div className="absolute z-50 w-full md:w-80 sm:w-96 rounded-md shadow-lg">
+                      <div className="absolute overflow-y-auto h-40 z-50 mt-2w-full md:w-80 sm:w-96 shadow-lg">
                         <div className="bg-[#1C2C2E] flex gap-2 p-2 sm:p-3 items-center border border-[#162423]">
                           <Image
                             src={SVG.Search}
@@ -289,24 +308,24 @@ function AddStory({ handleCloseModal }: AddStoryProps) {
                           />
                         </div>
                         <ul className="py-1 bg-[#1C2C2E] text-white divide-y divide-[#162423] rounded-b-lg">
-                          {filteredOptions.map((option) => (
+                          {filteredOptions?.map((option: any) => (
                             <li
-                              key={option.value}
-                              onClick={() => handleSelect(option.value)}
+                              key={option.id}
+                              onClick={() => handleSelect(option.name)}
                               className="cursor-pointer select-none relative px-4 py-2 text-gray-200 rounded-b-lg"
                               role="option"
                               aria-selected={false}
                             >
                               <span
                                 className={`${
-                                  option.value === selectedOption
+                                  option.name === selectedOption
                                     ? "font-semibold"
                                     : ""
                                 } block truncate`}
                               >
-                                {option.label}
+                                {option.name}
                               </span>
-                              {option.value === selectedOption && (
+                              {option.name === selectedOption && (
                                 <Image
                                   className="absolute w-5 h-5 text-green-500 right-3 top-2/4 transform -translate-y-2/4"
                                   src={SVG.Tick}

@@ -40,6 +40,7 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
     dispatch(getAllMusic());
   }, []);
 
+  // Game list
   const optionsForGame: any = [];
 
   const handleGameList = async () => {
@@ -69,13 +70,14 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
       return option?.name?.toLowerCase().includes(inputValue);
     });
     setFilteredOptions(filtered);
-  }, 3000); // Adjust the delay as needed
+  }, 2000); // Adjust the delay as needed
 
   const handleSearch = (e: any) => {
     const inputValue = e.target.value.toLowerCase();
     setSearchText(inputValue);
     delayedSearch(inputValue);
   };
+  // ------------------------------
 
   const [searchTextMusic, setSearchTextMusic] = useState("");
   const [filteredOptionsMusic, setFilteredOptionsMusic] = useState(musicState);
