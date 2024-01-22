@@ -564,7 +564,9 @@ const getUserBookmark = async (req, res) => {
 
     const userBookmarkedPosts = await Posts.find({
       "bookmarks.userID": decoded.id,
-    }).populate("userID", "name username profilePicture");
+    })
+      .populate("userID", "name username profilePicture")
+      .populate("comments.userID", "name username profilePicture");
 
     console.log("userBookmarkedPosts: ", userBookmarkedPosts);
 

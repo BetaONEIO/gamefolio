@@ -1,18 +1,17 @@
 "use client";
-import { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
 import { SVG } from "@/assets/SVG";
 import { dispatch, useSelector } from "@/store";
 import { createComment, refreshPage } from "@/store/slices/postSlice";
-import { ToastContainer } from "react-toastify";
-import { toastError, toastSuccess } from "../Toast/Toast";
-import Modal from "./Modal";
-import DeletePost from "./DeletePost";
-import Report from "./Report";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
-import { useForm } from "react-hook-form";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+import { ToastContainer } from "react-toastify";
+import { toastError, toastSuccess } from "../Toast/Toast";
+import DeletePost from "./DeletePost";
+import Modal from "./Modal";
+import Report from "./Report";
 
 interface VideoDetailProps {
   handleCloseModal: () => void;
@@ -33,11 +32,9 @@ function VideoDetails({
     isPostDeleteOpen: false,
     isReportModalOpen: false,
   });
-  const { setValue, watch } = useForm({
-    defaultValues: {
-      message: "",
-    },
-  });
+
+
+  console.log("detailedPost: ", detailedPost);
 
   const handleCreateComment = async (postID: any, comment: any) => {
     const payload = {
@@ -125,9 +122,12 @@ function VideoDetails({
 
   // handle emoji
   const handleEmojiSelect = (selectedEmoji: any) => {
-    const currentMessage = watch("message");
-    const updatedMessage = currentMessage + selectedEmoji;
-    setValue("message", updatedMessage);
+
+    // Append the selected emoji to the current comment value
+    const updatedMessage = comments + selectedEmoji;
+
+    // Set the updated comment value to the input field using setComments
+    setComments(updatedMessage);
   };
 
   return (
