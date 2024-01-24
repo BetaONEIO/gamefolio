@@ -107,16 +107,16 @@ export const API = async (params: APIParams) => {
   }
 };
 
-// export const socket = io("http://localhost:8000");
 
 // Games List
 
+const twitchOAuthURL = process.env.NEXT_PUBLIC_TWITCH_OAUTH_URL;
+const twitchGameURL = process.env.NEXT_PUBLIC_TWITCH_GAME_URL;
 const client_id = process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID;
 const client_secret = process.env.NEXT_PUBLIC_TWITCH_CLIENT_SECRET;
 
 // Function to get the OAuth token from Twitch
 async function getOAuthToken(): Promise<string> {
-  const url = "https://id.twitch.tv/oauth2/token";
   const params: { [key: string]: any } = {
     client_id,
     client_secret,
@@ -126,7 +126,7 @@ async function getOAuthToken(): Promise<string> {
   try {
     const queryString = new URLSearchParams(params).toString();
 
-    const response = await fetch(`${url}?${queryString}`, {
+    const response = await fetch(`${twitchOAuthURL}?${queryString}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -155,7 +155,6 @@ async function fetchGames(
   access_token: string,
   cursor: string | null = null
 ): Promise<any> {
-  const url = "https://api.twitch.tv/helix/games/top";
   const headers: { [key: string]: any } = {
     "Client-ID": client_id,
     Authorization: `Bearer ${access_token}`,
@@ -170,7 +169,7 @@ async function fetchGames(
 
   try {
     const queryString = new URLSearchParams(params).toString();
-    const response = await fetch(`${url}?${queryString}`, { headers });
+    const response = await fetch(`${twitchGameURL}?${queryString}`, { headers });
 
     if (response.ok) {
       const data = await response.json();
