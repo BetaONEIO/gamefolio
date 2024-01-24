@@ -8,6 +8,10 @@ const nextConfig = {
       "id.twitch.tv",
     ],
   },
+  webpack: (config) => {
+    config.resolve.fallback = { fs: false, os: false, path: false };
+    return config;
+  },
 };
 
 module.exports = nextConfig;
