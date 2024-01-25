@@ -11,6 +11,7 @@ import { getFromLocal } from "@/utils/localStorage";
 import { validateLogin } from "@/validation";
 import { ToastContainer } from "react-toastify";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
+import CustomBackground from "@/components/CustomBackground/custombackground";
 
 const Page = () => {
   const router = useRouter();
@@ -69,18 +70,20 @@ const Page = () => {
   }, []);
 
   return (
-    <section className="bg-[#091619] min-h-screen flex flex-col justify-center">
-      <div className="flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
-        <Image
-          src={IMAGES.logo}
-          alt="logo"
-          width={100}
-          height={100}
-          priority
-          style={{ width: "100px", height: "100px" }}
-        />
+    <CustomBackground>
+      <div className="flex flex-col items-center justify-center px-6 py-8 ">
+        <div className="p-6 space-y-4 sm:p-8 md:w-96 bg-[#091619] rounded-xl border border-[#1C2C2E]">
+          <div className="flex justify-center items-center">
+            <Image
+              src={IMAGES.logo}
+              alt="logo"
+              width={100}
+              height={100}
+              priority
+              style={{ width: "100px", height: "100px" }}
+            />
+          </div>
 
-        <div className="p-6 space-y-4 sm:p-8 md:w-96">
           <h1 className={`${leagueGothic.className} text-4xl`}>LOGIN</h1>
           <hr className="w-7 border-t-4 border-[#43DD4E] rounded-lg" />
 
@@ -158,7 +161,7 @@ const Page = () => {
           </form>
         </div>
       </div>
-    </section>
+    </CustomBackground>
   );
 };
 
