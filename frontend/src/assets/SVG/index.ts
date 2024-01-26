@@ -77,4 +77,6 @@ export const SVG = {
   Instagram: "/instagram.svg",
   X: "/x.svg",
   GamefolioCoin: "/gamefolioCoin.svg",
+  Notification: "/notification.svg",
+  Badges: "/badges.svg",
 };

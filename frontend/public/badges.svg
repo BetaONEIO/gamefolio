@@ -1,0 +1,27 @@
+<svg width="900" height="400" viewBox="0 0 96 36" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g clip-path="url(#clip0_1212_10413)">
+<rect width="96" height="36" rx="18" fill="#091619"/>
+<g filter="url(#filter0_d_1212_10413)">
+<rect x="8" y="8" width="20" height="20" fill="url(#pattern0)" shape-rendering="crispEdges"/>
+</g>
+</g>
+<rect x="0.5" y="0.5" width="95" height="35" rx="17.5" stroke="#162423"/>
+<defs>
+<filter id="filter0_d_1212_10413" x="-76" y="-76" width="188" height="188" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset/>
+<feGaussianBlur stdDeviation="42"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1212_10413"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1212_10413" result="shape"/>
+</filter>
+<pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+<use xlink:href="#image0_1212_10413" transform="scale(0.00195312)"/>
+</pattern>
+<clipPath id="clip0_1212_10413">
+<rect width="96" height="36" rx="18" fill="white"/>
+</clipPath>
+</defs>
+</svg>
