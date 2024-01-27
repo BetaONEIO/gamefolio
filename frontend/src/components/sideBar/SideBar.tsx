@@ -225,52 +225,51 @@ function SideBar() {
 
               <li>
                 <Link
-                  href="/mygamefolio"
+                  href="/account"
                   className={`flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white  ${
-                    isItemActive("/gamefolio") ? "bg-[#162423]" : ""
+                    isItemActive("/account") ? "bg-[#162423]" : ""
                   } dark:hover:bg-[#162423] group`}
                 >
                   <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 18 18"
-                    fill="none"
                     xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
                     style={{
-                      fill: isItemActive("/gamefolio") ? "#62C860" : "#586769",
-                      stroke: isItemActive("/gamefolio")
-                        ? "#62C860"
-                        : "#586769",
+                      fill: isItemActive("/account") ? "#62C860" : "#586769",
+                      stroke: isItemActive("/account") ? "#62C860" : "#586769",
                     }}
                   >
-                    <g clipPath="url(#clip0_133_5751)">
-                      <path
-                        d="M14.25 4.46853L13.625 4.15385L4.6875 14.4126L14.5625 13.028L14.5 10.6364L10.75 10.8252L17.9375 6.7972L14.8125 18L14.625 13.3427L3.125 18L0 15.1678L14.5625 0L16.1875 2.76923L14.25 4.46853Z"
-                        fill="#586769"
-                      />
-                      <path
-                        d="M14.8125 18.0002L14.625 13.3428L14.5625 13.0281L14.5 10.6365L10.75 10.8253L17.9375 6.79736L14.8125 18.0002Z"
-                        fill="#586769"
-                      />
-                    </g>
-                    <defs>
-                      <clipPath id="clip0_133_5751">
-                        <rect width="18" height="18" fill="white" />
-                      </clipPath>
-                    </defs>
+                    <path
+                      d="M16.19 2H12.75V8V8.75V13.75H22V8.75V8V7.81C22 4.17 19.83 2 16.19 2Z"
+                      fill="#586769"
+                    />
+                    <path
+                      d="M2 10.25V15.25V15.75V16.19C2 19.83 4.17 22 7.81 22H11.25V15.75V15.25V10.25H2Z"
+                      fill="#586769"
+                    />
+                    <path
+                      d="M11.25 2V8.75H2V7.81C2 4.17 4.17 2 7.81 2H11.25Z"
+                      fill="#586769"
+                    />
+                    <path
+                      d="M22 15.25V16.19C22 19.83 19.83 22 16.19 22H12.75V15.25H22Z"
+                      fill="#586769"
+                    />
                   </svg>
 
                   <div className="flex flex-row w-48 justify-between">
                     <span
                       className={`ml-5 font-semibold ${
-                        isItemActive("/gamefolio")
+                        isItemActive("/account")
                           ? "text-white"
                           : "text-gray-400"
                       }`}
                     >
                       My Gamefolio
                     </span>
-                    {isItemActive("/gamefolio") && (
+                    {isItemActive("/account") && (
                       <hr className="w-1 h-6 bg-[#fff] rounded-lg" />
                     )}
                   </div>

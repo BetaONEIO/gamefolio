@@ -1,7 +1,7 @@
 import { IMAGES } from "@/assets/images";
 import { ReactNode } from "react";
 
-const CustomBackground = ({children}: { children: ReactNode }) => {
+const CustomBackground = ({ children }: { children: ReactNode }) => {
   const backgroundImage = `url(${IMAGES.bgImage})`;
 
   return (
