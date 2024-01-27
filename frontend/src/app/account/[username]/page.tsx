@@ -28,6 +28,7 @@ import VideoDetails from "@/components/Modals/VideoDetails";
 import { getAllClipVideos } from "@/store/slices/clipSlice";
 import { getCurrentUserStories } from "@/store/slices/storySlice";
 import ViewStory from "@/components/Modals/ViewStory";
+import CustomHeader from "@/components/CustomHeader/CustomHeader";
 
 interface MyVideosSectionProps {
   authState: any; // Add authState as a prop
@@ -304,40 +305,7 @@ function Page({ params }: any) {
   return (
     <Layout>
       {/* Header */}
-      <div className="flex items-center py-2 bg-[#091619]">
-        <div className="flex justify-between items-center w-full mx-4">
-          <div
-            className="flex gap-4 items-center"
-            onClick={handleBackButtonClick}
-          >
-            <Image
-              className="hover:opacity-80 cursor-pointer"
-              src={SVG.Back}
-              alt="Settings"
-              width={32}
-              height={32}
-            />
-            <h1 className={`${leagueGothic.className} text-4xl`}> Back</h1>
-          </div>
-          <div className="flex items-center my-3 mx-2">
-            <div className="flex items-center mr-2 rounded-full bg-[#162423]">
-              <Image src={IMAGES.Badges} alt="GGcoin" width={50} height={50} />
-              <p className="font-semibold pr-2">Badges</p>
-            </div>
-            <Link href="/account/settings">
-              <Image
-                className="hover:opacity-60 cursor-pointer"
-                src={SVG.Setting}
-                alt="Setting"
-                width={24}
-                height={24}
-              />
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      <hr className="border-t border-gray-600" />
+      <CustomHeader>PROFILE</CustomHeader>
       {/* Main  */}
       <div className="flex justify-center items-center pt-4">
         {/* Profile */}

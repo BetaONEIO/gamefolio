@@ -5,17 +5,17 @@ import { leagueGothic } from "@/font/font";
 import Link from "next/link";
 import { IMAGES } from "@/assets/images";
 
-function ExploreHeader() {
+function CustomHeader({children}: {children?: String}) {
   return (
     <>
       <div className="flex justify-between items-center py-4 bg-[#091619] sticky top-0 w-full px-4 sm:px-2 lg:px-4">
         <div
           className={`${leagueGothic.className} text-2xl sm:text-4xl lg:text-4xl text-white`}
         >
-          EXPLORE
+          {children}
         </div>
 
-        <div className="w-2/3 sm:w-1/3 lg:w-2/4 bg-[#1C2C2E] ml-16 flex gap-2 p-2 sm:p-3 items-center rounded-lg overflow-hidden">
+        <div className="w-2/3 sm:w-1/3 lg:w-2/5 bg-[#1C2C2E] ml-16 flex gap-2 p-2 sm:p-3 items-center rounded-lg overflow-hidden">
           <Image src={SVG.Search} alt="logo" width={25} height={25} />
           <input
             className="bg-[#1C2C2E] outline-none text-white flex-grow text-sm sm:text-base"
@@ -72,4 +72,4 @@ function ExploreHeader() {
   );
 }
 
-export default ExploreHeader;
+export default CustomHeader;

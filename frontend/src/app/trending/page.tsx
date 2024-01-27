@@ -19,6 +19,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
 import Loading from "./loading";
+import CustomHeader from "@/components/CustomHeader/CustomHeader";
 
 function Trending() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
@@ -117,15 +118,8 @@ function Trending() {
   return (
     <Layout>
       <Suspense fallback={<Loading />}>
-        <div style={headerStyle} className="py-4 bg-[#46A541]">
-          <div className="mx-4">
-            <h1
-              className={`${leagueGothic.className} text-2xl sm:text-4xl lg:text-4xl text-white`}
-            >
-              TRENDING
-            </h1>
-          </div>
-        </div>
+        {/* Header */}
+        <CustomHeader>TRENDING</CustomHeader>
 
         <div
           style={sectionStyle}

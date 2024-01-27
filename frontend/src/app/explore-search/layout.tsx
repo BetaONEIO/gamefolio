@@ -1,7 +1,6 @@
+import CustomHeader from "@/components/CustomHeader/CustomHeader";
 import Layout from "@/components/CustomLayout/layout";
-import ExploreHeader from "@/components/ExploreHeader/ExploreHeader";
 import TopBar from "@/components/Topbar/TopBar";
-import React from "react";
 
 function layout({ children }: any) {
   const sectionStyle = {
@@ -9,7 +8,7 @@ function layout({ children }: any) {
   };
   return (
     <Layout>
-      <ExploreHeader />
+      <CustomHeader>EXPLORE</CustomHeader>
       <TopBar />
 
       <div

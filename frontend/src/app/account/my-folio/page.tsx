@@ -8,6 +8,7 @@ import Statement from "@/components/Modals/Statement";
 import { leagueGothic } from "@/font/font";
 import { useSelector } from "@/store";
 import { format } from "date-fns";
+import CustomHeader from "@/components/CustomHeader/CustomHeader";
 
 function Page() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
@@ -33,38 +34,7 @@ function Page() {
   return (
     <Layout>
       {/* Header */}
-      <div className="flex flex-col gap-8 items-center px-6 pt-2 pb-8 bg-[#091619]">
-        <div className="flex justify-between items-center w-full mx-4">
-          <div>
-            <h1 className={`${leagueGothic.className} text-4xl`}>MY FOLIO</h1>
-          </div>
-          <div className="flex items-center my-3 mx-2">
-            <div
-              onClick={() => handleModalToggle("isStatementModalOpen")}
-              className="flex items-center p-2 mr-2 rounded-full bg-[#162423]"
-            >
-              <Image
-                className="mr-2"
-                src={SVG.Statement}
-                alt="GGcoin"
-                width={22}
-                height={22}
-              />
-              <p className="font-semibold text-sm pr-2">Download Statement</p>
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-col w-7/12 p-2 ">
-          <div className="flex flex-col items-center w-full bg-[#1FDE1F] p-6 rounded-xl">
-            <span className="text-black text-sm font-normal">
-              Your Coin Balance
-            </span>
-            <span className="text-black text-xl font-bold">
-              {totalCoinAmount}.00
-            </span>
-          </div>
-        </div>
-      </div>
+      <CustomHeader>MY FOLIO</CustomHeader>
 
       {/* Main */}
       <div

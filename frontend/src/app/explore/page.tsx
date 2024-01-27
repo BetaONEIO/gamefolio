@@ -1,16 +1,16 @@
 "use client";
-import { Suspense, useEffect, useState } from "react";
-import Link from "next/link";
 import { IMAGES } from "@/assets/images";
 import Layout from "@/components/CustomLayout/layout";
-import ExploreHeader from "@/components/ExploreHeader/ExploreHeader";
+import Modal from "@/components/Modals/Modal";
+import VideoDetails from "@/components/Modals/VideoDetails";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import { getAllPostVideos, refreshPage } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
+import Link from "next/link";
+import { Suspense, useEffect, useState } from "react";
 import Loading from "./loading";
-import Modal from "@/components/Modals/Modal";
-import VideoDetails from "@/components/Modals/VideoDetails";
+import CustomHeader from "@/components/CustomHeader/CustomHeader";
 
 function Explore() {
   const postState = useSelector((state: any) => state.post) || [];
@@ -95,7 +95,7 @@ function Explore() {
   return (
     <Layout>
       <Suspense fallback={<Loading />}>
-        <ExploreHeader />
+        <CustomHeader>EXPLORE</CustomHeader>
 
         <div
           style={sectionStyle}

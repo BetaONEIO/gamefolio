@@ -13,6 +13,7 @@ import axios from "axios";
 import { BASE_URL } from "@/services/api";
 import Modal from "@/components/Modals/Modal";
 import DeleteAccount from "@/components/Modals/DeleteAccount";
+import CustomHeader from "@/components/CustomHeader/CustomHeader";
 
 const Edit = () => {
   const authState = useSelector((state: any) => state.auth.userData) || [];
@@ -121,18 +122,8 @@ const Edit = () => {
 
   return (
     <Layout>
-      <div className="flex items-center py-6 bg-[#091619]">
-        <div className="flex justify-between items-center w-full mx-4">
-          <div className="flex gap-4 items-center">
-            <h1
-              className={`${leagueGothic.className} text-2xl sm:text-4xl text-gray-50`}
-            >
-              EDIT PROFILE
-            </h1>
-          </div>
-        </div>
-      </div>
-
+      {/* Header */}
+      <CustomHeader>SETTINGS</CustomHeader>
       <section
         style={sectionStyle}
         className="flex flex-col items-center bg-[#091619] min-h-screen"

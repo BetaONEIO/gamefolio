@@ -25,6 +25,7 @@ import CurrentUserStories from "@/components/story/CurrentUserStories";
 import Loading from "./loading";
 import VideoDetails from "@/components/Modals/VideoDetails";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
+import CustomHeader from "@/components/CustomHeader/CustomHeader";
 
 interface MyVideosSectionProps {
   authState: any; // Add authState as a prop
@@ -195,41 +196,7 @@ function Page() {
     <Layout>
       <Suspense fallback={<Loading />}>
         {/* Header */}
-        <div className="flex items-center py-2 bg-[#091619]">
-          <div className="flex justify-between items-center w-full mx-4">
-            <div>
-              <h1
-                className={`${leagueGothic.className} text-2xl sm:text-4xl lg:text-4xl text-white`}
-              >
-                ACCOUNT
-              </h1>
-            </div>
-            <div className="flex items-center my-3 mx-2">
-              <Link href="/account/my-folio">
-                <div className="flex items-center p-1 mr-2 rounded-full bg-[#162423]">
-                  <Image
-                    className="mr-2"
-                    src={SVG.GGcoin}
-                    alt="GGcoin"
-                    width={30}
-                    height={30}
-                  />
-                  <p className="font-semibold pr-2 text-white">GG COIN</p>
-                </div>
-              </Link>
-              <Link href="/account/settings">
-                <Image
-                  className="cursor-pointer hover:opacity-60"
-                  src={SVG.Setting}
-                  alt="Setting"
-                  width={24}
-                  height={24}
-                />
-              </Link>
-            </div>
-          </div>
-        </div>
-        <hr className="border-t border-gray-600" />
+        <CustomHeader>ACCOUNT</CustomHeader>
 
         {/* Main  */}
         <div className="flex justify-center items-center pt-4">

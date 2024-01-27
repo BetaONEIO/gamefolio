@@ -13,6 +13,7 @@ import { leagueGothic } from "@/font/font";
 import Loading from "./loading";
 import { toastError } from "@/components/Toast/Toast";
 import { ToastContainer } from "react-toastify";
+import CustomHeader from "@/components/CustomHeader/CustomHeader";
 
 function Setting() {
   const [modalState, setModalState] = useState({
@@ -46,22 +47,7 @@ function Setting() {
     <Layout>
       <Suspense fallback={<Loading />}>
         {/* Header */}
-        <div className="flex items-center py-6 bg-[#091619]">
-          <div className="flex justify-between items-center w-full mx-4 ">
-            <div className="flex gap-4 items-center">
-              <h1 className={`${leagueGothic.className} text-4xl text-white`}>
-                SETTINGS
-              </h1>
-              <Image
-                className="hover:opacity-80 cursor-pointer"
-                src={SVG.SettingHeader}
-                alt="Settings"
-                width={32}
-                height={32}
-              />
-            </div>
-          </div>
-        </div>
+        <CustomHeader>SETTINGS</CustomHeader>
 
         {/* Body */}
         <div
