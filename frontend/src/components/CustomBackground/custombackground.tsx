@@ -1,9 +1,4 @@
-
-import Link from "next/link";
-import Image from "next/image";
 import { IMAGES } from "@/assets/images";
-import { SVG } from "@/assets/SVG";
-import { BASE_URL2 } from "@/services/api";
 import { ReactNode } from "react";
 
 const CustomBackground = ({children}: { children: ReactNode }) => {
