@@ -5,10 +5,10 @@ import { leagueGothic } from "@/font/font";
 import Link from "next/link";
 import { IMAGES } from "@/assets/images";
 
-function CustomHeader({children}: {children?: String}) {
+function CustomHeader({ children }: { children?: String }) {
   return (
     <>
-      <div className="flex justify-between items-center py-4 bg-[#091619] sticky top-0 w-full px-4 sm:px-2 lg:px-4">
+      <div className="z-50 flex justify-between items-center py-4 bg-[#091619] sticky top-0 w-full px-4 sm:px-2 lg:px-4">
         <div
           className={`${leagueGothic.className} text-2xl sm:text-4xl lg:text-4xl text-white`}
         >

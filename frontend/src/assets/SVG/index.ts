@@ -79,4 +79,6 @@ export const SVG = {
   GamefolioCoin: "/gamefolioCoin.svg",
   Notification: "/notification.svg",
   Badges: "/badges.svg",
+  MyFolioCardBG: "/myfolio-bg.svg",
+  ChipCard: "/chipcard.svg",
 };

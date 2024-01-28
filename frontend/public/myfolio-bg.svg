@@ -1,0 +1,45 @@
+   <svg
+                  width="104"
+                  height="173"
+                  viewBox="0 0 104 173"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g opacity="0.2" clip-path="url(#clip0_1227_9723)">
+                    <path
+                      d="M82.3333 42.9476L78.7222 39.9231L27.0833 138.521L84.1389 125.213L83.7778 102.227L62.1111 104.042L103.639 65.3287L85.5833 173L84.5 128.238L18.0556 173L0 145.78L84.1389 0L93.5278 26.6154L82.3333 42.9476Z"
+                      fill="url(#paint0_linear_1227_9723)"
+                    />
+                    <path
+                      d="M85.5835 173L84.5002 128.238L84.1391 125.213L83.778 102.227L62.1113 104.042L103.639 65.3287L85.5835 173Z"
+                      fill="url(#paint1_linear_1227_9723)"
+                    />
+                  </g>
+                  <defs>
+                    <linearGradient
+                      id="paint0_linear_1227_9723"
+                      x1="51.8194"
+                      y1="0"
+                      x2="51.8194"
+                      y2="173"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stop-color="#12AF12" />
+                      <stop offset="1" stop-color="#34BF34" />
+                    </linearGradient>
+                    <linearGradient
+                      id="paint1_linear_1227_9723"
+                      x1="82.8752"
+                      y1="65.3287"
+                      x2="82.8752"
+                      y2="173"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stop-color="#12AF12" />
+                      <stop offset="1" stop-color="#34BF34" />
+                    </linearGradient>
+                    <clipPath id="clip0_1227_9723">
+                      <rect width="104" height="173" fill="white" />
+                    </clipPath>
+                  </defs>
+                </svg>
