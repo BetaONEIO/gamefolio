@@ -81,4 +81,5 @@ export const SVG = {
   Badges: "/badges.svg",
   MyFolioCardBG: "/myfolio-bg.svg",
   ChipCard: "/chipcard.svg",
+  // Arrow: "/myfolio-statement-arrow.svg",
 };

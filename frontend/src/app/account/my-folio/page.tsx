@@ -39,8 +39,8 @@ function Page() {
 
       <div style={sectionStyle} className="flex  justify-center h-full w-full ">
         <div className="mt-4 flex flex-col  lg:flex-row h-fit lg:h-5/6 w-11/12 overflow-y-auto md:overflow-hidden justify-center border border-[#1C2C2E] rounded-xl py-6 px-4 bg-[#091619] ">
-          <div className="flex-1 flex flex-col justify-between   p-4 bg-black-200">
-            <div className="flex flex-col gap-2 py-2">
+          <div className="flex-1 flex flex-col gap-4 p-4 bg-black-200">
+            <div className="flex flex-col gap-4 py-2">
               <span className="font-bold text-lg">Gamefolio Coin Wallet</span>
               {/* Card */}
               <div className="relative flex justify-between rounded-lg border-[0.12px] border-emerald-500 bg-gradient-to-br from-slate-900 to-slate-800 md:w-10/12 h-56 shrink-0 overflow-hidden p-4">
@@ -83,7 +83,7 @@ function Page() {
                 <div className="flex flex-col justify-between items-end h-full">
                   <div className="flex items-center ">
                     <Image
-                      className="sm:w-14 sm:h-14 w-5 h-5"
+                      className="sm:w-14 sm:h-14 w-10 h-10"
                       src={SVG.ChipCard}
                       alt="ChipCard"
                       width={56}

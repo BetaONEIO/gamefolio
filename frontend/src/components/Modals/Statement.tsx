@@ -16,10 +16,7 @@ function Statement({ handleCloseModal }: StatementProps) {
   const [modalState, setModalState] = useState({
     isTransactionModalOpen: false,
   });
-  const myBGStyleModal = {
-    backgroundColor: "rgba(0, 0, 0, 0.6)",
-    backdropFilter: "blur(8px)",
-  };
+  const statementCalendarIconStyle = {};
 
   const handleStartDateChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -42,46 +39,60 @@ function Statement({ handleCloseModal }: StatementProps) {
     <>
       {/* Modal content */}
 
-      <div className=" p-4 text-center rounded-lg bg-[#091619] sm:p-5">
-        <h1 className={`${leagueGothic.className} text-3xl mb-7 text-white`}>
-          GET STATEMENT
+      <div className="flex flex-col gap-4 p-4 text-start rounded-lg bg-[#091619] sm:p-5">
+        <h1 className={`tracking-tighter font-bold text-base  text-white`}>
+          Get Statement
         </h1>
+        <div className="flex flex-col items-between justify-center md:flex-row md:justify-between md:items-center gap-4 ">
+          <div className="flex flex-col gap-2 ">
+            <label
+              htmlFor="fromDate"
+              className="block  text-xs text-left font-medium text-gray-400"
+            >
+              From Date
+            </label>
+            <input
+              type="date"
+              placeholder="Start Date"
+              id="fromDate"
+              className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-3 text-white "
+              value={startDate}
+              onChange={handleStartDateChange}
+              required
+            />
+          </div>
+          <div className="flex justify-center">
+            <Image
+              className="sm:w-8 sm:h-8 w-6 h-6"
+              src={SVG.Arrow}
+              alt="GGcoin"
+              width={56}
+              height={56}
+            />
+          </div>
 
-        <div>
-          <label
-            htmlFor="password"
-            className="block mb-2 text-sm text-left font-medium text-white"
-          >
-            Select Date Range
-          </label>
-          <input
-            type="date"
-            placeholder="Start Date"
-            name="date"
-            id="date"
-            className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-3 text-white"
-            value={startDate}
-            onChange={handleStartDateChange}
-            required
-          />
-        </div>
-
-        <div>
-          <input
-            type="date"
-            name="date"
-            id="date"
-            className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-3 text-white my-3"
-            placeholder="End Date"
-            value={endDate}
-            onChange={handleEndDateChange}
-            required
-          />
+          <div className="flex flex-col gap-2 ">
+            <label
+              htmlFor="toDate"
+              className="block  text-xs text-left font-medium text-gray-400"
+            >
+              To Date
+            </label>
+            <input
+              type="date"
+              id="toDate"
+              className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-3 text-white "
+              placeholder="End Date"
+              value={endDate}
+              onChange={handleEndDateChange}
+              required
+            />
+          </div>
         </div>
 
         <button
           onClick={() => handleModalToggle("isTransactionModalOpen")}
-          className="w-full h-[50] bg-[#37C535] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3"
+          className="w-full h-[50] bg-[#37C535] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3 tracking-tighter font-bold"
         >
           Generate
         </button>
