@@ -41,7 +41,7 @@ function ExploreUser() {
               height={50}
             />
             <div>
-              <h3 className=" font-semibold text-white">{user?.username}</h3>
+              <h3 className="font-semibold text-white">{user?.username}</h3>
               <p className="text-base font-light text-gray-400">{user?.name}</p>
             </div>
           </Link>
