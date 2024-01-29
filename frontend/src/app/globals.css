@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -50,9 +49,15 @@ body {
 .loader {
   animation: spinner 0.5s linear infinite;
   border: 0.4rem solid transparent;
-  border-top-color: #62C860;
-  border-bottom-color: #62C860;
+  border-top-color: #62c860;
+  border-bottom-color: #62c860;
   border-radius: 50%;
   height: 2.5rem;
   width: 2.5rem;
+}
+
+/* styles/global.css */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  background-image: url("../../public/calendar.svg");
+  /* Add any additional styles you want for the calendar picker indicator */
 }
