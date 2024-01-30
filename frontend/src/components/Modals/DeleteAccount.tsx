@@ -68,25 +68,54 @@ function DeleteAccount({ handleCloseModal }: DeleteAccountProps) {
             </h1>
 
             <div className="w-full mb-4 sm:mb-5">
-              <p className="text-md">
+              <p className="text-sm">
                 After 30 days of account deactivation, the system will delete
                 all the data of the account. You can login into your account
                 during the time and account will be reactivated.
               </p>
             </div>
 
-            <div className="flex flex-col items-center mb-2 sm:mb-2 ">
-              <button
-                className="w-1/2 h-[50] font-bold bg-[#162423] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3 hover:opacity-80 cursor-pointer"
-                onClick={handleDeactivateAccount}
+            <div className="">
+              <textarea
+                id="description"
+                rows={8}
+                className="bg-[#162423] md:w-80 sm:w-96 p-2  sm:text-sm outline-none rounded-lg text-white"
+                placeholder="Reason (Optional)"
+                // value={description}
+                // onChange={(e) => setDescription(e.target.value)}
+              ></textarea>
+            </div>
+
+            <div>
+              <label
+                htmlFor="password"
+                className="flex my-2 ml-6 text-sm font-medium text-white"
               >
-                Confirm
-              </button>
+                Password
+              </label>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                className="bg-[#162423] md:w-80 sm:w-96 p-2 mb-4 rounded-lg outline-none text-white"
+                placeholder="Password"
+                // value={password}
+                // onChange={handleChange}
+              />
+            </div>
+
+            <div className="flex items-center justify-center gap-4 my-2 sm:mb-2">
               <button
+                className="w-2/5 h-[50] font-bold bg-[#162423] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] hover:opacity-80 cursor-pointer"
                 onClick={() => handleCloseModal()}
-                className="w-1/2 h-[50] font-bold bg-[#37C535] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] hover:opacity-80 cursor-pointer"
               >
                 Cancel
+              </button>
+              <button
+                onClick={handleDeactivateAccount}
+                className="w-2/5 h-[50] font-bold bg-[#37C535] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] hover:opacity-80 cursor-pointer"
+              >
+                Confirm
               </button>
             </div>
           </div>

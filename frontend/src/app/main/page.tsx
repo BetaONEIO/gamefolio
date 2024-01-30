@@ -145,7 +145,7 @@ function Main() {
 
   return (
     <Layout>
-     <CustomHeader>GAMEFOLIO FEED</CustomHeader>
+      <CustomHeader>GAMEFOLIO FEED</CustomHeader>
       {/* <FollowingStories /> */}
       <Suspense fallback={<Loading />}>
         <div
@@ -330,7 +330,7 @@ function Main() {
 
                       <Image
                         className="cursor-pointer hover:opacity-80"
-                        src={SVG.Gcoin}
+                        src={SVG.GGGCoin}
                         alt="Gcoin"
                         width={45}
                         height={45}

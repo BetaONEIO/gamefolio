@@ -223,23 +223,26 @@ function SideBar() {
                 </Link>
               </li>
 
-                 
-                  <li>
+              <li>
                 <Link
                   href="/mygamefolio"
                   className={`flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white  ${
                     isItemActive("/gamefolio") ? "bg-[#162423]" : ""
                   } dark:hover:bg-[#162423] group`}
                 >
-                 <svg
+                  <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
                     height="24"
                     viewBox="0 0 24 24"
                     fill="none"
                     style={{
-                      fill: isItemActive("/mygamefolio") ? "#62C860" : "#586769",
-                      stroke: isItemActive("/mygamefolio") ? "#62C860" : "#586769",
+                      fill: isItemActive("/mygamefolio")
+                        ? "#62C860"
+                        : "#586769",
+                      stroke: isItemActive("/mygamefolio")
+                        ? "#62C860"
+                        : "#586769",
                     }}
                   >
                     <path
@@ -316,23 +319,23 @@ function SideBar() {
 
           <div>
             <div className="flex flex-col items-center justify-center gap-3">
-              {/* <Link href="/main"> */}
-              <button className="flex w-full sm:w-52 bg-[#1C2C2E] text-white py-[10px] px-[20px] rounded-full">
-                <div className="flex self-center justify-between ">
-                  <Image
-                    width={20}
-                    height={20}
-                    src={SVG.Message}
-                    alt="Message"
-                    className=""
-                  />
-                  <div>
-                    <p className="mx-4">Messages</p>
+              <Link href="/chat">
+                <button className="flex w-full sm:w-52 bg-[#1C2C2E] text-white py-[10px] px-[20px] rounded-full ">
+                  <div className="flex self-center justify-between ">
+                    <Image
+                      width={20}
+                      height={20}
+                      src={SVG.Message}
+                      alt="Message"
+                      className=""
+                    />
+                    <div>
+                      <p className="mx-4">Messages</p>
+                    </div>
+                    <p className="px-2 rounded-xl bg-[#586769]">2</p>
                   </div>
-                  <p className="px-2 rounded-xl bg-[#586769]">2</p>
-                </div>
-              </button>
-              {/* </Link> */}
+                </button>
+              </Link>
 
               <button
                 className="flex items-center w-full sm:w-52 bg-[#37C535] text-white py-[10px] px-[20px] rounded-full mb-3 gap-4"
