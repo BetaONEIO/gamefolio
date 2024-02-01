@@ -1,5 +1,6 @@
 const nodemailer = require("nodemailer");
 const generateOTP = require("./generateOtp");
+const fs = require("fs");
 
 const { BREVO_HOST, BREVO_PORT, BREVO_USER, BREVO_PASS } = process.env;
 const sendEmail = (user, otp) => {
@@ -14,30 +15,11 @@ const sendEmail = (user, otp) => {
       },
     });
 
-    // HTML content for the welcome email
-    const welcomeEmail = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Welcome to Gamefolio!</title>
-</head>
-<body>
-  <h1>Welcome to Gamefolio!</h1>
-  <p>Dear {{username}},</p>
-  <p>Thank you for joining Gamefolio! We're excited to have you as part of our community.</p>
-  <p>Your account has been successfully created. Here are some important details:</p>
-  <ul>
-    <li><strong>Username:</strong> {{username}}</li>
-    <li><strong>Email:</strong> {{email}}</li>
-  </ul>
-  <p>Feel free to explore our platform and discover the features we offer. If you have any questions or need assistance, don't hesitate to contact our support team.</p>
-  <p>Thank you again for choosing Gamefolio!</p>
-  <p>Best regards,<br>Your Gamefolio Team</p>
-</body>
-</html>
-`;
+    // Read the content of html template
+    const welcomeEmail = fs.readFileSync(
+      __dirname + "/email_templates/Welcome_Email.html",
+      "utf-8"
+    );
 
     // Replace placeholders with actual user data
     const userData = {
@@ -82,30 +64,11 @@ const sendForgotOtpEmail = (email, otp) => {
       },
     });
 
-    // HTML content for the welcome email
-    const forgetOtpEmail = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reset Password Request!</title>
-</head>
-<body>
-<h1>Reset Your Password - Gamefolio</h1>
-  <p>Dear User,</p>
-  <p>We received a request to reset your password for your Gamefolio account.</p>
-  <p>Here are the details for resetting your password:</p>
-  <ul>
-    <li><strong>Email:</strong> {{email}}</li>
-    <li><strong>Verification Code:</strong> {{otp}}</li>
-  </ul>
-  <p>If you did not request a password reset, please ignore this email. The verification code is valid for a limited time.</p>
-  <p>Thank you for using Gamefolio!</p>
-  <p>Best regards,<br>Your Gamefolio Team</p>
-</body>
-</html>
-`;
+    // Read the content of html template
+    const forgetOtpEmail = fs.readFileSync(
+      __dirname + "/email_templates/Forgotten_Password.html",
+      "utf-8"
+    );
 
     // Replace placeholders with actual user data
     const userData = {
