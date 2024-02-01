@@ -31,8 +31,6 @@ const SelectGame = () => {
 
   const [selectedGames, setSelectedGames] = useState<string[]>([]);
 
-  console.log("Selected Games: ", selectedGames);
-
   const handleCheckboxClick = (name: any) => {
     if (selectedGames.length < 3 || selectedGames.includes(name)) {
       // Toggle the selection of the game by name
@@ -56,7 +54,6 @@ const SelectGame = () => {
       return;
     }
     const successCallback = (response: any) => {
-      console.log("response: sgame:  ", response);
       toastSuccess(response);
       setTimeout(() => {
         router.push(ROUTES.main);
@@ -74,7 +71,6 @@ const SelectGame = () => {
     };
 
     dispatch(createFavoriteGame(params));
-    // router.push(ROUTES.selectGame);
   };
 
   return (
