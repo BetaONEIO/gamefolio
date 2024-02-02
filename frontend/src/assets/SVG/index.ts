@@ -83,4 +83,5 @@ export const SVG = {
   ChipCard: "/chipcard.svg",
   // Arrow: "/myfolio-statement-arrow.svg",
   GGGCoin: "/gggcoin.svg",
+  Threedot: "/threedots.svg",
 };

@@ -99,17 +99,14 @@ function Explore() {
       <Suspense fallback={<Loading />}>
         <CustomHeader>EXPLORE</CustomHeader>
 
-        <div className="py-4">
+        <div className="py-4 bg-transparent">
           <ul className="flex items-center">
             <li>
-              <a
-                href="/explore-search/explore-videos"
-                className="text-base font-normal text-white"
-              >
+              <a href="/explore" className="text-base font-normal text-white">
                 <div className="my-2 w-full">
                   <span className="px-6">All</span>
                 </div>
-                {isItemActive("/explore-search/explore-videos") && (
+                {isItemActive("/explore") && (
                   <div className="w-full h-1 bg-[#62C860] rounded-lg"></div>
                 )}
               </a>
@@ -117,13 +114,13 @@ function Explore() {
 
             <li>
               <a
-                href="/explore-search/explore-games"
+                href="/explore/games"
                 className="text-base font-normal text-white"
               >
                 <div className="my-2 w-full">
                   <span className="px-6">Games</span>
                 </div>
-                {isItemActive("/explore-search/explore-games") && (
+                {isItemActive("/explore/games") && (
                   <div className="w-full h-1 bg-[#62C860] rounded-lg"></div>
                 )}
               </a>
@@ -218,7 +215,7 @@ function Explore() {
             </div>
           </div>
 
-          <div className="flex items-center justify-center mx-2 overflow-scroll no-scrollbar">
+          <div className="flex items-center mx-2 overflow-scroll no-scrollbar">
             {userState?.userList?.slice(0, 10).map((user: any) => (
               <div
                 key={user?.userID}
@@ -324,11 +321,11 @@ function Explore() {
             </div>
           </div>
 
-          <div className="flex items-center mx-2">
+          <div className="flex items-center mx-2 overflow-x-auto no-scrollbar">
             {postState.videos.slice(0, 4).map((item: any) => (
               <div
                 key={item?.userID}
-                className="flex flex-col w-full h-full gap-2 border-2 border-[#1C2C2E] rounded-xl mx-1 my-2 pb-2 overflow-scroll no-scrollbar"
+                className="flex flex-col gap-2 w-80 h-full border-2 border-[#1C2C2E] rounded-xl mx-1 my-2 pb-2"
                 onClick={() =>
                   handleModalToggle("isVideoDetailOpen", item._id, item)
                 }
@@ -336,87 +333,72 @@ function Explore() {
                 <div className="relative">
                   <video
                     src={item.video}
-                    className="w-full h-full sm:w-full sm:h-full rounded-2xl hover:opacity-80 p-2"
-                    width={50}
-                    height={50}
+                    className=" w-80 h-full rounded-2xl hover:opacity-80 p-2"
                     controls={false}
                     autoPlay={false}
                     onLoadedMetadata={(e) => handleVideoMetadata(e, item._id)}
                   />
 
-                  <span className="absolute bottom-2 right-2">
+                  <span className="absolute bottom-2 right-3">
                     {formatTime(videoDurations[item._id])}
                   </span>
                 </div>
 
-                <div>
-                  <div className="flex items-center w-full gap-4 mb-2">
-                    <Image
-                      className="rounded-xl w-5 h-5 ml-2 object-cover"
-                      src={item?.profilePicture}
-                      width={10}
-                      height={10}
-                      sizes="100vw"
-                      alt="Account Profile"
-                    />
+                <div className="flex items-center gap-4 mb-2">
+                  <Image
+                    className="rounded-xl w-10 h-10 ml-2 object-cover"
+                    src={item?.profilePicture}
+                    alt="Account Profile"
+                    height={10}
+                    width={10}
+                  />
+
+                  <div>
                     <div>
-                      <div>
-                        <span className="text-white">
-                          {/* {item?.name} */}
-                          Sara Collin
-                        </span>
-                      </div>
-                      <div className="flex items-center">
-                        <p className="text-sm font-light text-gray-400">
-                          10 minutes ago
-                          {/* {post?.date &&
-                              new Date(post.date).toLocaleString("en-US", {
-                                hour: "numeric",
-                                minute: "numeric",
-                                day: "numeric",
-                                month: "short",
-                                year: "numeric",
-                              })} */}
-                        </p>
-                      </div>
+                      <span className="text-xs sm:text-sm text-white">
+                        Sara Collin
+                      </span>
+                    </div>
+                    <div className="flex items-center">
+                      <p className="text-sm font-light text-gray-400">
+                        10 minutes ago
+                      </p>
                     </div>
                   </div>
+                </div>
 
-                  <div className="flex flex-col flex-wrap justify-center text-center lg:justify-start lg:text-start">
-                    <div className="flex items-center justify-between mx-4">
-                      <div className="flex items-center">
-                        <Image
-                          className="mr-2 cursor-pointer hover:opacity-80"
-                          src={SVG.Like}
-                          alt="Like"
-                          width={20}
-                          height={20}
-                        />
-                        <p className="text-white">24</p>
-                      </div>
+                <div className="flex  items-center justify-between text-center mx-4">
+                  <div className="flex items-center">
+                    <Image
+                      className="mr-2 cursor-pointer hover:opacity-80"
+                      src={SVG.Like}
+                      alt="Like"
+                      width={20}
+                      height={20}
+                    />
+                    <p className="text-white">24</p>
+                  </div>
 
-                      <div className="flex items-center">
-                        <Image
-                          className="mr-2 cursor-pointer hover:opacity-80"
-                          src={SVG.Love}
-                          alt="Love"
-                          width={20}
-                          height={20}
-                        />
-                        <p className="text-white">24</p>
-                      </div>
+                  <div className="flex items-center">
+                    <Image
+                      className="mr-2 cursor-pointer hover:opacity-80"
+                      src={SVG.Love}
+                      alt="Love"
+                      width={20}
+                      height={20}
+                    />
+                    <p className="text-white">24</p>
+                  </div>
 
-                      <div className="flex items-center">
-                        <Image
-                          className="mr-2 cursor-pointer hover:opacity-80"
-                          src={SVG.Comment}
-                          alt="Comment"
-                          width={25}
-                          height={25}
-                        />
-                        <p className="text-white">24</p>
-                      </div>
-                    </div>
+                  <div className="flex items-center">
+                    <Image
+                      className="mr-2 cursor-pointer hover:opacity-80"
+                      src={SVG.Comment}
+                      alt="Comment"
+                      width={25}
+                      height={25}
+                    />
+                    <p className="text-white">24</p>
                   </div>
                 </div>
               </div>
