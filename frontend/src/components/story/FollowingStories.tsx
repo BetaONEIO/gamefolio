@@ -43,8 +43,8 @@ function FollowingStories() {
 
   return (
     <>
-      <div className="flex items-center sm:h-32 h-24 py-4 bg-[#091619]">
-        <div className="flex items-center overflow-scroll no-scrollbar gap-6 px-4 py-8">
+      <div className="flex items-center sm:h-32 h-24 py-4 ">
+        <div className="flex items-center overflow-scroll no-scrollbar gap-6 py-8">
           <div className="flex flex-col justify-center items-center gap-2 hover:opacity-80">
             <div
               className="w-16 h-16"
@@ -58,7 +58,7 @@ function FollowingStories() {
                 alt="UploadStory"
               />
             </div>
-            <span className="text-xs text-white">Story</span>
+            <span className="text-xs text-white">ADD</span>
           </div>
 
           {storyState?.followingStories?.map((items: any, index: number) => (
@@ -76,7 +76,7 @@ function FollowingStories() {
                   width="12"
                   height="12"
                   sizes="100vw"
-                  className="h-16 w-16 object-cover rounded-xl border-green-400 border-2"
+                  className="h-16 w-16 object-cover rounded-3xl border-green-400 border-2"
                 />
               </div>
               <span className="text-xs">
