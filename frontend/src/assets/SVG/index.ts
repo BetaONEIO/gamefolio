@@ -84,4 +84,5 @@ export const SVG = {
   // Arrow: "/myfolio-statement-arrow.svg",
   GGGCoin: "/gggcoin.svg",
   Threedot: "/threedots.svg",
+  Camera2: "/camera2.svg",
 };
