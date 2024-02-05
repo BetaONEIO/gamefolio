@@ -152,8 +152,82 @@ function Main() {
           style={sectionStyle}
           className="flex bg-[#091619] h-full justify-center py-4 overflow-y-scroll no-scrollbar"
         >
-          <div className="flex justify-center">
-            <div className="w-11/12 sm:w-9/12 flex flex-col gap-8 rounded-lg">
+          <div className="flex w-full justify-center md:justify-between gap-4 px-4">
+            {/* Trending */}
+            <div className="hidden w-2/5 h-fit md:flex flex-col gap-8 rounded-lg bg-[#091619] border border-[#1C2C2E] px-4 py-6 ">
+              <div className="flex justify-between items-center">
+                <span className="font-bold">Trendings</span>
+                <span className="text-xs text-[#43DD4E] cursor-pointer ">
+                  See More
+                </span>
+              </div>
+              <div className="flex flex-col gap-6">
+                <div className="flex justify-between items-center">
+                  <div className="flex gap-2">
+                    <Image
+                      width={12}
+                      height={12}
+                      className="w-16 h-16"
+                      src={IMAGES.callofduty}
+                      alt="UploadStory"
+                    />
+                    <div className="flex flex-col ">
+                      <span className="text-xs font-bold text-[#43DD4E] ">
+                        Trending Now
+                      </span>
+                      <span className="text-lg text-white ">Call of duty</span>
+                      <span className="text-xs text-gray-500 ">
+                        New addition Arrived
+                      </span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <Image
+                      className="cursor-pointer hover:opacity-80"
+                      src={SVG.Threedots}
+                      alt="Threedots"
+                      width={5}
+                      height={5}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* Story , Posts */}
+            <div className="w-11/12 sm:w-10/12 flex  flex-col gap-8 rounded-lg">
+              <div>
+                <FollowingStories />
+              </div>
+              <div className="bg-[#091619] border border-dashed border-green-800 rounded-lg flex flex-col px-4 py-6 justify-center items-start gap-4">
+                <span className="font-bold text-sm md:text-lg">Add New</span>
+                <div className="flex justify-between gap-2 w-full ">
+                  <div className="bg-[#162423] rounded-lg flex justify-center items-center w-6/12 h-24 ">
+                    <div>
+                      <Image
+                        className="cursor-pointer w-fit"
+                        src={SVG.Clip}
+                        alt="Threedots"
+                        width={24}
+                        height={24}
+                      />
+                    </div>
+                    <span>Post Clips</span>
+                  </div>
+                  <div className="bg-[#162423] rounded-lg flex justify-center items-center w-6/12 h-24 ">
+                    <div>
+                      <Image
+                        className="cursor-pointer w-fit"
+                        src={SVG.Video}
+                        alt="Threedots"
+                        width={24}
+                        height={24}
+                      />
+                    </div>
+                    <span>Post Videos</span>
+                  </div>
+                </div>
+              </div>
               {postState?.followingVideos?.map((post: any) => {
                 // Check if the current user has reacted with "like" or "love"
                 const hasLikeReacted = post.reactions.some(
@@ -176,7 +250,7 @@ function Main() {
                 return (
                   <div
                     key={post._id}
-                    className="border border-[#1C2C2E] rounded-2xl bg-[#091619]"
+                    className="border border-[#1C2C2E] rounded-2xl bg-[#091619] min-w-fit md:min-w-min px-2"
                   >
                     <div className="flex items-center justify-between m-3">
                       <div className="flex items-center sm:gap-4 gap-2">
@@ -195,11 +269,11 @@ function Main() {
                             href={`/account/${post?.userID?.username}`}
                             key={post._id}
                           >
-                            <h1 className="w-[230px] sm:w-[350px] text-sm md:text-lg sm:text-md font-bold text-white hover:opacity-80">
+                            <h1 className="w-[230px] sm:w-[350px] text-sm md:text-base sm:text-base font-bold text-white hover:opacity-80">
                               {post?.userID?.name}
                             </h1>
                           </Link>
-                          <p className="text-sm md:text-lg sm:text-md font-light text-gray-400">
+                          <p className="text-sm md:text-sm sm:text-base font-light text-gray-400">
                             {post?.date &&
                               new Date(post.date).toLocaleString("en-US", {
                                 hour: "numeric",
@@ -212,7 +286,7 @@ function Main() {
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-3 w-10">
                         <div onClick={() => handleCreateBookmark(post._id)}>
                           <Image
                             className="cursor-pointer hover:opacity-80"
@@ -369,6 +443,45 @@ function Main() {
                   </div>
                 );
               })}
+            </div>
+            {/* Notification */}
+            <div className="hidden w-2/5 h-96 md:flex flex-col gap-8 rounded-lg bg-[#091619] border border-[#1C2C2E] px-4 py-6 ">
+              <div className="flex justify-between items-center">
+                <span className="font-bold">Notification</span>
+                <div className="flex gap-2">
+                  <span className="text-xs text-gray-500 cursor-pointer ">
+                    Unread
+                  </span>
+                  <span className="text-xs text-[#43DD4E] cursor-pointer ">
+                    Read
+                  </span>
+                </div>
+              </div>
+              <div className="flex flex-col gap-6 ">
+                <div className="flex justify-between items-start">
+                  <div className="flex gap-2">
+                    <Image
+                      width={12}
+                      height={12}
+                      className="w-12 h-12"
+                      src={IMAGES.callofduty}
+                      alt="UploadStory"
+                    />
+                    <div className="flex flex-col ">
+                      <span className="text-sm text-white ">Maria Samson</span>
+                      <span className="text-xs text-white ">
+                        Followed your profile...{" "}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <span className="text-xs text-gray-500 ">
+                      4:30 AM-2/10/24
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

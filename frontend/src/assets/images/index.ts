@@ -2,7 +2,6 @@ export const IMAGES = {
   logo: "/gamefolio-logo.png",
   bgImage: "/bgimage.png",
   callofduty: "/callofduty.png",
-  subwaysurfer: "/subwaysurfer.png",
   Profile: "/profile.png",
   testStoryUser: "/story-user-1.png",
   Post: "/post.png",
