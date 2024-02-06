@@ -9,17 +9,14 @@ function TopBar() {
   };
   return (
     <>
-      <div className="py-4 bg-[#1C2C2E]">
-        <ul className="flex items-center justify-center divide-x  divide-gray-700 ">
+      <div className=" px-4">
+        <ul className="flex items-center gap-10">
           <li>
-            <a
-              href="/explore-search/explore-videos"
-              className="text-base font-normal  text-white"
-            >
+            <a href="/explore" className="text-base font-normal text-white">
               <div className="my-2 w-full">
-                <span className="px-6">Videos</span>
+                <span className="px-6">All</span>
               </div>
-              {isItemActive("/explore-search/explore-videos") && (
+              {isItemActive("/explore") && (
                 <div className="w-full h-1 bg-[#62C860] rounded-lg"></div>
               )}
             </a>
@@ -27,33 +24,48 @@ function TopBar() {
 
           <li>
             <a
-              href="/explore-search/explore-user"
-              className="text-base font-normal text-white"
-            >
-              <div className="my-2 w-full">
-                <span className="px-6">Users</span>
-              </div>
-              {isItemActive("/explore-search/explore-user") && (
-                <div className="w-full h-1 bg-[#62C860] rounded-lg"></div>
-              )}
-            </a>
-          </li>
-
-          <li>
-            <a
-              href="/explore-search/explore-games"
+              href="/explore/games"
               className="text-base font-normal text-white"
             >
               <div className="my-2 w-full">
                 <span className="px-6">Games</span>
               </div>
-              {isItemActive("/explore-search/explore-games") && (
+              {isItemActive("/explore/games") && (
+                <div className="w-full h-1 bg-[#62C860] rounded-lg"></div>
+              )}
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="/explore/videos"
+              className="text-base font-normal text-white"
+            >
+              <div className="my-2 w-full">
+                <span className="px-6">Videos</span>
+              </div>
+              {isItemActive("/explore/videos") && (
+                <div className="w-full h-1 bg-[#62C860] rounded-lg"></div>
+              )}
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="/explore/users"
+              className="text-base font-normal text-white"
+            >
+              <div className="my-2 w-full">
+                <span className="px-6">Users</span>
+              </div>
+              {isItemActive("/explore/users") && (
                 <div className="w-full h-1 bg-[#62C860] rounded-lg"></div>
               )}
             </a>
           </li>
         </ul>
       </div>
+      <hr className="h-px border-0 bg-gray-700" />
     </>
   );
 }
