@@ -16,7 +16,7 @@ import { ToastContainer } from "react-toastify";
 import CustomHeader from "@/components/CustomHeader/CustomHeader";
 import { usePathname } from "next/navigation";
 
-function Setting({ children }: { children: React.ReactNode }) {
+function Setting({ children }: any) {
   const [modalState, setModalState] = useState({
     isChangePasswordOpen: false,
     isTermsModalOpen: false,
