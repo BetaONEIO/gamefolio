@@ -14,8 +14,9 @@ import Loading from "./loading";
 import { toastError } from "@/components/Toast/Toast";
 import { ToastContainer } from "react-toastify";
 import CustomHeader from "@/components/CustomHeader/CustomHeader";
+import { usePathname } from "next/navigation";
 
-function Setting() {
+function Setting({ children }: { children: React.ReactNode }) {
   const [modalState, setModalState] = useState({
     isChangePasswordOpen: false,
     isTermsModalOpen: false,
@@ -25,6 +26,8 @@ function Setting() {
     isBlockUserModalOpen: false,
     isLogoutModalOpen: false,
   });
+
+  const currentRoute = usePathname();
 
   const sectionStyle = {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 30%)`,
@@ -43,6 +46,10 @@ function Setting() {
     }));
   };
 
+  const isItemActive = (path: string) => {
+    return currentRoute === path ? true : false;
+  };
+
   return (
     <Layout>
       <Suspense fallback={<Loading />}>
@@ -50,134 +57,145 @@ function Setting() {
         <CustomHeader>SETTINGS</CustomHeader>
 
         {/* Body */}
-        <div
-          style={sectionStyle}
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4 w-full p-8"
-        >
-          {/* Box 1 */}
-          <Link
-            href="/edit"
-            className="text-md sm:text-md lg:text-md hover:opacity-80 cursor-pointer"
-          >
-            <div className="hover:opacity-80 cursor-pointer bg-[#08191D] h-40 sm:h-44 md:h-44 lg:h-44 xl:h-44 p-4 rounded-xl">
-              <div className="flex flex-col gap-2 justify-center h-full">
-                <Image
-                  src={SVG.Profile}
-                  alt="Edit Profile"
-                  width={42}
-                  height={42}
-                />
-                <span className="font-semibold text-white">Edit Profile</span>
+        <div style={sectionStyle} className="h-screen w-full p-8">
+          <div className="flex flex-col md:flex-row bg-[#091619] h-5/6 w-full   border border-[#1C2C2E] rounded-lg p-6   ">
+            <div className="flex md:flex-col gap-2 bg-[#091619] overflow-y-scroll no-scrollbar">
+              {/* Box 1 */}
+              <Link href="/account/settings/edit-profile">
+                <div className="hover:opacity-80 cursor-pointer bg-[#091619] h-fit p-4 rounded-xl">
+                  <div className="flex flex-col md:flex-row  gap-2 justify-start items-center h-full">
+                    <Image
+                      className="text-green-500 fill-current"
+                      src={SVG.Profile}
+                      alt="Edit Profile"
+                      width={42}
+                      height={42}
+                    />
+                    <span
+                      className={`text-xs text-center md:text-base font-semibold ${
+                        isItemActive("/account/settings/edit-profile")
+                          ? "text-[#43DD4E]"
+                          : "text-white"
+                      }`}
+                    >
+                      Edit Profile
+                    </span>
+                  </div>
+                </div>
+              </Link>
+
+              {/* Box 2 */}
+              <Link href="/account/settings/change-password">
+                <div
+                  className="hover:opacity-80 cursor-pointer bg-[#091619] h-fit p-4 rounded-xl"
+                  // onClick={() => handleModalToggle("isChangePasswordOpen")}
+                >
+                  <div className="flex flex-col md:flex-row gap-2 justify-start items-center h-full">
+                    <Image
+                      src={SVG.ChangePassword}
+                      alt="Change Password"
+                      width={42}
+                      height={42}
+                    />
+                    <span
+                      className={`text-xs text-center md:text-base font-semibold ${
+                        isItemActive("/account/settings/change-password")
+                          ? "text-[#43DD4E]"
+                          : "text-white"
+                      }`}
+                    >
+                      Change Password
+                    </span>
+                  </div>
+                </div>
+              </Link>
+              {/* Box 3 */}
+              <div className="hover:opacity-80 cursor-pointer bg-[#091619] h-fit p-4 rounded-xl">
+                <div className="flex flex-col md:flex-row gap-2 justify-start items-center h-full">
+                  <Image
+                    src={SVG.TermCondition}
+                    alt="Edit Profile"
+                    width={42}
+                    height={42}
+                  />
+                  <span className="text-xs text-center md:text-base font-semibold text-white">
+                    Terms & Conditions
+                  </span>
+                </div>
+              </div>
+              {/* Box 4 */}
+              <div className="hover:opacity-80 cursor-pointer bg-[#091619] h-fit p-4 rounded-xl">
+                <div className="flex flex-col md:flex-row gap-2 justify-start items-center h-full">
+                  <Image
+                    src={SVG.PrivacyPolicy}
+                    alt=" Privacy Policy"
+                    width={42}
+                    height={42}
+                  />
+                  <span className="text-xs text-center md:text-base font-semibold text-white">
+                    Privacy Policy
+                  </span>
+                </div>
+              </div>
+              {/* Box 5 */}
+              <div className="hover:opacity-80 cursor-pointer bg-[#091619] h-fit p-4 rounded-xl">
+                <div className="flex flex-col md:flex-row gap-2 justify-start items-center h-full">
+                  <Image
+                    src={SVG.Verification}
+                    alt="Verifications"
+                    width={42}
+                    height={42}
+                  />
+                  <span className="text-xs text-center md:text-base font-semibold text-white">
+                    Verifications
+                  </span>
+                </div>
+              </div>
+              {/* Box 6 */}
+              <div className="hover:opacity-80 cursor-pointer bg-[#091619] h-fit p-4 rounded-xl">
+                <div className="flex flex-col md:flex-row gap-2 justify-start items-center h-full">
+                  <Image
+                    src={SVG.SendFeedback}
+                    alt="Send Feedback"
+                    width={42}
+                    height={42}
+                  />
+                  <span className="text-xs text-center md:text-base font-semibold text-white">
+                    Send Feedback
+                  </span>
+                </div>
+              </div>
+              {/* Box 7 */}
+              <div className="hover:opacity-80 cursor-pointer bg-[#091619] h-fit p-4 rounded-xl">
+                <div className="flex flex-col md:flex-row gap-2 justify-start items-center h-full">
+                  <Image
+                    src={SVG.BlockUser}
+                    alt="Block Users"
+                    width={42}
+                    height={42}
+                  />
+                  <span className="text-xs text-center md:text-base font-semibold text-white">
+                    Block Users
+                  </span>
+                </div>
+              </div>
+              {/* Box 8 */}
+              <div
+                className="hover:opacity-80 cursor-pointer bg-[#091619] h-fit p-4 rounded-xl"
+                onClick={() => handleModalToggle("isLogoutModalOpen")}
+              >
+                <div className="flex flex-col md:flex-row gap-2 justify-start items-center h-full">
+                  <Image src={SVG.Logout} alt="Logout" width={42} height={42} />
+                  <span className="text-xs text-center md:text-base font-semibold text-white">
+                    Logout
+                  </span>
+                </div>
               </div>
             </div>
-          </Link>
-
-          {/* Box 2 */}
-          <div
-            className="hover:opacity-80 cursor-pointer bg-[#08191D] h-40 sm:h-44 md:h-44 lg:h-44 xl:h-44 p-4 rounded-xl"
-            onClick={() => handleModalToggle("isChangePasswordOpen")}
-          >
-            <div className="flex flex-col gap-2 justify-center h-full">
-              <Image
-                src={SVG.ChangePassword}
-                alt="Change Password"
-                width={42}
-                height={42}
-              />
-              <span className="font-semibold text-white">Change Password</span>
-            </div>
-          </div>
-
-          {/* Box 3 */}
-          <div
-            className="hover:opacity-80 cursor-pointer bg-[#08191D] h-40 sm:h-44 md:h-44 lg:h-44 xl:h-44 p-4 rounded-xl"
-            // onClick={() => handleModalToggle("isTermsModalOpen")}
-          >
-            <div className="flex flex-col gap-2 justify-center h-full">
-              <Image
-                src={SVG.TermCondition}
-                alt="Term & Condition"
-                width={42}
-                height={42}
-              />
-              <span className="font-semibold text-white">
-                Terms & Conditions
-              </span>
-            </div>
-          </div>
-
-          {/* Box 4 */}
-          <div
-            className="hover:opacity-80 cursor-pointer bg-[#08191D] h-40 sm:h-44 md:h-44 lg:h-44 xl:h-44 p-4 rounded-xl"
-            // onClick={() => handleModalToggle("isTermsModalOpen")}
-          >
-            <div className="flex flex-col gap-2 justify-center h-full">
-              <Image
-                src={SVG.PrivacyPolicy}
-                alt="Privacy Policy"
-                width={42}
-                height={42}
-              />
-              <span className="font-semibold text-white">Privacy Policy</span>
-            </div>
-          </div>
-
-          {/* Box 5 */}
-          <div
-            className="hover:opacity-80 cursor-pointer bg-[#08191D] h-40 sm:h-44 md:h-44 lg:h-44 xl:h-44 p-4 rounded-xl"
-            // onClick={() => handleModalToggle("isVerificationModalOpen")}
-          >
-            <div className="flex flex-col gap-2 justify-center h-full">
-              <Image
-                src={SVG.Verification}
-                alt="Verification"
-                width={42}
-                height={42}
-              />
-              <span className="font-semibold text-white">Verification</span>
-            </div>
-          </div>
-
-          {/* Box 6 */}
-          <div
-            className="hover:opacity-80 cursor-pointer bg-[#08191D] h-40 sm:h-44 md:h-44 lg:h-44 xl:h-44 p-4 rounded-xl"
-            // onClick={() => handleModalToggle("isSendFeedbackModalOpen")}
-          >
-            <div className="flex flex-col gap-2 justify-center h-full">
-              <Image
-                src={SVG.SendFeedback}
-                alt="Send Feedback"
-                width={42}
-                height={42}
-              />
-              <span className="font-semibold text-white">Send Feedback</span>
-            </div>
-          </div>
-
-          {/* Box 7 */}
-          <div
-            className="hover:opacity-80 cursor-pointer bg-[#08191D] h-40 sm:h-44 md:h-44 lg:h-44 xl:h-44 p-4 rounded-xl"
-            onClick={() => handleModalToggle("isBlockUserModalOpen")}
-          >
-            <div className="flex flex-col gap-2 justify-center h-full">
-              <Image
-                src={SVG.BlockUser}
-                alt="Block User"
-                width={42}
-                height={42}
-              />
-              <span className="font-semibold text-white">Block Users</span>
-            </div>
-          </div>
-
-          {/* Box 8 */}
-          <div
-            className="hover:opacity-80 cursor-pointer bg-[#08191D] h-40 sm:h-44 md:h-44 lg:h-44 xl:h-44 p-4 rounded-xl"
-            onClick={() => handleModalToggle("isLogoutModalOpen")}
-          >
-            <div className="flex flex-col gap-2 justify-center h-full">
-              <Image src={SVG.Logout} alt="Logout" width={42} height={42} />
-              <span className="font-semibold text-white">Logout</span>
+            <hr className="w-full md:h-full md:w-0 border m-2 bg-gray-300 opacity-10" />
+            {/* Dynamic Content */}
+            <div className=" flex-1 overflow-y-scroll no-scrollbar">
+              {children}
             </div>
           </div>
         </div>
