@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 
 function SideBar() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   {
     /* Get the current route */
@@ -22,6 +23,10 @@ function SideBar() {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
   };
 
   const isItemActive = (path: string) => {
@@ -279,41 +284,6 @@ function SideBar() {
                   </div>
                 </Link>
               </li>
-
-              <li>
-                <Link
-                  href="/account"
-                  className={`flex items-center p-2 text-base font-normal rounded-lg text-white ${
-                    isItemActive("/account") ? "bg-[#162423]" : ""
-                  } hover:bg-[#162423] group`}
-                >
-                  <svg
-                    width="26"
-                    height="26"
-                    viewBox="0 0 26 26"
-                    xmlns="http://www.w3.org/2000/svg"
-                    style={{
-                      fill: isItemActive("/account") ? "#62C860" : "#586769",
-                    }}
-                  >
-                    <path d="M13 15.6739C17.3386 15.6739 21 16.3789 21 19.099C21 21.82 17.3146 22.5 13 22.5C8.66237 22.5 5 21.795 5 19.075C5 16.3539 8.68538 15.6739 13 15.6739ZM13 2.5C15.9391 2.5 18.294 4.85402 18.294 7.79105C18.294 10.7281 15.9391 13.0831 13 13.0831C10.0619 13.0831 7.70601 10.7281 7.70601 7.79105C7.70601 4.85402 10.0619 2.5 13 2.5Z" />
-                  </svg>
-                  <div className="flex flex-row w-48 justify-between">
-                    <span
-                      className={`ml-5 font-semibold ${
-                        isItemActive("/account")
-                          ? "text-white"
-                          : "text-gray-400"
-                      }`}
-                    >
-                      Account
-                    </span>
-                    {isItemActive("/account") && (
-                      <hr className="w-1 h-6 bg-[#fff] rounded-lg" />
-                    )}
-                  </div>
-                </Link>
-              </li>
             </ul>
           </div>
 
@@ -354,7 +324,7 @@ function SideBar() {
 
             <div
               key={authState?.userID}
-              className="flex flex-col items-center justify-center p-3 rounded-lg border bg-[#1C2C2E] border-gray-600"
+              className="flex flex-col relative items-center justify-center p-3 rounded-lg border bg-[#1C2C2E] border-gray-600"
             >
               <Image
                 src={authState?.profilePicture}
@@ -369,6 +339,55 @@ function SideBar() {
                 {authState?.name}
               </dt>
               <dd className="text-gray-400">({authState.username})</dd>
+              <button
+                className="cursor-pointer hover:opacity-80"
+                onClick={toggleDropdown}
+              >
+                <Image
+                  src={SVG.Threedot}
+                  width={20}
+                  height={20}
+                  className="w-9 h-8 rounded-full"
+                  alt="account"
+                />
+              </button>
+
+              <div
+                id="dropdown"
+                className={`${
+                  isDropdownOpen ? "block" : "hidden"
+                } flex absolute top-48 justify-center border-2 border-[#43DD4E] rounded-lg mt--2`}
+                style={{
+                  borderWidth: "2px",
+                  borderColor: "#43DD4E",
+                  position: "absolute",
+                  top: "100%",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  width: "133px",
+                }}
+              >
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "-20px",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    borderLeft: "10px solid transparent",
+                    borderRight: "10px solid transparent",
+                    borderBottom: `20px solid #43DD4E`,
+                  }}
+                />
+
+                <Link
+                  href="/account"
+                  className={`flex items-center p-2 text-base font-normal rounded-lg text-white transition duration-300 ${
+                    isItemActive("/account") ? "bg-[#162423]" : ""
+                  } hover:bg-[#162423] group`}
+                >
+                  <span className="font-normal underline">My Account</span>
+                </Link>
+              </div>
             </div>
           </div>
         </div>

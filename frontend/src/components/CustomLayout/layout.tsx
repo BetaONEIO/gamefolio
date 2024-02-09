@@ -27,7 +27,7 @@ const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <div className="antialiased bg-[#091619]">
+      <div className="antialiased">
         {/* <!-- Sidebar --> */}
         <SideBar />
         {/* Main Page */}

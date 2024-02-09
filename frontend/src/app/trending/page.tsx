@@ -11,6 +11,7 @@ import { userSession } from "@/store/slices/authSlice";
 import {
   createVideoReaction,
   deleteVideoReaction,
+  getAllPostVideos,
   getTrendingPosts,
   refreshPage,
 } from "@/store/slices/postSlice";
@@ -20,12 +21,16 @@ import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
 import Loading from "./loading";
 import CustomHeader from "@/components/CustomHeader/CustomHeader";
+import { getAllUsers } from "@/store/slices/userSlice";
 
 function Trending() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const postState = useSelector((state: any) => state.post) || [];
   const [postID, setPostID] = useState("");
   const [detailedPost, setDetailedPost] = useState("");
+  const [videoDurations, setVideoDurations] = useState<{
+    [key: string]: number;
+  }>({});
 
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
@@ -36,6 +41,8 @@ function Trending() {
   useEffect(() => {
     dispatch(userSession(params));
     dispatch(getTrendingPosts());
+    dispatch(getAllPostVideos());
+    dispatch(getAllUsers());
   }, [postState.refresh]);
 
   const [modalState, setModalState] = useState({
@@ -111,6 +118,27 @@ function Trending() {
     dispatch(deleteVideoReaction(params));
   };
 
+  const handleVideoMetadata = (
+    event: React.SyntheticEvent<HTMLVideoElement, Event>,
+    videoId: string
+  ) => {
+    const video = event.currentTarget;
+    const duration = video.duration;
+    setVideoDurations((prevDurations) => ({
+      ...prevDurations,
+      [videoId]: duration,
+    }));
+  };
+
+  const formatTime = (seconds: number): string => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    const formattedTime = `${minutes}:${
+      remainingSeconds < 10 ? "0" : ""
+    }${remainingSeconds}`;
+    return formattedTime;
+  };
+
   const handlePageRefresh = () => {
     dispatch(refreshPage());
   };
@@ -121,7 +149,95 @@ function Trending() {
         {/* Header */}
         <CustomHeader>TRENDING</CustomHeader>
 
-        <div
+        <section
+          style={sectionStyle}
+          className="flex flex-col items-center bg-[#091619] min-h-screen"
+        >
+          <div className="flex flex-wrap justify-start items-start mx-3 my-4">
+            {postState.videos.map((item: any) => (
+              <div
+                key={item?.userID}
+                className="flex flex-col gap-2 w-1/5 h-full border-2 border-[#1C2C2E] rounded-xl mx-1 my-2 pb-2"
+                onClick={() =>
+                  handleModalToggle("isVideoDetailOpen", item._id, item)
+                }
+              >
+                <div className="relative">
+                  <video
+                    src={item.video}
+                    className=" w-80 h-full rounded-2xl hover:opacity-80 p-2"
+                    controls={false}
+                    autoPlay={false}
+                    onLoadedMetadata={(e) => handleVideoMetadata(e, item._id)}
+                  />
+
+                  <span className="absolute bottom-2 right-3">
+                    {formatTime(videoDurations[item._id])}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-4 mb-2">
+                  <Image
+                    className="rounded-xl w-10 h-10 ml-2 object-cover"
+                    src={item?.profilePicture}
+                    alt="Account Profile"
+                    height={10}
+                    width={10}
+                  />
+
+                  <div>
+                    <div>
+                      <span className="text-xs sm:text-sm text-white">
+                        Sara Collin
+                      </span>
+                    </div>
+                    <div className="flex items-center">
+                      <p className="text-sm font-light text-gray-400">
+                        10 minutes ago
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex  items-center justify-between text-center mx-4">
+                  <div className="flex items-center">
+                    <Image
+                      className="mr-2 cursor-pointer hover:opacity-80"
+                      src={SVG.Like}
+                      alt="Like"
+                      width={20}
+                      height={20}
+                    />
+                    <p className="text-white">24</p>
+                  </div>
+
+                  <div className="flex items-center">
+                    <Image
+                      className="mr-2 cursor-pointer hover:opacity-80"
+                      src={SVG.Love}
+                      alt="Love"
+                      width={20}
+                      height={20}
+                    />
+                    <p className="text-white">24</p>
+                  </div>
+
+                  <div className="flex items-center">
+                    <Image
+                      className="mr-2 cursor-pointer hover:opacity-80"
+                      src={SVG.Comment}
+                      alt="Comment"
+                      width={25}
+                      height={25}
+                    />
+                    <p className="text-white">24</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* <div
           style={sectionStyle}
           className="flex bg-[#091619] h-full justify-center py-4 overflow-y-scroll no-scrollbar"
         >
@@ -325,30 +441,31 @@ function Trending() {
               })}
             </div>
           </div>
-        </div>
+        </div> */}
 
-        <Modal
-          isOpen={modalState.isVideoDetailOpen}
-          handleClose={() => handleModalToggle("isVideoDetailOpen")}
-        >
-          <VideoDetails
-            postID={postID}
-            detailedPost={detailedPost}
-            handleCloseModal={() => handleModalToggle("isVideoDetailOpen")}
-            handlePageRefresh={() => handlePageRefresh()}
-          />
-        </Modal>
+          <Modal
+            isOpen={modalState.isVideoDetailOpen}
+            handleClose={() => handleModalToggle("isVideoDetailOpen")}
+          >
+            <VideoDetails
+              postID={postID}
+              detailedPost={detailedPost}
+              handleCloseModal={() => handleModalToggle("isVideoDetailOpen")}
+              handlePageRefresh={() => handlePageRefresh()}
+            />
+          </Modal>
 
-        <Modal
-          isOpen={modalState.isPostDeleteOpen}
-          handleClose={() => handleModalToggle("isPostDeleteOpen")}
-        >
-          <DeletePost
-            postID={postID}
-            handleCloseModal={() => handleModalToggle("isPostDeleteOpen")}
-            handlePageRefresh={() => handlePageRefresh()}
-          />
-        </Modal>
+          <Modal
+            isOpen={modalState.isPostDeleteOpen}
+            handleClose={() => handleModalToggle("isPostDeleteOpen")}
+          >
+            <DeletePost
+              postID={postID}
+              handleCloseModal={() => handleModalToggle("isPostDeleteOpen")}
+              handlePageRefresh={() => handlePageRefresh()}
+            />
+          </Modal>
+        </section>
       </Suspense>
     </Layout>
   );
