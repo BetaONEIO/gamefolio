@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 function TopBar() {
   const currentRoute = usePathname();
@@ -9,63 +10,198 @@ function TopBar() {
   };
   return (
     <>
-      <div className=" px-4">
+      <div className="px-4">
         <ul className="flex items-center gap-10">
           <li>
-            <a href="/explore" className="text-base font-normal text-white">
-              <div className="my-2 w-full">
-                <span className="px-6">All</span>
+            <Link
+              href="/explore"
+              // className={`flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white  ${
+              //   isItemActive("/explore") ? "bg-[#162423]" : ""
+              // } dark:hover:bg-[#162423] group`}
+              className="flex items-center text-base font-normal text-white rounded-lg"
+            >
+              <div className="flex items-center p-2">
+                {/* <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  style={{
+                    fill: isItemActive("/explore") ? "#FFFFFF" : "#586769",
+                    stroke: isItemActive("/explore") ? "#FFFFFF" : "#586769",
+                  }}
+                >
+                  <path
+                    d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81V16.18C2 19.83 4.17 22 7.81 22H16.18C19.82 22 21.99 19.83 21.99 16.19V7.81C22 4.17 19.83 2 16.19 2ZM16.78 9.7L11.11 15.37C10.97 15.51 10.78 15.59 10.58 15.59C10.38 15.59 10.19 15.51 10.05 15.37L7.22 12.54C6.93 12.25 6.93 11.77 7.22 11.48C7.51 11.19 7.99 11.19 8.28 11.48L10.58 13.78L15.72 8.64C16.01 8.35 16.49 8.35 16.78 8.64C17.07 8.93 17.07 9.4 16.78 9.7Z"
+                    fill="white"
+                  />
+                </svg> */}
+
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  style={{
+                    fill: isItemActive("/explore") ? "#D4D3D3" : "#586769",
+                    // stroke: isItemActive("/explore") ? "#FFFFFF" : "#586769",
+                  }}
+                >
+                  <path
+                    d="M14.19 0H5.81C2.17 0 0 2.17 0 5.81V14.18C0 17.83 2.17 20 5.81 20H14.18C17.82 20 19.99 17.83 19.99 14.19V5.81C20 2.17 17.83 0 14.19 0ZM14.78 7.7L9.11 13.37C8.97 13.51 8.78 13.59 8.58 13.59C8.38 13.59 8.19 13.51 8.05 13.37L5.22 10.54C4.93 10.25 4.93 9.77 5.22 9.48C5.51 9.19 5.99 9.19 6.28 9.48L8.58 11.78L13.72 6.64C14.01 6.35 14.49 6.35 14.78 6.64C15.07 6.93 15.07 7.4 14.78 7.7Z"
+                    fill="white"
+                  />
+                </svg>
+
+                <span
+                  className={`ml-5 font-semibold ${
+                    isItemActive("/explore") ? "text-white" : "text-gray-400"
+                  }`}
+                >
+                  All
+                </span>
               </div>
-              {isItemActive("/explore") && (
-                <div className="w-full h-1 bg-[#62C860] rounded-lg"></div>
-              )}
-            </a>
+            </Link>
+            {isItemActive("/explore") && (
+              <div className="w-full h-1 bg-[#62C860] rounded-lg"></div>
+            )}
           </li>
 
           <li>
-            <a
+            <Link
               href="/explore/games"
-              className="text-base font-normal text-white"
+              className="flex items-center text-base font-normal text-white rounded-lg"
             >
-              <div className="my-2 w-full">
-                <span className="px-6">Games</span>
+              <div className="flex items-center p-2">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  style={{
+                    fill: isItemActive("/explore/games")
+                      ? "#D4D3D3"
+                      : "#586769",
+                    // stroke: isItemActive("/explore") ? "#FFFFFF" : "#586769",
+                  }}
+                >
+                  <path
+                    d="M16.65 5.71997H7.35C4.4 5.71997 2 8.11997 2 11.07V16.65C2 19.6 4.4 22 7.35 22H16.65C19.6 22 22 19.6 22 16.65V11.07C22 8.11997 19.6 5.71997 16.65 5.71997ZM14.5 12.02C14.5 11.47 14.95 11.02 15.5 11.02C16.05 11.02 16.5 11.47 16.5 12.02C16.5 12.57 16.05 13.03 15.5 13.03C14.95 13.03 14.5 12.59 14.5 12.04V12.02ZM10.13 16.07C9.98 16.22 9.79 16.29 9.6 16.29C9.41 16.29 9.22 16.22 9.07 16.07L8.04 15.04L7.05 16.03C6.9 16.18 6.71 16.25 6.52 16.25C6.33 16.25 6.14 16.18 5.99 16.03C5.7 15.74 5.7 15.26 5.99 14.97L6.98 13.98L6.02 13.02C5.73 12.73 5.73 12.25 6.02 11.96C6.31 11.67 6.79 11.67 7.08 11.96L8.04 12.92L9.03 11.93C9.32 11.64 9.8 11.64 10.09 11.93C10.38 12.22 10.38 12.7 10.09 12.99L9.1 13.98L10.13 15.01C10.42 15.3 10.42 15.78 10.13 16.07ZM13.54 15C12.99 15 12.53 14.55 12.53 14C12.53 13.45 12.97 13 13.52 13H13.54C14.09 13 14.54 13.45 14.54 14C14.54 14.55 14.1 15 13.54 15ZM15.5 16.97C14.95 16.97 14.5 16.53 14.5 15.98V15.96C14.5 15.41 14.95 14.96 15.5 14.96C16.05 14.96 16.5 15.41 16.5 15.96C16.5 16.51 16.06 16.97 15.5 16.97ZM17.48 15C16.93 15 16.47 14.55 16.47 14C16.47 13.45 16.91 13 17.46 13H17.48C18.03 13 18.48 13.45 18.48 14C18.48 14.55 18.04 15 17.48 15Z"
+                    fill="white"
+                  />
+                  <path
+                    d="M13.6404 2.71L13.6304 3.65C13.6204 4.53 12.8904 5.26 12.0004 5.26C11.8504 5.26 11.7604 5.36 11.7604 5.49C11.7604 5.62 11.8604 5.72 11.9904 5.72H10.3804C10.3704 5.65 10.3604 5.57 10.3604 5.49C10.3604 4.59 11.0904 3.86 11.9804 3.86C12.1304 3.86 12.2304 3.76 12.2304 3.63L12.2404 2.69C12.2504 2.31 12.5604 2 12.9404 2H12.9504C13.3404 2 13.6404 2.32 13.6404 2.71Z"
+                    fill="white"
+                  />
+                </svg>
+
+                <span
+                  className={`ml-5 font-semibold ${
+                    isItemActive("/explore/games")
+                      ? "text-white"
+                      : "text-gray-400"
+                  }`}
+                >
+                  Games
+                </span>
               </div>
-              {isItemActive("/explore/games") && (
-                <div className="w-full h-1 bg-[#62C860] rounded-lg"></div>
-              )}
-            </a>
+            </Link>
+            {isItemActive("/explore/games") && (
+              <div className="w-full h-1 bg-[#62C860] rounded-lg"></div>
+            )}
           </li>
 
           <li>
-            <a
+            <Link
               href="/explore/videos"
-              className="text-base font-normal text-white"
+              className="flex items-center text-base font-normal text-white rounded-lg"
             >
-              <div className="my-2 w-full">
-                <span className="px-6">Videos</span>
+              <div className="flex items-center p-2">
+                <svg
+                  width="20"
+                  height="19"
+                  viewBox="0 0 20 19"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  style={{
+                    fill: isItemActive("/explore/videos")
+                      ? "#D4D3D3"
+                      : "#586769",
+                    // stroke: isItemActive("/explore") ? "#FFFFFF" : "#586769",
+                  }}
+                >
+                  <path
+                    d="M13.0564 8.57501L8.33143 5.84801C7.91143 5.60401 7.56543 5.80401 7.56543 6.29001V11.745C7.56543 12.231 7.91143 12.431 8.33143 12.187L13.0564 9.45901C13.4784 9.21601 13.4784 8.81801 13.0564 8.57501Z"
+                    fill="white"
+                  />
+                  <path
+                    d="M17.192 0H2.231C1 0 0 0.999 0 2.231V15.803C0 17.034 1 18.033 2.231 18.033H17.193C18.425 18.033 19.423 17.034 19.423 15.803V2.231C19.423 0.999 18.425 0 17.192 0ZM9.712 15.659C6.044 15.659 3.069 12.685 3.069 9.017C3.069 5.349 6.044 2.375 9.712 2.375C13.38 2.375 16.353 5.349 16.353 9.017C16.353 12.685 13.38 15.659 9.712 15.659Z"
+                    fill="white"
+                  />
+                </svg>
+
+                <span
+                  className={`ml-5 font-semibold ${
+                    isItemActive("/explore/videos")
+                      ? "text-white"
+                      : "text-gray-400"
+                  }`}
+                >
+                  Videos
+                </span>
               </div>
-              {isItemActive("/explore/videos") && (
-                <div className="w-full h-1 bg-[#62C860] rounded-lg"></div>
-              )}
-            </a>
+            </Link>
+            {isItemActive("/explore/videos") && (
+              <div className="w-full h-1 bg-[#62C860] rounded-lg"></div>
+            )}
           </li>
 
           <li>
-            <a
+            <Link
               href="/explore/users"
-              className="text-base font-normal text-white"
+              className="flex items-center text-base font-normal text-white rounded-lg"
             >
-              <div className="my-2 w-full">
-                <span className="px-6">Users</span>
+              <div className="flex items-center p-2">
+                <svg
+                  width="18"
+                  height="22"
+                  viewBox="0 0 18 22"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  style={{
+                    fill: isItemActive("/explore/users")
+                      ? "#D4D3D3"
+                      : "#586769",
+                    // stroke: isItemActive("/explore") ? "#FFFFFF" : "#586769",
+                  }}
+                >
+                  <path
+                    d="M15.4942 14.626C16.0025 14.8707 16.3977 15.1907 16.6801 15.586C16.9625 15.9813 17.1601 16.3954 17.273 16.8283C17.386 17.2613 17.4613 17.666 17.4989 18.0425C17.5366 18.4189 17.5366 18.7107 17.4989 18.9177C17.4613 19.1248 17.386 19.2754 17.273 19.3695C17.0095 19.5954 16.6895 19.793 16.313 19.9625C15.9366 20.1319 15.5225 20.2825 15.0707 20.4142C14.6189 20.546 14.1577 20.6495 13.6872 20.7248L12.3036 20.9507C11.2495 21.0825 10.1389 21.1577 8.97186 21.1766C7.78598 21.1577 6.66598 21.0825 5.61186 20.9507C5.1601 20.8942 4.69892 20.8189 4.22833 20.7248C3.75774 20.6307 3.30598 20.5272 2.87304 20.4142C2.4401 20.3013 2.02598 20.1507 1.63069 19.9625C1.23539 19.7742 0.905979 19.5766 0.64245 19.3695C0.529509 19.2754 0.45892 19.1295 0.430685 18.9319C0.40245 18.7342 0.397744 18.4377 0.416568 18.0425C0.435391 17.6472 0.510685 17.2425 0.64245 16.8283C0.774215 16.4142 0.971862 16.0001 1.23539 15.586C1.49892 15.1719 1.89421 14.8519 2.42127 14.626L4.17186 13.8354C4.71774 13.5907 5.20716 13.3272 5.6401 13.0448C6.07304 12.7625 6.40245 12.433 6.62833 12.0566C6.85421 11.6801 6.97657 11.2283 6.99539 10.7013V10.5319C6.67539 10.2683 6.4401 9.95775 6.28951 9.6001L5.6401 8.0754C5.30127 7.69893 5.04716 7.35069 4.87774 7.03069C4.72716 6.76716 4.65186 6.52246 4.65186 6.29657C4.65186 6.07069 4.81186 5.95775 5.13186 5.95775C5.01892 5.24246 4.99068 4.60246 5.04716 4.03775C5.0848 3.56716 5.19774 3.13422 5.38598 2.73893C5.57421 2.34363 5.91304 2.14599 6.40245 2.14599C6.49657 1.78834 6.65657 1.46834 6.88245 1.18599C7.08951 0.94128 7.38127 0.715398 7.75774 0.508339C8.13421 0.30128 8.63304 0.207162 9.25421 0.225986C9.81892 0.225986 10.2801 0.348339 10.6377 0.593045C10.9954 0.83775 11.306 1.1201 11.5695 1.4401C11.833 1.7601 12.0495 2.07069 12.2189 2.37187C12.3883 2.67304 12.5766 2.88952 12.7836 3.02128C12.8589 3.05893 12.9248 3.10599 12.9813 3.16246C13.0377 3.21893 13.0377 3.29422 12.9813 3.38834C12.906 3.65187 12.8307 4.03775 12.7554 4.54599C12.6801 5.05422 12.6895 5.52481 12.7836 5.95775C13.1224 5.97657 13.2824 6.08952 13.2636 6.29657C13.2448 6.50363 13.1507 6.74834 12.9813 7.03069C12.793 7.35069 12.5295 7.69893 12.1907 8.0754C12.0589 8.41422 11.9554 8.70599 11.8801 8.95069C11.8048 9.1954 11.7201 9.42128 11.626 9.62834C11.5319 9.8354 11.4377 9.9954 11.3436 10.1083C11.2495 10.2213 11.1083 10.3625 10.9201 10.5319V10.7013C10.9201 11.2472 11.0424 11.6989 11.2872 12.0566C11.5319 12.4142 11.8707 12.7436 12.3036 13.0448C12.7366 13.346 13.2166 13.6095 13.7436 13.8354C14.2707 14.0613 14.8542 14.3248 15.4942 14.626Z"
+                    fill="white"
+                  />
+                </svg>
+
+                <span
+                  className={`ml-5 font-semibold ${
+                    isItemActive("/explore/users")
+                      ? "text-white"
+                      : "text-gray-400"
+                  }`}
+                >
+                  Users
+                </span>
               </div>
-              {isItemActive("/explore/users") && (
-                <div className="w-full h-1 bg-[#62C860] rounded-lg"></div>
-              )}
-            </a>
+            </Link>
+            {isItemActive("/explore/users") && (
+              <div className="w-full h-1 bg-[#62C860] rounded-lg"></div>
+            )}
           </li>
         </ul>
       </div>
-      <hr className="h-px border-0 bg-gray-700" />
+      <hr className="h-px border-0 bg-gray-700 mx-4" />
     </>
   );
 }
