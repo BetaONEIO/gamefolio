@@ -110,33 +110,49 @@ function Setting({ children }: any) {
                 </div>
               </Link>
               {/* Box 3 */}
-              <div className="hover:opacity-80 cursor-pointer bg-[#091619] h-fit p-4 rounded-xl">
-                <div className="flex flex-col md:flex-row gap-2 justify-start items-center h-full">
-                  <Image
-                    src={SVG.TermCondition}
-                    alt="Edit Profile"
-                    width={42}
-                    height={42}
-                  />
-                  <span className="text-xs text-center md:text-base font-semibold text-white">
-                    Terms & Conditions
-                  </span>
+              <Link href="/account/settings/terms-condition">
+                <div className="hover:opacity-80 cursor-pointer bg-[#091619] h-fit p-4 rounded-xl">
+                  <div className="flex flex-col md:flex-row gap-2 justify-start items-center h-full">
+                    <Image
+                      src={SVG.TermCondition}
+                      alt="Edit Profile"
+                      width={42}
+                      height={42}
+                    />
+                    <span
+                      className={`text-xs text-center md:text-base font-semibold ${
+                        isItemActive("/account/settings/terms-condition")
+                          ? "text-[#43DD4E]"
+                          : "text-white"
+                      }`}
+                    >
+                      Terms & Conditions
+                    </span>
+                  </div>
                 </div>
-              </div>
+              </Link>
               {/* Box 4 */}
-              <div className="hover:opacity-80 cursor-pointer bg-[#091619] h-fit p-4 rounded-xl">
-                <div className="flex flex-col md:flex-row gap-2 justify-start items-center h-full">
-                  <Image
-                    src={SVG.PrivacyPolicy}
-                    alt=" Privacy Policy"
-                    width={42}
-                    height={42}
-                  />
-                  <span className="text-xs text-center md:text-base font-semibold text-white">
-                    Privacy Policy
-                  </span>
+              <Link href="/account/settings/privacy-policy">
+                <div className="hover:opacity-80 cursor-pointer bg-[#091619] h-fit p-4 rounded-xl">
+                  <div className="flex flex-col md:flex-row gap-2 justify-start items-center h-full">
+                    <Image
+                      src={SVG.PrivacyPolicy}
+                      alt=" Privacy Policy"
+                      width={42}
+                      height={42}
+                    />
+                    <span
+                      className={`text-xs text-center md:text-base font-semibold ${
+                        isItemActive("/account/settings/privacy-policy")
+                          ? "text-[#43DD4E]"
+                          : "text-white"
+                      }`}
+                    >
+                      Privacy Policy
+                    </span>
+                  </div>
                 </div>
-              </div>
+              </Link>
               {/* Box 5 */}
               <div className="hover:opacity-80 cursor-pointer bg-[#091619] h-fit p-4 rounded-xl">
                 <div className="flex flex-col md:flex-row gap-2 justify-start items-center h-full">
