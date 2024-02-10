@@ -127,11 +127,19 @@ const EditProfile = () => {
       {/* Header */}
 
       <div className="flex flex-col justify-center px-6 py-8  lg:py-0">
+        <div className="flex justify-between items-center">
+          <span className="block font-bold mb-2 text-lg text-white">
+            Edit Profile
+          </span>
+          <span
+            className="block font-bold mb-2 text-sm text-[#F70D4D] cursor-pointer"
+            onClick={() => handleModalToggle("isDeleteModalOpen")}
+          >
+            Deactivate Account
+          </span>
+        </div>
         <div className="relative py-4">
           <div className="mb-4 w-20 h-20 rounded-lg relative">
-            {/* <span className="block font-bold mb-2 text-sm text-white">
-              Edit Profile
-            </span> */}
             <Image
               src={
                 image ? URL.createObjectURL(image) : authState.profilePicture
@@ -164,7 +172,7 @@ const EditProfile = () => {
 
         <div className="flex w-full ">
           <form
-            className="flex w-full flex-wrap gap-2 justify-start"
+            className="flex w-full flex-wrap gap-4 justify-start"
             onSubmit={handleSubmit(handleUpdateProfile)}
           >
             <div className="flex-1 basis-full lg:basis-5/12 ">
@@ -271,7 +279,7 @@ const EditProfile = () => {
             </div>
 
             <div className="w-full flex justify-center lg:justify-end gap-4">
-              <span className="w-6/12 lg:w-4/12 font-bold h-12 bg-[#586769] text-white text-center rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3 flex justify-center items-center">
+              <span className="w-6/12 lg:w-4/12 font-bold h-12 bg-[#586769] text-white text-center rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3 flex justify-center items-center cursor-pointer">
                 Cancel
               </span>
               <button className="w-6/12 lg:w-4/12 font-bold h-12 bg-[#37C535] text-white text-center rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3">
