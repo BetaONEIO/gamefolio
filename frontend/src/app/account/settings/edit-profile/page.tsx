@@ -1,7 +1,5 @@
 "use client";
 import { SVG } from "@/assets/SVG";
-import CustomHeader from "@/components/CustomHeader/CustomHeader";
-import Layout from "@/components/CustomLayout/layout";
 import DeleteAccount from "@/components/Modals/DeleteAccount";
 import Modal from "@/components/Modals/Modal";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";

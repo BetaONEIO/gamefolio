@@ -1,171 +1,74 @@
 "use client";
-import { SVG } from "@/assets/SVG";
-import CustomHeader from "@/components/CustomHeader/CustomHeader";
-import Layout from "@/components/CustomLayout/layout";
-import DeleteAccount from "@/components/Modals/DeleteAccount";
-import Modal from "@/components/Modals/Modal";
-import { toastError, toastSuccess } from "@/components/Toast/Toast";
-import { BASE_URL } from "@/services/api";
-import { dispatch, useSelector } from "@/store";
-import { updateProfile } from "@/store/slices/authSlice";
-import axios from "axios";
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import { ToastContainer } from "react-toastify";
 import Setting from "../page";
 
 const ChangePassword = () => {
-  const authState = useSelector((state: any) => state.auth.userData) || [];
-  const [image, setImage] = useState<File | null>(null);
-
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    watch,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      name: "",
-      username: "",
-      bio: "",
-      dateOfBirth: "",
-      accountType: "public",
-      profilePicture: "",
-    },
-  });
-
-  const sectionStyle = {
-    backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
-  };
-
-  const [modalState, setModalState] = useState({
-    isDeleteModalOpen: false,
-  });
-
-  const handleModalToggle = (modalName: keyof typeof modalState) => {
-    setModalState((prevState) => ({
-      ...prevState,
-      [modalName]: !prevState[modalName],
-    }));
-  };
-
-  const onUpdate = (data: any) => {
-    setValue("name", data?.name);
-    setValue("username", data?.username);
-    setValue("bio", data?.bio);
-    setValue("dateOfBirth", data?.dateOfBirth);
-    setValue("accountType", data?.accountType);
-  };
-
-  const onUpdateAccountType = (value: string) => {
-    setValue("accountType", value);
-  };
-
-  const onUpdateProfilePicture = (value: string) => {
-    setValue("profilePicture", value);
-  };
-  // Watch the value of the 'accountType' field
-  const accountTypeValue = watch("accountType");
-
-  useEffect(() => {
-    onUpdate(authState);
-  }, [authState]);
-
-  const handleUpdateProfile = (data: any) => {
-    const payload = {
-      userID: authState._id,
-      ...data,
-    };
-
-    const successCallback = (response: any) => {
-      toastSuccess(response);
-    };
-
-    const errorCallback = (error: string) => {
-      toastError(error);
-    };
-
-    const params = {
-      payload,
-      successCallback,
-      errorCallback,
-    };
-    dispatch(updateProfile(params));
-  };
-
-  const handleUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files ? e.target.files[0] : null;
-    if (file) {
-      setImage(file);
-      try {
-        const formData = new FormData();
-        formData.append("file", file);
-
-        const response = await axios.post(
-          `${BASE_URL}/storage/image/upload`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-        onUpdateProfilePicture(response.data.imageURL);
-        toastSuccess(response.data.message);
-      } catch (error) {
-        toastError(error);
-      }
-    }
-  };
-
   return (
     <Setting>
       {/* Header */}
 
-      <div className="flex justify-start px-6 py-8 md:h-screen lg:py-0">
-        <div className="flex relative p-6 sm:p-8">
-          <div className="mb-4 w-20 h-20 rounded-lg relative">
-            <Image
-              src={
-                image ? URL.createObjectURL(image) : authState.profilePicture
-              }
-              alt="Profile Picture"
-              className="w-full h-full rounded-lg"
-              width={10}
-              height={10}
-              sizes="100vw"
-            />
-            <div className="absolute -bottom-2 -right-2 cursor-pointer">
-              <label htmlFor="dropzone-file">
-                <Image
-                  src={SVG.Cameraupload}
-                  alt="Cameraupload"
-                  className="w-6 h-6 rounded-lg hover:opacity-80 cursor-pointer"
-                  width={10}
-                  height={10}
-                />
+      <div className="flex flex-col justify-between px-6 py-8  lg:py-0 h-full">
+        <div className="flex flex-col w-full ">
+          <div className="flex justify-start items-center mb-6">
+            <span className="block font-bold mb-2 text-lg text-white">
+              Edit Profile
+            </span>
+          </div>
+          <form className="flex w-full flex-wrap gap-4 justify-start">
+            <div className="flex-1 basis-full lg:basis-5/12 ">
+              <label
+                id="oldPassword"
+                className="block font-bold mb-2 text-sm text-white"
+              >
+                Old Password
               </label>
               <input
-                id="dropzone-file"
-                type="file"
-                className="hidden"
-                onChange={handleUploadImage}
+                type="password"
+                id="oldPassword"
+                className="bg-[#162423] sm:text-sm outline-none rounded-lg block w-full p-2.5 text-white"
+                placeholder="Old Password"
+                required
               />
             </div>
-          </div>
+            <div className="flex-1 basis-full lg:basis-5/12 ">
+              <label
+                htmlFor="newPassword"
+                className="block mb-2 text-sm font-bold text-white"
+              >
+                New Password
+              </label>
+              <input
+                type="password"
+                id="newPassword"
+                className="bg-[#162423] sm:text-sm outline-none rounded-lg block w-full p-2.5 text-white"
+                placeholder="New Password"
+                required
+              />
+            </div>
+            <div className="basis-full lg:basis-6/12 ">
+              <label
+                htmlFor="repeatPassword"
+                className="block mb-2 text-sm font-bold text-white"
+              >
+                Repeat New Password
+              </label>
+              <input
+                type="password"
+                id="repeatPassword"
+                className="bg-[#162423] sm:text-sm outline-none rounded-lg block w-full p-2.5 text-white"
+                placeholder="Repeat New Password"
+                required
+              />
+            </div>
+          </form>
         </div>
-
-        <div className="p-6 space-y-4 sm:p-8 md:w-96">
-          <div className="text-md text-center text-gray-50">
-            <p
-              className="font-bold text-primary-600 underline hover:opacity-80 cursor-pointer"
-              onClick={() => handleModalToggle("isDeleteModalOpen")}
-            >
-              Deactivate Account
-            </p>
-          </div>
+        <div className="w-full flex justify-center lg:justify-end gap-4">
+          <span className="w-6/12 lg:w-4/12 font-bold h-12 bg-[#586769] text-white text-center rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3 flex justify-center items-center cursor-pointer">
+            Cancel
+          </span>
+          <button className="w-6/12 lg:w-4/12 font-bold h-12 bg-[#37C535] text-white text-center rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3">
+            Update
+          </button>
         </div>
       </div>
       <ToastContainer
@@ -180,15 +83,6 @@ const ChangePassword = () => {
         pauseOnHover
         theme="dark"
       />
-
-      <Modal
-        isOpen={modalState.isDeleteModalOpen}
-        handleClose={() => handleModalToggle("isDeleteModalOpen")}
-      >
-        <DeleteAccount
-          handleCloseModal={() => handleModalToggle("isDeleteModalOpen")}
-        />
-      </Modal>
     </Setting>
   );
 };
