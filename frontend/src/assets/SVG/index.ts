@@ -85,6 +85,7 @@ export const SVG = {
   GGGCoin: "/gggcoin.svg",
   Threedot: "/threedots.svg",
   Camera2: "/camera2.svg",
+  Send: "/send.svg",
   All: "/all.svg",
   Games: "/games.svg",
   Videos: "/videos.svg",
