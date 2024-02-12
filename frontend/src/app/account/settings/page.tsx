@@ -63,8 +63,8 @@ function Setting({ children }: any) {
                     className="text-green-500 fill-current"
                     src={SVG.Profile}
                     alt="Edit Profile"
-                    width={42}
-                    height={42}
+                    width={24}
+                    height={24}
                   />
                   <span
                     className={`text-xs text-center md:text-base font-semibold ${
@@ -86,8 +86,8 @@ function Setting({ children }: any) {
                   <Image
                     src={SVG.ChangePassword}
                     alt="Change Password"
-                    width={42}
-                    height={42}
+                    width={24}
+                    height={24}
                   />
                   <span
                     className={`text-xs text-center md:text-base font-semibold ${
@@ -108,8 +108,8 @@ function Setting({ children }: any) {
                   <Image
                     src={SVG.TermCondition}
                     alt="Edit Profile"
-                    width={42}
-                    height={42}
+                    width={24}
+                    height={24}
                   />
                   <span
                     className={`text-xs text-center md:text-base font-semibold ${
@@ -130,8 +130,8 @@ function Setting({ children }: any) {
                   <Image
                     src={SVG.PrivacyPolicy}
                     alt=" Privacy Policy"
-                    width={42}
-                    height={42}
+                    width={24}
+                    height={24}
                   />
                   <span
                     className={`text-xs text-center md:text-base font-semibold ${
@@ -152,8 +152,8 @@ function Setting({ children }: any) {
                   <Image
                     src={SVG.Verification}
                     alt="Verifications"
-                    width={42}
-                    height={42}
+                    width={24}
+                    height={24}
                   />
                   <span
                     className={`text-xs text-center md:text-base font-semibold ${
@@ -176,8 +176,8 @@ function Setting({ children }: any) {
                 <Image
                   src={SVG.SendFeedback}
                   alt="Send Feedback"
-                  width={42}
-                  height={42}
+                  width={24}
+                  height={24}
                 />
                 <span
                   className={`text-xs text-center md:text-base font-semibold ${
@@ -199,8 +199,8 @@ function Setting({ children }: any) {
                 <Image
                   src={SVG.BlockUser}
                   alt="Block Users"
-                  width={42}
-                  height={42}
+                  width={24}
+                  height={24}
                 />
                 <span
                   className={`text-xs text-center md:text-base font-semibold ${
@@ -219,7 +219,7 @@ function Setting({ children }: any) {
               onClick={() => handleModalToggle("isLogoutModalOpen")}
             >
               <div className="flex flex-col md:flex-row gap-2 justify-start items-center h-full">
-                <Image src={SVG.Logout} alt="Logout" width={42} height={42} />
+                <Image src={SVG.Logout} alt="Logout" width={24} height={24} />
                 <span
                   className={`text-xs text-center md:text-base font-semibold ${
                     modalState.isLogoutModalOpen
