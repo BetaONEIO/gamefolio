@@ -154,19 +154,27 @@ function Setting({ children }: any) {
                 </div>
               </Link>
               {/* Box 5 */}
-              <div className="hover:opacity-80 cursor-pointer bg-[#091619] h-fit p-4 rounded-xl">
-                <div className="flex flex-col md:flex-row gap-2 justify-start items-center h-full">
-                  <Image
-                    src={SVG.Verification}
-                    alt="Verifications"
-                    width={42}
-                    height={42}
-                  />
-                  <span className="text-xs text-center md:text-base font-semibold text-white">
-                    Verifications
-                  </span>
+              <Link href="/account/settings/verification">
+                <div className="hover:opacity-80 cursor-pointer bg-[#091619] h-fit p-4 rounded-xl">
+                  <div className="flex flex-col md:flex-row gap-2 justify-start items-center h-full">
+                    <Image
+                      src={SVG.Verification}
+                      alt="Verifications"
+                      width={42}
+                      height={42}
+                    />
+                    <span
+                      className={`text-xs text-center md:text-base font-semibold ${
+                        isItemActive("/account/settings/verification")
+                          ? "text-[#43DD4E]"
+                          : "text-white"
+                      }`}
+                    >
+                      Verifications
+                    </span>
+                  </div>
                 </div>
-              </div>
+              </Link>
               {/* Box 6 */}
               <div className="hover:opacity-80 cursor-pointer bg-[#091619] h-fit p-4 rounded-xl">
                 <div className="flex flex-col md:flex-row gap-2 justify-start items-center h-full">
