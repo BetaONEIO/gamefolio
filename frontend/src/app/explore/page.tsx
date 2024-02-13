@@ -151,11 +151,11 @@ function Explore() {
         </div>
       </div>
 
-      <div className="flex items-center h-48 p-2 overflow-scroll no-scrollbar">
+      <div className="flex items-center h-52 p-2 overflow-scroll no-scrollbar">
         {userState?.userList?.slice(0, 10).map((user: any) => (
           <div
             key={user?.userID}
-            className="flex flex-col gap-1 border-2 border-[#1C2C2E] rounded-xl mx-1 "
+            className="flex flex-col gap-1 border-2 border-[#1C2C2E] rounded-xl mx-1"
           >
             <div className="flex items-center gap-4 mb-2">
               <Image
