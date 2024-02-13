@@ -7,6 +7,7 @@ import { userSession } from "@/store/slices/authSlice";
 import { getAllPostVideos, refreshPage } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Loading from "./loading";
+import Link from "next/link";
 
 function Games() {
   const postState = useSelector((state: any) => state.post) || [];
@@ -75,31 +76,38 @@ function Games() {
 
   return (
     <>
-      <div className="mx-4 my-4">
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-6 gap-4 sm:gap-4">
-          {postState.videos.map((item: any) => (
-            <div
-              key={item._id}
-              className="relative flex flex-col items-center"
-              onClick={() =>
-                handleModalToggle("isVideoDetailOpen", item._id, item)
-              }
+      <div className="flex items-center">
+        <div className="flex justify-between items-center w-full sm:mx-2 lg:mx-4">
+          <div>
+            <p className="font-semibold text-base sm:text-lg lg:text-lg text-white">
+              Popular Games
+            </p>
+          </div>
+          <div className="flex items-center">
+            <Link
+              href="/explore/games"
+              className="text-md sm:text-md lg:text-md hover:opacity-80 cursor-pointer text-white"
             >
-              <video
-                src={item.video}
-                width="100"
-                height="133"
-                controls={false}
-                autoPlay={false}
-                preload="metadata"
-                onLoadedMetadata={(e) => handleVideoMetadata(e, item._id)}
-                className="h-56 w-full object-cover rounded-xl focus:ring-primary-600 focus:border-primary-600 bg-gray-700 border-gray-600 placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500"
-              />
-              <span className="absolute bottom-1 right-2">
-                {videoDurations[item._id]
-                  ? formatTime(videoDurations[item._id])
-                  : "loading..."}
-              </span>
+              View All
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex items-center my-2">
+        <div className="flex items-center overflow-scroll no-scrollbar gap-2 px-4">
+          {postState.videos.slice(0, 20).map((items: any) => (
+            <div key={items.id}>
+              <div className="w-28 h-40">
+                <video
+                  src={items.video}
+                  width="100"
+                  height="133"
+                  controls={false}
+                  autoPlay={false}
+                  className="w-28 h-40 object-cover rounded-xl"
+                />
+              </div>
             </div>
           ))}
         </div>

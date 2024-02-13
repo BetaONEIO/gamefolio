@@ -7,6 +7,8 @@ import { userSession } from "@/store/slices/authSlice";
 import { getAllPostVideos, refreshPage } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Loading from "./loading";
+import Image from "next/image";
+import { SVG } from "@/assets/SVG";
 
 function Video() {
   const postState = useSelector((state: any) => state.post) || [];
@@ -75,7 +77,7 @@ function Video() {
 
   return (
     <>
-      <div className="flex flex-wrap justify-start items-start mx-3">
+      {/* <div className="flex flex-wrap justify-start items-start mx-3">
         {postState.videos.map((item: any) => (
           <div
             key={item._id}
@@ -99,6 +101,96 @@ function Video() {
                 ? formatTime(videoDurations[item._id])
                 : "Loading..."}
             </span>
+          </div>
+        ))}
+      </div> */}
+
+      <div className="flex items-center m-4">
+        <p className="font-semibold text-base sm:text-lg lg:text-lg text-white">
+          Video Recommended for you
+        </p>
+      </div>
+
+      <div className="flex flex-wrap justify-start items-start my-2 mx-2 gap-2">
+        {postState.videos.map((item: any) => (
+          <div
+            key={item?.userID}
+            className="flex flex-col gap-2 w-64 h-68 border-2 border-[#1C2C2E] rounded-xl mx-1 pb-2"
+            onClick={() =>
+              handleModalToggle("isVideoDetailOpen", item._id, item)
+            }
+          >
+            <div className="relative">
+              <video
+                src={item.video}
+                className="w-80 h-full rounded-2xl hover:opacity-80"
+                controls={false}
+                autoPlay={false}
+                onLoadedMetadata={(e) => handleVideoMetadata(e, item._id)}
+              />
+
+              <span className="absolute bottom-2 right-3">
+                {formatTime(videoDurations[item._id])}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-4 mb-2">
+              <Image
+                className="rounded-xl w-10 h-10 ml-2 object-cover"
+                src={item?.profilePicture}
+                alt="Account Profile"
+                height={10}
+                width={10}
+              />
+
+              <div>
+                <div>
+                  <span className="text-xs sm:text-sm text-white">
+                    Sara Collin
+                  </span>
+                </div>
+                <div className="flex items-center">
+                  <p className="text-sm font-light text-gray-400">
+                    10 minutes ago
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex  items-center justify-between text-center mx-4">
+              <div className="flex items-center">
+                <Image
+                  className="mr-2 cursor-pointer hover:opacity-80"
+                  src={SVG.Like}
+                  alt="Like"
+                  width={20}
+                  height={20}
+                />
+                <p className="text-white">24</p>
+              </div>
+
+              <div className="flex items-center">
+                <Image
+                  className="mr-2 cursor-pointer hover:opacity-80"
+                  src={SVG.Love}
+                  alt="Love"
+                  width={20}
+                  height={20}
+                />
+                <p className="text-white">24</p>
+              </div>
+
+              <div className="flex items-center">
+                <Image
+                  className="mr-2 cursor-pointer hover:opacity-80"
+                  src={SVG.Comment}
+                  alt="Comment"
+                  width={25}
+                  height={25}
+                />
+                <p className="text-white">24</p>
+              </div>
+            </div>
           </div>
         ))}
       </div>

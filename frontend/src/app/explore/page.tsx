@@ -118,14 +118,14 @@ function Explore() {
         <div className="flex items-center overflow-scroll no-scrollbar gap-2 px-4">
           {postState.videos.slice(0, 20).map((items: any) => (
             <div key={items.id}>
-              <div className="w-28 h-44">
+              <div className="w-28 h-40">
                 <video
                   src={items.video}
                   width="100"
                   height="133"
                   controls={false}
                   autoPlay={false}
-                  className="w-28 h-44 object-cover rounded-xl"
+                  className="w-28 h-40 object-cover rounded-xl"
                 />
               </div>
             </div>
@@ -151,15 +151,15 @@ function Explore() {
         </div>
       </div>
 
-      <div className="flex items-center mx-2 overflow-scroll no-scrollbar">
+      <div className="flex items-center h-48 p-2 overflow-scroll no-scrollbar">
         {userState?.userList?.slice(0, 10).map((user: any) => (
           <div
             key={user?.userID}
-            className="flex flex-col h-44 gap-2 border-2 border-[#1C2C2E] rounded-xl mx-1 my-2"
+            className="flex flex-col gap-1 border-2 border-[#1C2C2E] rounded-xl mx-1 "
           >
             <div className="flex items-center gap-4 mb-2">
               <Image
-                className="rounded-xl w-16 h-16 mt-2 ml-2 object-cover"
+                className="rounded-xl w-12 h-12 mt-2 ml-2 object-cover"
                 src={user?.profilePicture}
                 width={10}
                 height={10}
@@ -167,7 +167,7 @@ function Explore() {
                 alt="Account Profile"
               />
               <div>
-                <div>
+                <div className="mt-2">
                   <span className="text-white">{user?.name}</span>
                 </div>
                 <div
@@ -188,7 +188,7 @@ function Explore() {
               </div>
             </div>
 
-            <hr className="h-px border-0 bg-[#1C2C2E] mb-1 w-full rounded-full" />
+            <hr className="h-px border-0 bg-[#1C2C2E] w-full rounded-full" />
 
             <div className="flex flex-col flex-wrap justify-center text-center lg:justify-start lg:text-start">
               <div className="flex items-center justify-center gap-1">
@@ -253,11 +253,11 @@ function Explore() {
         </div>
       </div>
 
-      <div className="flex items-center mx-2 overflow-x-auto no-scrollbar">
+      <div className="flex items-center my-2 mx-2">
         {postState.videos.slice(0, 4).map((item: any) => (
           <div
             key={item?.userID}
-            className="flex flex-col gap-2 w-80 h-full border-2 border-[#1C2C2E] rounded-xl mx-1 my-2 pb-2"
+            className="flex flex-col gap-2 w-80 h-68 border-2 border-[#1C2C2E] rounded-xl mx-1 pb-2"
             onClick={() =>
               handleModalToggle("isVideoDetailOpen", item._id, item)
             }
@@ -265,7 +265,7 @@ function Explore() {
             <div className="relative">
               <video
                 src={item.video}
-                className=" w-80 h-full rounded-2xl hover:opacity-80 p-2"
+                className="w-80 h-full rounded-2xl hover:opacity-80"
                 controls={false}
                 autoPlay={false}
                 onLoadedMetadata={(e) => handleVideoMetadata(e, item._id)}
