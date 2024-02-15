@@ -10,7 +10,6 @@ import Report from "@/components/Modals/Report";
 import VideoDetails from "@/components/Modals/VideoDetails";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import FollowingStories from "@/components/story/FollowingStories";
-import { leagueGothic } from "@/font/font";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import {
@@ -32,8 +31,13 @@ function Main() {
   const [postID, setPostID] = useState("");
   const [detailedPost, setDetailedPost] = useState("");
 
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(true);
+
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
+    limit: 2,
+    page: page,
   };
   const params = {
     payload,
@@ -41,7 +45,26 @@ function Main() {
   useEffect(() => {
     dispatch(userSession(params));
     dispatch(getFollowingPostOnly(params));
-  }, [postState.refresh]);
+  }, [page, postState.refresh]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleInfiniteScroll);
+    return () => window.removeEventListener("scroll", handleInfiniteScroll);
+  }, []);
+
+  const handleInfiniteScroll = async () => {
+    try {
+      if (
+        window.innerHeight + document.documentElement.scrollTop + 1 >=
+        document.documentElement.scrollHeight
+      ) {
+        setLoading(true);
+        setPage((prev) => prev + 1);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const [modalState, setModalState] = useState({
     isPostShareOpen: false,
@@ -195,7 +218,7 @@ function Main() {
               </div>
             </div>
             {/* Story , Posts */}
-            <div className="w-11/12 sm:w-10/12 flex  flex-col gap-8 rounded-lg">
+            <div className="w-11/12 sm:w-10/12 flex  flex-col gap-8 rounded-lg ">
               <div>
                 <FollowingStories />
               </div>

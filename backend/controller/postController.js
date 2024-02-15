@@ -92,7 +92,7 @@ const getTrendingPosts = async (req, res) => {
 const getFollowingPosts = async (req, res) => {
   try {
     // Get the current user's ID (assuming it's available in the request object)
-    const { userToken } = req.body;
+    const { userToken, limit, page } = req.body;
     const decoded = jwt.verify(userToken, process.env.JWT_SECRET); // getting userID from token
 
     // Find the user document for the current user
@@ -108,11 +108,17 @@ const getFollowingPosts = async (req, res) => {
     // Get the IDs of users that the current user is following
     const followingIDs = currentUser.following.map((user) => user.userID);
 
+    // Calculate skip value based on pagination
+    const skip = limit * (page - 1);
+
     // Retrieve posts from users that the current user is following
     const posts = await Posts.find({ userID: { $in: followingIDs } })
       .sort({ date: -1 })
+      .skip(skip)
+      .limit(limit)
       .populate("userID")
       .populate({ path: "comments.userID" });
+
     console.log("post: ", posts);
     res.status(200).json({
       data: posts,

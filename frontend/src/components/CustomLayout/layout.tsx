@@ -26,18 +26,16 @@ const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
   }, []);
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <div className="antialiased">
-        {/* <!-- Sidebar --> */}
-        <SideBar />
-        {/* Main Page */}
-        <main className="md:ml-64 h-auto ">
-          <div className="rounded-lg border-gray-600 h-screen overflow-y-scroll no-scrollbar">
-            {children}
-          </div>
-        </main>
-      </div>
-    </Suspense>
+    <div className="antialiased">
+      {/* <!-- Sidebar --> */}
+      <SideBar />
+      {/* Main Page */}
+      <main className="md:ml-64 h-auto ">
+        <div className="rounded-lg border-gray-600 h-full overflow-y-scroll no-scrollbar">
+          {children}
+        </div>
+      </main>
+    </div>
   );
 };
 
