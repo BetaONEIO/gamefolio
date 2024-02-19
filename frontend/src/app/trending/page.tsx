@@ -163,43 +163,78 @@ function Trending() {
           style={sectionStyle}
           className="flex flex-col items-center bg-[#091619] min-h-screen"
         >
-          {/* <div className="flex justify-between items-center w-full h-20">
-            <div style={styles.swiperContainer}>
-              <Swiper
-                effect={"fade"}
-                navigation={true}
-                pagination={{
-                  clickable: true,
-                }}
-                modules={[EffectFade, Navigation, Pagination]}
-                className="mySwiper"
-              >
-                <SwiperSlide>
-                  <img
-                    src="https://swiperjs.com/demos/images/nature-1.jpg"
-                    style={styles.swiperImage}
-                  />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <img
-                    src="https://swiperjs.com/demos/images/nature-2.jpg"
-                    style={styles.swiperImage}
-                  />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <img
-                    src="https://swiperjs.com/demos/images/nature-3.jpg"
-                    style={styles.swiperImage}
-                  />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <img
-                    src="https://swiperjs.com/demos/images/nature-4.jpg"
-                    style={styles.swiperImage}
-                  />
-                </SwiperSlide>
-              </Swiper>
+          <div className="flex h-96 w-full">
+            <Swiper
+              effect={"fade"}
+              navigation={true}
+              pagination={{
+                clickable: true,
+              }}
+              modules={[EffectFade, Navigation, Pagination]}
+              className="mySwiper"
+            >
+              <SwiperSlide>
+                <img
+                  src="https://swiperjs.com/demos/images/nature-2.jpg"
+                  style={styles.swiperImage}
+                />
+              </SwiperSlide>
+              <SwiperSlide>
+                <img
+                  src="https://swiperjs.com/demos/images/nature-3.jpg"
+                  style={styles.swiperImage}
+                />
+              </SwiperSlide>
+              <SwiperSlide>
+                <img
+                  src="https://swiperjs.com/demos/images/nature-4.jpg"
+                  style={styles.swiperImage}
+                />
+              </SwiperSlide>
+            </Swiper>
+            <div className="hidden w-2/5 h-fit md:flex flex-col gap-8 rounded-lg bg-[#091619] border border-[#1C2C2E] px-4 py-6 ">
+              <div className="flex justify-between items-center">
+                <span className="font-bold">Trendings</span>
+                <span className="text-xs text-[#43DD4E] cursor-pointer ">
+                  See More
+                </span>
+              </div>
+              <div className="flex flex-col gap-6">
+                <div className="flex justify-between items-center">
+                  <div className="flex gap-2">
+                    <Image
+                      width={12}
+                      height={12}
+                      className="w-16 h-16"
+                      src={IMAGES.callofduty}
+                      alt="UploadStory"
+                    />
+                    <div className="flex flex-col ">
+                      <span className="text-xs font-bold text-[#43DD4E] ">
+                        Trending Now
+                      </span>
+                      <span className="text-lg text-white ">Call of duty</span>
+                      <span className="text-xs text-gray-500 ">
+                        New addition Arrived
+                      </span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <Image
+                      className="cursor-pointer hover:opacity-80"
+                      src={SVG.Threedots}
+                      alt="Threedots"
+                      width={5}
+                      height={5}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
+          {/* <div className="flex justify-between items-center w-full h-20">
+ 
 
             <div className="w-1/5 h-fit md:flex flex-col gap-8 rounded-lg bg-[#091619] border border-[#1C2C2E] px-4 py-6 ">
               <div className="flex justify-between items-center">
@@ -362,12 +397,12 @@ const styles = {
     justifyContent: "space-between",
   },
   swiperContainer: {
-    width: "50%",
-    height: "50%",
+    width: "80%",
+    height: "30%",
   },
   swiperImage: {
     width: "100%",
-    height: "100%",
+    height: "50%",
   },
   // Add more styles as needed
 };
