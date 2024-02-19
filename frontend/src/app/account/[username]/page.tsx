@@ -1,34 +1,34 @@
 "use client";
-import React, { Suspense, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
+import { leagueGothic } from "@/font/font";
+import { dispatch, useSelector } from "@/store";
+import { userSession } from "@/store/slices/authSlice";
+import {
+  getAllPostVideos,
+  getUserBookmark,
+  removeUserBookmark,
+} from "@/store/slices/postSlice";
+import { getCookieValue, getFromLocal } from "@/utils/localStorage";
+import { copyToClipboard } from "@/utils/helpers";
+import { ToastContainer } from "react-toastify";
 import Layout from "@/components/CustomLayout/layout";
+import Badges from "@/components/Modals/Badges";
 import Followers from "@/components/Modals/Followers";
 import Following from "@/components/Modals/Following";
 import Modal from "@/components/Modals/Modal";
 import MoreOptions from "@/components/Modals/MoreOptions";
-import { toastError, toastSuccess } from "@/components/Toast/Toast";
-import { leagueGothic } from "@/font/font";
-import { dispatch, useSelector } from "@/store";
-import { userSession } from "@/store/slices/authSlice";
-import { getAllPostVideos, getUserBookmark } from "@/store/slices/postSlice";
-import {
-  followUser,
-  getAllUsers,
-  getProfileInfo,
-} from "@/store/slices/userSlice";
-import { copyToClipboard } from "@/utils/helpers";
-import { getCookieValue, getFromLocal } from "@/utils/localStorage";
-import { ToastContainer } from "react-toastify";
-import Loading from "../loading";
+import CurrentUserStories from "@/components/story/CurrentUserStories";
 import VideoDetails from "@/components/Modals/VideoDetails";
+import { toastError, toastSuccess } from "@/components/Toast/Toast";
+import CustomHeader from "@/components/CustomHeader/CustomHeader";
+import Loading from "./loading";
+import { getAllUsers, getProfileInfo } from "@/store/slices/userSlice";
 import { getAllClipVideos } from "@/store/slices/clipSlice";
 import { getCurrentUserStories } from "@/store/slices/storySlice";
-import ViewStory from "@/components/Modals/ViewStory";
-import CustomHeader from "@/components/CustomHeader/CustomHeader";
 
 interface MyVideosSectionProps {
   authState: any; // Add authState as a prop
@@ -202,10 +202,10 @@ const MyBookmarkSection: React.FC<MyBookmarkSectionProps> = ({
   );
 };
 
-function Page({ params }: any) {
+function Profile() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
-  const profileInfoState = useSelector((state: any) => state.user) || [];
   const postState = useSelector((state: any) => state.post) || [];
+  const profileInfoState = useSelector((state: any) => state.user) || [];
   const clipState = useSelector((state: any) => state.clip) || [];
   const storyState = useSelector((state: any) => state.story) || [];
   const [open, setOpen] = useState(false);
@@ -222,17 +222,18 @@ function Page({ params }: any) {
     isStoryModalOpen: false,
   });
 
-  const router = useRouter();
+  const userVideos = postState.videos.filter(
+    (post: any) => post?.userID?._id === authState._id
+  );
 
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
   };
-  const myparams = {
+  const params = {
     payload,
   };
-
   useEffect(() => {
-    dispatch(userSession(myparams));
+    dispatch(userSession(params));
     dispatch(getProfileInfo({ payload: params }));
     dispatch(getUserBookmark(params));
     dispatch(getAllPostVideos());
@@ -267,156 +268,120 @@ function Page({ params }: any) {
     throw new Error("Function not implemented.");
   }
 
-  const userVideos = postState.videos.filter(
-    (post: any) =>
-      post?.userID?.username === profileInfoState.profileUserInfo.username
-  );
+  const backgroundImage = `url(${IMAGES.bgImage})`;
 
-  const handleFollowUser = async (userId: any) => {
-    const payload = {
-      userId: userId,
-      followerID: authState._id,
-    };
-
-    const successCallback = (response: any) => {
-      toastSuccess(response.message);
-    };
-
-    const errorCallback = (error: string) => {
-      toastError(error);
-    };
-
-    const params = {
-      payload,
-      successCallback,
-      errorCallback,
-    };
-
-    dispatch(followUser(params));
-  };
-
-  if (profileInfoState?.loading) return <Loading />;
-
-  const handleBackButtonClick = () => {
-    // Use the router's back method to navigate to the previous page
-    router.back();
+  const sectionStyle = {
+    backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
   };
 
   return (
     <Layout>
-      {/* Header */}
-      <CustomHeader>PROFILE</CustomHeader>
-      {/* Main  */}
-      <div className="flex justify-center items-center pt-4">
-        {/* Profile */}
+      <Suspense>
+        {/* Header */}
+        <CustomHeader>PROFILE</CustomHeader>
 
-        <div
-          key={profileInfoState?.profileUserInfo?._id}
-          className="lg:w-8/12 md:w-10/12 w-full flex flex-col gap-4"
-        >
-          <div className="flex justify-between lg:flex-row  w-full gap-4 mb-6">
-            <div className="flex items-top">
+        <div style={sectionStyle} className="pt-4">
+          <div
+            className="flex flex-col items-center lg:flex-row lg:justify-center gap-4 h-60 pl-8 mx-4 my-4"
+            style={{
+              background: `linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.9) 60%), ${backgroundImage}`,
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          >
+            <div className="w-32 h-32">
               <Image
-                className="w-40 h-40 rounded-xl  object-cover"
-                src={
-                  profileInfoState?.profileUserInfo?.profilePicture ||
-                  IMAGES.AccountProfile
-                }
-                width={0}
-                height={0}
+                className="rounded-xl w-32 h-32 object-cover border-2 border-[#43DD4E]"
+                src={authState?.profilePicture}
+                width={10}
+                height={10}
                 sizes="100vw"
                 alt="Account Profile"
               />
             </div>
-
-            <div className="flex flex-1 flex-col gap-2 flex-wrap justify-center text-center lg:justify-start lg:text-start p-2 ">
-              <p className="font-bold">
-                {profileInfoState?.profileUserInfo?.name}
-              </p>
-              <div className="flex items-center gap-2 justify-between lg:justify-between">
-                <div
-                  className="flex items-center"
-                  onClick={() => copyToClipboard(authState?.username)}
-                >
-                  <p className="text-white">
-                    ({profileInfoState?.profileUserInfo?.username})
-                  </p>
-
-                  <Image
-                    className="cursor-pointer hover:opacity-80"
-                    src={SVG.AccountCopyUsername}
-                    width={16}
-                    height={16}
-                    alt="Copy Username"
-                  />
-                </div>
-                <div
-                  className="hover:opacity-80"
-                  onClick={() => handleModalToggle("isShareModalOpen")}
-                >
-                  <Image src={SVG.Share} width={16} height={16} alt="Share" />
-                </div>
-              </div>
-              <span className="text-gray-400">
-                {profileInfoState?.profileUserInfo?.bio}
-              </span>
-              <div className="flex h-8 md:gap-8">
-                <div className="flex items-center gap-2 ">
-                  <span
-                    className={`${leagueGothic.className} text-lg md:text-2xl font-normal`}
+            <div className="flex justify-between">
+              <div className="flex flex-1 flex-col gap-2 flex-wrap justify-center text-center lg:justify-start lg:text-start p-2 pt-4">
+                <span className="font-semibold text-white">
+                  {authState?.name}
+                </span>
+                <div className="flex items-center gap-6 justify-center lg:justify-between">
+                  <div
+                    className="flex items-center"
+                    onClick={() => copyToClipboard(authState?.username)}
                   >
-                    {userVideos.length || 0}
-                  </span>
-                  <span className="md:text-lg text-gray-400">Posts</span>
+                    <p className="text-white">
+                      ({authState?.username || "no_username"})
+                    </p>
+                    <Image
+                      className="cursor-pointer hover:opacity-80"
+                      src={SVG.AccountCopyUsername}
+                      width={16}
+                      height={16}
+                      alt="Copy Username"
+                    />
+                  </div>
                 </div>
+                <span className="text-gray-400">{authState?.bio}</span>
 
-                {/* Vertical divider */}
-                <div className="border-r border-gray-700 h-full  rounded-full mx-2"></div>
-                <div
-                  className="flex items-center gap-2 cursor-pointer hover:opacity-80"
-                  onClick={() => handleModalToggle("isFollowerModalOpen")}
-                >
-                  <span
-                    className={`${leagueGothic.className} text-lg md:text-2xl font-normal`}
-                  >
-                    {profileInfoState?.profileUserInfo?.follower?.length || 0}
-                  </span>
-                  <span className="md:text-lg text-gray-400">Followers</span>
-                </div>
-                {/* Vertical divider */}
-                <div className="border-r border-gray-700 h-full  rounded-full mx-2"></div>
+                <div className="flex h-8 items-center justify-start md:gap-8">
+                  <div className="flex items-center gap-2 ">
+                    <span
+                      className={`${leagueGothic.className} text-lg md:text-2xl font-normal text-white`}
+                    >
+                      {userVideos.length || 0}
+                    </span>
+                    <span className="md:text-lg text-gray-400"> Posts</span>
+                  </div>
 
-                <div
-                  className="flex items-center gap-2 cursor-pointer hover:opacity-80"
-                  onClick={() => handleModalToggle("isFollowingModalOpen")}
-                >
-                  <span
-                    className={`${leagueGothic.className} text-lg md:text-2xl font-normal`}
+                  {/* Vertical divider */}
+                  <div className="border-r border-gray-700 h-full rounded-full mx-2"></div>
+                  <div
+                    className="flex items-center gap-2 hover:opacity-80 cursor-pointer"
+                    onClick={() => handleModalToggle("isFollowerModalOpen")}
                   >
-                    {profileInfoState?.profileUserInfo?.following?.length || 0}
-                  </span>
-                  <span className="md:text-lg text-gray-400">Following</span>
+                    <span
+                      className={`${leagueGothic.className} text-lg md:text-2xl font-normal text-white`}
+                    >
+                      {authState?.follower?.length || 0}
+                    </span>
+                    <span className="md:text-lg text-gray-400">Followers</span>
+                  </div>
+                  {/* Vertical divider */}
+                  <div className="border-r border-gray-700 h-full  rounded-full mx-2"></div>
+
+                  <div
+                    className="flex items-center gap-2 hover:opacity-80 cursor-pointer"
+                    onClick={() => handleModalToggle("isFollowingModalOpen")}
+                  >
+                    <span
+                      className={`${leagueGothic.className} text-lg md:text-2xl font-normal text-white`}
+                    >
+                      {authState?.following?.length || 0}
+                    </span>
+                    <span className="md:text-lg text-gray-400">Following</span>
+                  </div>
                 </div>
               </div>
 
-              {/* Buttons */}
-              <div className="flex h-8 gap-6 sm:gap-6 mt-3">
+              <div className="flex h-8 sm:gap-6 mt-3">
                 <button
-                  className="font-bold w-40 h-10 bg-[#37C535] text-white text-center py-[10px] px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3"
-                  onClick={() =>
-                    handleFollowUser(profileInfoState?.profileUserInfo?._id)
-                  }
+                  className="font-bold w-40 h-10 bg-[#292D32] text-white text-center py-[10px] px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
+                  //   onClick={() =>
+                  //     handleFollowUser(profileInfoState?.profileUserInfo?._id)
+                  //   }
                 >
-                  {authState?.following?.some(
-                    (user: any) =>
+                  {/* {authState?.following?.some(
+                        (user: any) =>
                       user?.userID?._id ===
                       profileInfoState?.profileUserInfo?._id
                   )
                     ? "Unfollow"
-                    : "Follow"}
+                    : "Follow"} */}
+                  follow
                 </button>
                 <button
-                  className="font-bold w-40 h-10 bg-[#37C535] text-white text-center py-[10px] px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3"
+                  className="font-bold w-40 h-10 bg-[#37C535] text-white text-center py-[10px] px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
                   // onClick={handleMessage}
                 >
                   Message
@@ -425,194 +390,339 @@ function Page({ params }: any) {
             </div>
           </div>
 
-          {/* Top Bar */}
-          <div className="h-10 w-full flex justify-around items-center">
+          <div className="flex justify-between w-10/12 my-4 mx-4">
             <div>
-              <div
-                className={`flex justify-center w-16 gap-2 my-6 cursor-pointer ${
-                  selectedSection === "videos" ? "text-white" : "text-gray-500"
-                }`}
-                onClick={() => setSelectedSection("videos")}
-              >
+              <p className="font-bold">Current Badge:</p>
+              <div className="flex justify-center items-center gap-8 mt-2">
                 <Image
-                  className={`${
-                    selectedSection !== "videos" ? "opacity-40" : "opacity-100"
-                  }`}
-                  src={SVG.AccountMyVideos}
-                  alt="My Videos"
-                  width={24}
-                  height={24}
+                  src={IMAGES.AccountCurrentBadgeIcon}
+                  alt="Badge"
+                  width={40}
+                  height={40}
+                />
+                <Image
+                  src={IMAGES.Badges2}
+                  alt="Badge"
+                  width={40}
+                  height={40}
+                />
+                <Image
+                  src={IMAGES.Badges3}
+                  alt="Badge"
+                  width={40}
+                  height={40}
+                />
+                <Image
+                  src={IMAGES.Badges4}
+                  alt="Badge"
+                  width={40}
+                  height={40}
+                />
+                <Image
+                  src={IMAGES.Badges5}
+                  alt="Badge"
+                  width={40}
+                  height={40}
                 />
               </div>
-              {selectedSection === "videos" && (
-                <div className="w-16 h-1 bg-[#62C860] rounded-lg"></div>
-              )}
             </div>
-
             <div>
-              <div
-                className={`flex justify-center w-16 gap-2 my-6 cursor-pointer ${
-                  selectedSection === "clips" ? "text-white" : "text-gray-500"
-                }`}
-                onClick={() => setSelectedSection("clips")}
-              >
+              <p className="font-bold">Share via:</p>
+              <div className="flex justify-center items-center gap-8 mt-2">
                 <Image
-                  className={`${
-                    selectedSection !== "clips" ? "opacity-40" : "opacity-100"
-                  }`}
-                  src={SVG.Clips}
-                  alt="My clips"
-                  width={24}
-                  height={24}
+                  src={SVG.Facebook1}
+                  alt="Facebook"
+                  width={40}
+                  height={40}
+                />
+                <Image
+                  src={SVG.Instagram}
+                  alt="Instagram"
+                  width={40}
+                  height={40}
+                />
+                <Image src={SVG.X} alt="X" width={40} height={40} />
+                <Image
+                  src={SVG.GamefolioCoin}
+                  alt="GamefolioCoin"
+                  width={40}
+                  height={40}
                 />
               </div>
-              {selectedSection === "clips" && (
-                <div className="w-16 h-1 bg-[#62C860] rounded-lg"></div>
-              )}
-            </div>
-
-            <div>
-              <div
-                className={`flex justify-center w-16 gap-2 my-6 cursor-pointer ${
-                  selectedSection === "videos" ? "text-white" : "text-gray-500"
-                }`}
-                onClick={() => setSelectedSection("story")}
-              >
-                <Image
-                  className={` ${
-                    selectedSection !== "story" ? "opacity-40" : "opacity-100"
-                  }`}
-                  src={SVG.Story}
-                  alt="My story"
-                  width={24}
-                  height={24}
-                />
-              </div>
-              {selectedSection === "story" && (
-                <div className="w-16 h-1 bg-[#62C860] rounded-lg"></div>
-              )}
-            </div>
-
-            <div>
-              <div
-                className={`flex justify-center w-16 gap-2 my-6 cursor-pointer ${
-                  selectedSection === "bookmarked"
-                    ? "text-white"
-                    : "text-gray-500"
-                }`}
-                onClick={() => setSelectedSection("bookmarked")}
-              >
-                <Image
-                  className={`${
-                    selectedSection !== "bookmarked"
-                      ? "opacity-40"
-                      : "opacity-100"
-                  }`}
-                  src={SVG.AccountMyBookmarked}
-                  alt="My bookmarked"
-                  width={24}
-                  height={24}
-                />
-              </div>
-              {selectedSection === "bookmarked" && (
-                <div className="w-16 h-1 bg-[#62C860] rounded-lg"></div>
-              )}
             </div>
           </div>
-          <hr className="h-px  border-0 bg-gray-700" />
-          {/* green line */}
 
-          {/* Content Section */}
-          {authState?.following?.some(
-            (user: any) =>
-              user?.userID?._id === profileInfoState?.profileUserInfo?._id ||
-              !isPrivateAccount
-          ) ? (
-            // User is following, show videos
-            <div>
-              {selectedSection === "videos" ? (
-                <MyVideosSection
-                  authState={authState}
-                  postState={postState}
-                  profileInfoState={profileInfoState}
-                  handleVideoDetailOpen={handleVideoDetailOpen}
+          {/* Top Bar */}
+
+          <div className="flex mx-3">
+            <div className="w-80 border-2 border-[#1C2C2E] rounded-lg p-2">
+              <h1 className="font-bold my-2">About Me:</h1>
+              <p className="font-light text-xs text-[#7C7F80]">
+                Lorem ipsum dolor sit amet constetur. Ante duis tellus tincidunt
+                nibh Lorem ipsum dolor sit amet consectetur. Ante duis tellus um
+                dolor sit amet constetur. Ante duis tellus um dolor sit amet
+                constetur.
+              </p>
+              <h1 className="font-bold my-2">Connect</h1>
+              <div className="flex items-center gap-4 rounded-lg bg-[#162423] p-2 mt-2">
+                <Image
+                  className="rounded-xl w-10 h-10 object-cover"
+                  src={SVG.PlayStation}
+                  width={10}
+                  height={10}
+                  sizes="100vw"
+                  alt="Account Profile"
                 />
-              ) : selectedSection === "bookmarked" ? (
-                <MyBookmarkSection
-                  data={postState.bookmarks}
-                  handleVideoDetailOpen={handleVideoDetailOpen}
+                <p className="font-normal">Connected Succesfully</p>
+              </div>
+
+              <div className="flex items-center gap-4 rounded-lg bg-[#162423] p-2 mt-2">
+                <Image
+                  className="rounded-xl w-10 h-10 object-cover"
+                  src={SVG.Twitch}
+                  width={10}
+                  height={10}
+                  sizes="100vw"
+                  alt="Account Profile"
                 />
-              ) : selectedSection === "clips" ? (
-                <ClipsSection
-                  authState={authState}
-                  clipState={clipState}
-                  profileInfoState={profileInfoState}
-                  handleVideoDetailOpen={handleVideoDetailOpen}
+                <p className="font-normal">Conneted Succesfully</p>
+              </div>
+
+              <div className="flex items-center gap-4 rounded-lg bg-[#162423] p-2 mt-2">
+                <Image
+                  className="rounded-xl w-10 h-10 object-cover"
+                  src={SVG.Xbox}
+                  width={10}
+                  height={10}
+                  sizes="100vw"
+                  alt="Account Profile"
                 />
-              ) : (
-                <StorySection data={storyState.currentUserStories} />
-              )}
+                <p className="font-normal">Conneted Succesfully</p>
+              </div>
+
+              <div className="flex items-center gap-4 rounded-lg bg-[#162423] p-2 mt-2">
+                <Image
+                  className="rounded-xl w-10 h-10 object-cover"
+                  src={SVG.Steam}
+                  width={10}
+                  height={10}
+                  sizes="100vw"
+                  alt="Account Profile"
+                />
+                <p className="font-normal">Conneted Succesfully</p>
+              </div>
             </div>
-          ) : (
-            // User is not following, show private account message
-            <div className="flex justify-center">
-              <p>This is a private account.</p>
+
+            <div className="w-4/6 justify-around items-center h-10">
+              {/* <div className="flex justify-center items-center pt-4"> */}
+              {/* Profile */}
+              <div key={authState?.userID} className="flex flex-col gap-4 mx-8">
+                <div className="h-10 w-full flex justify-around items-center">
+                  <div>
+                    <div
+                      className={`flex justify-center w-16 gap-2 my-6 cursor-pointer ${
+                        selectedSection === "videos"
+                          ? "text-white"
+                          : "text-gray-500"
+                      }`}
+                      onClick={() => setSelectedSection("videos")}
+                    >
+                      <Image
+                        className={`${
+                          selectedSection !== "videos"
+                            ? "opacity-40"
+                            : "opacity-100"
+                        }`}
+                        src={SVG.AccountMyVideos}
+                        alt="My Videos"
+                        width={24}
+                        height={24}
+                      />
+                    </div>
+                    {selectedSection === "videos" && (
+                      <div className="w-16 h-1 bg-[#62C860] rounded-lg"></div>
+                    )}
+                  </div>
+
+                  <div>
+                    <div
+                      className={`flex justify-center w-16 gap-2 my-6 cursor-pointer ${
+                        selectedSection === "clips"
+                          ? "text-white"
+                          : "text-gray-500"
+                      }`}
+                      onClick={() => setSelectedSection("clips")}
+                    >
+                      <Image
+                        className={`${
+                          selectedSection !== "clips"
+                            ? "opacity-40"
+                            : "opacity-100"
+                        }`}
+                        src={SVG.Clips}
+                        alt="My clips"
+                        width={24}
+                        height={24}
+                      />
+                    </div>
+                    {selectedSection === "clips" && (
+                      <div className="w-16 h-1 bg-[#62C860] rounded-lg"></div>
+                    )}
+                  </div>
+
+                  <div>
+                    <div
+                      className={`flex justify-center w-16 gap-2 my-6 cursor-pointer ${
+                        selectedSection === "videos"
+                          ? "text-white"
+                          : "text-gray-500"
+                      }`}
+                      onClick={() => setSelectedSection("story")}
+                    >
+                      <Image
+                        className={` ${
+                          selectedSection !== "story"
+                            ? "opacity-40"
+                            : "opacity-100"
+                        }`}
+                        src={SVG.Story}
+                        alt="My story"
+                        width={24}
+                        height={24}
+                      />
+                    </div>
+                    {selectedSection === "story" && (
+                      <div className="w-16 h-1 bg-[#62C860] rounded-lg"></div>
+                    )}
+                  </div>
+
+                  <div>
+                    <div
+                      className={`flex justify-center w-16 gap-2 my-6 cursor-pointer ${
+                        selectedSection === "bookmarked"
+                          ? "text-white"
+                          : "text-gray-500"
+                      }`}
+                      onClick={() => setSelectedSection("bookmarked")}
+                    >
+                      <Image
+                        className={`${
+                          selectedSection !== "bookmarked"
+                            ? "opacity-40"
+                            : "opacity-100"
+                        }`}
+                        src={SVG.AccountMyBookmarked}
+                        alt="My bookmarked"
+                        width={24}
+                        height={24}
+                      />
+                    </div>
+                    {selectedSection === "bookmarked" && (
+                      <div className="w-16 h-1 bg-[#62C860] rounded-lg"></div>
+                    )}
+                  </div>
+                </div>
+                <hr className="h-px border-0 bg-gray-700" />
+                {/* green line */}
+
+                {/* Content Section */}
+                {authState?.following?.some(
+                  (user: any) =>
+                    user?.userID?._id ===
+                      profileInfoState?.profileUserInfo?._id ||
+                    !isPrivateAccount
+                ) ? (
+                  // User is following, show videos
+                  <div>
+                    {selectedSection === "videos" ? (
+                      <MyVideosSection
+                        authState={authState}
+                        postState={postState}
+                        profileInfoState={profileInfoState}
+                        handleVideoDetailOpen={handleVideoDetailOpen}
+                      />
+                    ) : selectedSection === "bookmarked" ? (
+                      <MyBookmarkSection
+                        data={postState.bookmarks}
+                        handleVideoDetailOpen={handleVideoDetailOpen}
+                      />
+                    ) : selectedSection === "clips" ? (
+                      <ClipsSection
+                        authState={authState}
+                        clipState={clipState}
+                        profileInfoState={profileInfoState}
+                        handleVideoDetailOpen={handleVideoDetailOpen}
+                      />
+                    ) : (
+                      <StorySection data={storyState.currentUserStories} />
+                    )}
+                  </div>
+                ) : (
+                  // User is not following, show private account message
+                  <div className="flex justify-center">
+                    <p>This is a private account.</p>
+                  </div>
+                )}
+              </div>
+              {/* </div> */}
             </div>
-          )}
+
+            {/* <div className="w-1/5 border-2 border-gray-500"></div> */}
+          </div>
+          {/* </div> */}
+
+          <Modal
+            isOpen={modalState.isShareModalOpen}
+            handleClose={() => handleModalToggle("isShareModalOpen")}
+          >
+            <MoreOptions
+              handleCloseModal={() => handleModalToggle("isShareModalOpen")}
+              data={authState?.userID}
+            />
+          </Modal>
+
+          <Modal
+            isOpen={modalState.isFollowerModalOpen}
+            handleClose={() => handleModalToggle("isFollowerModalOpen")}
+          >
+            <Followers
+              handleCloseModal={() => handleModalToggle("isFollowerModalOpen")}
+              followerData={authState?.follower}
+            />
+          </Modal>
+
+          <Modal
+            isOpen={modalState.isFollowingModalOpen}
+            handleClose={() => handleModalToggle("isFollowingModalOpen")}
+          >
+            <Following
+              handleCloseModal={() => handleModalToggle("isFollowingModalOpen")}
+              followingData={authState?.following}
+            />
+          </Modal>
+
+          {/* <Modal
+          isOpen={modalState.isBadgeModalOpen}
+          handleClose={() => handleModalToggle("isBadgeModalOpen")}
+        >
+          <Badges
+            handleCloseModal={() => handleModalToggle("isBadgeModalOpen")}
+          />
+        </Modal> */}
+
+          <Modal
+            isOpen={modalState.isVideoDetailOpen}
+            handleClose={() => handleModalToggle("isVideoDetailOpen")}
+          >
+            <VideoDetails
+              postID={postID}
+              detailedPost={detailedPost}
+              handleCloseModal={() => handleModalToggle("isVideoDetailOpen")}
+              handlePageRefresh={() => handlePageRefresh()}
+            />
+          </Modal>
         </div>
-      </div>
-
-      <Modal
-        isOpen={modalState.isShareModalOpen}
-        handleClose={() => handleModalToggle("isShareModalOpen")}
-      >
-        <MoreOptions
-          handleCloseModal={() => handleModalToggle("isShareModalOpen")}
-          data={profileInfoState?.profileUserInfo?._id}
-        />
-      </Modal>
-      <Modal
-        isOpen={modalState.isFollowerModalOpen}
-        handleClose={() => handleModalToggle("isFollowerModalOpen")}
-      >
-        <Followers
-          handleCloseModal={() => handleModalToggle("isFollowerModalOpen")}
-          followerData={profileInfoState?.profileUserInfo?.follower}
-        />
-      </Modal>
-
-      <Modal
-        isOpen={modalState.isFollowingModalOpen}
-        handleClose={() => handleModalToggle("isFollowingModalOpen")}
-      >
-        <Following
-          handleCloseModal={() => handleModalToggle("isFollowingModalOpen")}
-          followingData={profileInfoState?.profileUserInfo?.following}
-        />
-      </Modal>
-
-      <Modal
-        isOpen={modalState.isVideoDetailOpen}
-        handleClose={() => handleModalToggle("isVideoDetailOpen")}
-      >
-        <VideoDetails
-          postID={postID}
-          detailedPost={detailedPost}
-          handleCloseModal={() => handleModalToggle("isVideoDetailOpen")}
-          handlePageRefresh={() => handlePageRefresh()}
-        />
-      </Modal>
-
-      <Modal
-        isOpen={modalState.isStoryModalOpen}
-        handleClose={() => handleModalToggle("isStoryModalOpen")}
-      >
-        <ViewStory
-          storyUserID={storyUserID}
-          handleCloseModal={() => handleModalToggle("isStoryModalOpen")}
-        />
-      </Modal>
-
+      </Suspense>
       <ToastContainer
         position="top-center"
         autoClose={5000}
@@ -629,4 +739,4 @@ function Page({ params }: any) {
   );
 }
 
-export default Page;
+export default Profile;
