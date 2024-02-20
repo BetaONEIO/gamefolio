@@ -205,7 +205,10 @@ function Trending() {
                       /> */}
                 </SwiperSlide>
               </Swiper>
-              <div className="hidden w-2/5 h-full md:flex flex-col gap-8 rounded-lg bg-[#091619] border border-[#1C2C2E] px-4 py-6 overflow-y-auto ">
+              <div
+                className="hidden w-2/5 h-full md:flex flex-col gap-8 rounded-lg bg-[#091619] border border-[#1C2C2E] px-4 py-6 overflow-y-auto "
+                style={styles.scroller}
+              >
                 <div className="flex justify-start items-center">
                   <span className="font-bold">Upcoming Updates</span>
                 </div>
@@ -481,6 +484,9 @@ const styles = {
     height: "100%",
     background:
       "linear-gradient(to top, rgba(0, 0, 0, 0.4) 100%, rgba(0, 0, 0, 0) 100%)",
+  },
+  scroller: {
+    scrollbarColor: "#43DD4E #FFFFFF",
   },
   // Add more styles as needed
 };
