@@ -61,3 +61,42 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   background-image: url("../../public/calendar.svg");
   /* Add any additional styles you want for the calendar picker indicator */
 }
+
+/* styles/global.css for Swiper [ Trending Page ] */
+.swiper-button-next,
+.swiper-button-prev {
+  background-color: #091619;
+  background-color: #091619;
+  border-radius: 12px;
+  right: 10px;
+  padding: 30px 24px;
+  font-size: 10px !important;
+  color: #43dd4e !important;
+  fill: #43dd4e !important;
+  stroke: #43dd4e !important;
+}
+.swiper-button-prev.swiper-button-disabled,
+.swiper-button-next.swiper-button-disabled {
+  opacity: 1 !important;
+}
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 20px !important;
+}
+
+.swiper-pagination-bullets.swiper-pagination-horizontal {
+  bottom: 20px !important;
+  left: 30px !important;
+}
+.swiper-pagination {
+  text-align: start !important;
+}
+
+.swiper-pagination-bullet {
+  width: 34px !important;
+  border-radius: 10px !important;
+  background-color: #ffffff !important;
+}
+.swiper-pagination-bullet-active {
+  background-color: #43dd4e !important;
+}

@@ -1,5 +1,6 @@
 "use client";
 import Loading from "@/app/main/loading";
+import MoreLoader from "@/components/CustomLoader/MoreLoader";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import CustomHeader from "@/components/CustomHeader/CustomHeader";
@@ -23,6 +24,7 @@ import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
+import { set } from "date-fns";
 
 function Main() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
@@ -31,8 +33,11 @@ function Main() {
   const [postID, setPostID] = useState("");
   const [detailedPost, setDetailedPost] = useState("");
 
+  console.log("postState", postState);
+  const { loading } = postState;
+
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(false);
 
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
@@ -58,7 +63,7 @@ function Main() {
         window.innerHeight + document.documentElement.scrollTop + 1 >=
         document.documentElement.scrollHeight
       ) {
-        setLoading(true);
+        // setLoading(true);
         setPage((prev) => prev + 1);
       }
     } catch (error) {
@@ -466,6 +471,7 @@ function Main() {
                   </div>
                 );
               })}
+              {loading && <MoreLoader />}
             </div>
             {/* Notification */}
             <div className="hidden w-2/5 h-96 md:flex flex-col gap-8 rounded-lg bg-[#091619] border border-[#1C2C2E] px-4 py-6 ">

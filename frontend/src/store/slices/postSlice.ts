@@ -181,8 +181,10 @@ export function getFollowingPostOnly(params: ActionParams) {
       const [ok, response] = await API(options);
 
       dispatch(slice.actions.getFollowingPost(response.data));
+      dispatch(slice.actions.stopLoading());
     } catch (error) {
       console.log("error", error);
+      dispatch(slice.actions.stopLoading());
     } finally {
       dispatch(slice.actions.stopLoading());
     }
