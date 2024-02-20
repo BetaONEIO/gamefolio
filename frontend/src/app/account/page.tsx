@@ -448,7 +448,7 @@ function Account() {
                 </div>
                 <hr className="h-px border-0 bg-gray-700" />
 
-                <div className="flex flex-col bg-[#091619] border border-dashed border-green-800 rounded-lg px-4 py-4 justify-center items-start gap-4">
+                <div className="flex flex-col border border-dashed border-green-800 rounded-lg px-4 py-4 justify-center items-start gap-4">
                   <span className="font-bold text-sm md:text-lg">Add New</span>
                   <div className="flex justify-between gap-2 w-full">
                     <div className="bg-[#162423] rounded-lg flex justify-center items-center w-6/12 h-24 gap-2">

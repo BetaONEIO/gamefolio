@@ -26,12 +26,12 @@ const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
   }, []);
 
   return (
-    <div className="antialiased">
+    <div className="antialiased bg-[#091619]">
       {/* <!-- Sidebar --> */}
       <SideBar />
       {/* Main Page */}
-      <main className="md:ml-64 h-auto  ">
-        <div className="rounded-lg border-gray-600 h-full overflow-y-scroll no-scrollbar">
+      <main className="md:ml-64 h-auto ">
+        <div className="rounded-lg border-gray-600 h-screen overflow-y-scroll no-scrollbar">
           {children}
         </div>
       </main>
