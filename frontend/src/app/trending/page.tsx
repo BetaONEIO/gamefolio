@@ -163,7 +163,7 @@ function Trending() {
           style={sectionStyle}
           className="flex flex-col items-center bg-[#091619] min-h-screen"
         >
-          <div className="p-8 flex flex-col w-full h-full gap-8">
+          <div className="p-4 flex flex-col w-full h-full gap-8">
             <div>
               <p className="font-semibold text-base sm:text-lg lg:text-lg text-white">
                 Trending Games
@@ -205,6 +205,7 @@ function Trending() {
                       /> */}
                 </SwiperSlide>
               </Swiper>
+
               <div
                 className="hidden w-2/5 h-full md:flex flex-col gap-8 rounded-lg bg-[#091619] border border-[#1C2C2E] px-4 py-6 overflow-y-auto "
                 style={styles.scroller}
@@ -353,7 +354,7 @@ function Trending() {
               {postState.videos.map((item: any) => (
                 <div
                   key={item?.userID}
-                  className="flex flex-col gap-2 w-60 h-full border-2 border-[#1C2C2E] rounded-xl  my-2 pb-2"
+                  className="flex flex-col w-64 h-60 border-2 border-[#1C2C2E] rounded-xl my-2 pb-2"
                   onClick={() =>
                     handleModalToggle("isVideoDetailOpen", item._id, item)
                   }
@@ -361,7 +362,7 @@ function Trending() {
                   <div className="relative">
                     <video
                       src={item.video}
-                      className=" w-80 h-full rounded-2xl hover:opacity-80 p-2"
+                      className="w-80 h-full rounded-2xl hover:opacity-80 p-2"
                       controls={false}
                       autoPlay={false}
                       onLoadedMetadata={(e) => handleVideoMetadata(e, item._id)}

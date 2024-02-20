@@ -8,6 +8,17 @@ import { getAllPostVideos, refreshPage } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Loading from "./loading";
 import Link from "next/link";
+import Image from "next/image";
+import { SVG } from "@/assets/SVG";
+import { IMAGES } from "@/assets/images";
+import { Swiper, SwiperSlide } from "swiper/react";
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/effect-fade";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+// import required modules
+import { EffectFade, Navigation, Pagination } from "swiper/modules";
 
 function Games() {
   const postState = useSelector((state: any) => state.post) || [];
@@ -75,7 +86,43 @@ function Games() {
   };
 
   return (
-    <>
+    <div className="m-4">
+      <div>
+        <p className="font-semibold text-base sm:text-lg lg:text-lg text-white m-2">
+          Trending Games Now
+        </p>
+      </div>
+      <div className="flex gap-4 h-80 w-full">
+        <Swiper
+          effect={"fade"}
+          navigation={true}
+          pagination={{
+            clickable: true,
+          }}
+          modules={[EffectFade, Navigation, Pagination]}
+          className="mySwiper h-80 w-full rounded-lg"
+        >
+          <SwiperSlide>
+            <img src={IMAGES.TrendingPubg} style={styles.swiperImage} />
+            <div style={styles.overlay}></div>
+          </SwiperSlide>
+          <SwiperSlide>
+            <img
+              src="https://swiperjs.com/demos/images/nature-3.jpg"
+              style={styles.swiperImage}
+            />
+            <div style={styles.overlay}></div>
+          </SwiperSlide>
+          <SwiperSlide>
+            <img
+              src="https://swiperjs.com/demos/images/nature-4.jpg"
+              style={styles.swiperImage}
+            />
+            <div style={styles.overlay}></div>
+          </SwiperSlide>
+        </Swiper>
+      </div>
+
       <div className="flex items-center">
         <div className="flex justify-between items-center w-full sm:mx-2 lg:mx-4">
           <div>
@@ -124,8 +171,37 @@ function Games() {
           handlePageRefresh={() => handlePageRefresh()}
         />
       </Modal>
-    </>
+    </div>
   );
 }
+
+const styles = {
+  container: {
+    flex: 1,
+    width: "100%",
+    justifyContent: "space-between",
+  },
+  swiperContainer: {
+    width: "80%",
+    height: "30%",
+  },
+  swiperImage: {
+    width: "100%",
+    height: "100%",
+  },
+  overlay: {
+    position: "absolute" as "absolute", // Explicitly specify position type
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    background:
+      "linear-gradient(to top, rgba(0, 0, 0, 0.4) 100%, rgba(0, 0, 0, 0) 100%)",
+  },
+  scroller: {
+    scrollbarColor: "#43DD4E #FFFFFF",
+  },
+  // Add more styles as needed
+};
 
 export default Games;

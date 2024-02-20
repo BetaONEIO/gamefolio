@@ -117,25 +117,6 @@ function User() {
         </div>
       ))}
     </div>
-    // <div className="flow-root w-96 sm:1/3 mx-auto">
-    //   <div className="divide-y divide-gray-700">
-    //     {userState?.userList?.map((user: any) => (
-    //       <div key={user._id} className="flex py-6">
-    //         <Image
-    //           className="w-12 h-12 rounded-lg mr-2 sm:mr-4"
-    //           src={user?.profilePicture || IMAGES.AccountProfile}
-    //           alt="Profile"
-    //           width={50}
-    //           height={50}
-    //         />
-    //         <div>
-    //           <h3 className="font-semibold text-white">{user?.username}</h3>
-    //           <p className="text-base font-light text-gray-400">{user?.name}</p>
-    //         </div>
-    //       </div>
-    //     ))}
-    //   </div>
-    // </div>
   );
 }
 

@@ -76,46 +76,18 @@ function Video() {
   };
 
   return (
-    <>
-      {/* <div className="flex flex-wrap justify-start items-start mx-3">
-        {postState.videos.map((item: any) => (
-          <div
-            key={item._id}
-            className="relative my-1 mx-3"
-            onClick={() =>
-              handleModalToggle("isVideoDetailOpen", item._id, item)
-            }
-          >
-            <video
-              src={item.video}
-              className="w-96 h-44 sm:w-52 sm:h-28 rounded-xl hover:opacity-80"
-              width={20}
-              height={20}
-              controls={false}
-              autoPlay={false}
-              preload="metadata"
-              onLoadedMetadata={(e) => handleVideoMetadata(e, item._id)}
-            />
-            <span className="absolute bottom-2 right-2">
-              {videoDurations[item._id]
-                ? formatTime(videoDurations[item._id])
-                : "Loading..."}
-            </span>
-          </div>
-        ))}
-      </div> */}
-
-      <div className="flex items-center m-4">
+    <div className="m-4">
+      <div className="flex items-center">
         <p className="font-semibold text-base sm:text-lg lg:text-lg text-white">
           Video Recommended for you
         </p>
       </div>
 
-      <div className="flex flex-wrap justify-start items-start my-2 mx-2 gap-2">
+      <div className="flex flex-wrap w-full justify-between gap-2 mt-2">
         {postState.videos.map((item: any) => (
           <div
             key={item?.userID}
-            className="flex flex-col gap-2 w-64 h-68 border-2 border-[#1C2C2E] rounded-xl mx-1 pb-2"
+            className="flex flex-col gap-2 w-64 h-60 border-2 border-[#1C2C2E] rounded-xl mx-1 pb-2"
             onClick={() =>
               handleModalToggle("isVideoDetailOpen", item._id, item)
             }
@@ -206,7 +178,7 @@ function Video() {
           handlePageRefresh={() => handlePageRefresh()}
         />
       </Modal>
-    </>
+    </div>
   );
 }
 
