@@ -222,11 +222,11 @@ function Account() {
         {/* Header */}
         <CustomHeader>PROFILE</CustomHeader>
 
-        <div style={sectionStyle} className="pt-4">
+        <div style={sectionStyle} className="pt-4 z-50">
           <div
             className="flex flex-col items-center lg:flex-row lg:justify-center gap-4 h-60 mx-4 my-4"
             style={{
-              background: `linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.9) 60%), ${backgroundImage}`,
+              background: `linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.9) 99%), ${backgroundImage}`,
               backgroundRepeat: "no-repeat",
               backgroundSize: "cover",
               backgroundPosition: "center",
@@ -335,7 +335,7 @@ function Account() {
           {/* Top Bar */}
 
           <div className="flex mx-3">
-            <div className="w-64 border-2 border-[#1C2C2E] rounded-lg p-1">
+            <div className="w-64 h-80 border-2 border-[#1C2C2E] rounded-lg p-1">
               <h1 className="font-bold my-2">Connect</h1>
               <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
                 <Image
@@ -511,8 +511,8 @@ function Account() {
               {/* </div> */}
             </div>
 
-            <div className="w-72 border-2 border-[#1C2C2E] rounded-lg p-2">
-              <h1 className="font-bold my-2">Current Badge</h1>
+            <div className="w-72 h-screen border-2 border-[#1C2C2E] rounded-lg p-2 overflow-hidden overflow-y-auto">
+              <h1 className="font-bold m-2">Current Badge</h1>
               <div className="flex justify-center items-center gap-3 mt-2">
                 <Image
                   src={IMAGES.AccountCurrentBadgeIcon}
@@ -545,9 +545,9 @@ function Account() {
                   height={40}
                 />
               </div>
-              <h1 className="font-bold my-2">Current Badge</h1>
 
-              <div className="border-2 border-[#1C2C2E] rounded-lg p-2 gap-3 mt-2">
+              <div className="rounded-lg p-2 gap-3 mt-2">
+                <h1 className="font-bold">Current Badge</h1>
                 <div className="">
                   {userVideos.map((item: any) => {
                     return (
@@ -555,7 +555,7 @@ function Account() {
                         key={item._id}
                         className="border-2 border-[#1C2C2E] rounded-lg p-2 gap-3 mt-2"
                       >
-                        <div className="flex items-center">
+                        <div className="flex">
                           <video
                             src={item.video}
                             className="w-20 h-28 rounded-xl object-cover hover:opacity-80"
@@ -567,9 +567,9 @@ function Account() {
                             }
                           />
 
-                          <div className="flex items-center sm:gap-4 gap-2">
+                          <div className="flex items-center sm:gap-2 gap-2">
                             <Image
-                              className="w-12 h-12 rounded-xl"
+                              className="w-8 h-8 rounded-xl"
                               src={IMAGES.Profile}
                               //   src={post?.userID?.profilePicture}
                               alt="Profile"
@@ -584,11 +584,11 @@ function Account() {
                               {/* // href={`/account/${post?.userID?.username}`}
                             // key={post._id} */}
                               {/* > */}
-                              <h1 className="w-[230px] sm:w-[350px] text-sm md:text-base sm:text-base font-bold text-white hover:opacity-80">
+                              <h1 className="w-[180px] sm:w-[220px] text-xs md:text-xs sm:text-xs font-semibold text-white hover:opacity-80">
                                 {/* {post?.userID?.name} */} helloworld
                               </h1>
                               {/* </Link> */}
-                              <p className="text-sm md:text-sm sm:text-base font-light text-gray-400">
+                              <p className="text-xl md:text-sm sm:text-base font-light text-gray-400">
                                 {/* {post?.date &&
                               new Date(post.date).toLocaleString("en-US", {
                                 hour: "numeric",
