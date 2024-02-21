@@ -129,7 +129,7 @@ function Video() {
               </div>
             </div>
 
-            <div className="flex  items-center justify-between text-center mx-4">
+            <div className="flex items-center justify-between text-center mx-4">
               <div className="flex items-center">
                 <Image
                   className="mr-2 cursor-pointer hover:opacity-80"
