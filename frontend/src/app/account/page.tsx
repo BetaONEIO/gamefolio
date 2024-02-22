@@ -304,15 +304,6 @@ function Account() {
                     <span className="md:text-lg text-gray-400">Following</span>
                   </div>
                 </div>
-                {/* <div className="">
-                  <h1 className="font-bold my-2">About Me:</h1>
-                  <p className="font-light text-xs text-[#7C7F80]">
-                    Lorem ipsum dolor sit amet constetur. Ante duis tellus
-                    tincidunt nibh Lorem ipsum dolor sit amet consectetur. Ante
-                    duis tellus um dolor sit amet constetur. Ante duis tellus um
-                    dolor sit amet constetur.
-                  </p>
-                </div> */}
               </div>
 
               <div className="flex h-10 px-2 items-center border-2 border-gray-50 rounded-xl gap-2">

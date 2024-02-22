@@ -36,7 +36,6 @@ function Page() {
       <CustomHeader>MY FOLIO</CustomHeader>
 
       {/* Main */}
-
       <div style={sectionStyle} className="flex  justify-center h-full w-full ">
         <div className="mt-4 flex flex-col  lg:flex-row h-fit lg:h-5/6 w-11/12 overflow-y-auto md:overflow-hidden justify-center border border-[#1C2C2E] rounded-xl py-6 px-4 bg-[#091619] ">
           <div className="flex-1 flex flex-col gap-4 p-4 bg-black-200">

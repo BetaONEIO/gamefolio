@@ -27,15 +27,18 @@ function User() {
     dispatch(getAllUsers());
   }, [userState.refresh]);
 
+  console.log("userState", userState);
+
   const userVideos = postState.videos.filter(
     (post: any) => post?.userID?._id === authState._id
   );
+  console.log("userVideos", userVideos);
 
   if (userState.loading) return <Loading />;
 
   return (
     <div className="flex flex-wrap justify-start items-start h-64 mx-2">
-      {userState?.userList?.slice(0, 10).map((user: any) => (
+      {userState?.userList?.map((user: any) => (
         <div
           key={user?.userID}
           className="flex flex-col h-44 gap-2 border-2 border-[#1C2C2E] rounded-xl mx-1 my-2"
@@ -94,7 +97,7 @@ function User() {
                 <span
                   className={`${leagueGothic.className} flex justify-center text-lg md:text-2xl font-normal text-white`}
                 >
-                  {user?.follower?.length || 0}
+                  {user?.followers?.length || 0}
                 </span>
                 <span className="md:text-lg text-gray-400">Followers</span>
               </div>

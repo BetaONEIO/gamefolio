@@ -285,14 +285,6 @@ const EditProfile = () => {
               </button>
             </div>
           </form>
-          {/* <div className="text-md text-center text-gray-50">
-            <p
-              className="font-bold text-primary-600 underline hover:opacity-80 cursor-pointer"
-              onClick={() => handleModalToggle("isDeleteModalOpen")}
-            >
-              Deactivate Account
-            </p>
-          </div> */}
         </div>
       </div>
       <ToastContainer

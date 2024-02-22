@@ -454,19 +454,6 @@ function Main() {
                           {post?.comment} Comments
                         </p>
                       </div>
-                      {/* <div>
-                        <div
-                          onClick={() => handleModalToggle("isPostShareOpen")}
-                        >
-                          <Image
-                            className="hover:opacity-80 cursor-pointer"
-                            src={SVG.Share}
-                            alt="share"
-                            width={25}
-                            height={25}
-                          />
-                        </div>
-                      </div> */}
                     </div>
                   </div>
                 );

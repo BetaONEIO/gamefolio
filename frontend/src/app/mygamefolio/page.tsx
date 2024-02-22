@@ -79,9 +79,9 @@ const MyVideosSection: React.FC<MyVideosSectionProps> = ({
 };
 
 interface ClipsProps {
-  authState: any; // Add authState as a prop
-  clipState: any; // Add postState as a prop
-  profileInfoState: any; // Add profileInfoState as a prop
+  authState: any;
+  clipState: any;
+  profileInfoState: any;
   handleVideoDetailOpen: (postID: any, detailedPost: any) => void;
 }
 

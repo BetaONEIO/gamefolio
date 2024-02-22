@@ -24,7 +24,7 @@ function CustomHeader({ children }: { children?: String }) {
         </div>
 
         <div className="flex items-center my-3 mx-2 gap-2">
-          <Link href="/account/settings">
+          <Link href="">
             <Image
               className="cursor-pointer hover:opacity-60"
               src={SVG.Notification}
@@ -45,7 +45,7 @@ function CustomHeader({ children }: { children?: String }) {
               <p className="font-semibold pr-2 text-white">GG COIN</p>
             </div>
           </Link>
-          <Link href="/account/my-folio">
+          <Link href="">
             <div className="flex items-center p-1 mr-2 rounded-full bg-[#162423]">
               <Image
                 className="w-9 h-8"
