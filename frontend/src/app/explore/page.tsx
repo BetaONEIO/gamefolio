@@ -64,6 +64,8 @@ function Explore() {
     (post: any) => post?.userID?._id === authState._id
   );
 
+  console.log("userVideos@@@", postState.videos);
+
   const handleVideoMetadata = (
     event: React.SyntheticEvent<HTMLVideoElement, Event>,
     videoId: string
@@ -75,6 +77,21 @@ function Explore() {
       [videoId]: duration,
     }));
   };
+
+  function formatTimeAgo(timestamp: any) {
+    const currentDate = new Date();
+    const previousDate = new Date(timestamp);
+    const timeDifference = currentDate.getTime() - previousDate.getTime();
+    const minutesAgo = Math.floor(timeDifference / (1000 * 60));
+
+    if (minutesAgo < 60) {
+      return `${minutesAgo} minutes ago`;
+    } else if (minutesAgo < 1440) {
+      return `${Math.floor(minutesAgo / 60)} hours ago`;
+    } else {
+      return `${Math.floor(minutesAgo / 1440)} days ago`;
+    }
+  }
 
   const formatTime = (seconds: number): string => {
     const minutes = Math.floor(seconds / 60);
@@ -211,7 +228,7 @@ function Explore() {
                   <span
                     className={`${leagueGothic.className} flex justify-center text-lg md:text-2xl font-normal text-white`}
                   >
-                    {user?.follower?.length || 0}
+                    {user?.followers?.length || 0}
                   </span>
                   <span className="md:text-lg text-gray-400">Followers</span>
                 </div>
@@ -279,7 +296,7 @@ function Explore() {
             <div className="flex items-center gap-4 mb-2">
               <Image
                 className="rounded-xl w-10 h-10 ml-2 object-cover"
-                src={item?.profilePicture}
+                src={item?.userID?.profilePicture}
                 alt="Account Profile"
                 height={10}
                 width={10}
@@ -288,12 +305,12 @@ function Explore() {
               <div>
                 <div>
                   <span className="text-xs sm:text-sm text-white">
-                    Sara Collin
+                    {item?.userID?.name}
                   </span>
                 </div>
                 <div className="flex items-center">
                   <p className="text-sm font-light text-gray-400">
-                    10 minutes ago
+                    {formatTimeAgo(item.date)}
                   </p>
                 </div>
               </div>

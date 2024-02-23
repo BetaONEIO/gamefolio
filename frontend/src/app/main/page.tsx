@@ -483,7 +483,7 @@ function Main() {
                       src={IMAGES.callofduty}
                       alt="UploadStory"
                     />
-                    <div className="flex flex-col ">
+                    <div className="flex flex-col">
                       <span className="text-sm text-white ">Maria Samson</span>
                       <span className="text-xs text-white ">
                         Followed your profile...{" "}

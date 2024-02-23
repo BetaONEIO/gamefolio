@@ -190,6 +190,8 @@ function Account() {
     );
   }, [profileInfoState]);
 
+  console.log("profileInfoState", profileInfoState);
+
   const handleModalToggle = (modalName: keyof typeof modalState) => {
     setModalState((prevState) => ({
       ...prevState,
@@ -220,7 +222,7 @@ function Account() {
     <Layout>
       <Suspense>
         {/* Header */}
-        <CustomHeader>PROFILE</CustomHeader>
+        <CustomHeader>ACCOUNT</CustomHeader>
 
         <div style={sectionStyle} className="pt-4 z-50">
           <div
@@ -306,7 +308,7 @@ function Account() {
                 </div>
               </div>
 
-              <div className="flex h-10 px-2 items-center border-2 border-gray-50 rounded-xl gap-2">
+              <div className="flex h-10 px-2 items-center border-2 border-gray-50 rounded-xl gap-2 hover:opacity-80 cursor-pointer">
                 <Image
                   className="w-5 h-4 object-cover"
                   src={SVG.Camera2}
@@ -471,35 +473,19 @@ function Account() {
                 {/* green line */}
 
                 {/* Content Section */}
-                {authState?.following?.some(
-                  (user: any) =>
-                    user?.userID?._id ===
-                      profileInfoState?.profileUserInfo?._id ||
-                    !isPrivateAccount
-                ) ? (
-                  // User is following, show videos
-                  <div>
-                    {selectedSection === "videos" ? (
-                      <MyVideosSection
-                        authState={authState}
-                        postState={postState}
-                        handleVideoDetailOpen={handleVideoDetailOpen}
-                      />
-                    ) : (
-                      <MyBookmarkSection
-                        data={postState.bookmarks}
-                        handleVideoDetailOpen={handleVideoDetailOpen}
-                      />
-                    )}
-                  </div>
+                {selectedSection === "videos" ? (
+                  <MyVideosSection
+                    authState={authState}
+                    postState={postState}
+                    handleVideoDetailOpen={handleVideoDetailOpen}
+                  />
                 ) : (
-                  // User is not following, show private account message
-                  <div className="flex justify-center">
-                    <p>This is a private account.</p>
-                  </div>
+                  <MyBookmarkSection
+                    data={postState.bookmarks}
+                    handleVideoDetailOpen={handleVideoDetailOpen}
+                  />
                 )}
               </div>
-              {/* </div> */}
             </div>
 
             <div className="w-72 h-screen border-2 border-[#1C2C2E] rounded-lg p-2 overflow-hidden overflow-y-auto">
@@ -558,7 +544,7 @@ function Account() {
                             }
                           />
 
-                          <div className="flex items-center sm:gap-2 gap-2">
+                          <div className="flex gap-2">
                             <Image
                               className="w-8 h-8 rounded-xl"
                               src={IMAGES.Profile}
@@ -570,7 +556,7 @@ function Account() {
                               quality={80}
                               loading="lazy"
                             />
-                            <div>
+                            <div className="flex flex-col ">
                               {/* <Link */}
                               {/* // href={`/account/${post?.userID?.username}`}
                             // key={post._id} */}
@@ -589,6 +575,9 @@ function Account() {
                                 year: "numeric",
                               })} */}
                                 17 Sep, 2023
+                              </p>
+                              <p>
+                                Lorem ipsumur. Ante duis tellus tincidu See more
                               </p>
                             </div>
                           </div>

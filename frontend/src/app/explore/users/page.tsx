@@ -43,36 +43,42 @@ function User() {
           key={user?.userID}
           className="flex flex-col h-44 gap-2 border-2 border-[#1C2C2E] rounded-xl mx-1 my-2"
         >
-          <div className="flex items-center gap-4 mb-2">
-            <Image
-              className="rounded-xl w-16 h-16 mt-2 ml-2 object-cover"
-              src={user?.profilePicture}
-              width={10}
-              height={10}
-              sizes="100vw"
-              alt="Account Profile"
-            />
-            <div>
+          <Link
+            href={`/account/${user?.username}`}
+            // key={user._id}
+            // className="flex py-6"
+          >
+            <div className="flex items-center gap-4 mb-2">
+              <Image
+                className="rounded-xl w-16 h-16 mt-2 ml-2 object-cover"
+                src={user?.profilePicture}
+                width={10}
+                height={10}
+                sizes="100vw"
+                alt="Account Profile"
+              />
               <div>
-                <span className="text-white">{user?.name}</span>
-              </div>
-              <div
-                className="flex items-center"
-                onClick={() => copyToClipboard(user?.username)}
-              >
-                <p className="text-white">
-                  ({user?.username || "no_username"})
-                </p>
-                <Image
-                  className="cursor-pointer hover:opacity-80"
-                  src={SVG.AccountCopyUsername}
-                  width={16}
-                  height={16}
-                  alt="Copy Username"
-                />
+                <div>
+                  <span className="text-white">{user?.name}</span>
+                </div>
+                <div
+                  className="flex items-center"
+                  onClick={() => copyToClipboard(user?.username)}
+                >
+                  <p className="text-white">
+                    ({user?.username || "no_username"})
+                  </p>
+                  <Image
+                    className="cursor-pointer hover:opacity-80"
+                    src={SVG.AccountCopyUsername}
+                    width={16}
+                    height={16}
+                    alt="Copy Username"
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          </Link>
 
           <hr className="h-px border-0 bg-[#1C2C2E] mb-1 w-full rounded-full" />
 

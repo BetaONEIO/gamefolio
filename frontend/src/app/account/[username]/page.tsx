@@ -26,7 +26,11 @@ import VideoDetails from "@/components/Modals/VideoDetails";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import CustomHeader from "@/components/CustomHeader/CustomHeader";
 import Loading from "./loading";
-import { getAllUsers, getProfileInfo } from "@/store/slices/userSlice";
+import {
+  followUser,
+  getAllUsers,
+  getProfileInfo,
+} from "@/store/slices/userSlice";
 import { getAllClipVideos } from "@/store/slices/clipSlice";
 import { getCurrentUserStories } from "@/store/slices/storySlice";
 
@@ -248,6 +252,31 @@ function Profile() {
     );
   }, [profileInfoState]);
 
+  console.log("userState###", profileInfoState);
+
+  const handleFollowUser = async (userId: any) => {
+    const payload = {
+      userId: userId,
+      followerID: authState._id,
+    };
+
+    const successCallback = (response: any) => {
+      toastSuccess(response.message);
+    };
+
+    const errorCallback = (error: string) => {
+      toastError(error);
+    };
+
+    const params = {
+      payload,
+      successCallback,
+      errorCallback,
+    };
+
+    dispatch(followUser(params));
+  };
+
   const handleModalToggle = (modalName: keyof typeof modalState) => {
     setModalState((prevState) => ({
       ...prevState,
@@ -289,11 +318,15 @@ function Profile() {
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
+            key={profileInfoState?.profileUserInfo?._id}
           >
             <div className="w-32 h-32">
               <Image
                 className="rounded-xl w-32 h-32 object-cover border-2 border-[#43DD4E]"
-                src={authState?.profilePicture}
+                src={
+                  profileInfoState?.profileUserInfo?.profilePicture ||
+                  IMAGES.AccountProfile
+                }
                 width={10}
                 height={10}
                 sizes="100vw"
@@ -303,7 +336,7 @@ function Profile() {
             <div className="flex justify-between">
               <div className="flex flex-1 flex-col gap-2 flex-wrap justify-center text-center lg:justify-start lg:text-start p-2 pt-4">
                 <span className="font-semibold text-white">
-                  {authState?.name}
+                  {profileInfoState?.profileUserInfo?.name}
                 </span>
                 <div className="flex items-center gap-6 justify-center lg:justify-between">
                   <div
@@ -311,7 +344,7 @@ function Profile() {
                     onClick={() => copyToClipboard(authState?.username)}
                   >
                     <p className="text-white">
-                      ({authState?.username || "no_username"})
+                      ({profileInfoState?.profileUserInfo?.username})
                     </p>
                     <Image
                       className="cursor-pointer hover:opacity-80"
@@ -322,7 +355,9 @@ function Profile() {
                     />
                   </div>
                 </div>
-                <span className="text-gray-400">{authState?.bio}</span>
+                <span className="text-gray-400">
+                  {profileInfoState?.profileUserInfo?.bio}
+                </span>
 
                 <div className="flex h-8 items-center justify-start md:gap-8">
                   <div className="flex items-center gap-2 ">
@@ -343,7 +378,7 @@ function Profile() {
                     <span
                       className={`${leagueGothic.className} text-lg md:text-2xl font-normal text-white`}
                     >
-                      {authState?.follower?.length || 0}
+                      {profileInfoState?.profileUserInfo?.follower?.length || 0}
                     </span>
                     <span className="md:text-lg text-gray-400">Followers</span>
                   </div>
@@ -357,7 +392,8 @@ function Profile() {
                     <span
                       className={`${leagueGothic.className} text-lg md:text-2xl font-normal text-white`}
                     >
-                      {authState?.following?.length || 0}
+                      {profileInfoState?.profileUserInfo?.following?.length ||
+                        0}
                     </span>
                     <span className="md:text-lg text-gray-400">Following</span>
                   </div>
@@ -367,18 +403,17 @@ function Profile() {
               <div className="flex h-8 sm:gap-6 mt-3">
                 <button
                   className="font-bold w-40 h-10 bg-[#292D32] text-white text-center py-[10px] px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
-                  //   onClick={() =>
-                  //     handleFollowUser(profileInfoState?.profileUserInfo?._id)
-                  //   }
+                  onClick={() =>
+                    handleFollowUser(profileInfoState?.profileUserInfo?._id)
+                  }
                 >
-                  {/* {authState?.following?.some(
-                        (user: any) =>
+                  {authState?.following?.some(
+                    (user: any) =>
                       user?.userID?._id ===
                       profileInfoState?.profileUserInfo?._id
                   )
                     ? "Unfollow"
-                    : "Follow"} */}
-                  follow
+                    : "Follow"}
                 </button>
                 <button
                   className="font-bold w-40 h-10 bg-[#37C535] text-white text-center py-[10px] px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
