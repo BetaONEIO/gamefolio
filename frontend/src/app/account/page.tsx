@@ -69,6 +69,7 @@ const MyVideosSection: React.FC<MyVideosSectionProps> = ({
     </div>
   );
 };
+
 interface MyBookmarkSectionProps {
   data: Array<any>;
   handleVideoDetailOpen: (postID: any, detailedPost: any) => void;
@@ -147,21 +148,16 @@ const MyBookmarkSection: React.FC<MyBookmarkSectionProps> = ({
 function Account() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const postState = useSelector((state: any) => state.post) || [];
-  const profileInfoState = useSelector((state: any) => state.user) || [];
-  const clipState = useSelector((state: any) => state.clip) || [];
-  const storyState = useSelector((state: any) => state.story) || [];
   const [open, setOpen] = useState(false);
   const [selectedSection, setSelectedSection] = useState("videos");
-  const [isPrivateAccount, setIsPrivateAccount] = useState(false);
   const [postID, setPostID] = useState("");
-  const [storyUserID, setStoryUserID] = useState("");
   const [detailedPost, setDetailedPost] = useState("");
   const [modalState, setModalState] = useState({
     isShareModalOpen: false,
     isFollowerModalOpen: false,
     isFollowingModalOpen: false,
+    isBadgeModalOpen: false,
     isVideoDetailOpen: false,
-    isStoryModalOpen: false,
   });
 
   const userVideos = postState.videos.filter(
@@ -176,21 +172,9 @@ function Account() {
   };
   useEffect(() => {
     dispatch(userSession(params));
-    dispatch(getProfileInfo({ payload: params }));
     dispatch(getUserBookmark(params));
     dispatch(getAllPostVideos());
-    dispatch(getAllClipVideos());
-    dispatch(getAllUsers());
-    dispatch(getCurrentUserStories(params));
   }, [postState.refresh]);
-
-  useEffect(() => {
-    setIsPrivateAccount(
-      profileInfoState?.profileUserInfo?.accountType === "private"
-    );
-  }, [profileInfoState]);
-
-  console.log("profileInfoState", profileInfoState);
 
   const handleModalToggle = (modalName: keyof typeof modalState) => {
     setModalState((prevState) => ({
@@ -212,7 +196,7 @@ function Account() {
     throw new Error("Function not implemented.");
   }
 
-  const backgroundImage = `url(${IMAGES.bgImage})`;
+  const backgroundImage = `url(${IMAGES.Bgbackground})`;
 
   const sectionStyle = {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
@@ -226,7 +210,7 @@ function Account() {
 
         <div style={sectionStyle} className="pt-4 z-50">
           <div
-            className="flex flex-col items-center lg:flex-row lg:justify-center gap-4 h-60 mx-4 my-4"
+            className="flex flex-col relative items-center lg:flex-row lg:justify-center gap-4 h-60 mx-4 my-4"
             style={{
               background: `linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.9) 99%), ${backgroundImage}`,
               backgroundRepeat: "no-repeat",
@@ -245,7 +229,10 @@ function Account() {
               />
             </div>
             <div className="flex justify-between w-9/12">
-              <div className="flex flex-1 flex-col gap-2 flex-wrap justify-center text-center lg:justify-start lg:text-start p-2">
+              <div
+                key={authState?.userID}
+                className="flex flex-1 flex-col gap-2 flex-wrap justify-center text-center lg:justify-start lg:text-start p-2"
+              >
                 <span className="font-semibold text-white">
                   {authState?.name}
                 </span>
@@ -275,7 +262,7 @@ function Account() {
                     >
                       {userVideos.length || 0}
                     </span>
-                    <span className="md:text-lg text-gray-400"> Posts</span>
+                    <span className="md:text-lg text-gray-400">Posts</span>
                   </div>
 
                   {/* Vertical divider */}
@@ -328,7 +315,7 @@ function Account() {
           {/* Top Bar */}
 
           <div className="flex mx-3">
-            <div className="w-64 h-80 border-2 border-[#1C2C2E] rounded-lg p-1">
+            <div className="sm:w-60 md:w-60 lg:w-96 h-80 border-2 border-[#1C2C2E] rounded-lg p-1">
               <h1 className="font-bold my-2">Connect</h1>
               <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
                 <Image
@@ -379,7 +366,7 @@ function Account() {
               </div>
             </div>
 
-            <div className="w-[620px] justify-around items-center h-10">
+            <div className="sm:w-[500px] md:w-[600px] lg:w-[800px]  justify-around items-center h-10">
               {/* Profile */}
               <div key={authState?.userID} className="flex flex-col gap-4 mx-4">
                 <div className="h-10 w-full flex justify-around items-center">
@@ -488,7 +475,7 @@ function Account() {
               </div>
             </div>
 
-            <div className="w-72 h-screen border-2 border-[#1C2C2E] rounded-lg p-2 overflow-hidden overflow-y-auto">
+            <div className="sm:w-72 md:w-72 lg:w-96 h-screen border-2 border-[#1C2C2E] rounded-lg p-2 overflow-hidden overflow-y-auto">
               <h1 className="font-bold m-2">Current Badge</h1>
               <div className="flex justify-center items-center gap-3 mt-2">
                 <Image
@@ -548,7 +535,6 @@ function Account() {
                             <Image
                               className="w-8 h-8 rounded-xl"
                               src={IMAGES.Profile}
-                              //   src={post?.userID?.profilePicture}
                               alt="Profile"
                               width={50}
                               height={50}
@@ -556,27 +542,14 @@ function Account() {
                               quality={80}
                               loading="lazy"
                             />
-                            <div className="flex flex-col ">
-                              {/* <Link */}
-                              {/* // href={`/account/${post?.userID?.username}`}
-                            // key={post._id} */}
-                              {/* > */}
+                            <div className="flex flex-col">
                               <h1 className="w-[180px] sm:w-[220px] text-xs md:text-xs sm:text-xs font-semibold text-white hover:opacity-80">
-                                {/* {post?.userID?.name} */} helloworld
+                                helloworld
                               </h1>
-                              {/* </Link> */}
                               <p className="text-xl md:text-sm sm:text-base font-light text-gray-400">
-                                {/* {post?.date &&
-                              new Date(post.date).toLocaleString("en-US", {
-                                hour: "numeric",
-                                minute: "numeric",
-                                day: "numeric",
-                                month: "short",
-                                year: "numeric",
-                              })} */}
                                 17 Sep, 2023
                               </p>
-                              <p>
+                              <p className="text-xs md:text-xs sm:text-base lg:text-md font-light text-gray-400">
                                 Lorem ipsumur. Ante duis tellus tincidu See more
                               </p>
                             </div>
@@ -584,18 +557,7 @@ function Account() {
                         </div>
 
                         <div className="flex items-center my-3 mx-2">
-                          <div
-                            className="flex items-center p-2 mr-2 rounded-lg bg-[#162423]"
-                            // onClick={
-                            //   hasLikeReacted
-                            //     ? () =>
-                            //         handleDeleteReaction(
-                            //           post._id,
-                            //           reactionID._id
-                            //         )
-                            //     : () => handleCreateReaction(post._id, "like")
-                            // }
-                          >
+                          <div className="flex items-center p-2 mr-2 rounded-lg bg-[#162423]">
                             <Image
                               className="mr-2 cursor-pointer hover:opacity-80"
                               src={SVG.Like}
@@ -603,28 +565,10 @@ function Account() {
                               width={30}
                               height={30}
                             />
-                            <p className="text-white">
-                              {/* {
-                                post.reactions.filter(
-                                  (reaction: any) =>
-                                    reaction.reactionType === "like"
-                                ).length
-                              } */}
-                            </p>
+                            <p className="text-white"></p>
                           </div>
 
-                          <div
-                            className="flex items-center p-2 mr-2 rounded-lg bg-[#162423]"
-                            // onClick={
-                            //   hasLoveReacted
-                            //     ? () =>
-                            //         handleDeleteReaction(
-                            //           post._id,
-                            //           reactionID._id
-                            //         )
-                            //     : () => handleCreateReaction(post._id, "love")
-                            // }
-                          >
+                          <div className="flex items-center p-2 mr-2 rounded-lg bg-[#162423]">
                             <Image
                               className="mr-2 cursor-pointer hover:opacity-80"
                               src={SVG.Love}
@@ -632,14 +576,7 @@ function Account() {
                               width={30}
                               height={30}
                             />
-                            <p className="text-white">
-                              {/* {
-                                post.reactions.filter(
-                                  (reaction: any) =>
-                                    reaction.reactionType === "love"
-                                ).length
-                              } */}
-                            </p>
+                            <p className="text-white"></p>
                           </div>
 
                           <div className="p-2 mr-2 rounded-lg bg-[#162423]">
@@ -707,15 +644,6 @@ function Account() {
               followingData={authState?.following}
             />
           </Modal>
-
-          {/* <Modal
-          isOpen={modalState.isBadgeModalOpen}
-          handleClose={() => handleModalToggle("isBadgeModalOpen")}
-        >
-          <Badges
-            handleCloseModal={() => handleModalToggle("isBadgeModalOpen")}
-          />
-        </Modal> */}
 
           <Modal
             isOpen={modalState.isVideoDetailOpen}

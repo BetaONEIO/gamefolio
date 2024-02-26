@@ -206,10 +206,10 @@ const MyBookmarkSection: React.FC<MyBookmarkSectionProps> = ({
   );
 };
 
-function Profile() {
+function Page({ params }: any) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
-  const postState = useSelector((state: any) => state.post) || [];
   const profileInfoState = useSelector((state: any) => state.user) || [];
+  const postState = useSelector((state: any) => state.post) || [];
   const clipState = useSelector((state: any) => state.clip) || [];
   const storyState = useSelector((state: any) => state.story) || [];
   const [open, setOpen] = useState(false);
@@ -233,11 +233,12 @@ function Profile() {
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
   };
-  const params = {
+  const myparams = {
     payload,
   };
+
   useEffect(() => {
-    dispatch(userSession(params));
+    dispatch(userSession(myparams));
     dispatch(getProfileInfo({ payload: params }));
     dispatch(getUserBookmark(params));
     dispatch(getAllPostVideos());
@@ -251,8 +252,6 @@ function Profile() {
       profileInfoState?.profileUserInfo?.accountType === "private"
     );
   }, [profileInfoState]);
-
-  console.log("userState###", profileInfoState);
 
   const handleFollowUser = async (userId: any) => {
     const payload = {
@@ -334,7 +333,7 @@ function Profile() {
               />
             </div>
             <div className="flex justify-between">
-              <div className="flex flex-1 flex-col gap-2 flex-wrap justify-center text-center lg:justify-start lg:text-start p-2 pt-4">
+              <div className="flex flex-1 flex-col gap-4 flex-wrap justify-center text-center lg:justify-start lg:text-start p-2 pt-4">
                 <span className="font-semibold text-white">
                   {profileInfoState?.profileUserInfo?.name}
                 </span>
@@ -355,9 +354,6 @@ function Profile() {
                     />
                   </div>
                 </div>
-                <span className="text-gray-400">
-                  {profileInfoState?.profileUserInfo?.bio}
-                </span>
 
                 <div className="flex h-8 items-center justify-start md:gap-8">
                   <div className="flex items-center gap-2 ">
@@ -493,10 +489,7 @@ function Profile() {
             <div className="w-80 border-2 border-[#1C2C2E] rounded-lg p-2">
               <h1 className="font-bold my-2">About Me:</h1>
               <p className="font-light text-xs text-[#7C7F80]">
-                Lorem ipsum dolor sit amet constetur. Ante duis tellus tincidunt
-                nibh Lorem ipsum dolor sit amet consectetur. Ante duis tellus um
-                dolor sit amet constetur. Ante duis tellus um dolor sit amet
-                constetur.
+                {profileInfoState?.profileUserInfo?.bio}
               </p>
               <h1 className="font-bold my-2">Connect</h1>
               <div className="flex items-center gap-4 rounded-lg bg-[#162423] p-2 mt-2">
@@ -549,7 +542,6 @@ function Profile() {
             </div>
 
             <div className="w-4/6 justify-around items-center h-10">
-              {/* <div className="flex justify-center items-center pt-4"> */}
               {/* Profile */}
               <div key={authState?.userID} className="flex flex-col gap-4 mx-8">
                 <div className="h-10 w-full flex justify-around items-center">
@@ -699,12 +691,8 @@ function Profile() {
                   </div>
                 )}
               </div>
-              {/* </div> */}
             </div>
-
-            {/* <div className="w-1/5 border-2 border-gray-500"></div> */}
           </div>
-          {/* </div> */}
 
           <Modal
             isOpen={modalState.isShareModalOpen}
@@ -722,7 +710,7 @@ function Profile() {
           >
             <Followers
               handleCloseModal={() => handleModalToggle("isFollowerModalOpen")}
-              followerData={authState?.follower}
+              followerData={profileInfoState?.profileUserInfo?.follower}
             />
           </Modal>
 
@@ -732,18 +720,9 @@ function Profile() {
           >
             <Following
               handleCloseModal={() => handleModalToggle("isFollowingModalOpen")}
-              followingData={authState?.following}
+              followingData={profileInfoState?.profileUserInfo?.following}
             />
           </Modal>
-
-          {/* <Modal
-          isOpen={modalState.isBadgeModalOpen}
-          handleClose={() => handleModalToggle("isBadgeModalOpen")}
-        >
-          <Badges
-            handleCloseModal={() => handleModalToggle("isBadgeModalOpen")}
-          />
-        </Modal> */}
 
           <Modal
             isOpen={modalState.isVideoDetailOpen}
@@ -774,4 +753,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default Page;

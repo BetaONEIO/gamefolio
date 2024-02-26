@@ -43,11 +43,7 @@ function User() {
           key={user?.userID}
           className="flex flex-col h-44 gap-2 border-2 border-[#1C2C2E] rounded-xl mx-1 my-2"
         >
-          <Link
-            href={`/account/${user?.username}`}
-            // key={user._id}
-            // className="flex py-6"
-          >
+          <Link href={`/account/${user?.username}`} key={user._id}>
             <div className="flex items-center gap-4 mb-2">
               <Image
                 className="rounded-xl w-16 h-16 mt-2 ml-2 object-cover"

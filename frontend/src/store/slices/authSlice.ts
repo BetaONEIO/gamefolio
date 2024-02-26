@@ -164,6 +164,7 @@ export function createPreferences(params: ActionParams) {
     }
   };
 }
+
 export function updateProfile(params: ActionParams) {
   const {
     successCallback = () => {},
@@ -192,6 +193,7 @@ export function updateProfile(params: ActionParams) {
     }
   };
 }
+
 export function updatePassword(params: ActionParams) {
   const {
     successCallback = () => {},
@@ -307,6 +309,7 @@ export function forgotPasswordOTP(params: ActionParams) {
     }
   };
 }
+
 export function verifyForgotPasswordOTP(params: ActionParams) {
   return async () => {
     const {

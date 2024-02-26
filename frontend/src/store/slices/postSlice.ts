@@ -143,6 +143,7 @@ export function getAllPostVideos() {
     }
   };
 }
+
 export function getTrendingPosts() {
   return async () => {
     dispatch(slice.actions.startLoading());
@@ -273,6 +274,7 @@ export function createVideoReaction(params: ActionParams) {
     }
   };
 }
+
 //delete reaction
 export function deleteVideoReaction(params: ActionParams) {
   return async () => {
@@ -405,6 +407,7 @@ export function logout(params: ActionParams) {
     }
   };
 }
+
 // Bookmark
 export function createBookmark(params: ActionParams) {
   return async () => {
@@ -433,6 +436,7 @@ export function createBookmark(params: ActionParams) {
     }
   };
 }
+
 export function getUserBookmark(params: ActionParams) {
   return async () => {
     const { errorCallback = () => {}, payload } = params;

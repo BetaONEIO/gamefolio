@@ -662,7 +662,6 @@ const removeFollower = asyncHandler(async (req, res) => {
 });
 
 // Remove Following
-
 const removeFollowing = asyncHandler(async (req, res) => {
   const { userId, followingID } = req.body;
 
