@@ -163,13 +163,26 @@ function Trending() {
           style={sectionStyle}
           className="flex flex-col items-center bg-[#091619] min-h-screen"
         >
-          <div className="p-4 flex flex-col w-full h-full gap-8">
-            <div>
+          <div className="p-4 flex flex-col w-full h-full gap-2">
+            <div className="flex items-center gap-3">
               <p className="font-semibold text-base sm:text-lg lg:text-lg text-white">
                 Trending Games
               </p>
+              <div className="flex items-center bg-[#49DE4D] px-1 rounded-md">
+                <Image
+                  className="mr-2 cursor-pointer hover:opacity-80"
+                  src={SVG.Trending}
+                  alt="Trending"
+                  width={20}
+                  height={20}
+                />
+                <p className="font-semibold text-base sm:text-md lg:text-md text-white">
+                  Trending
+                </p>
+              </div>
             </div>
-            <div className="flex gap-4 h-80 w-full">
+
+            <div className="flex relative gap-4 h-80 w-full">
               <Swiper
                 effect={"fade"}
                 navigation={true}
@@ -195,14 +208,6 @@ function Trending() {
                     src="https://swiperjs.com/demos/images/nature-4.jpg"
                     style={styles.swiperImage}
                   />
-                  <div style={styles.overlay}></div>
-                  {/* <Image
-                        width={12}
-                        height={12}
-                        className="w-16 h-16"
-                        src={IMAGES.callofduty}
-                        alt="UploadStory"
-                      /> */}
                 </SwiperSlide>
               </Swiper>
 
@@ -350,7 +355,13 @@ function Trending() {
               </div>
             </div>
 
-            <div className="flex flex-wrap w-full justify-between">
+            {/* <div className="absolute flex items-center gap-4">
+              <h1 className="p-2 bg-[#292D32] rounded-xl">Action</h1>
+              <h1 className="p-2 bg-[#292D32] rounded-xl">Fighting</h1>
+              <h1 className="p-2 bg-[#292D32] rounded-xl">Thrilling</h1>
+            </div> */}
+
+            <div className="flex flex-wrap w-full gap-4">
               {postState.videos.map((item: any) => (
                 <div
                   key={item?.userID}

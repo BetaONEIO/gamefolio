@@ -43,38 +43,34 @@ interface VideoState {
 const MyVideosSection: React.FC<MyVideosSectionProps> = ({
   authState,
   postState,
-  profileInfoState,
   handleVideoDetailOpen,
 }) => {
   const userVideos = postState.videos.filter(
-    (post: any) =>
-      post?.userID?.username === profileInfoState.profileUserInfo.username
+    (post: any) => post?.userID?._id === authState._id
   );
 
   return (
-    <Suspense fallback={<Loading />}>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
-        {userVideos.map((item: any) => {
-          return (
-            <div key={item.id} className="relative">
-              <video
-                src={item.video}
-                className="w-96 sm:w-96 h-52 md:h-40  rounded-xl object-cover hover:opacity-80"
-                width={20}
-                height={20}
-                controls={false}
-                onClick={() => handleVideoDetailOpen(item._id, item)}
-              />
-              <div className="absolute bottom-1 right-2">
-                <button className="cursor-pointer hover:opacity-80">
-                  <Image src={SVG.Mute} alt="Mute" width={40} height={40} />
-                </button>
-              </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
+      {userVideos.map((item: any) => {
+        return (
+          <div key={item._id} className="relative">
+            <video
+              src={item.video}
+              className="w-80 sm:w-80 h-52 md:h-40 rounded-xl object-cover hover:opacity-80"
+              width={20}
+              height={20}
+              controls={false}
+              onClick={() => handleVideoDetailOpen(item._id, item)}
+            />
+            <div className="absolute bottom-1 right-2">
+              <button className="cursor-pointer hover:opacity-80">
+                <Image src={SVG.Mute} alt="Mute" width={40} height={40} />
+              </button>
             </div>
-          );
-        })}
-      </div>
-    </Suspense>
+          </div>
+        );
+      })}
+    </div>
   );
 };
 
@@ -271,314 +267,315 @@ function MyGamefolio() {
   const backgroundImage = `url(${IMAGES.bgImage})`;
 
   return (
-    <div className="flex justify-center w-full mt-10">
-      <div className="pt-4">
-        <div
-          className="flex flex-col items-center lg:flex-row lg:justify-center gap-4 h-60 pl-8 mx-4 my-4"
-          style={{
-            background: `linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.9) 99%), ${backgroundImage}`,
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        >
-          <div className="w-32 h-32">
+    <Layout>
+      <div className="flex justify-center w-full">
+        <div className="pt-4">
+          <div
+            className="flex flex-col items-center lg:flex-row lg:justify-center gap-4 h-60 pl-8 mx-4 my-4"
+            style={{
+              background: `linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.9) 99%), ${backgroundImage}`,
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          >
+            <div className="w-32 h-32">
+              <Image
+                className="rounded-xl w-32 h-32 object-cover border-2 border-[#43DD4E]"
+                src={authState?.profilePicture}
+                width={10}
+                height={10}
+                sizes="100vw"
+                alt="Account Profile"
+              />
+            </div>
+            <div className="flex justify-between">
+              <div className="flex flex-1 flex-col gap-3 flex-wrap justify-center text-center lg:justify-start lg:text-start p-2 pt-4">
+                <span className="font-semibold text-white">
+                  {authState?.name}
+                </span>
+                <div className="flex items-center gap-6 justify-center lg:justify-between">
+                  <div
+                    className="flex items-center"
+                    onClick={() => copyToClipboard(authState?.username)}
+                  >
+                    <p className="text-white">
+                      ({authState?.username || "no_username"})
+                    </p>
+                    <Image
+                      className="cursor-pointer hover:opacity-80"
+                      src={SVG.AccountCopyUsername}
+                      width={16}
+                      height={16}
+                      alt="Copy Username"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex h-8 items-center justify-start md:gap-8">
+                  <div className="flex items-center gap-2 ">
+                    <span
+                      className={`${leagueGothic.className} text-lg md:text-2xl font-normal text-white`}
+                    >
+                      {userVideos.length || 0}
+                    </span>
+                    <span className="md:text-lg text-gray-400"> Posts</span>
+                  </div>
+
+                  {/* Vertical divider */}
+                  <div className="border-r border-gray-700 h-full rounded-full mx-2"></div>
+                  <div
+                    className="flex items-center gap-2 hover:opacity-80 cursor-pointer"
+                    onClick={() => handleModalToggle("isFollowerModalOpen")}
+                  >
+                    <span
+                      className={`${leagueGothic.className} text-lg md:text-2xl font-normal text-white`}
+                    >
+                      {authState?.follower?.length || 0}
+                    </span>
+                    <span className="md:text-lg text-gray-400">Followers</span>
+                  </div>
+                  {/* Vertical divider */}
+                  <div className="border-r border-gray-700 h-full  rounded-full mx-2"></div>
+
+                  <div
+                    className="flex items-center gap-2 hover:opacity-80 cursor-pointer"
+                    onClick={() => handleModalToggle("isFollowingModalOpen")}
+                  >
+                    <span
+                      className={`${leagueGothic.className} text-lg md:text-2xl font-normal text-white`}
+                    >
+                      {authState?.following?.length || 0}
+                    </span>
+                    <span className="md:text-lg text-gray-400">Following</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mx-10 mt-8">
+                <button
+                  className="font-bold w-64 h-10 bg-[#37C535] text-white text-center py-[10px] px-[20px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
+                  // onClick={handleMessage}
+                >
+                  Follow on gamefolio
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Top Bar */}
+
+          <div className="justify-center w-full h-96">
+            {/* Profile */}
+            <div key={authState?.userID} className="flex flex-col gap-4 mx-8">
+              <div className="h-10 w-full flex justify-around items-center">
+                <div>
+                  <div
+                    className={`flex justify-center w-16 gap-2 my-6 cursor-pointer ${
+                      selectedSection === "videos"
+                        ? "text-white"
+                        : "text-gray-500"
+                    }`}
+                    onClick={() => setSelectedSection("videos")}
+                  >
+                    <Image
+                      className={`${
+                        selectedSection !== "videos"
+                          ? "opacity-40"
+                          : "opacity-100"
+                      }`}
+                      src={SVG.AccountMyVideos}
+                      alt="My Videos"
+                      width={24}
+                      height={24}
+                    />
+                  </div>
+                  {selectedSection === "videos" && (
+                    <div className="w-16 h-1 bg-[#62C860] rounded-lg"></div>
+                  )}
+                </div>
+
+                <div>
+                  <div
+                    className={`flex justify-center w-16 gap-2 my-6 cursor-pointer ${
+                      selectedSection === "clips"
+                        ? "text-white"
+                        : "text-gray-500"
+                    }`}
+                    onClick={() => setSelectedSection("clips")}
+                  >
+                    <Image
+                      className={`${
+                        selectedSection !== "clips"
+                          ? "opacity-40"
+                          : "opacity-100"
+                      }`}
+                      src={SVG.Clips}
+                      alt="My clips"
+                      width={24}
+                      height={24}
+                    />
+                  </div>
+                  {selectedSection === "clips" && (
+                    <div className="w-16 h-1 bg-[#62C860] rounded-lg"></div>
+                  )}
+                </div>
+
+                <div>
+                  <div
+                    className={`flex justify-center w-16 gap-2 my-6 cursor-pointer ${
+                      selectedSection === "videos"
+                        ? "text-white"
+                        : "text-gray-500"
+                    }`}
+                    onClick={() => setSelectedSection("story")}
+                  >
+                    <Image
+                      className={` ${
+                        selectedSection !== "story"
+                          ? "opacity-40"
+                          : "opacity-100"
+                      }`}
+                      src={SVG.Story}
+                      alt="My story"
+                      width={24}
+                      height={24}
+                    />
+                  </div>
+                  {selectedSection === "story" && (
+                    <div className="w-16 h-1 bg-[#62C860] rounded-lg"></div>
+                  )}
+                </div>
+
+                <div>
+                  <div
+                    className={`flex justify-center w-16 gap-2 my-6 cursor-pointer ${
+                      selectedSection === "bookmarked"
+                        ? "text-white"
+                        : "text-gray-500"
+                    }`}
+                    onClick={() => setSelectedSection("bookmarked")}
+                  >
+                    <Image
+                      className={`${
+                        selectedSection !== "bookmarked"
+                          ? "opacity-40"
+                          : "opacity-100"
+                      }`}
+                      src={SVG.AccountMyBookmarked}
+                      alt="My bookmarked"
+                      width={24}
+                      height={24}
+                    />
+                  </div>
+                  {selectedSection === "bookmarked" && (
+                    <div className="w-16 h-1 bg-[#62C860] rounded-lg"></div>
+                  )}
+                </div>
+              </div>
+              <hr className="h-px border-0 bg-gray-700" />
+              {/* green line */}
+
+              {/* Content Section */}
+              {
+                // authState?.following?.some(
+                //   (user: any) =>
+                //     user?.userID?._id ===
+                //       profileInfoState?.profileUserInfo?._id || !isPrivateAccount
+                // ) ? (
+                // User is following, show videos
+                <div>
+                  {selectedSection === "videos" ? (
+                    <MyVideosSection
+                      authState={authState}
+                      postState={postState}
+                      profileInfoState={profileInfoState}
+                      handleVideoDetailOpen={handleVideoDetailOpen}
+                    />
+                  ) : selectedSection === "bookmarked" ? (
+                    <MyBookmarkSection
+                      data={postState.bookmarks}
+                      handleVideoDetailOpen={handleVideoDetailOpen}
+                    />
+                  ) : selectedSection === "clips" ? (
+                    <ClipsSection
+                      authState={authState}
+                      clipState={clipState}
+                      profileInfoState={profileInfoState}
+                      handleVideoDetailOpen={handleVideoDetailOpen}
+                    />
+                  ) : (
+                    <StorySection data={storyState.currentUserStories} />
+                  )}
+                </div>
+                // )
+                // : (
+                //   // User is not following, show private account message
+                //   <div className="flex justify-center">
+                //     <p>This is a private account.</p>
+                //   </div>
+                // )
+              }
+            </div>
+          </div>
+
+          <hr className="border-t border-[#162423]" />
+
+          <div className="flex justify-center items-center gap-8 mt-4">
+            <Image src={SVG.Facebook1} alt="Facebook" width={40} height={40} />
+            <Image src={SVG.Instagram} alt="Facebook" width={40} height={40} />
+            <Image src={SVG.X} alt="Facebook" width={40} height={40} />
             <Image
-              className="rounded-xl w-32 h-32 object-cover border-2 border-[#43DD4E]"
-              src={authState?.profilePicture}
-              width={10}
-              height={10}
-              sizes="100vw"
-              alt="Account Profile"
+              src={SVG.GamefolioCoin}
+              alt="Facebook"
+              width={40}
+              height={40}
             />
           </div>
-          <div className="flex justify-between">
-            <div className="flex flex-1 flex-col gap-2 flex-wrap justify-center text-center lg:justify-start lg:text-start p-2 pt-4">
-              <span className="font-semibold text-white">
-                {authState?.name}
-              </span>
-              <div className="flex items-center gap-6 justify-center lg:justify-between">
-                <div
-                  className="flex items-center"
-                  onClick={() => copyToClipboard(authState?.username)}
-                >
-                  <p className="text-white">
-                    ({authState?.username || "no_username"})
-                  </p>
-                  <Image
-                    className="cursor-pointer hover:opacity-80"
-                    src={SVG.AccountCopyUsername}
-                    width={16}
-                    height={16}
-                    alt="Copy Username"
-                  />
-                </div>
-              </div>
-              <span className="text-gray-400">{authState?.bio}</span>
+          <Modal
+            isOpen={modalState.isShareModalOpen}
+            handleClose={() => handleModalToggle("isShareModalOpen")}
+          >
+            <MoreOptions
+              handleCloseModal={() => handleModalToggle("isShareModalOpen")}
+              data={authState?.userID}
+            />
+          </Modal>
 
-              <div className="flex h-8 items-center justify-start md:gap-8">
-                <div className="flex items-center gap-2 ">
-                  <span
-                    className={`${leagueGothic.className} text-lg md:text-2xl font-normal text-white`}
-                  >
-                    {userVideos.length || 0}
-                  </span>
-                  <span className="md:text-lg text-gray-400"> Posts</span>
-                </div>
+          <Modal
+            isOpen={modalState.isFollowerModalOpen}
+            handleClose={() => handleModalToggle("isFollowerModalOpen")}
+          >
+            <Followers
+              handleCloseModal={() => handleModalToggle("isFollowerModalOpen")}
+              followerData={authState?.follower}
+            />
+          </Modal>
 
-                {/* Vertical divider */}
-                <div className="border-r border-gray-700 h-full rounded-full mx-2"></div>
-                <div
-                  className="flex items-center gap-2 hover:opacity-80 cursor-pointer"
-                  onClick={() => handleModalToggle("isFollowerModalOpen")}
-                >
-                  <span
-                    className={`${leagueGothic.className} text-lg md:text-2xl font-normal text-white`}
-                  >
-                    {authState?.follower?.length || 0}
-                  </span>
-                  <span className="md:text-lg text-gray-400">Followers</span>
-                </div>
-                {/* Vertical divider */}
-                <div className="border-r border-gray-700 h-full  rounded-full mx-2"></div>
+          <Modal
+            isOpen={modalState.isFollowingModalOpen}
+            handleClose={() => handleModalToggle("isFollowingModalOpen")}
+          >
+            <Following
+              handleCloseModal={() => handleModalToggle("isFollowingModalOpen")}
+              followingData={authState?.following}
+            />
+          </Modal>
 
-                <div
-                  className="flex items-center gap-2 hover:opacity-80 cursor-pointer"
-                  onClick={() => handleModalToggle("isFollowingModalOpen")}
-                >
-                  <span
-                    className={`${leagueGothic.className} text-lg md:text-2xl font-normal text-white`}
-                  >
-                    {authState?.following?.length || 0}
-                  </span>
-                  <span className="md:text-lg text-gray-400">Following</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="mx-10 mt-16">
-              <button
-                className="font-bold w-64 h-10 bg-[#37C535] text-white text-center py-[10px] px-[20px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
-                // onClick={handleMessage}
-              >
-                Follow on gamefolio
-              </button>
-            </div>
-          </div>
+          <Modal
+            isOpen={modalState.isVideoDetailOpen}
+            handleClose={() => handleModalToggle("isVideoDetailOpen")}
+          >
+            <VideoDetails
+              postID={postID}
+              detailedPost={detailedPost}
+              handleCloseModal={() => handleModalToggle("isVideoDetailOpen")}
+              handlePageRefresh={() => handlePageRefresh()}
+            />
+          </Modal>
         </div>
-
-        {/* Top Bar */}
-
-        <div className="justify-center w-full h-96">
-          {/* Profile */}
-          <div key={authState?.userID} className="flex flex-col gap-4 mx-8">
-            <div className="h-10 w-full flex justify-around items-center">
-              <div>
-                <div
-                  className={`flex justify-center w-16 gap-2 my-6 cursor-pointer ${
-                    selectedSection === "videos"
-                      ? "text-white"
-                      : "text-gray-500"
-                  }`}
-                  onClick={() => setSelectedSection("videos")}
-                >
-                  <Image
-                    className={`${
-                      selectedSection !== "videos"
-                        ? "opacity-40"
-                        : "opacity-100"
-                    }`}
-                    src={SVG.AccountMyVideos}
-                    alt="My Videos"
-                    width={24}
-                    height={24}
-                  />
-                </div>
-                {selectedSection === "videos" && (
-                  <div className="w-16 h-1 bg-[#62C860] rounded-lg"></div>
-                )}
-              </div>
-
-              <div>
-                <div
-                  className={`flex justify-center w-16 gap-2 my-6 cursor-pointer ${
-                    selectedSection === "clips" ? "text-white" : "text-gray-500"
-                  }`}
-                  onClick={() => setSelectedSection("clips")}
-                >
-                  <Image
-                    className={`${
-                      selectedSection !== "clips" ? "opacity-40" : "opacity-100"
-                    }`}
-                    src={SVG.Clips}
-                    alt="My clips"
-                    width={24}
-                    height={24}
-                  />
-                </div>
-                {selectedSection === "clips" && (
-                  <div className="w-16 h-1 bg-[#62C860] rounded-lg"></div>
-                )}
-              </div>
-
-              <div>
-                <div
-                  className={`flex justify-center w-16 gap-2 my-6 cursor-pointer ${
-                    selectedSection === "videos"
-                      ? "text-white"
-                      : "text-gray-500"
-                  }`}
-                  onClick={() => setSelectedSection("story")}
-                >
-                  <Image
-                    className={` ${
-                      selectedSection !== "story" ? "opacity-40" : "opacity-100"
-                    }`}
-                    src={SVG.Story}
-                    alt="My story"
-                    width={24}
-                    height={24}
-                  />
-                </div>
-                {selectedSection === "story" && (
-                  <div className="w-16 h-1 bg-[#62C860] rounded-lg"></div>
-                )}
-              </div>
-
-              <div>
-                <div
-                  className={`flex justify-center w-16 gap-2 my-6 cursor-pointer ${
-                    selectedSection === "bookmarked"
-                      ? "text-white"
-                      : "text-gray-500"
-                  }`}
-                  onClick={() => setSelectedSection("bookmarked")}
-                >
-                  <Image
-                    className={`${
-                      selectedSection !== "bookmarked"
-                        ? "opacity-40"
-                        : "opacity-100"
-                    }`}
-                    src={SVG.AccountMyBookmarked}
-                    alt="My bookmarked"
-                    width={24}
-                    height={24}
-                  />
-                </div>
-                {selectedSection === "bookmarked" && (
-                  <div className="w-16 h-1 bg-[#62C860] rounded-lg"></div>
-                )}
-              </div>
-            </div>
-            <hr className="h-px border-0 bg-gray-700" />
-            {/* green line */}
-
-            {/* Content Section */}
-            {authState?.following?.some(
-              (user: any) =>
-                user?.userID?._id === profileInfoState?.profileUserInfo?._id ||
-                !isPrivateAccount
-            ) ? (
-              // User is following, show videos
-              <div>
-                {selectedSection === "videos" ? (
-                  <MyVideosSection
-                    authState={authState}
-                    postState={postState}
-                    profileInfoState={profileInfoState}
-                    handleVideoDetailOpen={handleVideoDetailOpen}
-                  />
-                ) : selectedSection === "bookmarked" ? (
-                  <MyBookmarkSection
-                    data={postState.bookmarks}
-                    handleVideoDetailOpen={handleVideoDetailOpen}
-                  />
-                ) : selectedSection === "clips" ? (
-                  <ClipsSection
-                    authState={authState}
-                    clipState={clipState}
-                    profileInfoState={profileInfoState}
-                    handleVideoDetailOpen={handleVideoDetailOpen}
-                  />
-                ) : (
-                  <StorySection data={storyState.currentUserStories} />
-                )}
-              </div>
-            ) : (
-              // User is not following, show private account message
-              <div className="flex justify-center">
-                <p>This is a private account.</p>
-              </div>
-            )}
-          </div>
-        </div>
-
-        <hr className="border-t border-[#162423]" />
-
-        <div className="flex justify-center items-center gap-8 mt-4">
-          <Image src={SVG.Facebook1} alt="Facebook" width={40} height={40} />
-          <Image src={SVG.Instagram} alt="Facebook" width={40} height={40} />
-          <Image src={SVG.X} alt="Facebook" width={40} height={40} />
-          <Image
-            src={SVG.GamefolioCoin}
-            alt="Facebook"
-            width={40}
-            height={40}
-          />
-        </div>
-        <Modal
-          isOpen={modalState.isShareModalOpen}
-          handleClose={() => handleModalToggle("isShareModalOpen")}
-        >
-          <MoreOptions
-            handleCloseModal={() => handleModalToggle("isShareModalOpen")}
-            data={authState?.userID}
-          />
-        </Modal>
-
-        <Modal
-          isOpen={modalState.isFollowerModalOpen}
-          handleClose={() => handleModalToggle("isFollowerModalOpen")}
-        >
-          <Followers
-            handleCloseModal={() => handleModalToggle("isFollowerModalOpen")}
-            followerData={authState?.follower}
-          />
-        </Modal>
-
-        <Modal
-          isOpen={modalState.isFollowingModalOpen}
-          handleClose={() => handleModalToggle("isFollowingModalOpen")}
-        >
-          <Following
-            handleCloseModal={() => handleModalToggle("isFollowingModalOpen")}
-            followingData={authState?.following}
-          />
-        </Modal>
-
-        {/* <Modal
-          isOpen={modalState.isBadgeModalOpen}
-          handleClose={() => handleModalToggle("isBadgeModalOpen")}
-        >
-          <Badges
-            handleCloseModal={() => handleModalToggle("isBadgeModalOpen")}
-          />
-        </Modal> */}
-
-        <Modal
-          isOpen={modalState.isVideoDetailOpen}
-          handleClose={() => handleModalToggle("isVideoDetailOpen")}
-        >
-          <VideoDetails
-            postID={postID}
-            detailedPost={detailedPost}
-            handleCloseModal={() => handleModalToggle("isVideoDetailOpen")}
-            handlePageRefresh={() => handlePageRefresh()}
-          />
-        </Modal>
       </div>
-    </div>
+    </Layout>
   );
 }
 

@@ -123,7 +123,7 @@ function Explore() {
           <div className="flex items-center">
             <Link
               href="/explore/games"
-              className="text-md sm:text-md lg:text-md hover:opacity-80 cursor-pointer text-white"
+              className="text-md sm:text-md lg:text-md hover:opacity-80 cursor-pointer underline text-[#62C860]"
             >
               View All
             </Link>
@@ -160,7 +160,7 @@ function Explore() {
           <div className="flex items-center">
             <Link
               href="/explore-search/explore-games"
-              className="text-md sm:text-md lg:text-md hover:opacity-80 cursor-pointer text-red"
+              className="text-md sm:text-md lg:text-md hover:opacity-80 cursor-pointer underline text-[#62C860]"
             >
               View All
             </Link>
@@ -168,11 +168,11 @@ function Explore() {
         </div>
       </div>
 
-      <div className="flex items-center h-52 p-2 overflow-scroll no-scrollbar">
+      <div className="flex items-center p-2 overflow-scroll no-scrollbar">
         {userState?.userList?.slice(0, 10).map((user: any) => (
           <div
             key={user?.userID}
-            className="flex flex-col gap-1 border-2 border-[#1C2C2E] rounded-xl mx-1"
+            className="flex flex-col gap-1 border-2 border-[#1C2C2E] rounded-xl mx-2"
           >
             <div className="flex items-center gap-4 mb-2">
               <Image
@@ -262,7 +262,7 @@ function Explore() {
           <div className="flex items-center">
             <Link
               href="/explore-search/explore-games"
-              className="text-md sm:text-md lg:text-md hover:opacity-80 cursor-pointer text-red"
+              className="text-md sm:text-md lg:text-md hover:opacity-80 cursor-pointer underline text-[#62C860]"
             >
               View All
             </Link>
@@ -270,11 +270,11 @@ function Explore() {
         </div>
       </div>
 
-      <div className="flex items-center my-2 mx-2">
+      <div className="flex items-center my-2 mx-3 gap-2">
         {postState.videos.slice(0, 4).map((item: any) => (
           <div
             key={item?.userID}
-            className="flex flex-col gap-2 w-80 h-68 border-2 border-[#1C2C2E] rounded-xl mx-1 pb-2"
+            className="flex flex-col gap-2 w-68 h-64 border-2 border-[#1C2C2E] rounded-xl mx-1 pb-2"
             onClick={() =>
               handleModalToggle("isVideoDetailOpen", item._id, item)
             }
@@ -282,9 +282,11 @@ function Explore() {
             <div className="relative">
               <video
                 src={item.video}
-                className="w-80 h-full rounded-2xl hover:opacity-80"
+                className="w-full h-36 rounded-2xl hover:opacity-80"
                 controls={false}
                 autoPlay={false}
+                width={50}
+                height={50}
                 onLoadedMetadata={(e) => handleVideoMetadata(e, item._id)}
               />
 

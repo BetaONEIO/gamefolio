@@ -37,7 +37,7 @@ function User() {
   if (userState.loading) return <Loading />;
 
   return (
-    <div className="flex flex-wrap justify-start items-start h-64 mx-2">
+    <div className="flex flex-wrap justify-start items-start h-64 mx-3 my-2">
       {userState?.userList?.map((user: any) => (
         <div
           key={user?.userID}

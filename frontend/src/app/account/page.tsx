@@ -253,7 +253,6 @@ function Account() {
                     />
                   </div>
                 </div>
-                <span className="text-gray-400">{authState?.bio}</span>
 
                 <div className="flex h-8 items-center justify-start md:gap-8">
                   <div className="flex items-center gap-2 ">
@@ -293,6 +292,8 @@ function Account() {
                     <span className="md:text-lg text-gray-400">Following</span>
                   </div>
                 </div>
+                <h1 className="font-bold">About Me!</h1>
+                <p className="text-gray-400">{authState?.bio}</p>
               </div>
 
               <div className="flex h-10 px-2 items-center border-2 border-gray-50 rounded-xl gap-2 hover:opacity-80 cursor-pointer">

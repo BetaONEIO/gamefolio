@@ -222,6 +222,7 @@ function Main() {
                 </div>
               </div>
             </div>
+
             {/* Story , Posts */}
             <div className="w-11/12 sm:w-10/12 flex  flex-col gap-8 rounded-lg ">
               <div>
@@ -230,7 +231,7 @@ function Main() {
               <div className="bg-[#091619] border border-dashed border-green-800 rounded-lg flex flex-col px-4 py-6 justify-center items-start gap-4">
                 <span className="font-bold text-sm md:text-lg">Add New</span>
                 <div className="flex justify-between gap-2 w-full ">
-                  <div className="bg-[#162423] rounded-lg flex justify-center items-center w-6/12 h-24 ">
+                  <div className="bg-[#162423] rounded-lg flex justify-center items-center w-6/12 h-24 gap-4">
                     <div>
                       <Image
                         className="cursor-pointer w-fit"
@@ -242,7 +243,7 @@ function Main() {
                     </div>
                     <span>Post Clips</span>
                   </div>
-                  <div className="bg-[#162423] rounded-lg flex justify-center items-center w-6/12 h-24 ">
+                  <div className="bg-[#162423] rounded-lg flex justify-center items-center w-6/12 h-24 gap-4">
                     <div>
                       <Image
                         className="cursor-pointer w-fit"
@@ -460,42 +461,41 @@ function Main() {
               })}
               {loading && <MoreLoader />}
             </div>
+
             {/* Notification */}
-            <div className="hidden w-2/5 h-96 md:flex flex-col gap-8 rounded-lg bg-[#091619] border border-[#1C2C2E] px-4 py-6 ">
+            <div className="hidden w-6/12 h-96 md:flex flex-col gap-8 rounded-lg bg-[#091619] border border-[#1C2C2E] px-2 py-6">
               <div className="flex justify-between items-center">
                 <span className="font-bold">Notification</span>
                 <div className="flex gap-2">
-                  <span className="text-xs text-gray-500 cursor-pointer ">
+                  <span className="text-xs text-gray-500 cursor-pointer">
                     Unread
                   </span>
-                  <span className="text-xs text-[#43DD4E] cursor-pointer ">
+                  <span className="text-xs text-[#43DD4E] cursor-pointer">
                     Read
                   </span>
                 </div>
               </div>
-              <div className="flex flex-col gap-6 ">
-                <div className="flex justify-between items-start">
-                  <div className="flex gap-2">
-                    <Image
-                      width={12}
-                      height={12}
-                      className="w-12 h-12"
-                      src={IMAGES.callofduty}
-                      alt="UploadStory"
-                    />
-                    <div className="flex flex-col">
-                      <span className="text-sm text-white ">Maria Samson</span>
-                      <span className="text-xs text-white ">
-                        Followed your profile...{" "}
-                      </span>
-                    </div>
-                  </div>
 
-                  <div>
-                    <span className="text-xs text-gray-500 ">
+              <div className="flex items-center gap-1">
+                <Image
+                  width={12}
+                  height={12}
+                  className="w-12 h-10"
+                  src={IMAGES.callofduty}
+                  alt="UploadStory"
+                />
+                <div className="flex flex-col">
+                  <div className="flex items-center gap-4 mx-2">
+                    <p className="w-32 text-sm text-white font-semibold">
+                      Maria Samson
+                    </p>
+                    <p className="w-32 text-xs text-gray-400">
                       4:30 AM-2/10/24
-                    </span>
+                    </p>
                   </div>
+                  <span className="text-sm text-white mx-2">
+                    Followed your profile...{" "}
+                  </span>
                 </div>
               </div>
             </div>

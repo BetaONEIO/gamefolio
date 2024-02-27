@@ -86,13 +86,14 @@ function Games() {
   };
 
   return (
-    <div className="m-4">
-      <div>
+    <div className="m-2">
+      <div className="mx-2">
         <p className="font-semibold text-base sm:text-lg lg:text-lg text-white m-2">
           Trending Games Now
         </p>
       </div>
-      <div className="flex gap-4 h-80 w-full">
+
+      <div className="flex gap-4 h-80 mx-3">
         <Swiper
           effect={"fade"}
           navigation={true}
@@ -133,7 +134,7 @@ function Games() {
           <div className="flex items-center">
             <Link
               href="/explore/games"
-              className="text-md sm:text-md lg:text-md hover:opacity-80 cursor-pointer text-white"
+              className="text-md sm:text-md lg:text-md hover:opacity-80 cursor-pointer underline text-[#62C860]"
             >
               View All
             </Link>

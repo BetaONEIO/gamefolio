@@ -61,11 +61,29 @@ function Video() {
     }));
   };
 
-  function formatTime(seconds: number): string {
+  function formatTimeAgo(timestamp: any) {
+    const currentDate = new Date();
+    const previousDate = new Date(timestamp);
+    const timeDifference = currentDate.getTime() - previousDate.getTime();
+    const minutesAgo = Math.floor(timeDifference / (1000 * 60));
+
+    if (minutesAgo < 60) {
+      return `${minutesAgo} minutes ago`;
+    } else if (minutesAgo < 1440) {
+      return `${Math.floor(minutesAgo / 60)} hours ago`;
+    } else {
+      return `${Math.floor(minutesAgo / 1440)} days ago`;
+    }
+  }
+
+  const formatTime = (seconds: number): string => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
-    return `${padZero(minutes)}:${padZero(remainingSeconds)}`;
-  }
+    const formattedTime = `${minutes}:${
+      remainingSeconds < 10 ? "0" : ""
+    }${remainingSeconds}`;
+    return formattedTime;
+  };
 
   function padZero(value: number): string {
     return value < 10 ? `0${value}` : `${value}`;
@@ -77,13 +95,13 @@ function Video() {
 
   return (
     <div className="m-4">
-      <div className="flex items-center">
+      <div className="flex items-center mx-2">
         <p className="font-semibold text-base sm:text-lg lg:text-lg text-white">
           Video Recommended for you
         </p>
       </div>
 
-      <div className="flex flex-wrap w-full justify-between gap-2 mt-2">
+      <div className="flex flex-wrap w-full gap-2 mt-2">
         {postState.videos.map((item: any) => (
           <div
             key={item?.userID}
@@ -109,21 +127,22 @@ function Video() {
             <div className="flex items-center gap-4 mb-2">
               <Image
                 className="rounded-xl w-10 h-10 ml-2 object-cover"
-                src={item?.profilePicture}
+                src={item?.userID?.profilePicture}
                 alt="Account Profile"
                 height={10}
                 width={10}
+                sizes="100"
               />
 
               <div>
                 <div>
                   <span className="text-xs sm:text-sm text-white">
-                    Sara Collin
+                    {item?.userID?.name}
                   </span>
                 </div>
                 <div className="flex items-center">
                   <p className="text-sm font-light text-gray-400">
-                    10 minutes ago
+                    {formatTimeAgo(item.date)}
                   </p>
                 </div>
               </div>
