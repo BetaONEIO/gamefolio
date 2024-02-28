@@ -57,7 +57,7 @@ function CustomHeader({ children }: { children?: String }) {
               <p className="font-semibold pr-2 text-white">Badges</p>
             </div>
           </Link>
-          <Link href="/account/settings">
+          <Link href="/account/settings/edit-profile">
             <Image
               className="cursor-pointer hover:opacity-60"
               src={SVG.Setting}

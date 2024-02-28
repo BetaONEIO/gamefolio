@@ -60,16 +60,17 @@ function Page() {
                     </div>
                   </div>
                   <div className="flex flex-col">
-                    <span className=" text-base sm:text-sm lg:text-base tracking-tighter text-white">
+                    <span className="text-base sm:text-sm lg:text-base tracking-tighter text-white">
                       Profile Name
                     </span>
-                    <span className=" text-xl sm:text-sm lg:text-xl font-bold tracking-tighter text-white">
+                    <span className="text-xl sm:text-sm lg:text-xl font-bold tracking-tighter text-white">
                       {authState?.name}
                     </span>
                   </div>
                 </div>
+
                 {/* 2nd col of ggcoin card  */}
-                <div className="absolute  inset-0 p-4">
+                <div className="absolute inset-0 p-4">
                   <Image
                     className="w-full h-full "
                     src={SVG.MyFolioCardBG}
@@ -78,6 +79,7 @@ function Page() {
                     height={56}
                   />
                 </div>
+
                 {/* 3rd col of ggcoin card  */}
                 <div className="flex flex-col justify-between items-end h-full">
                   <div className="flex items-center ">
@@ -109,28 +111,36 @@ function Page() {
               />
             </div>
           </div>
-          <hr className="h-[1px]  lg:h-full lg:w-0 border m-2 bg-gray-700 opacity-10" />
+          <hr className="h-[1px] lg:h-full lg:w-0 border m-2 bg-gray-700 opacity-10" />
 
+          {/* transaction history */}
           <div className="flex-1 p-4 bg-black-50 overflow-y-scroll scrollbar-thin scrollbar-thumb-green-500 scrollbar-track-green-300">
             <span className="text-white font-bold text-lg">
               Transaction History
             </span>
+
             {/* Coins section */}
             {authState?.coins?.map((user: any) => (
               <div key={user.id} className="flex flex-col gap-2">
                 {/* Coins Item */}
-                <div className="flex gap-2 justify-between items-center py-4 px-4 border-b border-gray-600">
+                <div className="flex gap-2 items-center py-4 px-4 border-b border-gray-600">
                   <Image
                     src={SVG.CoinsAdd}
                     alt="GGcoin"
                     width={42}
                     height={42}
                   />
-                  <span className="text-white">{user.coinType}</span>
-                  <span className="text-[#7C7F80]">
-                    {format(new Date(user.date), "dd MMM, yyyy - h:mm a")}
-                  </span>
-                  <span className="text-white">{user.coinAmount} Coins</span>
+                  <div className="flex flex-col">
+                    <span className="text-white">{user.coinType}</span>
+                    <div className="flex items-center justify-between w-96">
+                      <span className="text-[#7C7F80]">
+                        {format(new Date(user.date), "dd MMM, yyyy - h:mm a")}
+                      </span>
+                      <span className="text-white">
+                        {user.coinAmount} Coins
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
             ))}

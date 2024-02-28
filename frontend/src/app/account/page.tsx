@@ -29,6 +29,8 @@ import Loading from "./loading";
 import { getAllUsers, getProfileInfo } from "@/store/slices/userSlice";
 import { getAllClipVideos } from "@/store/slices/clipSlice";
 import { getCurrentUserStories } from "@/store/slices/storySlice";
+import AddClips from "@/components/Modals/AddClips";
+import AddVideo from "@/components/Modals/AddVideo";
 
 interface MyVideosSectionProps {
   authState: any; // Add authState as a prop
@@ -158,6 +160,8 @@ function Account() {
     isFollowingModalOpen: false,
     isBadgeModalOpen: false,
     isVideoDetailOpen: false,
+    isAddClipsOpen: false,
+    isAddVideoOpen: false,
   });
 
   const userVideos = postState.videos.filter(
@@ -432,7 +436,10 @@ function Account() {
                 <div className="flex flex-col border border-dashed border-green-800 rounded-lg px-4 py-4 justify-center items-start gap-4">
                   <span className="font-bold text-sm md:text-lg">Add New</span>
                   <div className="flex justify-between gap-2 w-full">
-                    <div className="bg-[#162423] rounded-lg flex justify-center items-center w-6/12 h-24 gap-2">
+                    <div
+                      className="bg-[#162423] rounded-lg flex justify-center items-center w-6/12 h-24 gap-2 cursor-pointer hover:opacity-80"
+                      onClick={() => handleModalToggle("isAddClipsOpen")}
+                    >
                       <div>
                         <Image
                           className="cursor-pointer w-fit"
@@ -442,9 +449,15 @@ function Account() {
                           height={24}
                         />
                       </div>
-                      <span>Post Clips</span>
+                      <p className="font-bold">Post Clips</p>
                     </div>
-                    <div className="bg-[#162423] rounded-lg flex justify-center items-center w-6/12 h-24 gap-2">
+
+                    <div
+                      className="bg-[#162423] rounded-lg flex justify-center items-center w-6/12 h-24 gap-2 cursor-pointer hover:opacity-80"
+                      onClick={() => {
+                        handleModalToggle("isAddVideoOpen");
+                      }}
+                    >
                       <div>
                         <Image
                           className="cursor-pointer w-fit"
@@ -454,7 +467,7 @@ function Account() {
                           height={24}
                         />
                       </div>
-                      <span>Post Videos</span>
+                      <p className="font-bold">Post Videos</p>
                     </div>
                   </div>
                 </div>
@@ -476,7 +489,7 @@ function Account() {
               </div>
             </div>
 
-            <div className="sm:w-72 md:w-72 lg:w-96 h-screen border-2 border-[#1C2C2E] rounded-lg p-2 overflow-hidden overflow-y-auto">
+            <div className="sm:w-72 md:w-72 lg:w-96 h-screen border-2 border-[#1C2C2E] rounded-lg p-1 overflow-hidden overflow-y-auto">
               <h1 className="font-bold m-2">Current Badge</h1>
               <div className="flex justify-center items-center gap-3 mt-2">
                 <Image
@@ -518,12 +531,12 @@ function Account() {
                     return (
                       <div
                         key={item._id}
-                        className="border-2 border-[#1C2C2E] rounded-lg p-2 gap-3 mt-2"
+                        className="border-2 h-40 border-[#1C2C2E] rounded-lg p-2 gap-3 mt-2"
                       >
                         <div className="flex">
                           <video
                             src={item.video}
-                            className="w-20 h-28 rounded-xl object-cover hover:opacity-80"
+                            className="w-20 h-24 rounded-xl object-cover hover:opacity-80"
                             width={20}
                             height={20}
                             controls={false}
@@ -532,28 +545,33 @@ function Account() {
                             }
                           />
 
-                          <div className="flex gap-2">
-                            <Image
-                              className="w-8 h-8 rounded-xl"
-                              src={IMAGES.Profile}
-                              alt="Profile"
-                              width={50}
-                              height={50}
-                              sizes="100vw"
-                              quality={80}
-                              loading="lazy"
-                            />
-                            <div className="flex flex-col">
-                              <h1 className="w-[180px] sm:w-[220px] text-xs md:text-xs sm:text-xs font-semibold text-white hover:opacity-80">
-                                helloworld
-                              </h1>
-                              <p className="text-xl md:text-sm sm:text-base font-light text-gray-400">
-                                17 Sep, 2023
-                              </p>
-                              <p className="text-xs md:text-xs sm:text-base lg:text-md font-light text-gray-400">
-                                Lorem ipsumur. Ante duis tellus tincidu See more
-                              </p>
+                          <div className="flex flex-col gap-2 ml-2">
+                            <div className="flex items-center gap-2">
+                              <Image
+                                className="w-8 h-8 rounded-xl"
+                                src={IMAGES.Profile}
+                                alt="Profile"
+                                width={50}
+                                height={50}
+                                sizes="100vw"
+                                quality={80}
+                                loading="lazy"
+                              />
+                              <div className="flex flex-col">
+                                <h1 className="w-[180px] sm:w-[220px] text-xs md:text-xs sm:text-xs font-semibold text-white hover:opacity-80">
+                                  helloworld
+                                </h1>
+                                <p className="text-xl md:text-sm sm:text-base font-light text-gray-400">
+                                  17 Sep, 2023
+                                </p>
+                              </div>
                             </div>
+                            <p className="w-40 text-[0.70rem] font-light text-gray-400">
+                              Lorem ipsumur. Ante duis tellus tincidu
+                              <span className="text-[#37C535] underline">
+                                See more
+                              </span>
+                            </p>
                           </div>
                         </div>
 
@@ -655,6 +673,24 @@ function Account() {
               detailedPost={detailedPost}
               handleCloseModal={() => handleModalToggle("isVideoDetailOpen")}
               handlePageRefresh={() => handlePageRefresh()}
+            />
+          </Modal>
+
+          <Modal
+            isOpen={modalState.isAddClipsOpen}
+            handleClose={() => handleModalToggle("isAddClipsOpen")}
+          >
+            <AddClips
+              handleCloseModal={() => handleModalToggle("isAddClipsOpen")}
+            />
+          </Modal>
+
+          <Modal
+            isOpen={modalState.isAddVideoOpen}
+            handleClose={() => handleModalToggle("isAddVideoOpen")}
+          >
+            <AddVideo
+              handleCloseModal={() => handleModalToggle("isAddVideoOpen")}
             />
           </Modal>
         </div>

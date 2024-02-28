@@ -140,6 +140,21 @@ function Trending() {
     }));
   };
 
+  function formatTimeAgo(timestamp: any) {
+    const currentDate = new Date();
+    const previousDate = new Date(timestamp);
+    const timeDifference = currentDate.getTime() - previousDate.getTime();
+    const minutesAgo = Math.floor(timeDifference / (1000 * 60));
+
+    if (minutesAgo < 60) {
+      return `${minutesAgo} minutes ago`;
+    } else if (minutesAgo < 1440) {
+      return `${Math.floor(minutesAgo / 60)} hours ago`;
+    } else {
+      return `${Math.floor(minutesAgo / 1440)} days ago`;
+    }
+  }
+
   const formatTime = (seconds: number): string => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
@@ -387,7 +402,7 @@ function Trending() {
                   <div className="flex items-center gap-4 mb-2">
                     <Image
                       className="rounded-xl w-10 h-10 ml-2 object-cover"
-                      src={item?.profilePicture}
+                      src={item?.userID?.profilePicture}
                       alt="Account Profile"
                       height={10}
                       width={10}
@@ -396,12 +411,12 @@ function Trending() {
                     <div>
                       <div>
                         <span className="text-xs sm:text-sm text-white">
-                          Sara Collin
+                          {item?.userID?.name}
                         </span>
                       </div>
                       <div className="flex items-center">
                         <p className="text-sm font-light text-gray-400">
-                          10 minutes ago
+                          {formatTimeAgo(item.date)}
                         </p>
                       </div>
                     </div>

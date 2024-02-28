@@ -25,6 +25,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
 import { set } from "date-fns";
+import AddClips from "@/components/Modals/AddClips";
+import AddVideo from "@/components/Modals/AddVideo";
 
 function Main() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
@@ -76,6 +78,8 @@ function Main() {
     isVideoDetailOpen: false,
     isPostDeleteOpen: false,
     isReportModalOpen: false,
+    isAddClipsOpen: false,
+    isAddVideoOpen: false,
   });
 
   const handleModalToggle = (
@@ -185,7 +189,7 @@ function Main() {
             <div className="hidden w-2/5 h-fit md:flex flex-col gap-8 rounded-lg bg-[#091619] border border-[#1C2C2E] px-4 py-6 ">
               <div className="flex justify-between items-center">
                 <span className="font-bold">Trendings</span>
-                <span className="text-xs text-[#43DD4E] cursor-pointer ">
+                <span className="text-xs text-[#43DD4E] cursor-pointer">
                   See More
                 </span>
               </div>
@@ -200,7 +204,7 @@ function Main() {
                       alt="UploadStory"
                     />
                     <div className="flex flex-col ">
-                      <span className="text-xs font-bold text-[#43DD4E] ">
+                      <span className="text-xs font-bold text-[#43DD4E]">
                         Trending Now
                       </span>
                       <span className="text-lg text-white ">Call of duty</span>
@@ -231,7 +235,10 @@ function Main() {
               <div className="bg-[#091619] border border-dashed border-green-800 rounded-lg flex flex-col px-4 py-6 justify-center items-start gap-4">
                 <span className="font-bold text-sm md:text-lg">Add New</span>
                 <div className="flex justify-between gap-2 w-full ">
-                  <div className="bg-[#162423] rounded-lg flex justify-center items-center w-6/12 h-24 gap-4">
+                  <div
+                    className="bg-[#162423] rounded-lg flex justify-center items-center w-6/12 h-24 gap-4 cursor-pointer hover:opacity-80"
+                    onClick={() => handleModalToggle("isAddClipsOpen")}
+                  >
                     <div>
                       <Image
                         className="cursor-pointer w-fit"
@@ -241,9 +248,15 @@ function Main() {
                         height={24}
                       />
                     </div>
-                    <span>Post Clips</span>
+                    <p className="font-bold">Post Clips</p>
                   </div>
-                  <div className="bg-[#162423] rounded-lg flex justify-center items-center w-6/12 h-24 gap-4">
+
+                  <div
+                    className="bg-[#162423] rounded-lg flex justify-center items-center w-6/12 h-24 gap-4 cursor-pointer hover:opacity-80"
+                    onClick={() => {
+                      handleModalToggle("isAddVideoOpen");
+                    }}
+                  >
                     <div>
                       <Image
                         className="cursor-pointer w-fit"
@@ -253,7 +266,7 @@ function Main() {
                         height={24}
                       />
                     </div>
-                    <span>Post Videos</span>
+                    <p className="font-bold">Post Videos</p>
                   </div>
                 </div>
               </div>
@@ -532,6 +545,24 @@ function Main() {
       >
         <Report
           handleCloseModal={() => handleModalToggle("isReportModalOpen")}
+        />
+      </Modal>
+
+      <Modal
+        isOpen={modalState.isAddClipsOpen}
+        handleClose={() => handleModalToggle("isAddClipsOpen")}
+      >
+        <AddClips
+          handleCloseModal={() => handleModalToggle("isAddClipsOpen")}
+        />
+      </Modal>
+
+      <Modal
+        isOpen={modalState.isAddVideoOpen}
+        handleClose={() => handleModalToggle("isAddVideoOpen")}
+      >
+        <AddVideo
+          handleCloseModal={() => handleModalToggle("isAddVideoOpen")}
         />
       </Modal>
     </Layout>

@@ -105,7 +105,7 @@ function Video() {
         {postState.videos.map((item: any) => (
           <div
             key={item?.userID}
-            className="flex flex-col gap-2 w-64 h-60 border-2 border-[#1C2C2E] rounded-xl mx-1 pb-2"
+            className="flex flex-col gap-2 w-64 h-64 border-2 border-[#1C2C2E] rounded-xl mx-1 pb-2"
             onClick={() =>
               handleModalToggle("isVideoDetailOpen", item._id, item)
             }
