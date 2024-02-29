@@ -90,4 +90,5 @@ export const SVG = {
   Games: "/games.svg",
   Videos: "/videos.svg",
   Users: "/users.svg",
+  ArrowUpSide: "/arrowupside.svg",
 };

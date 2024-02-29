@@ -31,4 +31,8 @@ export const IMAGES = {
   Badges5: "/badge5.png",
   TrendingPubg: "/trending-pubg.png",
   Bgbackground: "/bgback.png",
+  pubg1: "/pubg1.svg",
+  pubg2: "/pubg2.svg",
+  pubg3: "/pubg3.svg",
+  pubg4: "/pubg4.svg",
 };
