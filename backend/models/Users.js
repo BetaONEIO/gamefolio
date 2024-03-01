@@ -124,6 +124,10 @@ const userSchema = new mongoose.Schema({
   forgotOTP: {
     type: String,
   },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 // hash user's password with salt before saving document to db
