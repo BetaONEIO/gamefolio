@@ -11,6 +11,7 @@ import Image from "next/image";
 import { SVG } from "@/assets/SVG";
 
 function Video() {
+  const authState = useSelector((state: any) => state.auth.userData) || [];
   const postState = useSelector((state: any) => state.post) || [];
   const [postID, setPostID] = useState("");
   const [detailedPost, setDetailedPost] = useState("");
@@ -102,88 +103,116 @@ function Video() {
       </div>
 
       <div className="flex flex-wrap w-full gap-2 mt-2">
-        {postState.videos.map((item: any) => (
-          <div
-            key={item?.userID}
-            className="flex flex-col gap-2 w-64 h-64 border-2 border-[#1C2C2E] rounded-xl mx-1 pb-2"
-            onClick={() =>
-              handleModalToggle("isVideoDetailOpen", item._id, item)
-            }
-          >
-            <div className="relative">
-              <video
-                src={item.video}
-                className="w-80 h-full rounded-2xl hover:opacity-80"
-                controls={false}
-                autoPlay={false}
-                onLoadedMetadata={(e) => handleVideoMetadata(e, item._id)}
-              />
+        {postState.videos.slice(0, 5).map((item: any) => {
+          const hasLikeReacted = item.reactions.some(
+            (reaction: any) =>
+              reaction.userID === authState._id &&
+              reaction.reactionType === "like"
+          );
 
-              <span className="absolute bottom-2 right-3">
-                {formatTime(videoDurations[item._id])}
-              </span>
-            </div>
+          const hasLoveReacted = item.reactions.some(
+            (reaction: any) =>
+              reaction.userID === authState._id &&
+              reaction.reactionType === "love"
+          );
+          return (
+            <div
+              key={item?.userID}
+              className="flex flex-col gap-2 w-68 h-64 border-2 border-[#1C2C2E] rounded-xl mx-1 pb-2"
+              onClick={() =>
+                handleModalToggle("isVideoDetailOpen", item._id, item)
+              }
+            >
+              <div className="relative">
+                <video
+                  src={item.video}
+                  className="w-full h-36 rounded-2xl hover:opacity-80"
+                  controls={false}
+                  autoPlay={false}
+                  width={50}
+                  height={50}
+                  onLoadedMetadata={(e) => handleVideoMetadata(e, item._id)}
+                />
 
-            <div className="flex items-center gap-4 mb-2">
-              <Image
-                className="rounded-xl w-10 h-10 ml-2 object-cover"
-                src={item?.userID?.profilePicture}
-                alt="Account Profile"
-                height={10}
-                width={10}
-                sizes="100"
-              />
+                <span className="absolute bottom-2 right-3">
+                  {formatTime(videoDurations[item._id])}
+                </span>
+              </div>
 
-              <div>
+              <div className="flex items-center gap-4 mb-2">
+                <Image
+                  className="rounded-xl w-10 h-10 ml-2 object-cover"
+                  src={item?.userID?.profilePicture}
+                  alt="Account Profile"
+                  height={10}
+                  width={10}
+                />
+
                 <div>
-                  <span className="text-xs sm:text-sm text-white">
-                    {item?.userID?.name}
-                  </span>
+                  <div>
+                    <span className="text-xs sm:text-sm text-white">
+                      {item?.userID?.name}
+                    </span>
+                  </div>
+                  <div className="flex items-center">
+                    <p className="text-sm font-light text-gray-400">
+                      {formatTimeAgo(item.date)}
+                    </p>
+                  </div>
                 </div>
+              </div>
+
+              <div className="flex  items-center justify-between text-center mx-4">
                 <div className="flex items-center">
-                  <p className="text-sm font-light text-gray-400">
-                    {formatTimeAgo(item.date)}
+                  <Image
+                    className="mr-2 cursor-pointer hover:opacity-80"
+                    src={SVG.Like}
+                    alt="Like"
+                    width={20}
+                    height={20}
+                  />
+                  <p className="text-white">
+                    {" "}
+                    {
+                      item.reactions.filter(
+                        (reaction: any) => reaction.reactionType === "like"
+                      ).length
+                    }
                   </p>
                 </div>
+
+                <div className="flex items-center">
+                  <Image
+                    className="mr-2 cursor-pointer hover:opacity-80"
+                    src={SVG.Love}
+                    alt="Love"
+                    width={20}
+                    height={20}
+                  />
+                  <p className="text-white">
+                    {" "}
+                    {
+                      item.reactions.filter(
+                        (reaction: any) => reaction.reactionType === "love"
+                      ).length
+                    }
+                  </p>
+                </div>
+
+                <div className="flex items-center">
+                  <Image
+                    className="mr-2 cursor-pointer hover:opacity-80"
+                    src={SVG.Comment}
+                    alt="Comment"
+                    width={25}
+                    height={25}
+                  />
+                  <p className="text-white">{item.comments.length}</p>
+                </div>
               </div>
             </div>
-
-            <div className="flex items-center justify-between text-center mx-4">
-              <div className="flex items-center">
-                <Image
-                  className="mr-2 cursor-pointer hover:opacity-80"
-                  src={SVG.Like}
-                  alt="Like"
-                  width={20}
-                  height={20}
-                />
-                <p className="text-white">24</p>
-              </div>
-
-              <div className="flex items-center">
-                <Image
-                  className="mr-2 cursor-pointer hover:opacity-80"
-                  src={SVG.Love}
-                  alt="Love"
-                  width={20}
-                  height={20}
-                />
-                <p className="text-white">24</p>
-              </div>
-
-              <div className="flex items-center">
-                <Image
-                  className="mr-2 cursor-pointer hover:opacity-80"
-                  src={SVG.Comment}
-                  alt="Comment"
-                  width={25}
-                  height={25}
-                />
-                <p className="text-white">24</p>
-              </div>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <Modal

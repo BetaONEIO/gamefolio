@@ -16,7 +16,6 @@ import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import { copyToClipboard } from "@/utils/helpers";
 import { ToastContainer } from "react-toastify";
 import Layout from "@/components/CustomLayout/layout";
-import Badges from "@/components/Modals/Badges";
 import Followers from "@/components/Modals/Followers";
 import Following from "@/components/Modals/Following";
 import Modal from "@/components/Modals/Modal";
@@ -40,6 +39,7 @@ interface MyVideosSectionProps {
   profileInfoState: any; // Add profileInfoState as a prop
   handleVideoDetailOpen: (postID: any, detailedPost: any) => void;
 }
+
 interface VideoState {
   isMuted?: boolean;
 }

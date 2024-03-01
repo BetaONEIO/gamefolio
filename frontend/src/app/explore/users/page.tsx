@@ -2,18 +2,17 @@
 import { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { IMAGES } from "@/assets/images";
+import { SVG } from "@/assets/SVG";
+import { leagueGothic } from "@/font/font";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
+import { getAllPostVideos } from "@/store/slices/postSlice";
 import { getAllUsers } from "@/store/slices/userSlice";
+import { copyToClipboard } from "@/utils/helpers";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Loading from "./loading";
-import { leagueGothic } from "@/font/font";
-import { SVG } from "@/assets/SVG";
-import { copyToClipboard } from "@/utils/helpers";
 
 function User() {
-  const authState = useSelector((state: any) => state.auth.userData) || [];
   const userState = useSelector((state: any) => state.user) || [];
   const postState = useSelector((state: any) => state.post) || [];
   const payload = {
@@ -24,15 +23,16 @@ function User() {
   };
   useEffect(() => {
     dispatch(userSession(params));
+    dispatch(getAllPostVideos());
     dispatch(getAllUsers());
   }, [userState.refresh]);
 
-  console.log("userState", userState);
-
-  const userVideos = postState.videos.filter(
-    (post: any) => post?.userID?._id === authState._id
-  );
-  console.log("userVideos", userVideos);
+  const userVideos = userState.userList.map((user: any) => {
+    const videosForUser = postState.videos.filter(
+      (post: any) => post?.userID?.username === user.username
+    );
+    return { username: user.username, videoCount: videosForUser.length };
+  });
 
   if (userState.loading) return <Loading />;
 
@@ -48,10 +48,10 @@ function User() {
               <Image
                 className="rounded-xl w-16 h-16 mt-2 ml-2 object-cover"
                 src={user?.profilePicture}
+                alt="Profile"
                 width={10}
                 height={10}
                 sizes="100vw"
-                alt="Account Profile"
               />
               <div>
                 <div>
@@ -67,9 +67,9 @@ function User() {
                   <Image
                     className="cursor-pointer hover:opacity-80"
                     src={SVG.AccountCopyUsername}
+                    alt="Copy Username"
                     width={16}
                     height={16}
-                    alt="Copy Username"
                   />
                 </div>
               </div>
@@ -84,7 +84,9 @@ function User() {
                 <span
                   className={`${leagueGothic.className} flex justify-center text-lg md:text-2xl font-normal text-white`}
                 >
-                  {userVideos.length || 0}
+                  {userVideos.find(
+                    (video: any) => video.username === user.username
+                  )?.videoCount || 0}
                 </span>
                 <span className="md:text-lg text-gray-400">Posts</span>
               </div>
@@ -92,10 +94,7 @@ function User() {
               {/* Vertical divider */}
               <div className="border-r border-[#1C2C2E] h-12 rounded-full"></div>
 
-              <div
-                className="flex flex-col"
-                // onClick={() => handleModalToggle("isFollowerModalOpen")}
-              >
+              <div className="flex flex-col">
                 <span
                   className={`${leagueGothic.className} flex justify-center text-lg md:text-2xl font-normal text-white`}
                 >
@@ -103,13 +102,11 @@ function User() {
                 </span>
                 <span className="md:text-lg text-gray-400">Followers</span>
               </div>
+
               {/* Vertical divider */}
               <div className="border-r border-[#1C2C2E] h-12 rounded-full"></div>
 
-              <div
-                className="flex-col"
-                // onClick={() => handleModalToggle("isFollowingModalOpen")}
-              >
+              <div className="flex-col">
                 <span
                   className={`${leagueGothic.className} flex justify-center text-lg md:text-2xl font-normal text-white`}
                 >

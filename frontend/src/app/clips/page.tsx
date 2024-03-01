@@ -31,9 +31,11 @@ function Clip() {
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
   };
+
   const params = {
     payload,
   };
+
   useEffect(() => {
     dispatch(userSession(params));
     dispatch(getAllClipVideos());
@@ -203,11 +205,17 @@ function Clip() {
                   preload="metadata"
                 />
 
-                {/* <div className="absolute inset-x-0 bottom-20 p-4 flex items-center justify-between">
+                <div className="absolute inset-x-0 bottom-20 p-4 flex items-center justify-between">
                   <p className="font-light text-xs sm:text-sm hover:opacity-80">
-                    Liked by others
+                    Liked by{" "}
+                    {
+                      clip.reactions.filter(
+                        (reaction: any) => reaction.reactionType === "like"
+                      ).length
+                    }{" "}
+                    others
                   </p>
-                </div> */}
+                </div>
                 <div className="absolute inset-x-0 bottom-14 p-4 flex items-center justify-between">
                   <p className="font-light text-xs sm:text-sm hover:opacity-80">
                     {clip?.music}
