@@ -2,6 +2,7 @@
 import { SVG } from "@/assets/SVG";
 import { dispatch, useSelector } from "@/store";
 import { createComment, refreshPage } from "@/store/slices/postSlice";
+import ReactPlayer from "react-player";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import Image from "next/image";
@@ -32,7 +33,6 @@ function VideoDetails({
     isPostDeleteOpen: false,
     isReportModalOpen: false,
   });
-
 
   console.log("detailedPost: ", detailedPost);
 
@@ -122,7 +122,6 @@ function VideoDetails({
 
   // handle emoji
   const handleEmojiSelect = (selectedEmoji: any) => {
-
     // Append the selected emoji to the current comment value
     const updatedMessage = comments + selectedEmoji;
 
@@ -162,12 +161,12 @@ function VideoDetails({
                 <div className="w-full md:w-[22rem] lg:w-full flex flex-col sm:justify-center justify-center items-center bg-[#091619] rounded-lg border-[#1C2C2E]">
                   <div className="mb-4">
                     <div className="flex justify-center items-center w-full">
-                      <video
+                      <ReactPlayer
                         className="w-[710px] h-[185px] sm:h-[300px] my-2 sm:my-2"
-                        src={detailedPost.video}
-                        width={50}
-                        height={50}
-                        controls
+                        url={detailedPost.video} // Change 'src' to 'url'
+                        width="100%" // Adjust width and height as needed
+                        height="100%"
+                        controls={true} // Use 'true' instead of 'controls'
                         controlsList="nodownload noremoteplayback noplaybackrate foobar"
                         disablePictureInPicture
                       />

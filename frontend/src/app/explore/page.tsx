@@ -52,15 +52,9 @@ function Explore() {
     dispatch(getAllUsers());
   }, [postState.refresh]);
 
-  const sectionStyle = {
-    backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
-  };
-
   const userVideos = postState.videos.filter(
     (post: any) => post?.userID?._id === authState._id
   );
-
-  console.log("userVideos@@@", postState.videos);
 
   const handleVideoMetadata = (
     event: React.SyntheticEvent<HTMLVideoElement, Event>,
@@ -209,7 +203,9 @@ function Explore() {
                   <span
                     className={`${leagueGothic.className} flex justify-center text-lg md:text-2xl font-normal text-white`}
                   >
-                    {userVideos.length || 0}
+                    {userVideos.find(
+                      (video: any) => video.username === user.username
+                    )?.videoCount || 0}
                   </span>
                   <span className="md:text-lg text-gray-400">Posts</span>
                 </div>
@@ -217,10 +213,7 @@ function Explore() {
                 {/* Vertical divider */}
                 <div className="border-r border-[#1C2C2E] h-12 rounded-full"></div>
 
-                <div
-                  className="flex flex-col"
-                  // onClick={() => handleModalToggle("isFollowerModalOpen")}
-                >
+                <div className="flex flex-col">
                   <span
                     className={`${leagueGothic.className} flex justify-center text-lg md:text-2xl font-normal text-white`}
                   >
@@ -231,10 +224,7 @@ function Explore() {
                 {/* Vertical divider */}
                 <div className="border-r border-[#1C2C2E] h-12 rounded-full"></div>
 
-                <div
-                  className="flex-col"
-                  // onClick={() => handleModalToggle("isFollowingModalOpen")}
-                >
+                <div className="flex-col">
                   <span
                     className={`${leagueGothic.className} flex justify-center text-lg md:text-2xl font-normal text-white`}
                   >
@@ -266,117 +256,96 @@ function Explore() {
         </div>
       </div>
 
-      <div className="flex items-center my-2 mx-3 gap-2 overflow-scroll no-scrollbar">
-        {postState.videos.slice(0, 5).map((item: any) => {
-          const hasLikeReacted = item.reactions.some(
-            (reaction: any) =>
-              reaction.userID === authState._id &&
-              reaction.reactionType === "like"
-          );
-
-          const hasLoveReacted = item.reactions.some(
-            (reaction: any) =>
-              reaction.userID === authState._id &&
-              reaction.reactionType === "love"
-          );
-          return (
-            <div
-              key={item?.userID}
-              className="flex flex-col gap-2 w-68 h-64 border-2 border-[#1C2C2E] rounded-xl mx-1 pb-2"
-              onClick={() =>
-                handleModalToggle("isVideoDetailOpen", item._id, item)
-              }
-            >
-              <div className="relative">
-                <video
-                  src={item.video}
-                  className="w-full h-36 rounded-2xl hover:opacity-80"
-                  controls={false}
-                  autoPlay={false}
-                  width={50}
-                  height={50}
-                  onLoadedMetadata={(e) => handleVideoMetadata(e, item._id)}
-                />
-
-                <span className="absolute bottom-2 right-3">
-                  {formatTime(videoDurations[item._id])}
-                </span>
-              </div>
-
-              <div className="flex items-center gap-4 mb-2">
-                <Image
-                  className="rounded-xl w-10 h-10 ml-2 object-cover"
-                  src={item?.userID?.profilePicture}
-                  alt="Account Profile"
-                  height={10}
-                  width={10}
-                />
-
+      <div className="flex items-center gap-2 mt-2 overflow-x-auto">
+        {postState.videos.slice(0, 8).map((item: any) => (
+          <div
+            key={item?.userID}
+            className="flex-shrink-0 flex flex-col gap-2 w-68 h-64 border-2 border-[#1C2C2E] rounded-xl mx-1 pb-2"
+            onClick={() =>
+              handleModalToggle("isVideoDetailOpen", item._id, item)
+            }
+          >
+            <div className="relative">
+              <video
+                src={item.video}
+                className="w-full h-36 rounded-2xl hover:opacity-80"
+                controls={false}
+                autoPlay={false}
+                width={50}
+                height={50}
+                onLoadedMetadata={(e) => handleVideoMetadata(e, item._id)}
+              />
+              <span className="absolute bottom-2 right-3">
+                {formatTime(videoDurations[item._id])}
+              </span>
+            </div>
+            <div className="flex items-center gap-4 mb-2">
+              <Image
+                className="rounded-xl w-10 h-10 ml-2 object-cover"
+                src={item?.userID?.profilePicture}
+                alt="Account Profile"
+                height={10}
+                width={10}
+              />
+              <div>
                 <div>
-                  <div>
-                    <span className="text-xs sm:text-sm text-white">
-                      {item?.userID?.name}
-                    </span>
-                  </div>
-                  <div className="flex items-center">
-                    <p className="text-sm font-light text-gray-400">
-                      {formatTimeAgo(item.date)}
-                    </p>
-                  </div>
+                  <span className="text-xs sm:text-sm text-white">
+                    {item?.userID?.name}
+                  </span>
                 </div>
-              </div>
-
-              <div className="flex items-center justify-between text-center mx-4">
                 <div className="flex items-center">
-                  <Image
-                    className="mr-2 cursor-pointer hover:opacity-80"
-                    src={SVG.Like}
-                    alt="Like"
-                    width={20}
-                    height={20}
-                  />
-                  <p className="text-white">
-                    {" "}
-                    {
-                      item.reactions.filter(
-                        (reaction: any) => reaction.reactionType === "like"
-                      ).length
-                    }
+                  <p className="text-sm font-light text-gray-400">
+                    {formatTimeAgo(item.date)}
                   </p>
-                </div>
-
-                <div className="flex items-center">
-                  <Image
-                    className="mr-2 cursor-pointer hover:opacity-80"
-                    src={SVG.Love}
-                    alt="Love"
-                    width={20}
-                    height={20}
-                  />
-                  <p className="text-white">
-                    {" "}
-                    {
-                      item.reactions.filter(
-                        (reaction: any) => reaction.reactionType === "love"
-                      ).length
-                    }
-                  </p>
-                </div>
-
-                <div className="flex items-center">
-                  <Image
-                    className="mr-2 cursor-pointer hover:opacity-80"
-                    src={SVG.Comment}
-                    alt="Comment"
-                    width={25}
-                    height={25}
-                  />
-                  <p className="text-white">{item.comments.length}</p>
                 </div>
               </div>
             </div>
-          );
-        })}
+            <div className="flex items-center justify-between text-center mx-4">
+              <div className="flex items-center">
+                <Image
+                  className="mr-2 cursor-pointer hover:opacity-80"
+                  src={SVG.Like}
+                  alt="Like"
+                  width={20}
+                  height={20}
+                />
+                <p className="text-white">
+                  {
+                    item.reactions.filter(
+                      (reaction: any) => reaction.reactionType === "like"
+                    ).length
+                  }
+                </p>
+              </div>
+              <div className="flex items-center">
+                <Image
+                  className="mr-2 cursor-pointer hover:opacity-80"
+                  src={SVG.Love}
+                  alt="Love"
+                  width={20}
+                  height={20}
+                />
+                <p className="text-white">
+                  {
+                    item.reactions.filter(
+                      (reaction: any) => reaction.reactionType === "love"
+                    ).length
+                  }
+                </p>
+              </div>
+              <div className="flex items-center">
+                <Image
+                  className="mr-2 cursor-pointer hover:opacity-80"
+                  src={SVG.Comment}
+                  alt="Comment"
+                  width={25}
+                  height={25}
+                />
+                <p className="text-white">{item.comments.length}</p>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
 
       <Modal

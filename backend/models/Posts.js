@@ -32,6 +32,10 @@ const postSchema = new mongoose.Schema({
         type: String,
         enum: ["like", "love"],
       },
+      date: {
+        type: Date,
+        default: Date.now,
+      },
     },
   ],
 
@@ -56,6 +60,10 @@ const postSchema = new mongoose.Schema({
       userID: {
         type: String,
       },
+      date: {
+        type: Date,
+        default: Date.now,
+      },
     },
   ],
 
@@ -64,6 +72,10 @@ const postSchema = new mongoose.Schema({
       userID: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Users",
+      },
+      date: {
+        type: Date,
+        default: Date.now,
       },
     },
   ],

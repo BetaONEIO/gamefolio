@@ -825,6 +825,42 @@ const deactivateAccount = asyncHandler(async (req, res) => {
   }
 });
 
+// Controller to get all notifications for a user
+const getAllNotifications = async (req, res) => {
+  try {
+    // Find the user by ID and populate the notifications field
+    const user = await User.findById(req.body.userID)
+      .populate("notification.postID")
+      .populate({ path: "notification.oppositionID", select: "-password" });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json(user.notification);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Controller to create a new notification for a user
+const createNotification = async (req, res) => {
+  const { userID, notificationType, postID, oppositionID } = req.body;
+  try {
+    // Find the user by ID
+    const user = await User.findById(userID);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    // Push the new notification to the user's notification array
+    user.notification.push({ notificationType, postID, oppositionID });
+    // Save the user with the updated notification
+    await user.save();
+    res.status(201).json({ message: "Notification created successfully" });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
@@ -848,4 +884,6 @@ module.exports = {
   blockUser,
   unblockUser,
   deactivateAccount,
+  getAllNotifications,
+  createNotification,
 };

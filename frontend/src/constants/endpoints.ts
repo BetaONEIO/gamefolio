@@ -26,6 +26,8 @@ export const PATH = {
     unBlockUser: "user/block/delete",
     deactiveAccount: "user/deactivate",
     reportUser: "user/report/create",
+    notification: "user/notification/create",
+    getNotification: "user/notification/get",
   },
 
   theNextLeg: {

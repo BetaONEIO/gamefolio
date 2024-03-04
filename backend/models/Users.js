@@ -121,6 +121,28 @@ const userSchema = new mongoose.Schema({
       },
     },
   ],
+
+  notification: [
+    {
+      oppositionID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Users",
+      },
+      notificationType: {
+        type: String,
+        enum: ["post", "story", "clip", "friendRequest"],
+      },
+      postID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Posts",
+      },
+      date: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
+
   forgotOTP: {
     type: String,
   },

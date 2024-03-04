@@ -32,6 +32,10 @@ router.post("/block/delete", userController.unblockUser);
 
 router.post("/report/create", userController.report);
 
+//notification
+router.post("/notification/get", userController.getAllNotifications);
+router.post("/notification/create", userController.createNotification);
+
 // forget password otp
 router.post("/forgot-password/otp", userController.sendForgotPasswordOTP);
 router.post(

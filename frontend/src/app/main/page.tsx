@@ -1,11 +1,12 @@
 "use client";
+import { Suspense, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Suspense, useEffect, useState } from "react";
 import Loading from "@/app/main/loading";
 import MoreLoader from "@/components/CustomLoader/MoreLoader";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
+import ReactPlayer from "react-player";
 import CustomHeader from "@/components/CustomHeader/CustomHeader";
 import Layout from "@/components/CustomLayout/layout";
 import DeletePost from "@/components/Modals/DeletePost";
@@ -26,6 +27,7 @@ import {
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import AddClips from "@/components/Modals/AddClips";
 import AddVideo from "@/components/Modals/AddVideo";
+import { createNotification } from "@/store/slices/userSlice";
 
 function Main() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
@@ -34,7 +36,7 @@ function Main() {
   const [postID, setPostID] = useState("");
   const [detailedPost, setDetailedPost] = useState("");
 
-  console.log("postState", postState);
+  console.log("authState", authState);
   const { loading } = postState;
 
   const [page, setPage] = useState(1);
@@ -98,6 +100,35 @@ function Main() {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
   };
 
+  const handleCreateNotification = async (
+    postID: any,
+    postUserID: any,
+    notificationType: any
+  ) => {
+    const payload = {
+      userID: postUserID,
+      oppositionID: authState._id,
+      postID: postID,
+      notificationType: notificationType,
+    };
+
+    const successCallback = (response: any) => {
+      handlePageRefresh();
+    };
+
+    const errorCallback = (error: string) => {
+      toastError(error);
+    };
+
+    const params = {
+      payload,
+      successCallback,
+      errorCallback,
+    };
+
+    dispatch(createNotification(params));
+  };
+
   const handleCreateBookmark = async (postID: any) => {
     const payload = {
       userID: authState._id,
@@ -122,7 +153,11 @@ function Main() {
     dispatch(createBookmark(params));
   };
 
-  const handleCreateReaction = async (postID: any, reactionType: any) => {
+  const handleCreateReaction = async (
+    postID: any,
+    reactionType: any,
+    postUserID: any
+  ) => {
     const payload = {
       userID: authState._id,
       postID: postID,
@@ -130,6 +165,7 @@ function Main() {
     };
 
     const successCallback = (response: any) => {
+      handleCreateNotification(postID, postUserID, "post");
       handlePageRefresh();
     };
 
@@ -288,6 +324,8 @@ function Main() {
                   (reaction: any) => reaction.userID === authState._id
                 );
 
+                const postUserID = post.userID._id;
+
                 return (
                   <div
                     key={post._id}
@@ -356,7 +394,17 @@ function Main() {
                       <p className="text-neutral-300">{post?.description}</p>
                     </div>
 
-                    <video
+                    <ReactPlayer
+                      className="w-[710px] h-[185px] sm:h-[300px] my-2 sm:my-2"
+                      url={`${post.video}#t=0.1`} // Change 'src' to 'url'
+                      width="100%" // Adjust width and height as needed
+                      height="60%"
+                      controls={true} // Use 'true' instead of 'controls'
+                      controlsList="nodownload noremoteplayback noplaybackrate foobar"
+                      disablePictureInPicture
+                    />
+
+                    {/* <video
                       className="w-[710px] h-[185px] sm:h-[300px] my-2 sm:my-2"
                       src={`${post.video}#t=0.1`}
                       style={{ aspectRatio: "16:9" }}
@@ -368,7 +416,7 @@ function Main() {
                       autoPlay={false}
                       playsInline
                       preload="metadata"
-                    />
+                    /> */}
 
                     <div className="flex items-center my-3 mx-2">
                       <div
@@ -377,7 +425,12 @@ function Main() {
                           hasLikeReacted
                             ? () =>
                                 handleDeleteReaction(post._id, reactionID._id)
-                            : () => handleCreateReaction(post._id, "like")
+                            : () =>
+                                handleCreateReaction(
+                                  post._id,
+                                  "like",
+                                  postUserID
+                                )
                         }
                       >
                         <Image
@@ -403,7 +456,12 @@ function Main() {
                           hasLoveReacted
                             ? () =>
                                 handleDeleteReaction(post._id, reactionID._id)
-                            : () => handleCreateReaction(post._id, "love")
+                            : () =>
+                                handleCreateReaction(
+                                  post._id,
+                                  "love",
+                                  postUserID
+                                )
                         }
                       >
                         <Image

@@ -79,7 +79,7 @@ function User() {
           <hr className="h-px border-0 bg-[#1C2C2E] mb-1 w-full rounded-full" />
 
           <div className="flex flex-col flex-wrap justify-center text-center lg:justify-start lg:text-start">
-            <div className="flex items-center justify-center gap-1">
+            <div className="flex items-center justify-center gap-2">
               <div className="flex flex-col">
                 <span
                   className={`${leagueGothic.className} flex justify-center text-lg md:text-2xl font-normal text-white`}
@@ -88,7 +88,7 @@ function User() {
                     (video: any) => video.username === user.username
                   )?.videoCount || 0}
                 </span>
-                <span className="md:text-lg text-gray-400">Posts</span>
+                <span className="text-md text-gray-400">Posts</span>
               </div>
 
               {/* Vertical divider */}
@@ -100,7 +100,7 @@ function User() {
                 >
                   {user?.followers?.length || 0}
                 </span>
-                <span className="md:text-lg text-gray-400">Followers</span>
+                <span className="text-md text-gray-400">Followers</span>
               </div>
 
               {/* Vertical divider */}
@@ -112,7 +112,7 @@ function User() {
                 >
                   {user?.following?.length || 0}
                 </span>
-                <span className="md:text-lg text-gray-400">Following</span>
+                <span className="text-md text-gray-400">Following</span>
               </div>
             </div>
           </div>

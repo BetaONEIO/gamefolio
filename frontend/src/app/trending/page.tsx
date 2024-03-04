@@ -406,6 +406,7 @@ function Trending() {
                       alt="Account Profile"
                       height={10}
                       width={10}
+                      sizes="100vw"
                     />
 
                     <div>
@@ -431,7 +432,13 @@ function Trending() {
                         width={20}
                         height={20}
                       />
-                      <p className="text-white">24</p>
+                      <p className="text-white">
+                        {
+                          item.reactions.filter(
+                            (reaction: any) => reaction.reactionType === "like"
+                          ).length
+                        }
+                      </p>
                     </div>
 
                     <div className="flex items-center">
@@ -442,7 +449,14 @@ function Trending() {
                         width={20}
                         height={20}
                       />
-                      <p className="text-white">24</p>
+                      <p className="text-white">
+                        {" "}
+                        {
+                          item.reactions.filter(
+                            (reaction: any) => reaction.reactionType === "love"
+                          ).length
+                        }
+                      </p>
                     </div>
 
                     <div className="flex items-center">
@@ -453,7 +467,7 @@ function Trending() {
                         width={25}
                         height={25}
                       />
-                      <p className="text-white">24</p>
+                      <p className="text-white">{item.comments.length}</p>
                     </div>
                   </div>
                 </div>
