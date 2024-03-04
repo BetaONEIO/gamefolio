@@ -6,7 +6,6 @@ import Loading from "@/app/main/loading";
 import MoreLoader from "@/components/CustomLoader/MoreLoader";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
-import ReactPlayer from "react-player";
 import CustomHeader from "@/components/CustomHeader/CustomHeader";
 import Layout from "@/components/CustomLayout/layout";
 import DeletePost from "@/components/Modals/DeletePost";
