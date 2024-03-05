@@ -343,6 +343,8 @@ const getUserProfile = asyncHandler(async (req, res) => {
       path: "block.userID",
       select: "name username profilePicture", // Specify the fields you want to retrieve
     });
+
+  const notification = await getAllNotifications(decoded.id);
   console.log("user: ", user);
   if (user) {
     res.json({
@@ -360,6 +362,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
       block: user.block,
       report: user.report,
       coins: user.coins,
+      notification: notification,
     });
   } else {
     return res.status(404).json({
@@ -826,19 +829,19 @@ const deactivateAccount = asyncHandler(async (req, res) => {
 });
 
 // Controller to get all notifications for a user
-const getAllNotifications = async (req, res) => {
+const getAllNotifications = async (userID) => {
   try {
     // Find the user by ID and populate the notifications field
-    const user = await User.findById(req.body.userID)
+    const user = await User.findById(userID)
       .populate("notification.postID")
       .populate({ path: "notification.oppositionID", select: "-password" });
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return console.log({ message: "User not found" });
     }
-    res.json(user.notification);
+    return user.notification;
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.log({ message: error.message });
   }
 };
 

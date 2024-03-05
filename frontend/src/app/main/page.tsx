@@ -26,7 +26,7 @@ import {
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import AddClips from "@/components/Modals/AddClips";
 import AddVideo from "@/components/Modals/AddVideo";
-import { createNotification } from "@/store/slices/userSlice";
+import { createNotification, getNotification } from "@/store/slices/userSlice";
 
 function Main() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
@@ -39,7 +39,6 @@ function Main() {
   const { loading } = postState;
 
   const [page, setPage] = useState(1);
-  // const [loading, setLoading] = useState(false);
 
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
@@ -81,6 +80,26 @@ function Main() {
     isAddClipsOpen: false,
     isAddVideoOpen: false,
   });
+
+  const getNotificationMessage = (notificationType: any) => {
+    console.log("Notification Type:", notificationType);
+    switch (notificationType) {
+      case "like your post":
+        return "Liked your post.";
+      case "comment your post":
+        return "Commented on your post.";
+      case "like your story":
+        return "Liked your story.";
+      case "like your clip":
+        return "Liked your clip.";
+      case "follow":
+        return "Followed you.";
+      case "post":
+        return "Liked your post.";
+      default:
+        return "Unknown notification type";
+    }
+  };
 
   const handleModalToggle = (
     modalName: keyof typeof modalState,
@@ -262,7 +281,7 @@ function Main() {
             </div>
 
             {/* Story , Posts */}
-            <div className="w-11/12 sm:w-10/12 flex  flex-col gap-8 rounded-lg ">
+            <div className="w-11/12 sm:w-10/12 flex  flex-col gap-3 rounded-lg ">
               <div>
                 <FollowingStories />
               </div>
@@ -532,7 +551,7 @@ function Main() {
             </div>
 
             {/* Notification */}
-            <div className="hidden w-6/12 h-96 md:flex flex-col gap-8 rounded-lg bg-[#091619] border border-[#1C2C2E] px-2 py-6">
+            <div className="hidden w-6/12 h-96 md:flex flex-col gap-8 rounded-lg bg-[#091619] border border-[#1C2C2E] px-2 py-6 overflow-hidden">
               <div className="flex justify-between items-center">
                 <span className="font-bold">Notification</span>
                 <div className="flex gap-2">
@@ -545,28 +564,46 @@ function Main() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-1">
-                <Image
-                  width={12}
-                  height={12}
-                  className="w-12 h-10"
-                  src={IMAGES.callofduty}
-                  alt="UploadStory"
-                />
-                <div className="flex flex-col">
-                  <div className="flex items-center gap-4 mx-2">
-                    <p className="w-32 text-sm text-white font-semibold">
-                      Maria Samson
-                    </p>
-                    <p className="w-32 text-xs text-gray-400">
-                      4:30 AM-2/10/24
-                    </p>
+              {authState?.notification?.map((notification: any) => (
+                <div
+                  key={notification._id}
+                  className="flex items-center gap-1 overflow-y-scroll"
+                >
+                  <Image
+                    className="w-10 h-10 rounded-lg"
+                    src={notification.oppositionID.profilePicture}
+                    alt="picture"
+                    width={12}
+                    height={12}
+                    sizes="100vw"
+                  />
+                  <div className="flex flex-col">
+                    <div className="flex items-center gap-2 mx-2">
+                      <p className="w-28 text-sm text-white font-semibold">
+                        {notification.oppositionID.name.length > 10
+                          ? `${notification.oppositionID.name.substring(
+                              0,
+                              10
+                            )}...`
+                          : notification.oppositionID.name}
+                      </p>
+                      <p className="w-32 text-[0.63rem] text-gray-400">
+                        {new Date(notification.date).toLocaleString("en-US", {
+                          hour: "numeric",
+                          minute: "numeric",
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        })}
+                      </p>
+                    </div>
+                    <span className="text-sm text-white mx-2">
+                      {/* Followed your profile...{" "} */}
+                      {getNotificationMessage(notification.notificationType)}
+                    </span>
                   </div>
-                  <span className="text-sm text-white mx-2">
-                    Followed your profile...{" "}
-                  </span>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
