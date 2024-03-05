@@ -6,11 +6,14 @@ ffmpeg.setFfmpegPath(ffmpegPath);
 var ffprobe = require("ffprobe-static");
 ffmpeg.setFfprobePath(ffprobe.path);
 const { v4: uuidv4 } = require("uuid");
-const bucketName = process.env.AWS_BUCKET_NAME;
-
-const region = process.env.AWS_BUCKET_REGION;
-const accessKeyId = process.env.AWS_ACCESS_KEY;
-const secretAccessKey = process.env.AWS_SECRET_KEY;
+const {
+  AWS_BUCKET_NAME: bucketName,
+  AWS_BUCKET_REGION: region,
+  AWS_ACCESS_KEY: accessKeyId,
+  AWS_SECRET_KEY: secretAccessKey,
+  AWS_S3: S3URL,
+  AWS_CDN: CDNURL,
+} = process.env;
 
 const s3 = new AWS.S3({
   accessKeyId: accessKeyId,
@@ -52,10 +55,11 @@ const uploadVideo = async (req, res) => {
       if (err) {
         throw err;
       }
-      console.log(`File uploaded successfully. ${data.Location}`);
+      const cdnDataLocation = data.Location.replace(S3URL, CDNURL);
+      console.log(`File uploaded successfully. ${cdnDataLocation}`);
       return res.status(201).json({
         message: "File uploaded successfully",
-        videoURL: data.Location,
+        videoURL: cdnDataLocation,
       });
     });
   };
@@ -147,10 +151,11 @@ const uploadImage = async (req, res) => {
       if (err) {
         throw err;
       }
-      console.log(`File uploaded successfully. ${data.Location}`);
+      const cdnDataLocation = data.Location.replace(S3URL, CDNURL);
+      console.log(`File uploaded successfully. ${cdnDataLocation}`);
       return res.status(201).json({
         message: "File uploaded successfully",
-        imageURL: data.Location,
+        imageURL: cdnDataLocation,
       });
     });
   };
