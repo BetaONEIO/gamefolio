@@ -4,7 +4,7 @@ const nextConfig = {
     domains: [
       "lh3.googleusercontent.com",
       "pbs.twimg.com",
-      "gamefolio-uploads.s3.eu-west-2.amazonaws.com",
+      "d2m0dxds81dlzy.cloudfront.net",
       "id.twitch.tv",
     ],
   },
