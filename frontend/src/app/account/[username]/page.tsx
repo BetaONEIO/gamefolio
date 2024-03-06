@@ -209,6 +209,7 @@ const MyBookmarkSection: React.FC<MyBookmarkSectionProps> = ({
 function Page({ params }: any) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const profileInfoState = useSelector((state: any) => state.user) || [];
+  const userState = useSelector((state: any) => state.user) || [];
   const postState = useSelector((state: any) => state.post) || [];
   const clipState = useSelector((state: any) => state.clip) || [];
   const storyState = useSelector((state: any) => state.story) || [];
@@ -226,9 +227,12 @@ function Page({ params }: any) {
     isStoryModalOpen: false,
   });
 
-  const userVideos = postState.videos.filter(
-    (post: any) => post?.userID?._id === authState._id
-  );
+  const userVideos = userState.userList.map((user: any) => {
+    const videosForUser = postState.videos.filter(
+      (post: any) => post?.userID?.username === user.username
+    );
+    return { username: user.username, videoCount: videosForUser.length };
+  });
 
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
@@ -356,14 +360,18 @@ function Page({ params }: any) {
                 </div>
 
                 <div className="flex h-8 items-center justify-start md:gap-8">
-                  <div className="flex items-center gap-2 ">
-                    <span
-                      className={`${leagueGothic.className} text-lg md:text-2xl font-normal text-white`}
-                    >
-                      {userVideos.length || 0}
-                    </span>
-                    <span className="md:text-lg text-gray-400"> Posts</span>
-                  </div>
+                  {userState?.userList?.map((user: any) => (
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`${leagueGothic.className} text-lg md:text-2xl font-normal text-white`}
+                      >
+                        {userVideos.find(
+                          (video: any) => video.username === user.username
+                        )?.videoCount || 0}
+                      </span>
+                      <span className="md:text-lg text-gray-400"> Posts</span>
+                    </div>
+                  ))}
 
                   {/* Vertical divider */}
                   <div className="border-r border-gray-700 h-full rounded-full mx-2"></div>

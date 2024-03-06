@@ -52,9 +52,12 @@ function Explore() {
     dispatch(getAllUsers());
   }, [postState.refresh]);
 
-  const userVideos = postState.videos.filter(
-    (post: any) => post?.userID?._id === authState._id
-  );
+  const userVideos = userState.userList.map((user: any) => {
+    const videosForUser = postState.videos.filter(
+      (post: any) => post?.userID?.username === user.username
+    );
+    return { username: user.username, videoCount: videosForUser.length };
+  });
 
   const handleVideoMetadata = (
     event: React.SyntheticEvent<HTMLVideoElement, Event>,
@@ -286,6 +289,7 @@ function Explore() {
                 alt="Account Profile"
                 height={10}
                 width={10}
+                sizes="100vw"
               />
               <div>
                 <div>
