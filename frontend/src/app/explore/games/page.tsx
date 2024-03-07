@@ -8,8 +8,6 @@ import { getAllPostVideos, refreshPage } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Loading from "./loading";
 import Link from "next/link";
-import Image from "next/image";
-import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
@@ -59,24 +57,6 @@ function Games() {
 
   if (postState.loading) return <Loading />;
 
-  const handleVideoMetadata = (
-    event: React.SyntheticEvent<HTMLVideoElement, Event>,
-    videoId: string
-  ) => {
-    const video = event.currentTarget;
-    const duration = video.duration;
-    setVideoDurations((prevDurations) => ({
-      ...prevDurations,
-      [videoId]: duration,
-    }));
-  };
-
-  function formatTime(seconds: number): string {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = Math.floor(seconds % 60);
-    return `${padZero(minutes)}:${padZero(remainingSeconds)}`;
-  }
-
   function padZero(value: number): string {
     return value < 10 ? `0${value}` : `${value}`;
   }
@@ -124,7 +104,7 @@ function Games() {
         </Swiper>
       </div>
 
-      <div className="flex items-center">
+      <div className="flex items-center my-2">
         <div className="flex justify-between items-center w-full sm:mx-2 lg:mx-4">
           <div>
             <p className="font-semibold text-base sm:text-lg lg:text-lg text-white">
