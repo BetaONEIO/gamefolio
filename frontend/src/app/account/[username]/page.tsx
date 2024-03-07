@@ -212,11 +212,9 @@ function Page({ params }: any) {
   const postState = useSelector((state: any) => state.post) || [];
   const clipState = useSelector((state: any) => state.clip) || [];
   const storyState = useSelector((state: any) => state.story) || [];
-  const [open, setOpen] = useState(false);
   const [selectedSection, setSelectedSection] = useState("videos");
   const [isPrivateAccount, setIsPrivateAccount] = useState(false);
   const [postID, setPostID] = useState("");
-  const [storyUserID, setStoryUserID] = useState("");
   const [detailedPost, setDetailedPost] = useState("");
   const [modalState, setModalState] = useState({
     isShareModalOpen: false,
@@ -227,7 +225,7 @@ function Page({ params }: any) {
   });
 
   const userVideos = postState.videos.filter(
-    (post: any) => post?.userID?._id === authState._id
+    (post: any) => post?.userID?._id === profileInfoState?.profileUserInfo._id
   );
 
   const payload = {
@@ -356,7 +354,7 @@ function Page({ params }: any) {
                 </div>
 
                 <div className="flex h-8 items-center justify-start md:gap-8">
-                  <div className="flex items-center gap-2 ">
+                  <div className="flex items-center gap-2">
                     <span
                       className={`${leagueGothic.className} text-lg md:text-2xl font-normal text-white`}
                     >

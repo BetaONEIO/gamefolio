@@ -52,9 +52,12 @@ function Explore() {
     dispatch(getAllUsers());
   }, [postState.refresh]);
 
-  const userVideos = postState.videos.filter(
-    (post: any) => post?.userID?._id === authState._id
-  );
+  const userVideos = userState.userList.map((user: any) => {
+    const videosForUser = postState.videos.filter(
+      (post: any) => post?.userID?.username === user.username
+    );
+    return { username: user.username, videoCount: videosForUser.length };
+  });
 
   const handleVideoMetadata = (
     event: React.SyntheticEvent<HTMLVideoElement, Event>,
@@ -102,9 +105,9 @@ function Explore() {
   };
 
   return (
-    <div className="flex flex-col py-2 overflow-y-scroll no-scrollbar">
+    <div className="flex flex-col py-2 overflow-y-scroll no-scrollbar mx-4">
       <div className="flex items-center">
-        <div className="flex justify-between items-center w-full sm:mx-2 lg:mx-4">
+        <div className="flex justify-between items-center w-full">
           <div>
             <p className="font-semibold text-base sm:text-lg lg:text-lg text-white">
               Trending Games
@@ -141,7 +144,7 @@ function Explore() {
       </div>
 
       <div className="flex items-center">
-        <div className="flex justify-between items-center w-full sm:mx-2 lg:mx-4">
+        <div className="flex justify-between items-center w-full">
           <div>
             <p className="font-semibold text-base sm:text-lg lg:text-lg text-white">
               Recommended Users
@@ -158,11 +161,11 @@ function Explore() {
         </div>
       </div>
 
-      <div className="flex items-center p-2 overflow-scroll no-scrollbar">
+      <div className="flex items-center p-2 overflow-scroll no-scrollbar gap-2">
         {userState?.userList?.slice(0, 10).map((user: any) => (
           <div
             key={user?.userID}
-            className="flex flex-col gap-1 border-2 border-[#1C2C2E] rounded-xl mx-2"
+            className="flex flex-col border-2 border-[#1C2C2E] rounded-xl"
           >
             <div className="flex items-center gap-4 mb-2">
               <Image
@@ -239,7 +242,7 @@ function Explore() {
       </div>
 
       <div className="flex items-center">
-        <div className="flex justify-between items-center w-full sm:mx-2 lg:mx-4">
+        <div className="flex justify-between items-center w-full">
           <div>
             <p className="font-semibold text-base sm:text-lg lg:text-lg text-white">
               Recommended Videos
@@ -256,7 +259,7 @@ function Explore() {
         </div>
       </div>
 
-      <div className="flex items-center gap-2 mt-2 overflow-x-auto">
+      <div className="flex items-center gap-2 mt-2 overflow-x-auto no-scrollbar">
         {postState.videos.slice(0, 8).map((item: any) => (
           <div
             key={item?.userID}
@@ -286,6 +289,7 @@ function Explore() {
                 alt="Account Profile"
                 height={10}
                 width={10}
+                sizes="100vw"
               />
               <div>
                 <div>

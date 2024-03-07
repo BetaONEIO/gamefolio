@@ -1,11 +1,13 @@
 "use client";
+import { Suspense, useEffect, useState } from "react";
+import Image from "next/image";
 import { SVG } from "@/assets/SVG";
+import CustomHeader from "@/components/CustomHeader/CustomHeader";
 import Layout from "@/components/CustomLayout/layout";
 import DeletePost from "@/components/Modals/DeletePost";
 import Modal from "@/components/Modals/Modal";
 import VideoDetails from "@/components/Modals/VideoDetails";
 import { toastError } from "@/components/Toast/Toast";
-import { leagueGothic } from "@/font/font";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import {
@@ -15,13 +17,9 @@ import {
   getTrendingPosts,
   refreshPage,
 } from "@/store/slices/postSlice";
-import { getCookieValue, getFromLocal } from "@/utils/localStorage";
-import Image from "next/image";
-import Link from "next/link";
-import React, { Suspense, useEffect, useState, useRef } from "react";
-import Loading from "./loading";
-import CustomHeader from "@/components/CustomHeader/CustomHeader";
 import { getAllUsers } from "@/store/slices/userSlice";
+import { getCookieValue, getFromLocal } from "@/utils/localStorage";
+import Loading from "./loading";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
@@ -30,8 +28,8 @@ import "swiper/css/effect-fade";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 // import required modules
-import { EffectFade, Navigation, Pagination } from "swiper/modules";
 import { IMAGES } from "@/assets/images";
+import { EffectFade, Navigation, Pagination } from "swiper/modules";
 
 function Trending() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
@@ -45,9 +43,11 @@ function Trending() {
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
   };
+
   const params = {
     payload,
   };
+
   useEffect(() => {
     dispatch(userSession(params));
     dispatch(getTrendingPosts());
@@ -60,11 +60,9 @@ function Trending() {
     isVideoDetailOpen: false,
     isPostDeleteOpen: false,
   });
+
   const sectionStyle = {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
-  };
-  const headerStyle = {
-    backgroundImage: `linear-gradient(180deg, #46A541 0%, #B5D759 100%)`,
   };
 
   const handleModalToggle = (
@@ -126,18 +124,6 @@ function Trending() {
     };
 
     dispatch(deleteVideoReaction(params));
-  };
-
-  const handleVideoMetadata = (
-    event: React.SyntheticEvent<HTMLVideoElement, Event>,
-    videoId: string
-  ) => {
-    const video = event.currentTarget;
-    const duration = video.duration;
-    setVideoDurations((prevDurations) => ({
-      ...prevDurations,
-      [videoId]: duration,
-    }));
   };
 
   function formatTimeAgo(timestamp: any) {
@@ -227,7 +213,7 @@ function Trending() {
               </Swiper>
 
               <div
-                className="hidden w-2/5 h-full md:flex flex-col gap-8 rounded-lg bg-[#091619] border border-[#1C2C2E] px-4 py-6 overflow-y-auto "
+                className="hidden w-2/5 h-full md:flex flex-col gap-8 rounded-lg bg-[#091619] border border-[#1C2C2E] px-4 py-6 overflow-y-auto"
                 style={styles.scroller}
               >
                 <div className="flex justify-start items-center">
@@ -377,7 +363,7 @@ function Trending() {
             </div> */}
 
             <div className="flex flex-wrap w-full gap-4">
-              {postState.videos.map((item: any) => (
+              {postState?.trendingVideos?.map((item: any) => (
                 <div
                   key={item?.userID}
                   className="flex flex-col w-64 h-60 border-2 border-[#1C2C2E] rounded-xl my-2 pb-2"
@@ -391,7 +377,6 @@ function Trending() {
                       className="w-80 h-full rounded-2xl hover:opacity-80 p-2"
                       controls={false}
                       autoPlay={false}
-                      onLoadedMetadata={(e) => handleVideoMetadata(e, item._id)}
                     />
 
                     <span className="absolute bottom-2 right-3">
