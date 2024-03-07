@@ -27,6 +27,7 @@ import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import AddClips from "@/components/Modals/AddClips";
 import AddVideo from "@/components/Modals/AddVideo";
 import { createNotification, getNotification } from "@/store/slices/userSlice";
+import handleCreateNotification from "@/components/Notification/Notification";
 
 function Main() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
@@ -83,18 +84,17 @@ function Main() {
   const getNotificationMessage = (notificationType: any) => {
     console.log("Notification Type:", notificationType);
     switch (notificationType) {
-      case "like your post":
+      case "like_post":
         return "Liked your post.";
-      case "comment your post":
+      case "comment_post":
         return "Commented on your post.";
-      case "like your story":
+      case "story":
         return "Liked your story.";
-      case "like your clip":
+      case "clip":
         return "Liked your clip.";
-      case "follow":
-        return "Followed you.";
-      case "post":
-        return "Liked your post.";
+      case "friendRequest":
+        return "sent you a friend request.";
+
       default:
         return "Unknown notification type";
     }
@@ -115,35 +115,6 @@ function Main() {
 
   const sectionStyle = {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
-  };
-
-  const handleCreateNotification = async (
-    postID: any,
-    postUserID: any,
-    notificationType: any
-  ) => {
-    const payload = {
-      userID: postUserID,
-      oppositionID: authState._id,
-      postID: postID,
-      notificationType: notificationType,
-    };
-
-    const successCallback = (response: any) => {
-      handlePageRefresh();
-    };
-
-    const errorCallback = (error: string) => {
-      toastError(error);
-    };
-
-    const params = {
-      payload,
-      successCallback,
-      errorCallback,
-    };
-
-    dispatch(createNotification(params));
   };
 
   const handleCreateBookmark = async (postID: any) => {
@@ -182,7 +153,7 @@ function Main() {
     };
 
     const successCallback = (response: any) => {
-      handleCreateNotification(postID, postUserID, "post");
+      handleCreateNotification(authState._id, postID, postUserID, "like_post");
       handlePageRefresh();
     };
 
@@ -412,6 +383,16 @@ function Main() {
                     <div className="mx-3">
                       <p className="text-neutral-300">{post?.description}</p>
                     </div>
+                    {/* 
+                    <ReactPlayer
+                      className="w-[710px] h-[185px] sm:h-[300px] my-2 sm:my-2"
+                      url={"post.video"} // Change 'src' to 'url'
+                      width="100%" // Adjust width and height as needed
+                      height="55%"
+                      controls={true} // Use 'true' instead of 'controls'
+                      controlsList="nodownload noremoteplayback noplaybackrate foobar"
+                      disablePictureInPicture
+                    /> */}
 
                     <video
                       className="w-[710px] h-[185px] sm:h-[300px] my-2 sm:my-2"

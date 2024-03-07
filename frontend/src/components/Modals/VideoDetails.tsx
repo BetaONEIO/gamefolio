@@ -12,6 +12,7 @@ import { toastError, toastSuccess } from "../Toast/Toast";
 import DeletePost from "./DeletePost";
 import Modal from "./Modal";
 import Report from "./Report";
+import handleCreateNotification from "../Notification/Notification";
 
 interface VideoDetailProps {
   handleCloseModal: () => void;
@@ -43,6 +44,12 @@ function VideoDetails({
     };
 
     const successCallback = (response: any) => {
+      handleCreateNotification(
+        authState._id,
+        postID,
+        detailedPost?.userID?._id,
+        "comment_post"
+      );
       handlePageRefresh();
       toastSuccess(response);
     };

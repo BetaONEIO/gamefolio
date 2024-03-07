@@ -130,7 +130,7 @@ const userSchema = new mongoose.Schema({
       },
       notificationType: {
         type: String,
-        enum: ["post", "story", "clip", "friendRequest"],
+        enum: ["like_post", "comment_post", "story", "clip", "friendRequest"],
       },
       postID: {
         type: mongoose.Schema.Types.ObjectId,
