@@ -56,7 +56,6 @@ function VideoDetails({
       successCallback,
       errorCallback,
     };
-
     dispatch(createComment(params));
   };
 
@@ -230,6 +229,7 @@ function VideoDetails({
 
                   <div className="flex items-center justify-between mx-3">
                     <div className="flex flex-1 gap-4">
+                      <p>{detailedPost?.reactions.length}</p>
                       <Image
                         className="cursor-pointer hover:opacity-80 p-2 w-10 h-10 rounded-xl bg-[#162423]"
                         src={SVG.Like}

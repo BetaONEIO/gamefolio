@@ -259,7 +259,7 @@ function Explore() {
         </div>
       </div>
 
-      <div className="flex items-center gap-2 mt-2 overflow-x-auto">
+      <div className="flex items-center gap-2 mt-2 overflow-x-auto no-scrollbar">
         {postState.videos.slice(0, 8).map((item: any) => (
           <div
             key={item?.userID}

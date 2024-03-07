@@ -831,15 +831,17 @@ const deactivateAccount = asyncHandler(async (req, res) => {
 // Controller to get all notifications for a user
 const getAllNotifications = async (userID) => {
   try {
-    // Find the user by ID and populate the notifications field
-    const user = await User.findById(userID)
+    const notifications = await User.findById(userID)
       .populate("notification.postID")
-      .populate({ path: "notification.oppositionID", select: "-password" });
+      .populate({ path: "notification.oppositionID", select: "-password" })
+      .select("notification")
+      .sort({ "notification.date": -1 });
 
-    if (!user) {
+    if (!notifications) {
       return console.log({ message: "User not found" });
     }
-    return user.notification;
+
+    return notifications.notification;
   } catch (error) {
     console.log({ message: error.message });
   }

@@ -32,11 +32,17 @@ import ReactPlayer from "react-player";
 function Main() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const postState = useSelector((state: any) => state.post) || [];
-  const profileInfoState = useSelector((state: any) => state.user) || [];
   const [postID, setPostID] = useState("");
   const [detailedPost, setDetailedPost] = useState("");
+  const [modalState, setModalState] = useState({
+    isPostShareOpen: false,
+    isVideoDetailOpen: false,
+    isPostDeleteOpen: false,
+    isReportModalOpen: false,
+    isAddClipsOpen: false,
+    isAddVideoOpen: false,
+  });
 
-  console.log("authState", authState);
   const { loading } = postState;
 
   const [page, setPage] = useState(1);
@@ -46,9 +52,11 @@ function Main() {
     limit: 2,
     page: page,
   };
+
   const params = {
     payload,
   };
+
   useEffect(() => {
     dispatch(userSession(params));
     dispatch(getFollowingPostOnly(params));
@@ -72,15 +80,6 @@ function Main() {
       console.error(error);
     }
   };
-
-  const [modalState, setModalState] = useState({
-    isPostShareOpen: false,
-    isVideoDetailOpen: false,
-    isPostDeleteOpen: false,
-    isReportModalOpen: false,
-    isAddClipsOpen: false,
-    isAddVideoOpen: false,
-  });
 
   const getNotificationMessage = (notificationType: any) => {
     console.log("Notification Type:", notificationType);
@@ -243,9 +242,11 @@ function Main() {
             <div className="hidden w-2/5 h-fit md:flex flex-col gap-8 rounded-lg bg-[#091619] border border-[#1C2C2E] px-4 py-6 ">
               <div className="flex justify-between items-center">
                 <span className="font-bold">Trendings</span>
-                <span className="text-xs text-[#43DD4E] cursor-pointer">
-                  See More
-                </span>
+                <Link href={"/trending"}>
+                  <span className="text-xs text-[#43DD4E] cursor-pointer hover:opacity-80">
+                    See More
+                  </span>
+                </Link>
               </div>
               <div className="flex flex-col gap-6">
                 <div className="flex justify-between items-center">
@@ -552,7 +553,10 @@ function Main() {
             </div>
 
             {/* Notification */}
-            <div className="hidden w-6/12 h-96 md:flex flex-col gap-8 rounded-lg bg-[#091619] border border-[#1C2C2E] px-2 py-6 overflow-hidden">
+            <div
+              className="hidden w-6/12 h-96 md:flex flex-col gap-8 rounded-lg bg-[#091619] border border-[#1C2C2E] px-2 py-6 overflow-hidden overflow-y-auto"
+              style={styles.scroller}
+            >
               <div className="flex justify-between items-center">
                 <span className="font-bold">Notification</span>
                 <div className="flex gap-2">
@@ -660,4 +664,9 @@ function Main() {
   );
 }
 
+const styles = {
+  scroller: {
+    scrollbarColor: "#43DD4E #FFFFFF",
+  },
+};
 export default Main;
