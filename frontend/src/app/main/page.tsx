@@ -27,7 +27,7 @@ import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import AddClips from "@/components/Modals/AddClips";
 import AddVideo from "@/components/Modals/AddVideo";
 import { createNotification, getNotification } from "@/store/slices/userSlice";
-import ReactPlayer from "react-player";
+import handleCreateNotification from "@/components/Notification/Notification";
 
 function Main() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
@@ -84,18 +84,17 @@ function Main() {
   const getNotificationMessage = (notificationType: any) => {
     console.log("Notification Type:", notificationType);
     switch (notificationType) {
-      case "like your post":
+      case "like_post":
         return "Liked your post.";
-      case "comment your post":
+      case "comment_post":
         return "Commented on your post.";
-      case "like your story":
+      case "story":
         return "Liked your story.";
-      case "like your clip":
+      case "clip":
         return "Liked your clip.";
-      case "follow":
-        return "Followed you.";
-      case "post":
-        return "Liked your post.";
+      case "friendRequest":
+        return "sent you a friend request.";
+
       default:
         return "Unknown notification type";
     }
@@ -116,35 +115,6 @@ function Main() {
 
   const sectionStyle = {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
-  };
-
-  const handleCreateNotification = async (
-    postID: any,
-    postUserID: any,
-    notificationType: any
-  ) => {
-    const payload = {
-      userID: postUserID,
-      oppositionID: authState._id,
-      postID: postID,
-      notificationType: notificationType,
-    };
-
-    const successCallback = (response: any) => {
-      handlePageRefresh();
-    };
-
-    const errorCallback = (error: string) => {
-      toastError(error);
-    };
-
-    const params = {
-      payload,
-      successCallback,
-      errorCallback,
-    };
-
-    dispatch(createNotification(params));
   };
 
   const handleCreateBookmark = async (postID: any) => {
@@ -183,7 +153,7 @@ function Main() {
     };
 
     const successCallback = (response: any) => {
-      handleCreateNotification(postID, postUserID, "post");
+      handleCreateNotification(authState._id, postID, postUserID, "like_post");
       handlePageRefresh();
     };
 
