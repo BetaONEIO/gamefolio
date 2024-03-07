@@ -394,7 +394,7 @@ function Main() {
                       <p className="text-neutral-300">{post?.description}</p>
                     </div>
 
-                    <ReactPlayer
+                    {/* <ReactPlayer
                       className="w-[710px] h-[185px] sm:h-[300px] my-2 sm:my-2"
                       url={"https://d2m0dxds81dlzy.cloudfront.net/testmp4.mp4"} // Change 'src' to 'url'
                       width="100%" // Adjust width and height as needed
@@ -402,9 +402,9 @@ function Main() {
                       controls={true} // Use 'true' instead of 'controls'
                       controlsList="nodownload noremoteplayback noplaybackrate foobar"
                       disablePictureInPicture
-                    />
+                    /> */}
 
-                    {/* <video
+                    <video
                       className="w-[710px] h-[185px] sm:h-[300px] my-2 sm:my-2"
                       src={`${post.video}#t=0.1`}
                       style={{ aspectRatio: "16:9" }}
@@ -416,7 +416,7 @@ function Main() {
                       autoPlay={false}
                       playsInline
                       preload="metadata"
-                    /> */}
+                    />
 
                     <div className="flex items-center my-3 mx-2">
                       <div
