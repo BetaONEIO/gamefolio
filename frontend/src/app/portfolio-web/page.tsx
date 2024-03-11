@@ -1,30 +1,19 @@
 "use client";
-import { Suspense, useEffect, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
-import { leagueGothic } from "@/font/font";
-import { dispatch, useSelector } from "@/store";
-import { userSession } from "@/store/slices/authSlice";
-import {
-  getAllPostVideos,
-  getUserBookmark,
-  removeUserBookmark,
-} from "@/store/slices/postSlice";
-import { getCookieValue, getFromLocal } from "@/utils/localStorage";
-import { copyToClipboard } from "@/utils/helpers";
-import { ToastContainer } from "react-toastify";
-import Layout from "@/components/CustomLayout/layout";
-import Badges from "@/components/Modals/Badges";
 import Followers from "@/components/Modals/Followers";
 import Following from "@/components/Modals/Following";
 import Modal from "@/components/Modals/Modal";
 import MoreOptions from "@/components/Modals/MoreOptions";
-import CurrentUserStories from "@/components/story/CurrentUserStories";
 import VideoDetails from "@/components/Modals/VideoDetails";
+import { dispatch, useSelector } from "@/store";
+import { userSession } from "@/store/slices/authSlice";
+import { getAllPostVideos } from "@/store/slices/postSlice";
 import { getAllUsers, getProfileInfo } from "@/store/slices/userSlice";
-import Loading from "./loading";
+import { copyToClipboard } from "@/utils/helpers";
+import { getCookieValue, getFromLocal } from "@/utils/localStorage";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
 function MyGamefolio() {
   const authState = useSelector((state: any) => state.auth.userData) || [];

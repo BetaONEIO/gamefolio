@@ -15,7 +15,6 @@ import CustomBackground from "@/components/CustomBackground/custombackground";
 
 const Signup = () => {
   const router = useRouter();
-  const authState = useSelector((state: RootState) => state.auth);
   const [form, setForm] = useState({
     name: "",
     username: "",

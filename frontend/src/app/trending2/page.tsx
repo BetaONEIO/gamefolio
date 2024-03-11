@@ -1,11 +1,11 @@
 "use client";
 import { SVG } from "@/assets/SVG";
+import CustomHeader from "@/components/CustomHeader/CustomHeader";
 import Layout from "@/components/CustomLayout/layout";
 import DeletePost from "@/components/Modals/DeletePost";
 import Modal from "@/components/Modals/Modal";
 import VideoDetails from "@/components/Modals/VideoDetails";
 import { toastError } from "@/components/Toast/Toast";
-import { leagueGothic } from "@/font/font";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import {
@@ -15,25 +15,21 @@ import {
   getTrendingPosts,
   refreshPage,
 } from "@/store/slices/postSlice";
-import { getCookieValue, getFromLocal } from "@/utils/localStorage";
-import Image from "next/image";
-import Link from "next/link";
-import { useForm } from "react-hook-form";
-import React, { Suspense, useEffect, useState, useRef } from "react";
-import Loading from "./loading";
-import CustomHeader from "@/components/CustomHeader/CustomHeader";
 import { getAllUsers } from "@/store/slices/userSlice";
+import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
+import Image from "next/image";
+import React, { Suspense, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import Loading from "./loading";
 // Import Swiper React components
-import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 // import required modules
-import { EffectFade, Navigation, Pagination } from "swiper/modules";
 import { IMAGES } from "@/assets/images";
 
 function Page() {

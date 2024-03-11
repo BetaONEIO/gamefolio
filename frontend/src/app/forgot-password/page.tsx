@@ -12,7 +12,6 @@ import { useState } from "react";
 import { ToastContainer } from "react-toastify";
 
 const ForgotPassword = () => {
-  const authState = useSelector((state: any) => state.auth.userData) || [];
   const [email, setEmail] = useState("");
   const [modalState, setModalState] = useState({
     isOtpVerificationModalOpen: false,
