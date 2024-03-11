@@ -103,7 +103,7 @@ function Trending() {
 
         <section
           style={sectionStyle}
-          className="flex flex-col items-center bg-[#091619] min-h-screen"
+          className="flex flex-col items-center bg-[#091619] min-h-screen relative"
         >
           <div className="p-4 flex flex-col w-full h-full gap-2">
             <div className="flex items-center gap-3">
@@ -128,11 +128,9 @@ function Trending() {
               <Swiper
                 effect={"fade"}
                 navigation={true}
-                pagination={{
-                  clickable: true,
-                }}
+                pagination={{ clickable: true }}
                 modules={[EffectFade, Navigation, Pagination]}
-                className="mySwiper h-80 w-full rounded-lg"
+                className="mySwiper h-80 w-full rounded-lg relative"
               >
                 <SwiperSlide>
                   <img src={IMAGES.TrendingPubg} style={styles.swiperImage} />
@@ -152,6 +150,18 @@ function Trending() {
                   />
                 </SwiperSlide>
               </Swiper>
+
+              <div className="absolute left-10 flex gap-4 mt-4">
+                <button className="rounded-2xl px-4 py-2 bg-[#292D32] text-white">
+                  Action
+                </button>
+                <button className="rounded-2xl px-4 py-2 bg-[#292D32] text-white">
+                  Fighting
+                </button>
+                <button className="rounded-2xl px-4 py-2 bg-[#292D32] text-white">
+                  Thrilling
+                </button>
+              </div>
 
               <div
                 className="hidden w-2/5 h-[22.5rem] md:flex flex-col gap-8 rounded-lg bg-[#091619] border border-[#1C2C2E] px-4 py-6 overflow-y-auto"
@@ -296,12 +306,6 @@ function Trending() {
                 </div>
               </div>
             </div>
-
-            {/* <div className="absolute flex items-center gap-4">
-              <h1 className="p-2 bg-[#292D32] rounded-xl">Action</h1>
-              <h1 className="p-2 bg-[#292D32] rounded-xl">Fighting</h1>
-              <h1 className="p-2 bg-[#292D32] rounded-xl">Thrilling</h1>
-            </div> */}
 
             <div className="flex items-center gap-3">
               <p className="font-semibold text-base sm:text-lg lg:text-lg text-white">

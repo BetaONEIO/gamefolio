@@ -1,34 +1,25 @@
 "use client";
 import { Suspense, useEffect, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import Layout from "@/components/CustomLayout/layout";
+import Followers from "@/components/Modals/Followers";
+import Following from "@/components/Modals/Following";
+import Modal from "@/components/Modals/Modal";
+import MoreOptions from "@/components/Modals/MoreOptions";
+import VideoDetails from "@/components/Modals/VideoDetails";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
-import {
-  getAllPostVideos,
-  getUserBookmark,
-  removeUserBookmark,
-} from "@/store/slices/postSlice";
-import { getCookieValue, getFromLocal } from "@/utils/localStorage";
-import { copyToClipboard } from "@/utils/helpers";
-import { ToastContainer } from "react-toastify";
-import Layout from "@/components/CustomLayout/layout";
-import Badges from "@/components/Modals/Badges";
-import Followers from "@/components/Modals/Followers";
-import Following from "@/components/Modals/Following";
-import Modal from "@/components/Modals/Modal";
-import MoreOptions from "@/components/Modals/MoreOptions";
-import CurrentUserStories from "@/components/story/CurrentUserStories";
-import VideoDetails from "@/components/Modals/VideoDetails";
-import { toastError, toastSuccess } from "@/components/Toast/Toast";
-import CustomHeader from "@/components/CustomHeader/CustomHeader";
-import Loading from "./loading";
-import { getAllUsers, getProfileInfo } from "@/store/slices/userSlice";
 import { getAllClipVideos } from "@/store/slices/clipSlice";
+import { getAllPostVideos, getUserBookmark } from "@/store/slices/postSlice";
 import { getCurrentUserStories } from "@/store/slices/storySlice";
+import { getAllUsers, getProfileInfo } from "@/store/slices/userSlice";
+import { copyToClipboard } from "@/utils/helpers";
+import { getCookieValue, getFromLocal } from "@/utils/localStorage";
+import Loading from "./loading";
+import Link from "next/link";
 
 interface MyVideosSectionProps {
   authState: any; // Add authState as a prop
@@ -353,12 +344,14 @@ function MyGamefolio() {
               </div>
 
               <div className="mx-10 mt-8">
-                <button
-                  className="font-bold w-64 h-10 bg-[#37C535] text-white text-center py-[10px] px-[20px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
-                  // onClick={handleMessage}
+                <Link
+                  href={`/account/${postState?.userID?.username}`}
+                  key={authState._id}
                 >
-                  Follow on gamefolio
-                </button>
+                  <button className="font-bold w-64 h-10 bg-[#37C535] text-white text-center py-[10px] px-[20px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]">
+                    Follow on gamefolio
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
