@@ -20,6 +20,7 @@ import { copyToClipboard } from "@/utils/helpers";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Loading from "./loading";
 import Link from "next/link";
+import CustomHeader from "@/components/CustomHeader/CustomHeader";
 
 interface MyVideosSectionProps {
   authState: any; // Add authState as a prop
@@ -258,11 +259,12 @@ function MyGamefolio() {
   const backgroundImage = `url(${IMAGES.bgImage})`;
 
   return (
-    <Layout>
-      <div className="flex justify-center w-full">
-        <div className="pt-4">
+    <>
+      <CustomHeader>PORTFFOLIO</CustomHeader>
+      <div className="flex justify-center w-full bg-[#091619]">
+        <div>
           <div
-            className="flex flex-col items-center lg:flex-row lg:justify-center gap-4 h-60 pl-8 mx-4 my-4"
+            className="flex flex-col items-center lg:flex-row lg:justify-center gap-4 h-60 pl-8 mx-4 my-2"
             style={{
               background: `linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.9) 99%), ${backgroundImage}`,
               backgroundRepeat: "no-repeat",
@@ -355,8 +357,6 @@ function MyGamefolio() {
               </div>
             </div>
           </div>
-
-          {/* Top Bar */}
 
           <div className="justify-center w-full h-96">
             {/* Profile */}
@@ -568,7 +568,7 @@ function MyGamefolio() {
           </Modal>
         </div>
       </div>
-    </Layout>
+    </>
   );
 }
 

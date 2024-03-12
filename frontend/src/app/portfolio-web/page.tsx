@@ -14,6 +14,7 @@ import { getAllPostVideos } from "@/store/slices/postSlice";
 import { getAllUsers, getProfileInfo } from "@/store/slices/userSlice";
 import { copyToClipboard } from "@/utils/helpers";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
+import Layout from "@/components/CustomLayout/layout";
 
 function MyGamefolio() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
@@ -70,7 +71,7 @@ function MyGamefolio() {
   const backgroundImage = `url(${IMAGES.bgImage})`;
 
   return (
-    <>
+    <Layout>
       <div
         className="flex"
         style={{
@@ -305,7 +306,7 @@ function MyGamefolio() {
           handlePageRefresh={() => handlePageRefresh()}
         />
       </Modal>
-    </>
+    </Layout>
   );
 }
 

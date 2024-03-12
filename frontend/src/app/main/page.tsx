@@ -556,7 +556,7 @@ function Main() {
                           ? `${notification.oppositionID.name.substring(0, 10)}`
                           : notification.oppositionID.name}
                       </p>
-                      <p className="w-32 text-[0.63rem] text-gray-400">
+                      <p className="w-32 text-[0.60rem] text-gray-400">
                         {new Date(notification.date).toLocaleString("en-US", {
                           hour: "numeric",
                           minute: "numeric",
@@ -566,8 +566,7 @@ function Main() {
                         })}
                       </p>
                     </div>
-                    <span className="text-sm text-white mx-2">
-                      {/* Followed your profile...{" "} */}
+                    <span className="text-xs text-white mx-2">
                       {getNotificationMessage(notification.notificationType)}
                     </span>
                   </div>
