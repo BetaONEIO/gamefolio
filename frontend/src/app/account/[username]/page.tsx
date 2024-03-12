@@ -13,7 +13,7 @@ import {
   removeUserBookmark,
 } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
-import { copyToClipboard } from "@/utils/helpers";
+import { copyToClipboard, generateUniqueRoomId } from "@/utils/helpers";
 import { ToastContainer } from "react-toastify";
 import Layout from "@/components/CustomLayout/layout";
 import Followers from "@/components/Modals/Followers";
@@ -32,6 +32,8 @@ import {
 } from "@/store/slices/userSlice";
 import { getAllClipVideos } from "@/store/slices/clipSlice";
 import { getCurrentUserStories } from "@/store/slices/storySlice";
+import { initChat } from "@/store/slices/chatSlice";
+import { useRouter } from "next/navigation";
 
 interface MyVideosSectionProps {
   authState: any; // Add authState as a prop
@@ -223,6 +225,7 @@ function Page({ params }: any) {
     isVideoDetailOpen: false,
     isStoryModalOpen: false,
   });
+  const router = useRouter();
 
   const userVideos = postState.videos.filter(
     (post: any) => post?.userID?._id === profileInfoState?.profileUserInfo._id
@@ -250,6 +253,35 @@ function Page({ params }: any) {
       profileInfoState?.profileUserInfo?.accountType === "private"
     );
   }, [profileInfoState]);
+
+  const handleMessage = async () => {
+    const payload = {
+      roomID: generateUniqueRoomId(),
+      sender: authState._id,
+      receiver: profileInfoState?.profileUserInfo?._id,
+      content: "Hello",
+      isSocket: false,
+    };
+
+    const successCallback = (response: any) => {
+      toastSuccess(response);
+      setTimeout(() => {
+        router.push("/chat");
+      }, 4000);
+    };
+
+    const errorCallback = (error: string) => {
+      toastError(error);
+    };
+
+    const params = {
+      payload,
+      successCallback,
+      errorCallback,
+    };
+
+    dispatch(initChat(params));
+  };
 
   const handleFollowUser = async (userId: any) => {
     const payload = {
@@ -411,7 +443,7 @@ function Page({ params }: any) {
                 </button>
                 <button
                   className="font-bold w-40 h-10 bg-[#37C535] text-white text-center py-[10px] px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
-                  // onClick={handleMessage}
+                  onClick={handleMessage}
                 >
                   Message
                 </button>

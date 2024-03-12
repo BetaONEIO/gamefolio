@@ -2,7 +2,7 @@
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
-// import { socket } from "@/services/api";
+import { socket } from "@/services/api";
 import { dispatch, useSelector } from "@/store";
 import { setSelectedChat, updateSelectedChat } from "@/store/slices/chatSlice";
 import { generateUniqueRoomId } from "@/utils/helpers";
@@ -37,35 +37,34 @@ function Chat() {
   });
 
   // let getUniqueRoomID = generateUniqueRoomId();
+  useEffect(() => {
+    socket.emit("joinRoom", messageState.chat.roomID);
 
-  // useEffect(() => {
-  //   socket.emit("joinRoom", messageState.chat.roomID);
+    // Listening to the incoming message from recipient
+    socket.on("newMessage", (data) => {
+      console.log("Data receiving from server ..: ", data);
+      // Dispatching chat data to our chatSlice to maintain state
+      dispatch(setSelectedChat(data));
+    });
 
-  //   // Listening to the incoming message from recipient
-  //   socket.on("newMessage", (data) => {
-  //     console.log("Data receiving from server ..: ", data);
-  //     // Dispatching chat data to our chatSlice to maintain state
-  //     dispatch(setSelectedChat(data));
-  //   });
-
-  //   return () => {
-  //     socket.off("disconnect");
-  //   };
-  // }, [messageState.chat]);
+    return () => {
+      socket.off("disconnect");
+    };
+  }, [messageState.chat]);
 
   console.log("MESSAGE STATE: chat.tsx", messageState.chat);
 
-  // const handleSendMessage = (data: any) => {
-  //   console.log("DATA: ", data);
-  //   socket.emit("sendMessage", {
-  //     roomID: messageState?.chat?.roomID,
-  //     sender: authState._id,
-  //     receiver: NotCurrentUser(),
-  //     content: data.message,
-  //   });
+  const handleSendMessage = (data: any) => {
+    console.log("DATA: ", data);
+    socket.emit("sendMessage", {
+      roomID: messageState?.chat?.roomID,
+      sender: authState._id,
+      receiver: NotCurrentUser(),
+      content: data.message,
+    });
 
-  //   setValue("message", "");
-  // };
+    setValue("message", "");
+  };
 
   if (Object.keys(messageState?.chat).length === 0) {
     return (
@@ -265,7 +264,7 @@ function Chat() {
               width={24}
               height={24}
               src={SVG.ChatMessageSent}
-              // onClick={handleSubmit(handleSendMessage)}
+              onClick={handleSubmit(handleSendMessage)}
             />
           </div>
         </div>

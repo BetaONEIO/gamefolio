@@ -2,6 +2,7 @@ import { ERRORS } from "@/labels/error";
 import { APIOption, APIParams } from "@/types/Api";
 import { getFromLocal } from "@/utils/localStorage";
 require("dotenv").config();
+import io from "socket.io-client";
 
 export const BASE_URL = "http://localhost:4000/api";
 export const BASE_URL2 = "http://localhost:4000";
@@ -107,7 +108,6 @@ export const API = async (params: APIParams) => {
   }
 };
 
-
 // Games List
 
 const twitchOAuthURL = process.env.NEXT_PUBLIC_TWITCH_OAUTH_URL;
@@ -169,7 +169,9 @@ async function fetchGames(
 
   try {
     const queryString = new URLSearchParams(params).toString();
-    const response = await fetch(`${twitchGameURL}?${queryString}`, { headers });
+    const response = await fetch(`${twitchGameURL}?${queryString}`, {
+      headers,
+    });
 
     if (response.ok) {
       const data = await response.json();
@@ -203,3 +205,6 @@ export async function fetchGameList() {
     console.error(`An error occurred: ${error.message}`);
   }
 }
+
+// Socket
+export const socket = io("http://localhost:8000");
