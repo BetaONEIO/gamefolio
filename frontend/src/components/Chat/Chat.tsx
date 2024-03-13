@@ -16,6 +16,7 @@ import Picker from "@emoji-mart/react";
 import Modal from "../Modals/Modal";
 // import AttachmentView from "../Modals/AttachmentView";
 import { toastError } from "../Toast/Toast";
+import AttachmentView from "../Modals/AttachmentView";
 
 function Chat() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
@@ -224,9 +225,21 @@ function Chat() {
             )}
           </div>
         </div>
+
         {/* Bottom Input container */}
 
         <div className="flex w-3/5 items-center  fixed  bottom-0 justify-around   bg-[#162423] px-4 ">
+          {/* Modals */}
+          <Modal
+            isOpen={modalState.isAttachmentViewOpen}
+            handleClose={() => handleModalToggle("isAttachmentViewOpen")}
+          >
+            <AttachmentView
+              // handleCloseModal={(error?: string) =>
+              //   handleModalToggle("isAttachmentViewOpen", error)
+              handleCloseModal={() => handleModalToggle("isAttachmentViewOpen")}
+            />
+          </Modal>
           <div
             className="cursor-pointer"
             onClick={() => handleModalToggle("isAttachmentViewOpen")}
@@ -270,18 +283,6 @@ function Chat() {
         </div>
       </div>
       {/* ))} */}
-
-      {/* Modals */}
-      {/* <Modal
-        isOpen={modalState.isAttachmentViewOpen}
-        handleClose={() => handleModalToggle("isAttachmentViewOpen")}
-      >
-        <AttachmentView
-          // handleCloseModal={(error?: string) =>
-          //   handleModalToggle("isAttachmentViewOpen", error)
-          handleCloseModal={() => handleModalToggle("isAttachmentViewOpen")}
-        />
-      </Modal> */}
     </>
   );
 }

@@ -6,19 +6,25 @@ import Chat from "@/components/Chat/Chat";
 // import ChatHeader from "@/components/ChatHeader/ChatHeader";
 import Layout from "@/components/CustomLayout/layout";
 import ChatHeader from "@/components/ChatHeader/ChatHeader";
+import CustomHeader from "@/components/CustomHeader/CustomHeader";
 
 function ChatLayout() {
+  const sectionStyle = {
+    backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
+  };
   return (
     <Layout>
       {/* Header */}
-      <ChatHeader />
-      <div className="flex h-screen rounded-lg bg-[#091619] font-poppins shadow-sm bg-navy-800">
-        {/* First column  */}
-        <Messages />
+      <CustomHeader>Messages</CustomHeader>
 
-        {/* Second Column */}
-        <Chat />
-      </div>
+      <section style={sectionStyle} className="flex w-full bg-[#091619]">
+        <div className="flex h-screen w-full rounded-lg bg-[#091619] font-poppins shadow-sm bg-navy-800 mt-4">
+          {/* First column  */}
+          <Messages />
+          {/* Second Column */}
+          <Chat />
+        </div>
+      </section>
     </Layout>
   );
 }

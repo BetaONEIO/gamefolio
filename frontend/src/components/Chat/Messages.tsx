@@ -1,5 +1,6 @@
 "use client";
 import Loading from "@/app/chat/loading";
+import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import { dispatch, useSelector } from "@/store";
 import { getUserMessages, setSelectedChat } from "@/store/slices/chatSlice";
@@ -105,7 +106,33 @@ function Messages() {
     );
   return (
     <div className=" flex w-full flex-col gap-4 bg-[#091619] border-r border-gray-800  md:w-4/5 lg:w-2/5">
-      <div className="hideScrollBar flex flex-col  gap-4  overflow-y-auto">
+      <div className="hideScrollBar flex flex-col    overflow-y-auto">
+        <div className="flex items-center gap-2 border-b border-gray-800 p-4 cursor-pointer hover:bg-[#1C2C2E]">
+          <div>
+            <img
+              alt="person"
+              src={SVG.Search}
+              width={30}
+              height={30}
+              className="rounded-2xl"
+            />
+          </div>
+          <div className="flex flex-1 flex-col justify-center">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-bold text-white"></span>
+              <span className="text-xs text-gray-500"></span>
+            </div>
+            <div>
+              <input
+                className="bg-transparent sm:text-sm outline-none rounded-lg block w-full p-2.5 text-[#586769]"
+                placeholder=" Search chat here..."
+              />
+            </div>
+          </div>
+          <div className="1">
+            <span className="text-xs font-semibold text-gray-500"></span>
+          </div>
+        </div>
         {messageState?.messages.length > 0 ? (
           messageState?.messages?.map((message: any) => (
             <MessageCard
