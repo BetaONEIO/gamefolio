@@ -46,8 +46,10 @@ const MessageCard: React.FC<MessageCardProps> = ({ currentUser, message }) => {
         <div>
           <span className="text-xs font-normal text-white">
             {isCurrentUser
-              ? message?.participants[1]?.lastMessage || "No messages yet"
-              : message?.participants[0]?.lastMessage || "No messages yet"}
+              ? message?.messages[message?.messages.length - 1]?.content ||
+                "No messages yet"
+              : message?.messages[message?.messages.length - 1]?.content ||
+                "No messages yet"}
           </span>
         </div>
       </div>
@@ -71,7 +73,7 @@ function Messages() {
   };
   useEffect(() => {
     dispatch(getUserMessages(params));
-  }, [authState._id]);
+  }, [authState._id, messageState.chat]);
 
   // const messagesInfo = [
   //   {
