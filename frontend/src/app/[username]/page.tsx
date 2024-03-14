@@ -1,26 +1,37 @@
 "use client";
 import { Suspense, useEffect, useState } from "react";
 import Image from "next/image";
-import Layout from "@/components/CustomLayout/layout";
-import Followers from "@/components/Modals/Followers";
-import Following from "@/components/Modals/Following";
-import Modal from "@/components/Modals/Modal";
-import MoreOptions from "@/components/Modals/MoreOptions";
-import VideoDetails from "@/components/Modals/VideoDetails";
+import Link from "next/link";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
-import { getAllClipVideos } from "@/store/slices/clipSlice";
-import { getAllPostVideos, getUserBookmark } from "@/store/slices/postSlice";
-import { getCurrentUserStories } from "@/store/slices/storySlice";
-import { getAllUsers, getProfileInfo } from "@/store/slices/userSlice";
-import { copyToClipboard } from "@/utils/helpers";
+import {
+  getAllPostVideos,
+  getUserBookmark,
+  removeUserBookmark,
+} from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
-import Loading from "./loading";
-import Link from "next/link";
+import { copyToClipboard } from "@/utils/helpers";
+import { ToastContainer } from "react-toastify";
+import Layout from "@/components/CustomLayout/layout";
+import Followers from "@/components/Modals/Followers";
+import Following from "@/components/Modals/Following";
+import Modal from "@/components/Modals/Modal";
+import MoreOptions from "@/components/Modals/MoreOptions";
+import CurrentUserStories from "@/components/story/CurrentUserStories";
+import VideoDetails from "@/components/Modals/VideoDetails";
+import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import CustomHeader from "@/components/CustomHeader/CustomHeader";
+import Loading from "./loading";
+import {
+  followUser,
+  getAllUsers,
+  getProfileInfo,
+} from "@/store/slices/userSlice";
+import { getAllClipVideos } from "@/store/slices/clipSlice";
+import { getCurrentUserStories } from "@/store/slices/storySlice";
 
 interface MyVideosSectionProps {
   authState: any; // Add authState as a prop
@@ -28,6 +39,7 @@ interface MyVideosSectionProps {
   profileInfoState: any; // Add profileInfoState as a prop
   handleVideoDetailOpen: (postID: any, detailedPost: any) => void;
 }
+
 interface VideoState {
   isMuted?: boolean;
 }
@@ -35,41 +47,45 @@ interface VideoState {
 const MyVideosSection: React.FC<MyVideosSectionProps> = ({
   authState,
   postState,
+  profileInfoState,
   handleVideoDetailOpen,
 }) => {
   const userVideos = postState.videos.filter(
-    (post: any) => post?.userID?._id === authState._id
+    (post: any) =>
+      post?.userID?.username === profileInfoState.profileUserInfo.username
   );
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
-      {userVideos.map((item: any) => {
-        return (
-          <div key={item._id} className="relative">
-            <video
-              src={item.video}
-              className="w-80 sm:w-80 h-52 md:h-40 rounded-xl object-cover hover:opacity-80"
-              width={20}
-              height={20}
-              controls={false}
-              onClick={() => handleVideoDetailOpen(item._id, item)}
-            />
-            <div className="absolute bottom-1 right-2">
-              <button className="cursor-pointer hover:opacity-80">
-                <Image src={SVG.Mute} alt="Mute" width={40} height={40} />
-              </button>
+    <Suspense fallback={<Loading />}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
+        {userVideos.map((item: any) => {
+          return (
+            <div key={item.id} className="relative">
+              <video
+                src={item.video}
+                className="w-96 sm:w-96 h-52 md:h-40  rounded-xl object-cover hover:opacity-80"
+                width={20}
+                height={20}
+                controls={false}
+                onClick={() => handleVideoDetailOpen(item._id, item)}
+              />
+              <div className="absolute bottom-1 right-2">
+                <button className="cursor-pointer hover:opacity-80">
+                  <Image src={SVG.Mute} alt="Mute" width={40} height={40} />
+                </button>
+              </div>
             </div>
-          </div>
-        );
-      })}
-    </div>
+          );
+        })}
+      </div>
+    </Suspense>
   );
 };
 
 interface ClipsProps {
-  authState: any;
-  clipState: any;
-  profileInfoState: any;
+  authState: any; // Add authState as a prop
+  clipState: any; // Add postState as a prop
+  profileInfoState: any; // Add profileInfoState as a prop
   handleVideoDetailOpen: (postID: any, detailedPost: any) => void;
 }
 
@@ -190,17 +206,15 @@ const MyBookmarkSection: React.FC<MyBookmarkSectionProps> = ({
   );
 };
 
-function MyGamefolio() {
+function MyGamefolio({ params }: any) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
-  const postState = useSelector((state: any) => state.post) || [];
   const profileInfoState = useSelector((state: any) => state.user) || [];
+  const postState = useSelector((state: any) => state.post) || [];
   const clipState = useSelector((state: any) => state.clip) || [];
   const storyState = useSelector((state: any) => state.story) || [];
-  const [open, setOpen] = useState(false);
   const [selectedSection, setSelectedSection] = useState("videos");
   const [isPrivateAccount, setIsPrivateAccount] = useState(false);
   const [postID, setPostID] = useState("");
-  const [storyUserID, setStoryUserID] = useState("");
   const [detailedPost, setDetailedPost] = useState("");
   const [modalState, setModalState] = useState({
     isShareModalOpen: false,
@@ -211,17 +225,19 @@ function MyGamefolio() {
   });
 
   const userVideos = postState.videos.filter(
-    (post: any) => post?.userID?._id === authState._id
+    (post: any) => post?.userID?._id === profileInfoState?.profileUserInfo._id
   );
 
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
   };
-  const params = {
+  const myparams = {
     payload,
   };
+
+  console.log("glj", params);
   useEffect(() => {
-    dispatch(userSession(params));
+    dispatch(userSession(myparams));
     dispatch(getProfileInfo({ payload: params }));
     dispatch(getUserBookmark(params));
     dispatch(getAllPostVideos());
@@ -235,6 +251,29 @@ function MyGamefolio() {
       profileInfoState?.profileUserInfo?.accountType === "private"
     );
   }, [profileInfoState]);
+
+  const handleFollowUser = async (userId: any) => {
+    const payload = {
+      userId: userId,
+      followerID: authState._id,
+    };
+
+    const successCallback = (response: any) => {
+      toastSuccess(response.message);
+    };
+
+    const errorCallback = (error: string) => {
+      toastError(error);
+    };
+
+    const params = {
+      payload,
+      successCallback,
+      errorCallback,
+    };
+
+    dispatch(followUser(params));
+  };
 
   const handleModalToggle = (modalName: keyof typeof modalState) => {
     setModalState((prevState) => ({
@@ -256,11 +295,86 @@ function MyGamefolio() {
     throw new Error("Function not implemented.");
   }
 
-  const backgroundImage = `url(${IMAGES.bgImage})`;
+  const backgroundImage = `url(${IMAGES.Bgbackground})`;
+
+  const sectionStyle = {
+    backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
+  };
+
+  // Function to handle search and navigation to user profile
+  // const handleSearch = (username: any) => {
+  //   setSearchUsername(username);
+  //   const user = profileInfoState.find(
+  //     (user: any) => user.username === username
+  //   );
+  //   if (user) {
+  //     // If user found, navigate to their profile
+  //     router.push(`/account/${username}`);
+  //   }
+  // };
 
   return (
     <>
-      <CustomHeader>PORTFFOLIO</CustomHeader>
+      <div className="z-50 flex justify-between items-center py-4 bg-[#091619] sticky top-0 w-full px-4 sm:px-2 lg:px-4">
+        <div
+          className={`${leagueGothic.className} text-2xl sm:text-4xl lg:text-4xl text-white`}
+        >
+          PORTFOLIO
+        </div>
+
+        <div className="w-2/3 sm:w-1/3 lg:w-2/5 bg-[#1C2C2E] ml-16 flex gap-2 p-2 sm:p-3 items-center rounded-lg overflow-hidden">
+          <Image src={SVG.Search} alt="logo" width={25} height={25} />
+          <input
+            className="bg-[#1C2C2E] outline-none text-white flex-grow text-sm sm:text-base"
+            placeholder="Search"
+          />
+        </div>
+
+        <div className="flex items-center my-3 mx-2 gap-2">
+          <Link href="">
+            <Image
+              className="cursor-pointer hover:opacity-60"
+              src={SVG.Notification}
+              alt="Setting"
+              width={24}
+              height={24}
+            />
+          </Link>
+          <Link href="/account/my-folio">
+            <div className="flex items-center p-1 mr-2 rounded-full bg-[#162423]">
+              <Image
+                className="mr-2"
+                src={SVG.GGcoin}
+                alt="GGcoin"
+                width={30}
+                height={30}
+              />
+              <p className="font-semibold pr-2 text-white">GG COIN</p>
+            </div>
+          </Link>
+          <Link href="">
+            <div className="flex items-center p-1 mr-2 rounded-full bg-[#162423]">
+              <Image
+                className="w-9 h-8"
+                src={IMAGES.Badges}
+                alt="GGcoin"
+                width={30}
+                height={30}
+              />
+              <p className="font-semibold pr-2 text-white">Badges</p>
+            </div>
+          </Link>
+          <Link href="/account/settings/edit-profile">
+            <Image
+              className="cursor-pointer hover:opacity-60"
+              src={SVG.Setting}
+              alt="Setting"
+              width={24}
+              height={24}
+            />
+          </Link>
+        </div>
+      </div>
       <div className="flex justify-center w-full bg-[#091619]">
         <div>
           <div
@@ -271,11 +385,15 @@ function MyGamefolio() {
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
+            key={profileInfoState?.profileUserInfo?._id}
           >
             <div className="w-32 h-32">
               <Image
                 className="rounded-xl w-32 h-32 object-cover border-2 border-[#43DD4E]"
-                src={authState?.profilePicture}
+                src={
+                  profileInfoState?.profileUserInfo?.profilePicture ||
+                  IMAGES.AccountProfile
+                }
                 width={10}
                 height={10}
                 sizes="100vw"
@@ -285,7 +403,7 @@ function MyGamefolio() {
             <div className="flex justify-between">
               <div className="flex flex-1 flex-col gap-3 flex-wrap justify-center text-center lg:justify-start lg:text-start p-2 pt-4">
                 <span className="font-semibold text-white">
-                  {authState?.name}
+                  {profileInfoState?.profileUserInfo?.name}
                 </span>
                 <div className="flex items-center gap-6 justify-center lg:justify-between">
                   <div
@@ -293,7 +411,7 @@ function MyGamefolio() {
                     onClick={() => copyToClipboard(authState?.username)}
                   >
                     <p className="text-white">
-                      ({authState?.username || "no_username"})
+                      ({profileInfoState?.profileUserInfo?.username})
                     </p>
                     <Image
                       className="cursor-pointer hover:opacity-80"
@@ -312,7 +430,7 @@ function MyGamefolio() {
                     >
                       {userVideos.length || 0}
                     </span>
-                    <span className="md:text-lg text-gray-400"> Posts</span>
+                    <span className="md:text-lg text-gray-400">Posts</span>
                   </div>
 
                   {/* Vertical divider */}
@@ -324,7 +442,7 @@ function MyGamefolio() {
                     <span
                       className={`${leagueGothic.className} text-lg md:text-2xl font-normal text-white`}
                     >
-                      {authState?.follower?.length || 0}
+                      {profileInfoState?.profileUserInfo?.follower?.length || 0}
                     </span>
                     <span className="md:text-lg text-gray-400">Followers</span>
                   </div>
@@ -338,7 +456,8 @@ function MyGamefolio() {
                     <span
                       className={`${leagueGothic.className} text-lg md:text-2xl font-normal text-white`}
                     >
-                      {authState?.following?.length || 0}
+                      {profileInfoState?.profileUserInfo?.following?.length ||
+                        0}
                     </span>
                     <span className="md:text-lg text-gray-400">Following</span>
                   </div>
@@ -470,12 +589,11 @@ function MyGamefolio() {
               {/* green line */}
 
               {/* Content Section */}
-              {
-                // authState?.following?.some(
-                //   (user: any) =>
-                //     user?.userID?._id ===
-                //       profileInfoState?.profileUserInfo?._id || !isPrivateAccount
-                // ) ? (
+              {authState?.following?.some(
+                (user: any) =>
+                  user?.userID?._id ===
+                    profileInfoState?.profileUserInfo?._id || !isPrivateAccount
+              ) ? (
                 // User is following, show videos
                 <div>
                   {selectedSection === "videos" ? (
@@ -501,14 +619,12 @@ function MyGamefolio() {
                     <StorySection data={storyState.currentUserStories} />
                   )}
                 </div>
-                // )
-                // : (
-                //   // User is not following, show private account message
-                //   <div className="flex justify-center">
-                //     <p>This is a private account.</p>
-                //   </div>
-                // )
-              }
+              ) : (
+                // User is not following, show private account message
+                <div className="flex justify-center">
+                  <p>This is a private account.</p>
+                </div>
+              )}
             </div>
           </div>
 

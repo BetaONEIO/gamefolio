@@ -1,37 +1,31 @@
 "use client";
 import { Suspense, useEffect, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
-import { leagueGothic } from "@/font/font";
-import { dispatch, useSelector } from "@/store";
-import { userSession } from "@/store/slices/authSlice";
-import {
-  getAllPostVideos,
-  getUserBookmark,
-  removeUserBookmark,
-} from "@/store/slices/postSlice";
-import { getCookieValue, getFromLocal } from "@/utils/localStorage";
-import { copyToClipboard } from "@/utils/helpers";
-import { ToastContainer } from "react-toastify";
+import CustomHeader from "@/components/CustomHeader/CustomHeader";
 import Layout from "@/components/CustomLayout/layout";
 import Followers from "@/components/Modals/Followers";
 import Following from "@/components/Modals/Following";
 import Modal from "@/components/Modals/Modal";
 import MoreOptions from "@/components/Modals/MoreOptions";
-import CurrentUserStories from "@/components/story/CurrentUserStories";
 import VideoDetails from "@/components/Modals/VideoDetails";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
-import CustomHeader from "@/components/CustomHeader/CustomHeader";
-import Loading from "./loading";
+import { leagueGothic } from "@/font/font";
+import { dispatch, useSelector } from "@/store";
+import { userSession } from "@/store/slices/authSlice";
+import { getAllClipVideos } from "@/store/slices/clipSlice";
+import { getAllPostVideos, getUserBookmark } from "@/store/slices/postSlice";
+import { getCurrentUserStories } from "@/store/slices/storySlice";
 import {
   followUser,
   getAllUsers,
   getProfileInfo,
 } from "@/store/slices/userSlice";
-import { getAllClipVideos } from "@/store/slices/clipSlice";
-import { getCurrentUserStories } from "@/store/slices/storySlice";
+import { copyToClipboard } from "@/utils/helpers";
+import { getCookieValue, getFromLocal } from "@/utils/localStorage";
+import { ToastContainer } from "react-toastify";
+import Loading from "./loading";
 
 interface MyVideosSectionProps {
   authState: any; // Add authState as a prop
@@ -223,6 +217,8 @@ function Page({ params }: any) {
     isVideoDetailOpen: false,
     isStoryModalOpen: false,
   });
+
+  console.log("jd", params);
 
   const userVideos = postState.videos.filter(
     (post: any) => post?.userID?._id === profileInfoState?.profileUserInfo._id
