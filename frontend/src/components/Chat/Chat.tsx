@@ -4,19 +4,17 @@ import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
 import { socket } from "@/services/api";
 import { dispatch, useSelector } from "@/store";
-import { setSelectedChat, updateSelectedChat } from "@/store/slices/chatSlice";
-import { generateUniqueRoomId } from "@/utils/helpers";
-import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import { set, useForm } from "react-hook-form";
-import { ThreeDots } from "react-loader-spinner";
-import toast, { Toaster } from "react-hot-toast";
+import { setSelectedChat } from "@/store/slices/chatSlice";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
+import Image from "next/image";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { Toaster } from "react-hot-toast";
 import Modal from "../Modals/Modal";
 // import AttachmentView from "../Modals/AttachmentView";
-import { toastError } from "../Toast/Toast";
 import AttachmentView from "../Modals/AttachmentView";
+import { toastError } from "../Toast/Toast";
 
 function Chat() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
@@ -129,6 +127,14 @@ function Chat() {
 
     // Set the updated message value to the input field using setValue
     setValue("message", updatedMessage);
+  };
+
+  const handleEnterKeyPress = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (event.key === "Enter") {
+      handleSubmit(handleSendMessage)();
+    }
   };
 
   return (
@@ -257,6 +263,7 @@ function Chat() {
               type="text"
               className="flex-grow px-1 py-1 bg-[#162423] focus:outline-none"
               placeholder="Write message"
+              onKeyDown={handleEnterKeyPress}
               {...register("message")}
             />
 
