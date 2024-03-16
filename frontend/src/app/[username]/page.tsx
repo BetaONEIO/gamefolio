@@ -1,37 +1,30 @@
 "use client";
+import { useRouter } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
-import { leagueGothic } from "@/font/font";
-import { dispatch, useSelector } from "@/store";
-import { userSession } from "@/store/slices/authSlice";
-import {
-  getAllPostVideos,
-  getUserBookmark,
-  removeUserBookmark,
-} from "@/store/slices/postSlice";
-import { getCookieValue, getFromLocal } from "@/utils/localStorage";
-import { copyToClipboard } from "@/utils/helpers";
-import { ToastContainer } from "react-toastify";
-import Layout from "@/components/CustomLayout/layout";
 import Followers from "@/components/Modals/Followers";
 import Following from "@/components/Modals/Following";
 import Modal from "@/components/Modals/Modal";
 import MoreOptions from "@/components/Modals/MoreOptions";
-import CurrentUserStories from "@/components/story/CurrentUserStories";
 import VideoDetails from "@/components/Modals/VideoDetails";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
-import CustomHeader from "@/components/CustomHeader/CustomHeader";
-import Loading from "./loading";
+import { leagueGothic } from "@/font/font";
+import { dispatch, useSelector } from "@/store";
+import { userSession } from "@/store/slices/authSlice";
+import { getAllClipVideos } from "@/store/slices/clipSlice";
+import { getAllPostVideos, getUserBookmark } from "@/store/slices/postSlice";
+import { getCurrentUserStories } from "@/store/slices/storySlice";
 import {
   followUser,
   getAllUsers,
   getProfileInfo,
 } from "@/store/slices/userSlice";
-import { getAllClipVideos } from "@/store/slices/clipSlice";
-import { getCurrentUserStories } from "@/store/slices/storySlice";
+import { copyToClipboard } from "@/utils/helpers";
+import { getCookieValue, getFromLocal } from "@/utils/localStorage";
+import Loading from "./loading";
 
 interface MyVideosSectionProps {
   authState: any; // Add authState as a prop
@@ -63,7 +56,7 @@ const MyVideosSection: React.FC<MyVideosSectionProps> = ({
             <div key={item.id} className="relative">
               <video
                 src={item.video}
-                className="w-96 sm:w-96 h-52 md:h-40  rounded-xl object-cover hover:opacity-80"
+                className="w-72 sm:w-72 h-52 md:h-40  rounded-xl object-cover hover:opacity-80"
                 width={20}
                 height={20}
                 controls={false}
@@ -212,10 +205,13 @@ function MyGamefolio({ params }: any) {
   const postState = useSelector((state: any) => state.post) || [];
   const clipState = useSelector((state: any) => state.clip) || [];
   const storyState = useSelector((state: any) => state.story) || [];
+  const router = useRouter();
   const [selectedSection, setSelectedSection] = useState("videos");
   const [isPrivateAccount, setIsPrivateAccount] = useState(false);
   const [postID, setPostID] = useState("");
   const [detailedPost, setDetailedPost] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+
   const [modalState, setModalState] = useState({
     isShareModalOpen: false,
     isFollowerModalOpen: false,
@@ -235,7 +231,6 @@ function MyGamefolio({ params }: any) {
     payload,
   };
 
-  console.log("glj", params);
   useEffect(() => {
     dispatch(userSession(myparams));
     dispatch(getProfileInfo({ payload: params }));
@@ -251,6 +246,12 @@ function MyGamefolio({ params }: any) {
       profileInfoState?.profileUserInfo?.accountType === "private"
     );
   }, [profileInfoState]);
+
+  const handleSearch = () => {
+    if (searchQuery.trim() !== "") {
+      router.push(`/${searchQuery}`);
+    }
+  };
 
   const handleFollowUser = async (userId: any) => {
     const payload = {
@@ -297,10 +298,6 @@ function MyGamefolio({ params }: any) {
 
   const backgroundImage = `url(${IMAGES.Bgbackground})`;
 
-  const sectionStyle = {
-    backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
-  };
-
   // Function to handle search and navigation to user profile
   // const handleSearch = (username: any) => {
   //   setSearchUsername(username);
@@ -327,7 +324,10 @@ function MyGamefolio({ params }: any) {
           <input
             className="bg-[#1C2C2E] outline-none text-white flex-grow text-sm sm:text-base"
             placeholder="Search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
+          <button onClick={handleSearch}>Search</button>
         </div>
 
         <div className="flex items-center my-3 mx-2 gap-2">
@@ -352,6 +352,7 @@ function MyGamefolio({ params }: any) {
               <p className="font-semibold pr-2 text-white">GG COIN</p>
             </div>
           </Link>
+
           <Link href="">
             <div className="flex items-center p-1 mr-2 rounded-full bg-[#162423]">
               <Image
@@ -375,8 +376,10 @@ function MyGamefolio({ params }: any) {
           </Link>
         </div>
       </div>
+
       <div className="flex justify-center w-full bg-[#091619]">
         <div>
+          {/* {filteredUsers.map((user: any) => ( */}
           <div
             className="flex flex-col items-center lg:flex-row lg:justify-center gap-4 h-60 pl-8 mx-4 my-2"
             style={{
@@ -463,10 +466,11 @@ function MyGamefolio({ params }: any) {
                   </div>
                 </div>
               </div>
+              {/* ))} */}
 
               <div className="mx-10 mt-8">
                 <Link
-                  href={`/account/${postState?.userID?.username}`}
+                  href={`/${profileInfoState?.profileUserInfo?.username}`}
                   key={authState._id}
                 >
                   <button className="font-bold w-64 h-10 bg-[#37C535] text-white text-center py-[10px] px-[20px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]">
