@@ -227,6 +227,7 @@ function MyGamefolio({ params }: any) {
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
   };
+
   const myparams = {
     payload,
   };

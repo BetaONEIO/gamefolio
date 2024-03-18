@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { SVG } from "@/assets/SVG";
 import Layout from "@/components/CustomLayout/layout";
-import { leagueGothic } from "@/font/font";
 import { dispatch, useSelector } from "@/store";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import { updateProfile } from "@/store/slices/authSlice";
