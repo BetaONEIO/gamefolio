@@ -87,6 +87,7 @@ function Explore() {
   }
 
   const formatTime = (seconds: number): string => {
+    if (isNaN(seconds)) return "Invalid time"; // Adding error handling
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
     const formattedTime = `${minutes}:${

@@ -54,7 +54,7 @@ function CustomHeader({ children }: { children?: String }) {
         </div>
 
         <div className="flex items-center my-3 mx-2 gap-2">
-          <Link href="">
+          <Link href="/main">
             <Image
               className="cursor-pointer hover:opacity-60"
               src={SVG.Notification}

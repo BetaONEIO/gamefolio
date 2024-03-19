@@ -78,6 +78,7 @@ function Video() {
   }
 
   const formatTime = (seconds: number): string => {
+    if (isNaN(seconds)) return "Invalid time"; // Adding error handling
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
     const formattedTime = `${minutes}:${
@@ -118,7 +119,7 @@ function Video() {
           return (
             <div
               key={item?.userID}
-              className="flex flex-col gap-2 w-full md:w-68 h-auto border-2 border-[#1C2C2E] rounded-xl mx-1 pb-2"
+              className="flex flex-col gap-2 w-68 h-64 border-2 border-[#1C2C2E] rounded-xl mx-1 pb-2"
               onClick={() =>
                 handleModalToggle("isVideoDetailOpen", item._id, item)
               }
@@ -126,7 +127,7 @@ function Video() {
               <div className="relative overflow-hidden rounded-t-xl aspect-w-16 aspect-h-9">
                 <video
                   src={item.video}
-                  className="object-cover w-full h-full hover:opacity-80"
+                  className="object-cover w-full h-36 hover:opacity-80"
                   controls={false}
                   autoPlay={false}
                   width={50}
