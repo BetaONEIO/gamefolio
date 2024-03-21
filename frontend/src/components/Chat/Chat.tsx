@@ -11,9 +11,8 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Toaster } from "react-hot-toast";
-import Modal from "../Modals/Modal";
-// import AttachmentView from "../Modals/AttachmentView";
 import AttachmentView from "../Modals/AttachmentView";
+import Modal from "../Modals/Modal";
 import { toastError } from "../Toast/Toast";
 
 function Chat() {
@@ -35,7 +34,6 @@ function Chat() {
     },
   });
 
-  // let getUniqueRoomID = generateUniqueRoomId();
   useEffect(() => {
     socket.emit("joinRoom", messageState.chat.roomID);
 
@@ -54,13 +52,13 @@ function Chat() {
   console.log("MESSAGE STATE: chat.tsx", messageState.chat);
 
   const handleSendMessage = (data: any) => {
-    console.log("DATA: ", data);
     socket.emit("sendMessage", {
       roomID: messageState?.chat?.roomID,
       sender: authState._id,
       receiver: NotCurrentUser(),
       content: data.message,
     });
+    toggleEmoji(false);
 
     setValue("message", "");
   };
@@ -94,12 +92,8 @@ function Chat() {
   };
 
   // toggle emoji
-  const toggleEmoji = () => {
-    setEmoji(!emoji);
-  };
-  // toggle emoji
-  const toggleModal = () => {
-    setEmoji(!emoji);
+  const toggleEmoji = (closed?: boolean) => {
+    setEmoji(closed === undefined ? !emoji : false);
   };
 
   const handleModalToggle = (
@@ -114,8 +108,6 @@ function Chat() {
       [modalName]: !prevState[modalName],
     }));
   };
-
-  console.log("MODAL STATE: ", modalState);
 
   // handle emoji
   const handleEmojiSelect = (selectedEmoji: any) => {
@@ -138,159 +130,149 @@ function Chat() {
   };
 
   return (
-    <>
-      {/* {messageState?.chat?.map((chat: any) => ( */}
-      <div className="hideScrollBar hidden relative  w-full flex-col bg-[#091619] gap-4 overflow-auto border-r  md:hidden lg:block">
-        <div className="sticky top-0 z-40  flex items-center justify-between gap-2 border-b border-gray-800 bg-[#091619] p-5">
+    <div className="hideScrollBar hidden relative  w-full flex-col bg-[#091619] gap-4 overflow-auto border-r  md:hidden lg:block">
+      <div className="sticky top-0 z-40  flex items-center justify-between gap-2 border-b border-gray-800 bg-[#091619] p-5">
+        <div>
           <div>
-            <div>
-              <span className={`${leagueGothic.className} text-3xl text-white`}>
-                {isCurrentUser
-                  ? messageState?.chat?.participants?.[1]?.name
-                  : messageState?.chat?.participants?.[0]?.name}
-              </span>
-            </div>
-          </div>
-          <div>
-            <img
-              className="rounded-xl"
-              alt="person"
-              src={
-                isCurrentUser
-                  ? messageState?.chat?.participants?.[1]?.profilePicture ||
-                    IMAGES.Profile
-                  : messageState?.chat?.participants?.[0]?.profilePicture ||
-                    IMAGES.Profile
-              }
-              width={38}
-              height={38}
-            />
+            <span className={`${leagueGothic.className} text-3xl text-white`}>
+              {isCurrentUser
+                ? messageState?.chat?.participants?.[1]?.name
+                : messageState?.chat?.participants?.[0]?.name}
+            </span>
           </div>
         </div>
-
-        {/* Message container  */}
-        <div className="relative h-full max-h-full ">
-          <Toaster />
-          {/* Messages */}
-          <div
-            id="chatContainer"
-            className="flex  flex-col gap-4 p-2 h-full overflow-scroll"
-          >
-            {messageState?.chat?.messages?.map(
-              (element: any, index: number) => {
-                console.log("ELEMENT: ", element);
-                return (
-                  <React.Fragment key={index}>
-                    {element?.sender?._id === authState._id ? (
-                      // Sender Message
-                      index === 0 ? (
-                        <div className="flex items-center justify-end gap-2">
-                          <div className="flex flex-col items-end gap-2">
-                            <div className="bg-[#62C860]  rounded-full  px-4 py-2 text-white">
-                              <span className="text-md">
-                                {element?.content}
-                              </span>
-                            </div>
-                            <span className="text-xs text-gray-100">
-                              {formatTime(element?.timestamp)}
-                            </span>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="flex items-center justify-end gap-2">
-                          <div className="flex flex-col items-end gap-2">
-                            <div className="bg-[#62C860]  rounded-full  px-4 py-2 text-white">
-                              <span className="text-md">
-                                {element?.content}
-                              </span>
-                            </div>
-                            <span className="text-xs text-gray-100">
-                              {formatTime(element?.timestamp)}
-                            </span>
-                          </div>
-                        </div>
-                      )
-                    ) : (
-                      // Receiver Message
-
-                      <div className="flex items-center justify-start">
-                        <div className="ml-2 flex flex-col items-start gap-2  ">
-                          <div className="bg-black border border-gray-900  p-2 rounded-full  px-4 py-2 text-white">
-                            <span className="text-md">{element.content}</span>
-                          </div>
-                          <span className="text-xs text-white">
-                            {" "}
-                            {formatTime(element?.timestamp)}
-                          </span>
-                        </div>
-                      </div>
-                    )}
-                  </React.Fragment>
-                );
-              }
-            )}
-          </div>
-        </div>
-
-        {/* Bottom Input container */}
-
-        <div className="flex w-3/5 items-center  fixed  bottom-0 justify-around   bg-[#162423] px-4 ">
-          {/* Modals */}
-          <Modal
-            isOpen={modalState.isAttachmentViewOpen}
-            handleClose={() => handleModalToggle("isAttachmentViewOpen")}
-          >
-            <AttachmentView
-              // handleCloseModal={(error?: string) =>
-              //   handleModalToggle("isAttachmentViewOpen", error)
-              handleCloseModal={() => handleModalToggle("isAttachmentViewOpen")}
-            />
-          </Modal>
-          <div
-            className="cursor-pointer"
-            onClick={() => handleModalToggle("isAttachmentViewOpen")}
-          >
-            <Image
-              className="hover:opacity-70"
-              alt="Chat File"
-              width={24}
-              height={24}
-              src={SVG.ChatFile}
-            />
-          </div>
-          <div className="flex-grow mx-3 my-2 relative flex items-center rounded-lg bg-[#162423] p-2">
-            <input
-              type="text"
-              className="flex-grow px-1 py-1 bg-[#162423] focus:outline-none"
-              placeholder="Write message"
-              onKeyDown={handleEnterKeyPress}
-              {...register("message")}
-            />
-
-            <button onClick={toggleEmoji}>😀</button>
-            {emoji && (
-              <div className="absolute bottom-10 right-0">
-                <Picker
-                  data={data}
-                  onEmojiSelect={(data: any) => handleEmojiSelect(data.native)}
-                  previewPosition="none"
-                />
-              </div>
-            )}
-
-            <Image
-              className="hover:opacity-70"
-              alt="Message sent"
-              width={24}
-              height={24}
-              src={SVG.ChatMessageSent}
-              onClick={handleSubmit(handleSendMessage)}
-            />
-          </div>
+        <div>
+          <img
+            className="rounded-xl"
+            alt="person"
+            src={
+              isCurrentUser
+                ? messageState?.chat?.participants?.[1]?.profilePicture ||
+                  IMAGES.Profile
+                : messageState?.chat?.participants?.[0]?.profilePicture ||
+                  IMAGES.Profile
+            }
+            width={38}
+            height={38}
+          />
         </div>
       </div>
-      {/* ))} */}
-    </>
+
+      {/* Message container  */}
+      <div className="relative h-full max-h-full ">
+        <Toaster />
+        {/* Messages */}
+        <div
+          id="chatContainer"
+          className="flex  flex-col gap-4 p-2 h-full overflow-scroll"
+        >
+          {messageState?.chat?.messages?.map((element: any, index: number) => {
+            console.log("ELEMENT: ", element);
+            return (
+              <React.Fragment key={index}>
+                {element?.sender?._id === authState._id ? (
+                  // Sender Message
+                  index === 0 ? (
+                    <div className="flex items-center justify-end gap-2">
+                      <div className="flex flex-col items-end gap-2">
+                        <div className="bg-[#62C860]  rounded-full  px-4 py-2 text-white">
+                          <span className="text-md">{element?.content}</span>
+                        </div>
+                        <span className="text-xs text-gray-100">
+                          {formatTime(element?.timestamp)}
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-end gap-2">
+                      <div className="flex flex-col items-end gap-2">
+                        <div className="bg-[#62C860]  rounded-full  px-4 py-2 text-white">
+                          <span className="text-md">{element?.content}</span>
+                        </div>
+                        <span className="text-xs text-gray-100">
+                          {formatTime(element?.timestamp)}
+                        </span>
+                      </div>
+                    </div>
+                  )
+                ) : (
+                  // Receiver Message
+
+                  <div className="flex items-center justify-start">
+                    <div className="ml-2 flex flex-col items-start gap-2  ">
+                      <div className="bg-black border border-gray-900  p-2 rounded-full  px-4 py-2 text-white">
+                        <span className="text-md">{element.content}</span>
+                      </div>
+                      <span className="text-xs text-white">
+                        {" "}
+                        {formatTime(element?.timestamp)}
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </React.Fragment>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Bottom Input container */}
+
+      <div className="flex w-3/5 items-center  fixed  bottom-0 justify-around   bg-[#162423] px-4 ">
+        {/* Modals */}
+        <Modal
+          isOpen={modalState.isAttachmentViewOpen}
+          handleClose={() => handleModalToggle("isAttachmentViewOpen")}
+        >
+          <AttachmentView
+            // handleCloseModal={(error?: string) =>
+            //   handleModalToggle("isAttachmentViewOpen", error)
+            handleCloseModal={() => handleModalToggle("isAttachmentViewOpen")}
+          />
+        </Modal>
+        <div
+          className="cursor-pointer"
+          onClick={() => handleModalToggle("isAttachmentViewOpen")}
+        >
+          <Image
+            className="hover:opacity-70"
+            alt="Chat File"
+            width={24}
+            height={24}
+            src={SVG.ChatFile}
+          />
+        </div>
+        <div className="flex-grow mx-3 my-2 relative flex items-center rounded-lg bg-[#162423] p-2">
+          <input
+            type="text"
+            className="flex-grow px-1 py-1 bg-[#162423] focus:outline-none"
+            placeholder="Write message"
+            onKeyDown={handleEnterKeyPress}
+            {...register("message")}
+          />
+
+          <button onClick={() => toggleEmoji()}>😀</button>
+          {emoji && (
+            <div className="absolute bottom-10 right-0">
+              <Picker
+                data={data}
+                onEmojiSelect={(data: any) => handleEmojiSelect(data.native)}
+                previewPosition="none"
+              />
+            </div>
+          )}
+
+          <Image
+            className="hover:opacity-70"
+            alt="Message sent"
+            width={24}
+            height={24}
+            src={SVG.ChatMessageSent}
+            onClick={handleSubmit(handleSendMessage)}
+          />
+        </div>
+      </div>
+    </div>
   );
 }
 

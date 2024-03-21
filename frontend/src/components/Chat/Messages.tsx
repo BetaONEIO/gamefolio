@@ -75,28 +75,6 @@ function Messages() {
     dispatch(getUserMessages(params));
   }, [authState._id, messageState.chat]);
 
-  // const messagesInfo = [
-  //   {
-  //     id: 1,
-  //     name: "Mark Johnson",
-  //     lastMessage: "Lorem ipsum dolor sit amet,",
-  //     time: "1 min ago",
-  //     profileImage: IMAGES.Profile,
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "John Smith",
-  //     lastMessage: "How are you",
-  //     time: "Just Now",
-  //     profileImage: IMAGES.Profile,
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "John Smith",
-  //     profileImage: IMAGES.Profile,
-  //   },
-  // ];
-  // if (messageState?.loading) return <div>Loading...</div>;
   console.log("length: ", messageState?.messages);
   if (messageState?.loading)
     return (
