@@ -5,9 +5,13 @@ import Image from "next/image";
 
 interface AttachmentViewProps {
   handleCloseModal: () => void;
+  handleGalleryModal: () => void;
 }
 
-function AttachmentView({ handleCloseModal }: AttachmentViewProps) {
+function AttachmentView({
+  handleCloseModal,
+  handleGalleryModal,
+}: AttachmentViewProps) {
   const myBGStyleModal = {
     backgroundColor: "rgba(0, 0, 0, 0.6)",
     backdropFilter: "blur(8px)",
@@ -40,7 +44,7 @@ function AttachmentView({ handleCloseModal }: AttachmentViewProps) {
                     width={50}
                     height={60}
                   />
-                  <div>
+                  <div className="cursor-pointer">
                     <p className="text-sm">Open Camera</p>
                   </div>
                 </div>
@@ -55,7 +59,10 @@ function AttachmentView({ handleCloseModal }: AttachmentViewProps) {
                     width={50}
                     height={60}
                   />
-                  <div>
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => handleGalleryModal()}
+                  >
                     <p className="text-sm">Open Gallery</p>
                   </div>
                 </div>
