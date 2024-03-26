@@ -1,8 +1,8 @@
 "use client";
-import { useRouter } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import Followers from "@/components/Modals/Followers";
@@ -10,18 +10,13 @@ import Following from "@/components/Modals/Following";
 import Modal from "@/components/Modals/Modal";
 import MoreOptions from "@/components/Modals/MoreOptions";
 import VideoDetails from "@/components/Modals/VideoDetails";
-import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import { leagueGothic } from "@/font/font";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import { getAllClipVideos } from "@/store/slices/clipSlice";
 import { getAllPostVideos, getUserBookmark } from "@/store/slices/postSlice";
 import { getCurrentUserStories } from "@/store/slices/storySlice";
-import {
-  followUser,
-  getAllUsers,
-  getProfileInfo,
-} from "@/store/slices/userSlice";
+import { getAllUsers, getProfileInfo } from "@/store/slices/userSlice";
 import { copyToClipboard } from "@/utils/helpers";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Loading from "./loading";
@@ -254,29 +249,6 @@ function MyGamefolio({ params }: any) {
     }
   };
 
-  const handleFollowUser = async (userId: any) => {
-    const payload = {
-      userId: userId,
-      followerID: authState._id,
-    };
-
-    const successCallback = (response: any) => {
-      toastSuccess(response.message);
-    };
-
-    const errorCallback = (error: string) => {
-      toastError(error);
-    };
-
-    const params = {
-      payload,
-      successCallback,
-      errorCallback,
-    };
-
-    dispatch(followUser(params));
-  };
-
   const handleModalToggle = (modalName: keyof typeof modalState) => {
     setModalState((prevState) => ({
       ...prevState,
@@ -467,13 +439,9 @@ function MyGamefolio({ params }: any) {
                   </div>
                 </div>
               </div>
-              {/* ))} */}
 
               <div className="mx-10 mt-8">
-                <Link
-                  href={`/${profileInfoState?.profileUserInfo?.username}`}
-                  key={authState._id}
-                >
+                <Link href={"/login"} key={authState._id}>
                   <button className="font-bold w-64 h-10 bg-[#37C535] text-white text-center py-[10px] px-[20px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]">
                     Follow on gamefolio
                   </button>
@@ -591,45 +559,31 @@ function MyGamefolio({ params }: any) {
                 </div>
               </div>
               <hr className="h-px border-0 bg-gray-700" />
-              {/* green line */}
 
-              {/* Content Section */}
-              {authState?.following?.some(
-                (user: any) =>
-                  user?.userID?._id ===
-                    profileInfoState?.profileUserInfo?._id || !isPrivateAccount
-              ) ? (
-                // User is following, show videos
-                <div>
-                  {selectedSection === "videos" ? (
-                    <MyVideosSection
-                      authState={authState}
-                      postState={postState}
-                      profileInfoState={profileInfoState}
-                      handleVideoDetailOpen={handleVideoDetailOpen}
-                    />
-                  ) : selectedSection === "bookmarked" ? (
-                    <MyBookmarkSection
-                      data={postState.bookmarks}
-                      handleVideoDetailOpen={handleVideoDetailOpen}
-                    />
-                  ) : selectedSection === "clips" ? (
-                    <ClipsSection
-                      authState={authState}
-                      clipState={clipState}
-                      profileInfoState={profileInfoState}
-                      handleVideoDetailOpen={handleVideoDetailOpen}
-                    />
-                  ) : (
-                    <StorySection data={storyState.currentUserStories} />
-                  )}
-                </div>
-              ) : (
-                // User is not following, show private account message
-                <div className="flex justify-center">
-                  <p>This is a private account.</p>
-                </div>
-              )}
+              <div>
+                {selectedSection === "videos" ? (
+                  <MyVideosSection
+                    authState={authState}
+                    postState={postState}
+                    profileInfoState={profileInfoState}
+                    handleVideoDetailOpen={handleVideoDetailOpen}
+                  />
+                ) : selectedSection === "bookmarked" ? (
+                  <MyBookmarkSection
+                    data={postState.bookmarks}
+                    handleVideoDetailOpen={handleVideoDetailOpen}
+                  />
+                ) : selectedSection === "clips" ? (
+                  <ClipsSection
+                    authState={authState}
+                    clipState={clipState}
+                    profileInfoState={profileInfoState}
+                    handleVideoDetailOpen={handleVideoDetailOpen}
+                  />
+                ) : (
+                  <StorySection data={storyState.currentUserStories} />
+                )}
+              </div>
             </div>
           </div>
 
@@ -646,6 +600,7 @@ function MyGamefolio({ params }: any) {
               height={40}
             />
           </div>
+
           <Modal
             isOpen={modalState.isShareModalOpen}
             handleClose={() => handleModalToggle("isShareModalOpen")}
