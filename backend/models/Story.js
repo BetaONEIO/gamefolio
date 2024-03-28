@@ -47,6 +47,12 @@ const storySchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+
+  createdAt: {
+    type: Date,
+    default: Date.now,
+    expires: "24h",
+  },
 });
 
 const Story = mongoose.model("Story", storySchema);
