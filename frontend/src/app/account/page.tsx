@@ -27,6 +27,9 @@ import CustomHeader from "@/components/CustomHeader/CustomHeader";
 import AddClips from "@/components/Modals/AddClips";
 import AddVideo from "@/components/Modals/AddVideo";
 import Link from "next/link";
+import { updateProfile } from "@/store/slices/authSlice";
+import axios from "axios";
+import { BASE_URL } from "@/services/api";
 
 interface MyVideosSectionProps {
   authState: any;
@@ -146,6 +149,7 @@ const MyBookmarkSection: React.FC<MyBookmarkSectionProps> = ({
 function Account() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const postState = useSelector((state: any) => state.post) || [];
+  const [image, setImage] = useState<File | null>(null);
   const [selectedSection, setSelectedSection] = useState("videos");
   const [postID, setPostID] = useState("");
   const [detailedPost, setDetailedPost] = useState("");
@@ -192,6 +196,10 @@ function Account() {
     }));
   };
 
+  const onUpdateProfilePicture = (value: string) => {
+    // setValue("profilePicture", value);
+  };
+
   function formatTimeAgo(timestamp: any) {
     const currentDate = new Date();
     const previousDate = new Date(timestamp);
@@ -210,6 +218,31 @@ function Account() {
   function handlePageRefresh(): void {
     throw new Error("Function not implemented.");
   }
+
+  const handleUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[0] : null;
+    if (file) {
+      setImage(file);
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const response = await axios.post(
+          `${BASE_URL}/storage/image/upload`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        onUpdateProfilePicture(response.data.imageURL);
+        toastSuccess(response.data.message);
+      } catch (error) {
+        toastError(error);
+      }
+    }
+  };
 
   const backgroundImage = `url(${IMAGES.Bgbackground})`;
 
@@ -312,17 +345,25 @@ function Account() {
                 <p className="text-gray-400">{authState?.bio}</p>
               </div>
 
-              <div className="flex h-10 px-2 items-center border-2 border-gray-50 rounded-xl gap-2 hover:opacity-80 cursor-pointer">
-                <Image
-                  className="w-5 h-4 object-cover"
-                  src={SVG.Camera2}
-                  width={10}
-                  height={10}
-                  sizes="100vw"
-                  alt="Account Profile"
-                />
-                <p className="font-normal">Edit coverphoto</p>
-              </div>
+              <label htmlFor="dropzone-file">
+                <div className="flex h-10 px-2 items-center border-2 border-gray-50 rounded-xl gap-2 hover:opacity-80 cursor-pointer">
+                  <Image
+                    className="w-5 h-4 object-cover"
+                    src={SVG.Camera2}
+                    width={10}
+                    height={10}
+                    sizes="100vw"
+                    alt="Account Profile"
+                  />
+                  <p className="font-normal">Edit coverphoto</p>
+                  <input
+                    id="dropzone-file"
+                    type="file"
+                    className="hidden"
+                    onChange={handleUploadImage}
+                  />
+                </div>
+              </label>
             </div>
           </div>
 
