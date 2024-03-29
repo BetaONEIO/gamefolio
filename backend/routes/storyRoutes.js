@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const storyController = require("../controller/storyController.js");
+const rateLimiter = require("../middleware/rateLimiter.js");
 
 // Create a new post story
-router.post("/story/create", storyController.postStory);
+router.post("/story/create", rateLimiter, storyController.postStory);
 
 // Get user stories
 router.post("/story/get-user", storyController.getUserAllStories);

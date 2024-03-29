@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const clipController = require("../controller/clipsController.js");
+const rateLimiter = require("../middleware/rateLimiter.js");
 
 // Create a new post video
-router.post("/video/create", clipController.createClip);
+router.post("/video/create", rateLimiter, clipController.createClip);
 
 // Get all posts
 router.get("/video/get", clipController.getAllClipVideos);

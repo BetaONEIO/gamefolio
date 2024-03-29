@@ -15,6 +15,7 @@ const chatRoutes = require("./routes/chatRoutes");
 const { myDbConnection } = require("./db/connection");
 const generateToken = require("./utils/generateToken");
 const authMiddleware = require("./middleware/authMiddleware");
+const rateLimiter = require("./middleware/rateLimiter");
 
 const app = express();
 const port = 4000;
@@ -45,6 +46,7 @@ app.use(passport.session());
 
 // Starting Socket.IO
 const socket = require("./utils/socket.js");
+
 const server = require("http").createServer(app);
 socket.init(server);
 // --------------
@@ -119,7 +121,8 @@ app.get("/api/user/protected", authMiddleware, (req, res) => {
   res.json({ message: "Success" });
 });
 
-app.get("/", (req, res) => {
+// rate limit api
+app.post("/test", rateLimiter, (req, res) => {
   res.send("Hello, world!");
 });
 
