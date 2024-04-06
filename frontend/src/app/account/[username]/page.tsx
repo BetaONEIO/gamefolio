@@ -22,7 +22,7 @@ import {
   getAllUsers,
   getProfileInfo,
 } from "@/store/slices/userSlice";
-import { copyToClipboard } from "@/utils/helpers";
+import { copyToClipboard, generateUniqueRoomId } from "@/utils/helpers";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import { ToastContainer } from "react-toastify";
 import Loading from "./loading";
