@@ -230,9 +230,9 @@ function SideBar() {
 
               <li>
                 <Link
-                  href="/mygamefolio"
+                  href="/portfolio-web"
                   className={`flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white  ${
-                    isItemActive("/gamefolio") ? "bg-[#162423]" : ""
+                    isItemActive("/portfolio-web") ? "bg-[#162423]" : ""
                   } dark:hover:bg-[#162423] group`}
                 >
                   <svg
@@ -242,10 +242,10 @@ function SideBar() {
                     viewBox="0 0 24 24"
                     fill="none"
                     style={{
-                      fill: isItemActive("/mygamefolio")
+                      fill: isItemActive("/portfolio-web")
                         ? "#62C860"
                         : "#586769",
-                      stroke: isItemActive("/mygamefolio")
+                      stroke: isItemActive("/portfolio-web")
                         ? "#62C860"
                         : "#586769",
                     }}
@@ -271,14 +271,14 @@ function SideBar() {
                   <div className="flex flex-row w-48 justify-between">
                     <span
                       className={`ml-5 font-semibold ${
-                        isItemActive("/gamefolio")
+                        isItemActive("/portfolio-web")
                           ? "text-white"
                           : "text-gray-400"
                       }`}
                     >
                       My Gamefolio
                     </span>
-                    {isItemActive("/gamefolio") && (
+                    {isItemActive("/portfolio-web") && (
                       <hr className="w-1 h-6 bg-[#fff] rounded-lg" />
                     )}
                   </div>

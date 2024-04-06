@@ -1,44 +1,38 @@
 "use client";
 import { Suspense, useEffect, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
-import { leagueGothic } from "@/font/font";
-import { dispatch, useSelector } from "@/store";
-import { userSession } from "@/store/slices/authSlice";
-import {
-  getAllPostVideos,
-  getUserBookmark,
-  removeUserBookmark,
-} from "@/store/slices/postSlice";
-import { getCookieValue, getFromLocal } from "@/utils/localStorage";
-import { copyToClipboard, generateUniqueRoomId } from "@/utils/helpers";
-import { ToastContainer } from "react-toastify";
+import CustomHeader from "@/components/CustomHeader/CustomHeader";
 import Layout from "@/components/CustomLayout/layout";
 import Followers from "@/components/Modals/Followers";
 import Following from "@/components/Modals/Following";
 import Modal from "@/components/Modals/Modal";
 import MoreOptions from "@/components/Modals/MoreOptions";
-import CurrentUserStories from "@/components/story/CurrentUserStories";
 import VideoDetails from "@/components/Modals/VideoDetails";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
-import CustomHeader from "@/components/CustomHeader/CustomHeader";
-import Loading from "./loading";
+import { leagueGothic } from "@/font/font";
+import { dispatch, useSelector } from "@/store";
+import { userSession } from "@/store/slices/authSlice";
+import { getAllClipVideos } from "@/store/slices/clipSlice";
+import { getAllPostVideos, getUserBookmark } from "@/store/slices/postSlice";
+import { getCurrentUserStories } from "@/store/slices/storySlice";
 import {
   followUser,
   getAllUsers,
   getProfileInfo,
 } from "@/store/slices/userSlice";
-import { getAllClipVideos } from "@/store/slices/clipSlice";
-import { getCurrentUserStories } from "@/store/slices/storySlice";
+import { copyToClipboard } from "@/utils/helpers";
+import { getCookieValue, getFromLocal } from "@/utils/localStorage";
+import { ToastContainer } from "react-toastify";
+import Loading from "./loading";
 import { initChat } from "@/store/slices/chatSlice";
 import { useRouter } from "next/navigation";
 
 interface MyVideosSectionProps {
-  authState: any; // Add authState as a prop
-  postState: any; // Add postState as a prop
-  profileInfoState: any; // Add profileInfoState as a prop
+  authState: any;
+  postState: any;
+  profileInfoState: any;
   handleVideoDetailOpen: (postID: any, detailedPost: any) => void;
 }
 
@@ -47,7 +41,6 @@ interface VideoState {
 }
 
 const MyVideosSection: React.FC<MyVideosSectionProps> = ({
-  authState,
   postState,
   profileInfoState,
   handleVideoDetailOpen,
@@ -85,9 +78,9 @@ const MyVideosSection: React.FC<MyVideosSectionProps> = ({
 };
 
 interface ClipsProps {
-  authState: any; // Add authState as a prop
-  clipState: any; // Add postState as a prop
-  profileInfoState: any; // Add profileInfoState as a prop
+  authState: any;
+  clipState: any;
+  profileInfoState: any;
   handleVideoDetailOpen: (postID: any, detailedPost: any) => void;
 }
 
@@ -134,7 +127,6 @@ const ClipsSection: React.FC<ClipsProps> = ({
 
 interface StoryProps {
   data: Array<any>;
-  // isStoryModalOpen: () => void;
 }
 
 const StorySection: React.FC<StoryProps> = ({ data }) => {

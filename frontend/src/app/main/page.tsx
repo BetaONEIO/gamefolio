@@ -213,7 +213,7 @@ function Main() {
               <div className="flex justify-between items-center">
                 <span className="font-bold">Trendings</span>
                 <Link href={"/trending"}>
-                  <span className="text-xs text-[#43DD4E] cursor-pointer hover:opacity-80">
+                  <span className="text-xs text-[#43DD4E] cursor-pointer">
                     See More
                   </span>
                 </Link>
@@ -338,7 +338,7 @@ function Main() {
                             href={`/account/${post?.userID?.username}`}
                             key={post._id}
                           >
-                            <h1 className="w-[230px] sm:w-[350px] text-sm md:text-base sm:text-base font-bold text-white hover:opacity-80">
+                            <h1 className="w-[230px] sm:w-[350px] text-lg font-bold text-white hover:opacity-80">
                               {post?.userID?.name}
                             </h1>
                           </Link>
@@ -383,8 +383,8 @@ function Main() {
                     <div className="mx-3">
                       <p className="text-neutral-300">{post?.description}</p>
                     </div>
-
-                    {/* <ReactPlayer
+                    {/* 
+                    <ReactPlayer
                       className="w-[710px] h-[185px] sm:h-[300px] my-2 sm:my-2"
                       url={"post.video"} // Change 'src' to 'url'
                       width="100%" // Adjust width and height as needed
@@ -524,7 +524,7 @@ function Main() {
 
             {/* Notification */}
             <div
-              className="hidden w-6/12 h-96 md:flex flex-col gap-8 rounded-lg bg-[#091619] border border-[#1C2C2E] px-2 py-6 overflow-hidden overflow-y-auto"
+              className="hidden w-6/12 h-96 md:flex flex-col gap-6 rounded-lg bg-[#091619] border border-[#1C2C2E] px-2 py-6 overflow-hidden overflow-y-auto"
               style={styles.scroller}
             >
               <div className="flex justify-between items-center">
@@ -540,10 +540,7 @@ function Main() {
               </div>
 
               {authState?.notification?.map((notification: any) => (
-                <div
-                  key={notification._id}
-                  className="flex items-center gap-1 overflow-y-scroll"
-                >
+                <div key={notification._id} className="flex items-center gap-1">
                   <Image
                     className="w-10 h-10 rounded-lg"
                     src={notification.oppositionID.profilePicture}
@@ -554,12 +551,12 @@ function Main() {
                   />
                   <div className="flex flex-col">
                     <div className="flex items-center gap-2 mx-2">
-                      <p className="w-28 text-sm text-white font-semibold">
-                        {notification.oppositionID.name.length > 10
+                      <p className="w-28 text-xs text-white font-semibold">
+                        {notification.oppositionID.name.length > 12
                           ? `${notification.oppositionID.name.substring(0, 10)}`
                           : notification.oppositionID.name}
                       </p>
-                      <p className="w-32 text-[0.63rem] text-gray-400">
+                      <p className="w-32 text-[0.60rem] text-gray-400">
                         {new Date(notification.date).toLocaleString("en-US", {
                           hour: "numeric",
                           minute: "numeric",
@@ -569,8 +566,7 @@ function Main() {
                         })}
                       </p>
                     </div>
-                    <span className="text-sm text-white mx-2">
-                      {/* Followed your profile...{" "} */}
+                    <span className="text-xs text-white mx-2">
                       {getNotificationMessage(notification.notificationType)}
                     </span>
                   </div>

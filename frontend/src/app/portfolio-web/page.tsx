@@ -1,4 +1,6 @@
 "use client";
+import { useEffect, useState } from "react";
+import Image from "next/image";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import Followers from "@/components/Modals/Followers";
@@ -12,14 +14,11 @@ import { getAllPostVideos } from "@/store/slices/postSlice";
 import { getAllUsers, getProfileInfo } from "@/store/slices/userSlice";
 import { copyToClipboard } from "@/utils/helpers";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
-import Image from "next/image";
-import { useEffect, useState } from "react";
+import Layout from "@/components/CustomLayout/layout";
 
 function MyGamefolio() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const postState = useSelector((state: any) => state.post) || [];
-  const profileInfoState = useSelector((state: any) => state.user) || [];
-  const [isPrivateAccount, setIsPrivateAccount] = useState(false);
   const [postID, setPostID] = useState("");
   const [detailedPost, setDetailedPost] = useState("");
   const [modalState, setModalState] = useState({
@@ -29,6 +28,8 @@ function MyGamefolio() {
     isVideoDetailOpen: false,
     isStoryModalOpen: false,
   });
+
+  console.log("hello", authState);
 
   const userVideos = postState.videos.filter(
     (post: any) => post?.userID?._id === authState._id
@@ -46,12 +47,6 @@ function MyGamefolio() {
     dispatch(getAllPostVideos());
     dispatch(getAllUsers());
   }, [postState.refresh]);
-
-  useEffect(() => {
-    setIsPrivateAccount(
-      profileInfoState?.profileUserInfo?.accountType === "private"
-    );
-  }, [profileInfoState]);
 
   const handleModalToggle = (modalName: keyof typeof modalState) => {
     setModalState((prevState) => ({
@@ -76,7 +71,7 @@ function MyGamefolio() {
   const backgroundImage = `url(${IMAGES.bgImage})`;
 
   return (
-    <>
+    <Layout>
       <div
         className="flex"
         style={{
@@ -124,26 +119,23 @@ function MyGamefolio() {
               <button className="font-bold w-40 h-10 bg-[#292D32] text-white text-center py-[10px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]">
                 follow
               </button>
-              <button
-                className="font-bold w-40 h-10 bg-[#37C535] text-white text-center py-[10px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
-                // onClick={handleMessage}
-              >
+              <button className="font-bold w-40 h-10 bg-[#37C535] text-white text-center py-[10px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]">
                 Message
               </button>
             </div>
             <div className="flex items-center justify-between">
               <p>Posts</p>
-              <p>200</p>
+              <p>{userVideos.length || 0}</p>
             </div>
             <hr className="h-px border-0 bg-[#586769] my-2 " />
             <div className="flex items-center justify-between">
               <p>Followers</p>
-              <p>200</p>
+              <p>{authState?.follower?.length || 0}</p>
             </div>
             <hr className="h-px border-0 bg-[#586769] my-2 " />
             <div className="flex items-center justify-between">
               <p>Following</p>
-              <p>200</p>
+              <p>{authState?.following?.length || 0}</p>
             </div>
             <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
               <Image
@@ -194,30 +186,39 @@ function MyGamefolio() {
             </div>
 
             <h1 className="font-bold my-2">About Me:</h1>
-            <p className="font-light text-xs text-[#7C7F80]">
-              Lorem ipsum dolor sit amet constetur. Ante duis tellus tincidunt
-              nibh Lorem ipsum dolor sit amet consectetur. Ante duis tellus um
-              dolor sit amet constetur. Ante duis tellus um dolor sit amet
-              constetur.
-            </p>
+            <p className="font-light text-xs text-[#7C7F80]">{authState.bio}</p>
           </div>
 
           <div className="w-8/12 justify-between items-center h-10  mt-56">
             {/* header */}
             <div className="flex items-center">
-              <div className="flex justify-between items-center w-full sm:mx-2 lg:mx-4">
+              <div className="flex justify-between items-center w-full sm:mx-2 lg:mx-4 relative">
                 <div>
                   <p className="font-semibold text-base sm:text-lg lg:text-lg text-white">
                     Portfolio
                   </p>
                 </div>
-                <div className="flex items-center bg-[#1C2C2E] ml-16 flex gap-2 p-1 items-center rounded-lg overflow-hidden">
-                  <Image src={SVG.Search} alt="logo" width={20} height={20} />
+
+                <div className="flex items-center bg-[#1C2C2E] flex gap-2 p-1 items-center rounded-lg overflow-hidden absolute right-10">
+                  <Image
+                    src={SVG.Search}
+                    alt="Search"
+                    width={20}
+                    height={20}
+                    className="absolute left-2"
+                  />
                   <input
-                    className="bg-[#1C2C2E] outline-none text-white flex-grow text-sm sm:text-base"
+                    className="bg-[#1C2C2E] outline-none text-white flex-grow pl-8 text-sm sm:text-base"
                     placeholder="Search"
                   />
                 </div>
+                <Image
+                  src={SVG.Filter}
+                  alt="Filter"
+                  width={25}
+                  height={25}
+                  className="absolute right-2"
+                />
               </div>
             </div>
 
@@ -305,7 +306,7 @@ function MyGamefolio() {
           handlePageRefresh={() => handlePageRefresh()}
         />
       </Modal>
-    </>
+    </Layout>
   );
 }
 

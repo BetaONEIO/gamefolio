@@ -1,4 +1,3 @@
-"use client";
 import { ToastContainer } from "react-toastify";
 import Setting from "../page";
 
@@ -6,7 +5,6 @@ const ChangePassword = () => {
   return (
     <Setting>
       {/* Header */}
-
       <div className="flex flex-col justify-between px-6 py-8  lg:py-0 h-full">
         <div className="flex flex-col w-full ">
           <div className="flex justify-start items-center mb-6">

@@ -7,17 +7,9 @@ import Layout from "@/components/CustomLayout/layout";
 import DeletePost from "@/components/Modals/DeletePost";
 import Modal from "@/components/Modals/Modal";
 import VideoDetails from "@/components/Modals/VideoDetails";
-import { toastError } from "@/components/Toast/Toast";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
-import {
-  createVideoReaction,
-  deleteVideoReaction,
-  getAllPostVideos,
-  getTrendingPosts,
-  refreshPage,
-} from "@/store/slices/postSlice";
-import { getAllUsers } from "@/store/slices/userSlice";
+import { getTrendingPosts, refreshPage } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Loading from "./loading";
 // Import Swiper React components
@@ -32,7 +24,6 @@ import { IMAGES } from "@/assets/images";
 import { EffectFade, Navigation, Pagination } from "swiper/modules";
 
 function Trending() {
-  const authState = useSelector((state: any) => state.auth.userData) || [];
   const postState = useSelector((state: any) => state.post) || [];
   const [postID, setPostID] = useState("");
   const [detailedPost, setDetailedPost] = useState("");
@@ -51,8 +42,6 @@ function Trending() {
   useEffect(() => {
     dispatch(userSession(params));
     dispatch(getTrendingPosts());
-    dispatch(getAllPostVideos());
-    dispatch(getAllUsers());
   }, [postState.refresh]);
 
   const [modalState, setModalState] = useState({
@@ -78,52 +67,16 @@ function Trending() {
     }));
   };
 
-  const handleCreateReaction = async (postID: any, reactionType: any) => {
-    const payload = {
-      userID: authState._id,
-      postID: postID,
-      reactionType: reactionType,
-    };
-
-    const successCallback = (response: any) => {
-      handlePageRefresh();
-    };
-
-    const errorCallback = (error: string) => {
-      toastError(error);
-    };
-
-    const params = {
-      payload,
-      successCallback,
-      errorCallback,
-    };
-
-    dispatch(createVideoReaction(params));
-  };
-
-  const handleDeleteReaction = async (postID: any, reactionID: any) => {
-    const payload = {
-      userID: authState._id,
-      postID: postID,
-      reactionID: reactionID,
-    };
-
-    const successCallback = (response: any) => {
-      handlePageRefresh();
-    };
-
-    const errorCallback = (error: string) => {
-      toastError(error);
-    };
-
-    const params = {
-      payload,
-      successCallback,
-      errorCallback,
-    };
-
-    dispatch(deleteVideoReaction(params));
+  const handleVideoMetadata = (
+    event: React.SyntheticEvent<HTMLVideoElement, Event>,
+    videoId: string
+  ) => {
+    const video = event.currentTarget;
+    const duration = video.duration;
+    setVideoDurations((prevDurations) => ({
+      ...prevDurations,
+      [videoId]: duration,
+    }));
   };
 
   function formatTimeAgo(timestamp: any) {
@@ -142,6 +95,7 @@ function Trending() {
   }
 
   const formatTime = (seconds: number): string => {
+    if (isNaN(seconds)) return "Invalid time"; // Adding error handling
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
     const formattedTime = `${minutes}:${
@@ -162,7 +116,7 @@ function Trending() {
 
         <section
           style={sectionStyle}
-          className="flex flex-col items-center bg-[#091619] min-h-screen"
+          className="flex flex-col items-center bg-[#091619] min-h-screen relative"
         >
           <div className="p-4 flex flex-col w-full h-full gap-2">
             <div className="flex items-center gap-3">
@@ -187,11 +141,9 @@ function Trending() {
               <Swiper
                 effect={"fade"}
                 navigation={true}
-                pagination={{
-                  clickable: true,
-                }}
+                pagination={{ clickable: true }}
                 modules={[EffectFade, Navigation, Pagination]}
-                className="mySwiper h-80 w-full rounded-lg"
+                className="mySwiper h-80 w-full rounded-lg relative"
               >
                 <SwiperSlide>
                   <img src={IMAGES.TrendingPubg} style={styles.swiperImage} />
@@ -212,8 +164,20 @@ function Trending() {
                 </SwiperSlide>
               </Swiper>
 
+              <div className="absolute left-10 flex gap-4 mt-4">
+                <button className="rounded-2xl px-4 py-2 bg-[#292D32] text-white">
+                  Action
+                </button>
+                <button className="rounded-2xl px-4 py-2 bg-[#292D32] text-white">
+                  Fighting
+                </button>
+                <button className="rounded-2xl px-4 py-2 bg-[#292D32] text-white">
+                  Thrilling
+                </button>
+              </div>
+
               <div
-                className="hidden w-2/5 h-full md:flex flex-col gap-8 rounded-lg bg-[#091619] border border-[#1C2C2E] px-4 py-6 overflow-y-auto"
+                className="hidden w-2/5 h-[22.5rem] md:flex flex-col gap-8 rounded-lg bg-[#091619] border border-[#1C2C2E] px-4 py-6 overflow-y-auto"
                 style={styles.scroller}
               >
                 <div className="flex justify-start items-center">
@@ -356,103 +320,115 @@ function Trending() {
               </div>
             </div>
 
-            {/* <div className="absolute flex items-center gap-4">
-              <h1 className="p-2 bg-[#292D32] rounded-xl">Action</h1>
-              <h1 className="p-2 bg-[#292D32] rounded-xl">Fighting</h1>
-              <h1 className="p-2 bg-[#292D32] rounded-xl">Thrilling</h1>
-            </div> */}
+            <div className="flex items-center gap-3">
+              <p className="font-semibold text-base sm:text-lg lg:text-lg text-white">
+                Trending Games
+              </p>
+              <div className="flex items-center bg-[#49DE4D] px-1 rounded-md">
+                <Image
+                  className="mr-2 cursor-pointer hover:opacity-80"
+                  src={SVG.Trending}
+                  alt="Trending"
+                  width={20}
+                  height={20}
+                />
+                <p className="font-semibold text-base sm:text-md lg:text-md text-white">
+                  Trending
+                </p>
+              </div>
+            </div>
 
-            <div className="flex flex-wrap w-full gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {postState?.trendingVideos?.map((item: any) => (
                 <div
                   key={item?.userID}
-                  className="flex flex-col w-64 h-60 border-2 border-[#1C2C2E] rounded-xl my-2 pb-2"
+                  className="flex flex-col w-68 h-64 border-2 border-[#1C2C2E] rounded-xl my-2"
                   onClick={() =>
                     handleModalToggle("isVideoDetailOpen", item._id, item)
                   }
                 >
-                  <div className="relative">
+                  <div className="relative overflow-hidden rounded-t-xl aspect-w-16 aspect-h-9">
                     <video
                       src={item.video}
-                      className="w-80 h-full rounded-2xl hover:opacity-80 p-2"
+                      className="object-cover w-full h-36 hover:opacity-80"
                       controls={false}
                       autoPlay={false}
+                      width={50}
+                      height={50}
+                      onLoadedMetadata={(e) => handleVideoMetadata(e, item._id)}
                     />
 
-                    <span className="absolute bottom-2 right-3">
+                    <span className="absolute bottom-2 right-3 text-white">
                       {formatTime(videoDurations[item._id])}
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-4 mb-2">
-                    <Image
-                      className="rounded-xl w-10 h-10 ml-2 object-cover"
-                      src={item?.userID?.profilePicture}
-                      alt="Account Profile"
-                      height={10}
-                      width={10}
-                      sizes="100vw"
-                    />
-
-                    <div>
+                  <div className="p-2">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Image
+                        className="rounded-full w-10 h-10 object-cover"
+                        src={item?.userID?.profilePicture}
+                        alt="Account Profile"
+                        height={40}
+                        width={40}
+                      />
                       <div>
-                        <span className="text-xs sm:text-sm text-white">
+                        <p className="text-sm text-white">
                           {item?.userID?.name}
-                        </span>
-                      </div>
-                      <div className="flex items-center">
-                        <p className="text-sm font-light text-gray-400">
+                        </p>
+                        <p className="text-xs text-gray-400">
                           {formatTimeAgo(item.date)}
                         </p>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="flex  items-center justify-between text-center mx-4">
-                    <div className="flex items-center">
-                      <Image
-                        className="mr-2 cursor-pointer hover:opacity-80"
-                        src={SVG.Like}
-                        alt="Like"
-                        width={20}
-                        height={20}
-                      />
-                      <p className="text-white">
-                        {
-                          item.reactions.filter(
-                            (reaction: any) => reaction.reactionType === "like"
-                          ).length
-                        }
-                      </p>
-                    </div>
+                    <div className="flex justify-between mx-2">
+                      <div className="flex items-center gap-2">
+                        <Image
+                          className="cursor-pointer hover:opacity-80"
+                          src={SVG.Like}
+                          alt="Like"
+                          width={20}
+                          height={20}
+                        />
+                        <p className="text-white">
+                          {
+                            item.reactions.filter(
+                              (reaction: any) =>
+                                reaction.reactionType === "like"
+                            ).length
+                          }
+                        </p>
+                      </div>
 
-                    <div className="flex items-center">
-                      <Image
-                        className="mr-2 cursor-pointer hover:opacity-80"
-                        src={SVG.Love}
-                        alt="Love"
-                        width={20}
-                        height={20}
-                      />
-                      <p className="text-white">
-                        {" "}
-                        {
-                          item.reactions.filter(
-                            (reaction: any) => reaction.reactionType === "love"
-                          ).length
-                        }
-                      </p>
-                    </div>
+                      <div className="flex items-center gap-2">
+                        <Image
+                          className="cursor-pointer hover:opacity-80"
+                          src={SVG.Love}
+                          alt="Love"
+                          width={20}
+                          height={20}
+                        />
+                        <p className="text-white">
+                          {
+                            item.reactions.filter(
+                              (reaction: any) =>
+                                reaction.reactionType === "love"
+                            ).length
+                          }
+                        </p>
+                      </div>
 
-                    <div className="flex items-center">
-                      <Image
-                        className="mr-2 cursor-pointer hover:opacity-80"
-                        src={SVG.Comment}
-                        alt="Comment"
-                        width={25}
-                        height={25}
-                      />
-                      <p className="text-white">{item.comments.length}</p>
+                      <div className="flex items-center gap-2">
+                        <Image
+                          className="cursor-pointer hover:opacity-80"
+                          src={SVG.Comment}
+                          alt="Comment"
+                          width={25}
+                          height={25}
+                        />
+                        <p className="text-white">{item.comments.length}</p>
+                      </div>
                     </div>
                   </div>
                 </div>

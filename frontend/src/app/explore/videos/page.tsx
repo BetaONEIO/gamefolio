@@ -78,6 +78,7 @@ function Video() {
   }
 
   const formatTime = (seconds: number): string => {
+    if (isNaN(seconds)) return "Invalid time"; // Adding error handling
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
     const formattedTime = `${minutes}:${
@@ -96,13 +97,13 @@ function Video() {
 
   return (
     <div className="m-4">
-      <div className="flex items-center mx-2">
-        <p className="font-semibold text-base sm:text-lg lg:text-lg text-white">
+      <div className="flex items-center mx-2 mb-2">
+        <p className="font-semibold sm:text-lg text-xs text-white">
           Video Recommended for you
         </p>
       </div>
 
-      <div className="flex flex-wrap w-full gap-2 mt-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {postState.videos.slice(0, 5).map((item: any) => {
           const hasLikeReacted = item.reactions.some(
             (reaction: any) =>
@@ -123,10 +124,10 @@ function Video() {
                 handleModalToggle("isVideoDetailOpen", item._id, item)
               }
             >
-              <div className="relative">
+              <div className="relative overflow-hidden rounded-t-xl aspect-w-16 aspect-h-9">
                 <video
                   src={item.video}
-                  className="w-full h-36 rounded-2xl hover:opacity-80"
+                  className="object-cover w-full h-36 hover:opacity-80"
                   controls={false}
                   autoPlay={false}
                   width={50}
@@ -134,80 +135,73 @@ function Video() {
                   onLoadedMetadata={(e) => handleVideoMetadata(e, item._id)}
                 />
 
-                <span className="absolute bottom-2 right-3">
+                <span className="absolute bottom-2 right-3 text-white">
                   {formatTime(videoDurations[item._id])}
                 </span>
               </div>
 
-              <div className="flex items-center gap-4 mb-2">
-                <Image
-                  className="rounded-xl w-10 h-10 ml-2 object-cover"
-                  src={item?.userID?.profilePicture}
-                  alt="Account Profile"
-                  height={10}
-                  width={10}
-                />
-
-                <div>
+              <div className="p-2">
+                <div className="flex items-center gap-2 mb-2">
+                  <Image
+                    className="rounded-full w-10 h-10 object-cover"
+                    src={item?.userID?.profilePicture}
+                    alt="Account Profile"
+                    height={40}
+                    width={40}
+                  />
                   <div>
-                    <span className="text-xs sm:text-sm text-white">
-                      {item?.userID?.name}
-                    </span>
-                  </div>
-                  <div className="flex items-center">
-                    <p className="text-sm font-light text-gray-400">
+                    <p className="text-sm text-white">{item?.userID?.name}</p>
+                    <p className="text-xs text-gray-400">
                       {formatTimeAgo(item.date)}
                     </p>
                   </div>
                 </div>
-              </div>
 
-              <div className="flex  items-center justify-between text-center mx-4">
-                <div className="flex items-center">
-                  <Image
-                    className="mr-2 cursor-pointer hover:opacity-80"
-                    src={SVG.Like}
-                    alt="Like"
-                    width={20}
-                    height={20}
-                  />
-                  <p className="text-white">
-                    {" "}
-                    {
-                      item.reactions.filter(
-                        (reaction: any) => reaction.reactionType === "like"
-                      ).length
-                    }
-                  </p>
-                </div>
+                <div className="flex justify-between mx-2">
+                  <div className="flex items-center gap-2">
+                    <Image
+                      className="cursor-pointer hover:opacity-80"
+                      src={SVG.Like}
+                      alt="Like"
+                      width={20}
+                      height={20}
+                    />
+                    <p className="text-white">
+                      {
+                        item.reactions.filter(
+                          (reaction: any) => reaction.reactionType === "like"
+                        ).length
+                      }
+                    </p>
+                  </div>
 
-                <div className="flex items-center">
-                  <Image
-                    className="mr-2 cursor-pointer hover:opacity-80"
-                    src={SVG.Love}
-                    alt="Love"
-                    width={20}
-                    height={20}
-                  />
-                  <p className="text-white">
-                    {" "}
-                    {
-                      item.reactions.filter(
-                        (reaction: any) => reaction.reactionType === "love"
-                      ).length
-                    }
-                  </p>
-                </div>
+                  <div className="flex items-center gap-2">
+                    <Image
+                      className="cursor-pointer hover:opacity-80"
+                      src={SVG.Love}
+                      alt="Love"
+                      width={20}
+                      height={20}
+                    />
+                    <p className="text-white">
+                      {
+                        item.reactions.filter(
+                          (reaction: any) => reaction.reactionType === "love"
+                        ).length
+                      }
+                    </p>
+                  </div>
 
-                <div className="flex items-center">
-                  <Image
-                    className="mr-2 cursor-pointer hover:opacity-80"
-                    src={SVG.Comment}
-                    alt="Comment"
-                    width={25}
-                    height={25}
-                  />
-                  <p className="text-white">{item.comments.length}</p>
+                  <div className="flex items-center gap-2">
+                    <Image
+                      className="cursor-pointer hover:opacity-80"
+                      src={SVG.Comment}
+                      alt="Comment"
+                      width={25}
+                      height={25}
+                    />
+                    <p className="text-white">{item.comments.length}</p>
+                  </div>
                 </div>
               </div>
             </div>

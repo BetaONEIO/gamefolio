@@ -1,4 +1,8 @@
 "use client";
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import { useForm } from "react-hook-form";
+import { ToastContainer } from "react-toastify";
 import { SVG } from "@/assets/SVG";
 import DeleteAccount from "@/components/Modals/DeleteAccount";
 import Modal from "@/components/Modals/Modal";
@@ -7,10 +11,6 @@ import { BASE_URL } from "@/services/api";
 import { dispatch, useSelector } from "@/store";
 import { updateProfile } from "@/store/slices/authSlice";
 import axios from "axios";
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { ToastContainer } from "react-toastify";
 import Setting from "../page";
 
 const EditProfile = () => {
@@ -33,10 +33,6 @@ const EditProfile = () => {
       profilePicture: "",
     },
   });
-
-  const sectionStyle = {
-    backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
-  };
 
   const [modalState, setModalState] = useState({
     isDeleteModalOpen: false,

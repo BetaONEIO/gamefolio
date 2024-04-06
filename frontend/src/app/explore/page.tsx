@@ -87,6 +87,7 @@ function Explore() {
   }
 
   const formatTime = (seconds: number): string => {
+    if (isNaN(seconds)) return "Invalid time"; // Adding error handling
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
     const formattedTime = `${minutes}:${
@@ -260,7 +261,7 @@ function Explore() {
       </div>
 
       <div className="flex items-center gap-2 mt-2 overflow-x-auto no-scrollbar">
-        {postState.videos.slice(0, 8).map((item: any) => (
+        {postState.videos.slice(0, 7).map((item: any) => (
           <div
             key={item?.userID}
             className="flex-shrink-0 flex flex-col gap-2 w-68 h-64 border-2 border-[#1C2C2E] rounded-xl mx-1 pb-2"

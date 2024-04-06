@@ -236,14 +236,16 @@ function VideoDetails({
 
                   <div className="flex items-center justify-between mx-3">
                     <div className="flex flex-1 gap-4">
-                      <p>{detailedPost?.reactions.length}</p>
-                      <Image
-                        className="cursor-pointer hover:opacity-80 p-2 w-10 h-10 rounded-xl bg-[#162423]"
-                        src={SVG.Like}
-                        alt="Like"
-                        width={50}
-                        height={50}
-                      />
+                      <div className="flex items-center gap-1">
+                        <Image
+                          className="cursor-pointer hover:opacity-80 p-2 w-10 h-10 rounded-xl bg-[#162423]"
+                          src={SVG.Like}
+                          alt="Like"
+                          width={50}
+                          height={50}
+                        />
+                        <p>{detailedPost?.reactions.length}</p>
+                      </div>
 
                       <Image
                         className="cursor-pointer hover:opacity-80 w-10 h-10 rounded-xl bg-[#162423]"

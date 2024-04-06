@@ -1,7 +1,6 @@
 "use client";
 import { Suspense, useEffect, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
@@ -9,6 +8,7 @@ import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import {
   getAllPostVideos,
+  getTrendingPosts,
   getUserBookmark,
   removeUserBookmark,
 } from "@/store/slices/postSlice";
@@ -16,7 +16,6 @@ import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import { copyToClipboard } from "@/utils/helpers";
 import { ToastContainer } from "react-toastify";
 import Layout from "@/components/CustomLayout/layout";
-import Badges from "@/components/Modals/Badges";
 import Followers from "@/components/Modals/Followers";
 import Following from "@/components/Modals/Following";
 import Modal from "@/components/Modals/Modal";
@@ -25,16 +24,16 @@ import CurrentUserStories from "@/components/story/CurrentUserStories";
 import VideoDetails from "@/components/Modals/VideoDetails";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import CustomHeader from "@/components/CustomHeader/CustomHeader";
-import Loading from "./loading";
-import { getAllUsers, getProfileInfo } from "@/store/slices/userSlice";
-import { getAllClipVideos } from "@/store/slices/clipSlice";
-import { getCurrentUserStories } from "@/store/slices/storySlice";
 import AddClips from "@/components/Modals/AddClips";
 import AddVideo from "@/components/Modals/AddVideo";
+import Link from "next/link";
+import { updateProfile } from "@/store/slices/authSlice";
+import axios from "axios";
+import { BASE_URL } from "@/services/api";
 
 interface MyVideosSectionProps {
-  authState: any; // Add authState as a prop
-  postState: any; // Add postState as a prop
+  authState: any;
+  postState: any;
   handleVideoDetailOpen: (postID: any, detailedPost: any) => void;
 }
 
@@ -150,7 +149,7 @@ const MyBookmarkSection: React.FC<MyBookmarkSectionProps> = ({
 function Account() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const postState = useSelector((state: any) => state.post) || [];
-  const [open, setOpen] = useState(false);
+  const [image, setImage] = useState<File | null>(null);
   const [selectedSection, setSelectedSection] = useState("videos");
   const [postID, setPostID] = useState("");
   const [detailedPost, setDetailedPost] = useState("");
@@ -177,6 +176,7 @@ function Account() {
   useEffect(() => {
     dispatch(userSession(params));
     dispatch(getUserBookmark(params));
+    dispatch(getTrendingPosts());
     dispatch(getAllPostVideos());
   }, [postState.refresh]);
 
@@ -196,9 +196,53 @@ function Account() {
     }));
   };
 
+  const onUpdateProfilePicture = (value: string) => {
+    // setValue("profilePicture", value);
+  };
+
+  function formatTimeAgo(timestamp: any) {
+    const currentDate = new Date();
+    const previousDate = new Date(timestamp);
+    const timeDifference = currentDate.getTime() - previousDate.getTime();
+    const minutesAgo = Math.floor(timeDifference / (1000 * 60));
+
+    if (minutesAgo < 60) {
+      return `${minutesAgo} minutes ago`;
+    } else if (minutesAgo < 1440) {
+      return `${Math.floor(minutesAgo / 60)} hours ago`;
+    } else {
+      return `${Math.floor(minutesAgo / 1440)} days ago`;
+    }
+  }
+
   function handlePageRefresh(): void {
     throw new Error("Function not implemented.");
   }
+
+  const handleUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[0] : null;
+    if (file) {
+      setImage(file);
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const response = await axios.post(
+          `${BASE_URL}/storage/image/upload`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        onUpdateProfilePicture(response.data.imageURL);
+        toastSuccess(response.data.message);
+      } catch (error) {
+        toastError(error);
+      }
+    }
+  };
 
   const backgroundImage = `url(${IMAGES.Bgbackground})`;
 
@@ -222,7 +266,7 @@ function Account() {
               backgroundPosition: "center",
             }}
           >
-            <div className="w-32 h-32">
+            <div className="w-32 h-40">
               <Image
                 className="rounded-xl w-32 h-32 object-cover border-2 border-[#43DD4E]"
                 src={authState?.profilePicture}
@@ -232,6 +276,7 @@ function Account() {
                 alt="Account Profile"
               />
             </div>
+
             <div className="flex justify-between w-9/12">
               <div
                 key={authState?.userID}
@@ -300,17 +345,25 @@ function Account() {
                 <p className="text-gray-400">{authState?.bio}</p>
               </div>
 
-              <div className="flex h-10 px-2 items-center border-2 border-gray-50 rounded-xl gap-2 hover:opacity-80 cursor-pointer">
-                <Image
-                  className="w-5 h-4 object-cover"
-                  src={SVG.Camera2}
-                  width={10}
-                  height={10}
-                  sizes="100vw"
-                  alt="Account Profile"
-                />
-                <p className="font-normal">Edit coverphoto</p>
-              </div>
+              <label htmlFor="dropzone-file">
+                <div className="flex h-10 px-2 items-center border-2 border-gray-50 rounded-xl gap-2 hover:opacity-80 cursor-pointer">
+                  <Image
+                    className="w-5 h-4 object-cover"
+                    src={SVG.Camera2}
+                    width={10}
+                    height={10}
+                    sizes="100vw"
+                    alt="Account Profile"
+                  />
+                  <p className="font-normal">Edit coverphoto</p>
+                  <input
+                    id="dropzone-file"
+                    type="file"
+                    className="hidden"
+                    onChange={handleUploadImage}
+                  />
+                </div>
+              </label>
             </div>
           </div>
 
@@ -320,7 +373,7 @@ function Account() {
           {/* Top Bar */}
 
           <div className="flex mx-3">
-            <div className="sm:w-60 md:w-60 lg:w-96 h-80 border-2 border-[#1C2C2E] rounded-lg p-1">
+            <div className="hidden w-2/5 h-fit md:flex flex-col sm:w-60 md:w-60 lg:w-96 h-80 border-2 border-[#1C2C2E] rounded-lg p-1">
               <h1 className="font-bold my-2">Connect</h1>
               <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
                 <Image
@@ -489,7 +542,7 @@ function Account() {
               </div>
             </div>
 
-            <div className="sm:w-72 md:w-72 lg:w-96 h-screen border-2 border-[#1C2C2E] rounded-lg p-1 overflow-hidden overflow-y-auto">
+            <div className="hidden w-2/5 h-fit md:flex flex-col  sm:w-72 md:w-72 lg:w-96 h-screen border-2 border-[#1C2C2E] rounded-lg p-1 overflow-hidden overflow-y-auto">
               <h1 className="font-bold m-2">Current Badge</h1>
               <div className="flex justify-center items-center gap-3 mt-2">
                 <Image
@@ -525,110 +578,111 @@ function Account() {
               </div>
 
               <div className="rounded-lg p-2 gap-3 mt-2">
-                <h1 className="font-bold">Current Badge</h1>
+                <h1 className="font-bold">Suggested Videos:</h1>
                 <div className="">
-                  {userVideos.map((item: any) => {
-                    return (
-                      <div
-                        key={item._id}
-                        className="border-2 h-40 border-[#1C2C2E] rounded-lg p-2 gap-3 mt-2"
-                      >
-                        <div className="flex">
-                          <video
-                            src={item.video}
-                            className="w-20 h-24 rounded-xl object-cover hover:opacity-80"
-                            width={20}
-                            height={20}
-                            controls={false}
-                            onClick={() =>
-                              handleVideoDetailOpen(item._id, item)
-                            }
-                          />
+                  {postState?.trendingVideos?.slice(0, 3).map((item: any) => (
+                    <div
+                      key={item._id}
+                      className="border-2 h-40 border-[#1C2C2E] rounded-lg p-2 gap-3 mt-2"
+                    >
+                      <div className="flex">
+                        <video
+                          src={item.video}
+                          className="w-20 h-24 rounded-xl object-cover hover:opacity-80"
+                          width={20}
+                          height={20}
+                          controls={false}
+                          onClick={() => handleVideoDetailOpen(item._id, item)}
+                        />
 
-                          <div className="flex flex-col gap-2 ml-2">
-                            <div className="flex items-center gap-2">
-                              <Image
-                                className="w-8 h-8 rounded-xl"
-                                src={IMAGES.Profile}
-                                alt="Profile"
-                                width={50}
-                                height={50}
-                                sizes="100vw"
-                                quality={80}
-                                loading="lazy"
-                              />
-                              <div className="flex flex-col">
-                                <h1 className="w-[180px] sm:w-[220px] text-xs md:text-xs sm:text-xs font-semibold text-white hover:opacity-80">
-                                  helloworld
-                                </h1>
-                                <p className="text-xl md:text-sm sm:text-base font-light text-gray-400">
-                                  17 Sep, 2023
-                                </p>
-                              </div>
+                        <div className="flex flex-col gap-2 ml-2">
+                          <div className="flex items-center gap-2">
+                            <Image
+                              className="w-9 h-10 rounded-lg"
+                              src={item?.userID?.profilePicture}
+                              alt="Profile"
+                              width={50}
+                              height={50}
+                              sizes="100vw"
+                              quality={80}
+                              loading="lazy"
+                            />
+                            <div className="flex flex-col">
+                              <h1 className="w-[180px] sm:w-[220px] text-xs md:text-xs sm:text-xs font-semibold text-white hover:opacity-80">
+                                {item?.userID?.name}
+                              </h1>
+                              <p className="text-xs font-light text-gray-400">
+                                {formatTimeAgo(item.date)}
+                              </p>
                             </div>
-                            <p className="w-40 text-[0.70rem] font-light text-gray-400">
-                              Lorem ipsumur. Ante duis tellus tincidu
+                          </div>
+                          <p className="w-40 text-[0.70rem] font-light text-gray-400">
+                            {item?.userID?.bio}
+                            <Link
+                              href={`/account/${item?.userID?.username}`}
+                              key={item._id}
+                            >
                               <span className="text-[#37C535] underline">
                                 See more
                               </span>
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center my-3 mx-2">
-                          <div className="flex items-center p-2 mr-2 rounded-lg bg-[#162423]">
-                            <Image
-                              className="mr-2 cursor-pointer hover:opacity-80"
-                              src={SVG.Like}
-                              alt="Like"
-                              width={30}
-                              height={30}
-                            />
-                            <p className="text-white"></p>
-                          </div>
-
-                          <div className="flex items-center p-2 mr-2 rounded-lg bg-[#162423]">
-                            <Image
-                              className="mr-2 cursor-pointer hover:opacity-80"
-                              src={SVG.Love}
-                              alt="Love"
-                              width={30}
-                              height={30}
-                            />
-                            <p className="text-white"></p>
-                          </div>
-
-                          <div className="p-2 mr-2 rounded-lg bg-[#162423]">
-                            <Image
-                              className="cursor-pointer hover:opacity-80"
-                              src={SVG.Chat}
-                              alt="Comment"
-                              width={30}
-                              height={30}
-                            />
-                          </div>
-
-                          <div className="p-2 mr-2 rounded-lg bg-[#162423]">
-                            <Image
-                              className="cursor-pointer hover:opacity-80"
-                              src={SVG.Trending}
-                              alt="Trending1"
-                              width={30}
-                              height={30}
-                            />
-                          </div>
-
-                          <Image
-                            className="cursor-pointer hover:opacity-80"
-                            src={SVG.GGGCoin}
-                            alt="Gcoin"
-                            width={45}
-                            height={45}
-                          />
+                            </Link>
+                          </p>
                         </div>
                       </div>
-                    );
-                  })}
+
+                      <div className="flex items-center my-3 mx-2">
+                        <div className="flex items-center p-2 mr-2 rounded-lg bg-[#162423]">
+                          <Image
+                            className="mr-2 cursor-pointer hover:opacity-80"
+                            src={SVG.Like}
+                            alt="Like"
+                            width={30}
+                            height={30}
+                          />
+                          <p className="text-white"></p>
+                        </div>
+
+                        <div className="flex items-center p-2 mr-2 rounded-lg bg-[#162423]">
+                          <Image
+                            className="mr-2 cursor-pointer hover:opacity-80"
+                            src={SVG.Love}
+                            alt="Love"
+                            width={30}
+                            height={30}
+                          />
+                          <p className="text-white"></p>
+                        </div>
+
+                        <div className="p-2 mr-2 rounded-lg bg-[#162423]">
+                          <Image
+                            className="cursor-pointer hover:opacity-80"
+                            src={SVG.Chat}
+                            alt="Comment"
+                            width={30}
+                            height={30}
+                          />
+                        </div>
+
+                        <div className="p-2 mr-2 rounded-lg bg-[#162423]">
+                          <Image
+                            className="cursor-pointer hover:opacity-80"
+                            src={SVG.Trending}
+                            alt="Trending1"
+                            width={30}
+                            height={30}
+                          />
+                        </div>
+
+                        <Image
+                          className="cursor-pointer hover:opacity-80"
+                          src={SVG.GGGCoin}
+                          alt="Gcoin"
+                          width={45}
+                          height={45}
+                        />
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
