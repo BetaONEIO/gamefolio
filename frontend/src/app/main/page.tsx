@@ -1,17 +1,18 @@
 "use client";
-import { Suspense, useEffect, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
 import Loading from "@/app/main/loading";
-import MoreLoader from "@/components/CustomLoader/MoreLoader";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import CustomHeader from "@/components/CustomHeader/CustomHeader";
 import Layout from "@/components/CustomLayout/layout";
+import MoreLoader from "@/components/CustomLoader/MoreLoader";
+import AddClips from "@/components/Modals/AddClips";
+import AddVideo from "@/components/Modals/AddVideo";
 import DeletePost from "@/components/Modals/DeletePost";
 import Modal from "@/components/Modals/Modal";
 import Report from "@/components/Modals/Report";
+import SharePost from "@/components/Modals/SharePost";
 import VideoDetails from "@/components/Modals/VideoDetails";
+import handleCreateNotification from "@/components/Notification/Notification";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import FollowingStories from "@/components/story/FollowingStories";
 import { dispatch, useSelector } from "@/store";
@@ -24,10 +25,9 @@ import {
   refreshPage,
 } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
-import AddClips from "@/components/Modals/AddClips";
-import AddVideo from "@/components/Modals/AddVideo";
-import { createNotification, getNotification } from "@/store/slices/userSlice";
-import handleCreateNotification from "@/components/Notification/Notification";
+import Image from "next/image";
+import Link from "next/link";
+import { Suspense, useEffect, useState } from "react";
 
 function Main() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
@@ -515,6 +515,19 @@ function Main() {
                           {post?.comment} Comments
                         </p>
                       </div>
+                      <div>
+                        <div
+                          onClick={() => handleModalToggle("isPostShareOpen")}
+                        >
+                          <Image
+                            className="hover:opacity-80 cursor-pointer"
+                            src={SVG.Share}
+                            alt="share"
+                            width={25}
+                            height={25}
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 );
@@ -615,6 +628,14 @@ function Main() {
       >
         <AddClips
           handleCloseModal={() => handleModalToggle("isAddClipsOpen")}
+        />
+      </Modal>
+      <Modal
+        isOpen={modalState.isPostShareOpen}
+        handleClose={() => handleModalToggle("isPostShareOpen")}
+      >
+        <SharePost
+          handleCloseModal={() => handleModalToggle("isPostShareOpen")}
         />
       </Modal>
 

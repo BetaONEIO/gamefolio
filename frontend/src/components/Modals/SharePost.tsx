@@ -2,14 +2,25 @@
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
+import { useSelector } from "@/store";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
-interface ShareStoryProps {
+interface SharePostProps {
   handleCloseModal: () => void; // Define handleCloseModal as a function
 }
 
-function ShareStory({ handleCloseModal }: ShareStoryProps) {
+interface User {
+  userID: {
+    _id: string;
+    name: string;
+    username: string;
+    profilePicture: string;
+    // Add other properties if necessary
+  };
+}
+
+function SharePost({ handleCloseModal }: SharePostProps) {
   const initialUsers = [
     { id: 1, name: "Mark Johnson", username: "john_smith", isSend: true },
     { id: 2, name: "Alice Smith", username: "alice", isSend: false },
@@ -26,7 +37,11 @@ function ShareStory({ handleCloseModal }: ShareStoryProps) {
     // Add more users as needed
   ];
 
+  const authState = useSelector((state: any) => state.auth.userData) || [];
+
   const [users, setUsers] = useState(initialUsers);
+
+  console.log("authState: ", authState);
 
   const handleUserButtonClick = (id: any) => {
     const updatedUsers = users.map((user) =>
@@ -85,7 +100,7 @@ function ShareStory({ handleCloseModal }: ShareStoryProps) {
             <h1
               className={`${leagueGothic.className} text-center text-3xl mb-5  text-white`}
             >
-              SHARE STORY
+              SHARE POST
             </h1>
 
             <div className="bg-[#1C2C2E] flex gap-2 px-4 items-center w-full sm:w-full rounded-lg overflow-hidden mb-2">
@@ -93,39 +108,46 @@ function ShareStory({ handleCloseModal }: ShareStoryProps) {
               <input
                 className="w-full block p-2.5 outline-none bg-[#1C2C2E] "
                 placeholder="Search"
+                disabled={authState.follower.length === 0}
               />
             </div>
 
             <div className="flex flex-col w-full sm:min-h-[350px] lg:min-h-[500px] max-h-[400px] sm:max-h-[350px] lg:max-h-[500px] overflow-y-auto no-scrollbar">
-              {users.map((user) => (
-                <div key={user.id}>
-                  <div className="flex items-center my-3">
+              {authState.follower.length === 0 && (
+                <div className="flex items-center my-3 justify-center">
+                  No Followers
+                </div>
+              )}
+              {authState.follower.map((user: User) => (
+                <div key={user.userID._id}>
+                  <div className="flex items-center gap-2 my-3">
                     <Image
-                      className="object-contain"
-                      src={IMAGES.Profile}
+                      className="object-contain rounded-xl"
+                      src={user.userID.profilePicture}
                       alt="Profile"
                       width={50}
                       height={50}
                     />
                     <div className="flex items-center justify-between w-full sm:w-full">
-                      <div>
-                        <span className="ml-2 sm:ml-4 text-sm sm:text-base">
-                          {user.name}
+                      <div className="flex flex-col items-start ">
+                        <span className="text-sm sm:text-base ">
+                          {user.userID.name}
                         </span>
-                        <p className="ml-2 sm:ml-4 text-sm text-left">
-                          {user.username}
-                        </p>
+                        <span className=" text-sm">{user.userID.username}</span>
                       </div>
                       <div>
                         <button
-                          onClick={() => handleUserButtonClick(user.id)}
-                          className={`${
-                            user.isSend
-                              ? "w-[100px] h-[50] font-bold bg-[#37C535] text-white text-center py-[5px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] "
-                              : "w-[100px] h-[50] font-bold bg-[#162423] text-white text-center py-[5px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] "
-                          } rounded-lg p-2`}
+                          // onClick={() => handleUserButtonClick(user.id)}
+                          // onClick={() => handleUserButtonClick(user.id)}
+                          className={`${"w-[100px] h-[50] font-bold bg-[#162423] text-white text-center py-[5px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] "}`}
+                          // className={`${
+                          //   user.isSend
+                          //     ? "w-[100px] h-[50] font-bold bg-[#37C535] text-white text-center py-[5px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] "
+                          //     : "w-[100px] h-[50] font-bold bg-[#162423] text-white text-center py-[5px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] "
+                          // } rounded-lg p-2`}
                         >
-                          {user.isSend ? "Send" : "Undo"}
+                          {/* {user.isSend ? "Send" : "Undo"} */}
+                          {"Send"}
                         </button>
                       </div>
                     </div>
@@ -141,4 +163,4 @@ function ShareStory({ handleCloseModal }: ShareStoryProps) {
   );
 }
 
-export default ShareStory;
+export default SharePost;
