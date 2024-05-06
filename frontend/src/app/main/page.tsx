@@ -517,7 +517,9 @@ function Main() {
                       </div>
                       <div>
                         <div
-                          onClick={() => handleModalToggle("isPostShareOpen")}
+                          onClick={() =>
+                            handleModalToggle("isPostShareOpen", post._id)
+                          }
                         >
                           <Image
                             className="hover:opacity-80 cursor-pointer"
@@ -635,6 +637,7 @@ function Main() {
         handleClose={() => handleModalToggle("isPostShareOpen")}
       >
         <SharePost
+          postID={postID}
           handleCloseModal={() => handleModalToggle("isPostShareOpen")}
         />
       </Modal>

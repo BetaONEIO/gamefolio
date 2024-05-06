@@ -1,12 +1,16 @@
 "use client";
 import { SVG } from "@/assets/SVG";
-import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
-import { useSelector } from "@/store";
+import { dispatch, useSelector } from "@/store";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { toastError, toastSuccess } from "../Toast/Toast";
+import { generateUniqueRoomId } from "@/utils/helpers";
+import { useRouter } from "next/navigation";
+import { initChat } from "@/store/slices/chatSlice";
 
 interface SharePostProps {
+  postID: String;
   handleCloseModal: () => void; // Define handleCloseModal as a function
 }
 
@@ -20,7 +24,7 @@ interface User {
   };
 }
 
-function SharePost({ handleCloseModal }: SharePostProps) {
+function SharePost({ postID, handleCloseModal }: SharePostProps) {
   const initialUsers = [
     { id: 1, name: "Mark Johnson", username: "john_smith", isSend: true },
     { id: 2, name: "Alice Smith", username: "alice", isSend: false },
@@ -38,10 +42,12 @@ function SharePost({ handleCloseModal }: SharePostProps) {
   ];
 
   const authState = useSelector((state: any) => state.auth.userData) || [];
+  const profileInfoState = useSelector((state: any) => state.user) || [];
 
   const [users, setUsers] = useState(initialUsers);
+  const router = useRouter();
 
-  console.log("authState: ", authState);
+  console.log("postID: ", postID);
 
   const handleUserButtonClick = (id: any) => {
     const updatedUsers = users.map((user) =>
@@ -65,6 +71,38 @@ function SharePost({ handleCloseModal }: SharePostProps) {
   const myBGStyleModal = {
     backgroundColor: "rgba(0, 0, 0, 0.6)",
     backdropFilter: "blur(8px)",
+  };
+
+  const handleMessage = async (receiverID: String) => {
+    console.log("receiverID: ", receiverID);
+    const payload = {
+      roomID: generateUniqueRoomId(),
+      type: "sharepost",
+      postID: postID,
+      sender: authState._id,
+      receiver: receiverID,
+      content: "kingoo",
+      isSocket: false,
+    };
+
+    const successCallback = (response: any) => {
+      toastSuccess(response);
+      setTimeout(() => {
+        router.push("/chat");
+      }, 4000);
+    };
+
+    const errorCallback = (error: string) => {
+      toastError(error);
+    };
+
+    const params = {
+      payload,
+      successCallback,
+      errorCallback,
+    };
+
+    dispatch(initChat(params));
   };
 
   return (
@@ -145,6 +183,7 @@ function SharePost({ handleCloseModal }: SharePostProps) {
                           //     ? "w-[100px] h-[50] font-bold bg-[#37C535] text-white text-center py-[5px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] "
                           //     : "w-[100px] h-[50] font-bold bg-[#162423] text-white text-center py-[5px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] "
                           // } rounded-lg p-2`}
+                          onClick={() => handleMessage(user.userID._id)}
                         >
                           {/* {user.isSend ? "Send" : "Undo"} */}
                           {"Send"}

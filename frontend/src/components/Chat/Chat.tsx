@@ -15,6 +15,7 @@ import AttachmentView from "../Modals/AttachmentView";
 import Modal from "../Modals/Modal";
 import { toastError } from "../Toast/Toast";
 import Gallery from "../Modals/Gallery";
+import SharePostMessage from "./Messages/SharePostMessage";
 
 function Chat() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
@@ -193,6 +194,9 @@ function Chat() {
                                 {element?.content}
                               </span>
                             </div>
+                            {Object.keys(element.postID).length > 0 && (
+                              <SharePostMessage postData={element.postID} />
+                            )}{" "}
                             <span className="text-xs text-gray-100">
                               {formatTime(element?.timestamp)}
                             </span>
