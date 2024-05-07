@@ -21,6 +21,17 @@ const chatSchema = new mongoose.Schema({
         ref: "Users",
         required: true,
       },
+      type: {
+        type: String,
+        enum: ["sharepost", "initiated"],
+      },
+      postID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Posts",
+        required: function () {
+          return this.type === "sharepost";
+        },
+      },
       content: {
         type: String,
       },

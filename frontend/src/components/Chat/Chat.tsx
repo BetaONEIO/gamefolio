@@ -172,16 +172,16 @@ function Chat() {
         </div>
 
         {/* Message container  */}
-        <div className="relative h-full max-h-full ">
+        <div className="relative h-4/5 max-h-4/5 ">
           <Toaster />
           {/* Messages */}
           <div
             id="chatContainer"
-            className="flex  flex-col gap-4 p-2 h-full overflow-scroll"
+            className="flex hideScrollBar  flex-col gap-4 p-2 h-full overflow-scroll"
           >
             {messageState?.chat?.messages?.map(
               (element: any, index: number) => {
-                console.log("ELEMENT: ", element);
+                console.log("ELEMENT: ", element?.postID);
                 return (
                   <React.Fragment key={index}>
                     {element?.sender?._id === authState._id ? (
@@ -194,9 +194,9 @@ function Chat() {
                                 {element?.content}
                               </span>
                             </div>
-                            {Object.keys(element.postID).length > 0 && (
-                              <SharePostMessage postData={element.postID} />
-                            )}{" "}
+
+                            <SharePostMessage postData={element.postID} />
+
                             <span className="text-xs text-gray-100">
                               {formatTime(element?.timestamp)}
                             </span>
@@ -224,6 +224,7 @@ function Chat() {
                           <div className="bg-black border border-gray-900  p-2 rounded-full  px-4 py-2 text-white">
                             <span className="text-md">{element.content}</span>
                           </div>
+                          <SharePostMessage postData={element.postID} />
                           <span className="text-xs text-white">
                             {" "}
                             {formatTime(element?.timestamp)}

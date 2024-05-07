@@ -24,24 +24,19 @@ exports.createChatMessage = async (req, res) => {
       sender,
       message,
       receiver,
+      type,
+      postID,
       content,
       roomID,
       isSocket = true,
     } = req.body;
-    console.log("chatController: ", {
-      sender,
-      receiver,
-      content,
-      roomID,
-      isSocket,
-    });
+    console.log("chatController: ", req.body);
 
     let updatedChat;
     let theChat;
 
     const chat = await Chats.findOne({
       participants: { $all: [sender, receiver] },
-      roomID: roomID,
     });
 
     console.log("chat: server ", chat);
@@ -49,6 +44,8 @@ exports.createChatMessage = async (req, res) => {
     if (chat) {
       chat.messages.push({
         sender,
+        type,
+        postID,
         content,
       });
       updatedChat = await chat.save();
@@ -61,6 +58,8 @@ exports.createChatMessage = async (req, res) => {
         messages: [
           {
             sender,
+            type,
+            postID,
             content: JSON.stringify(content),
           },
         ],
@@ -96,7 +95,21 @@ exports.getUserMessages = async (req, res) => {
     // Find all chats where the user's ID exists in the participants array
     const userChats = await Chats.find({ participants: userID })
       .populate("participants") // Populate participants with specified fields
-      .populate("messages.sender"); // Populate sender in messages with specified fields
+      .populate("messages.sender") // Populate sender in messages with specified fields
+      .populate({
+        path: "messages",
+        populate: {
+          path: "postID",
+          populate: {
+            path: "userID",
+            model: "Users",
+            select: "name username profilePicture",
+          },
+        },
+      })
+      .exec();
+
+    // Populate sender in messages with specified fields
 
     return res.status(200).json({ data: userChats });
   } catch (error) {
