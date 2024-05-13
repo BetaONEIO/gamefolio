@@ -179,63 +179,61 @@ function Chat() {
             id="chatContainer"
             className="flex hideScrollBar  flex-col gap-4 p-2 h-full overflow-scroll"
           >
-            {messageState?.chat?.messages?.map(
-              (element: any, index: number) => {
-                console.log("ELEMENT: ", element?.postID);
-                return (
-                  <React.Fragment key={index}>
-                    {element?.sender?._id === authState._id ? (
-                      // Sender Message
-                      index === 0 ? (
-                        <div className="flex items-center justify-end gap-2">
-                          <div className="flex flex-col items-end gap-2">
-                            <div className="bg-[#62C860]  rounded-full  px-4 py-2 text-white">
-                              <span className="text-md">
-                                {element?.content}
-                              </span>
-                            </div>
-
+            {messageState?.chat?.messages.map((element: any, index: number) => {
+              // console.log("ELEMENT: ", element);
+              return (
+                <React.Fragment key={index}>
+                  {element?.sender?._id === authState._id ? (
+                    // Sender Message
+                    index === 0 ? (
+                      <div className="flex items-center justify-end gap-2">
+                        <div className="flex flex-col items-end gap-2">
+                          <div className="bg-[#62C860]  rounded-full  px-4 py-2 text-white">
+                            <span className="text-md">{element?.content}</span>
+                          </div>
+                          {element.type === "sharepost" && (
                             <SharePostMessage postData={element.postID} />
+                          )}
 
-                            <span className="text-xs text-gray-100">
-                              {formatTime(element?.timestamp)}
-                            </span>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="flex items-center justify-end gap-2">
-                          <div className="flex flex-col items-end gap-2">
-                            <div className="bg-[#62C860]  rounded-full  px-4 py-2 text-white">
-                              <span className="text-md">
-                                {element?.content}
-                              </span>
-                            </div>
-                            <span className="text-xs text-gray-100">
-                              {formatTime(element?.timestamp)}
-                            </span>
-                          </div>
-                        </div>
-                      )
-                    ) : (
-                      // Receiver Message
-
-                      <div className="flex items-center justify-start">
-                        <div className="ml-2 flex flex-col items-start gap-2  ">
-                          <div className="bg-black border border-gray-900  p-2 rounded-full  px-4 py-2 text-white">
-                            <span className="text-md">{element.content}</span>
-                          </div>
-                          <SharePostMessage postData={element.postID} />
-                          <span className="text-xs text-white">
-                            {" "}
+                          <span className="text-xs text-gray-100">
                             {formatTime(element?.timestamp)}
                           </span>
                         </div>
                       </div>
-                    )}
-                  </React.Fragment>
-                );
-              }
-            )}
+                    ) : (
+                      <div className="flex items-center justify-end gap-2">
+                        <div className="flex flex-col items-end gap-2">
+                          <div className="bg-[#62C860]  rounded-full  px-4 py-2 text-white">
+                            <span className="text-md">{element?.content}</span>
+                          </div>
+                          {element.type === "sharepost" && (
+                            <SharePostMessage postData={element.postID} />
+                          )}
+                          <span className="text-xs text-gray-100">
+                            {formatTime(element?.timestamp)}
+                          </span>
+                        </div>
+                      </div>
+                    )
+                  ) : (
+                    // Receiver Message
+
+                    <div className="flex items-center justify-start">
+                      <div className="ml-2 flex flex-col items-start gap-2  ">
+                        <div className="bg-black border border-gray-900  p-2 rounded-full  px-4 py-2 text-white">
+                          <span className="text-md">{element.content}</span>
+                        </div>
+                        <SharePostMessage postData={element.postID} />
+                        <span className="text-xs text-white">
+                          {" "}
+                          {formatTime(element?.timestamp)}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                </React.Fragment>
+              );
+            })}
           </div>
         </div>
 
