@@ -22,6 +22,9 @@ const userSchema = new mongoose.Schema({
   profilePicture: {
     type: String,
   },
+  coverPicture: {
+    type: String,
+  },
 
   dateOfBirth: {
     type: String,

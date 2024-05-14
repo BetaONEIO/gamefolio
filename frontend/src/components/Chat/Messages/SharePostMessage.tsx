@@ -12,7 +12,7 @@ function SharePostMessage({ postData }: SharePostMessageProps) {
   return (
     <div
       key={postData?._id}
-      className="border border-[#1C2C2E] rounded-2xl bg-[#091619] w-2/4 px-2"
+      className="border border-[#1C2C2E] rounded-2xl bg-[#091619] w-2/4 "
     >
       <div className="flex items-center justify-between m-3">
         <div className="flex items-center sm:gap-4 gap-2">
@@ -54,7 +54,7 @@ function SharePostMessage({ postData }: SharePostMessageProps) {
       </div>
 
       <video
-        className="w-[710px] h-[185px] sm:h-[300px] my-2 sm:my-2"
+        className="w-[710px] h-[185px] sm:h-[185px] my-2 sm:my-2 rounded-2xl"
         src={`${postData?.video}#t=0.1`}
         style={{ aspectRatio: "16:9" }}
         width={50}

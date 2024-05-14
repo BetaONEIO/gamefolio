@@ -5,7 +5,7 @@ import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
 import { dispatch, useSelector } from "@/store";
-import { userSession } from "@/store/slices/authSlice";
+import { updateCover, userSession } from "@/store/slices/authSlice";
 import {
   getAllPostVideos,
   getTrendingPosts,
@@ -30,6 +30,7 @@ import Link from "next/link";
 import { updateProfile } from "@/store/slices/authSlice";
 import axios from "axios";
 import { BASE_URL } from "@/services/api";
+import { useForm } from "react-hook-form";
 
 interface MyVideosSectionProps {
   authState: any;
@@ -149,6 +150,7 @@ const MyBookmarkSection: React.FC<MyBookmarkSectionProps> = ({
 function Account() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const postState = useSelector((state: any) => state.post) || [];
+  const [update, setUpdate] = useState<Boolean>(false);
   const [image, setImage] = useState<File | null>(null);
   const [selectedSection, setSelectedSection] = useState("videos");
   const [postID, setPostID] = useState("");
@@ -161,6 +163,18 @@ function Account() {
     isVideoDetailOpen: false,
     isAddClipsOpen: false,
     isAddVideoOpen: false,
+  });
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      coverPicture: "",
+    },
   });
 
   const userVideos = postState.videos.filter(
@@ -180,6 +194,12 @@ function Account() {
     dispatch(getAllPostVideos());
   }, [postState.refresh]);
 
+  useEffect(() => {
+    if (update === true) {
+      handleSubmit(handleUpdateCover)();
+    }
+  }, [update === true]);
+
   const handleModalToggle = (modalName: keyof typeof modalState) => {
     setModalState((prevState) => ({
       ...prevState,
@@ -196,8 +216,60 @@ function Account() {
     }));
   };
 
-  const onUpdateProfilePicture = (value: string) => {
-    // setValue("profilePicture", value);
+  const onUpdateCoverPicture = (value: string) => {
+    setValue("coverPicture", value);
+    setUpdate(true);
+  };
+
+  const handleUploadImage = async (e: any) => {
+    const file = e.target.files ? e.target.files[0] : null;
+    if (file) {
+      setImage(file);
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const response = await axios.post(
+          `${BASE_URL}/storage/image/upload`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        onUpdateCoverPicture(response.data.imageURL);
+        toastSuccess(response.data.message);
+      } catch (error) {
+        toastError(error);
+      }
+    }
+  };
+
+  const handleUpdateCover = (data: any) => {
+    console.log("22: data: ", data);
+    const payload = {
+      userID: authState._id,
+      ...data,
+    };
+
+    const successCallback = (response: any) => {
+      console.log("response: 22");
+      toastSuccess(response);
+      setUpdate(false);
+    };
+
+    const errorCallback = (error: string) => {
+      toastError(error);
+      setUpdate(false);
+    };
+
+    const params = {
+      payload,
+      successCallback,
+      errorCallback,
+    };
+    dispatch(updateCover(params));
   };
 
   function formatTimeAgo(timestamp: any) {
@@ -219,32 +291,7 @@ function Account() {
     throw new Error("Function not implemented.");
   }
 
-  const handleUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files ? e.target.files[0] : null;
-    if (file) {
-      setImage(file);
-      try {
-        const formData = new FormData();
-        formData.append("file", file);
-
-        const response = await axios.post(
-          `${BASE_URL}/storage/image/upload`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-        onUpdateProfilePicture(response.data.imageURL);
-        toastSuccess(response.data.message);
-      } catch (error) {
-        toastError(error);
-      }
-    }
-  };
-
-  const backgroundImage = `url(${IMAGES.Bgbackground})`;
+  const backgroundImage = `url(${authState.coverPicture})`;
 
   const sectionStyle = {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
@@ -260,10 +307,7 @@ function Account() {
           <div
             className="flex flex-col relative items-center lg:flex-row lg:justify-center gap-4 h-60 mx-4 my-4"
             style={{
-              background: `linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.9) 99%), ${backgroundImage}`,
-              backgroundRepeat: "no-repeat",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
+              background: `linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.9) 99%), ${backgroundImage} no-repeat center / cover`,
             }}
           >
             <div className="w-32 h-40">
@@ -346,7 +390,10 @@ function Account() {
               </div>
 
               <label htmlFor="dropzone-file">
-                <div className="flex h-10 px-2 items-center border-2 border-gray-50 rounded-xl gap-2 hover:opacity-80 cursor-pointer">
+                <div
+                  className="flex h-10 px-2 items-center border-2 border-gray-50 rounded-xl gap-2 hover:opacity-80 cursor-pointer"
+                  onClick={handleUploadImage}
+                >
                   <Image
                     className="w-5 h-4 object-cover"
                     src={SVG.Camera2}
@@ -356,12 +403,7 @@ function Account() {
                     alt="Account Profile"
                   />
                   <p className="font-normal">Edit coverphoto</p>
-                  <input
-                    id="dropzone-file"
-                    type="file"
-                    className="hidden"
-                    onChange={handleUploadImage}
-                  />
+                  <input id="dropzone-file" type="file" className="hidden" />
                 </div>
               </label>
             </div>

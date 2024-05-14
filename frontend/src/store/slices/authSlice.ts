@@ -193,6 +193,34 @@ export function updateProfile(params: ActionParams) {
     }
   };
 }
+export function updateCover(params: ActionParams) {
+  const {
+    successCallback = () => {},
+    errorCallback = () => {},
+    payload,
+  } = params;
+  return async () => {
+    dispatch(slice.actions.startLoading());
+
+    const options: APIParams = {
+      method: "PUT",
+      endpoint: PATH.user.updateCover,
+      payload: payload,
+      isToken: false,
+    };
+    try {
+      const [ok, response] = await API(options);
+
+      if (!ok || !response) return errorCallback(response.message);
+
+      successCallback(response.message);
+    } catch (error) {
+      errorCallback();
+    } finally {
+      dispatch(slice.actions.stopLoading());
+    }
+  };
+}
 
 export function updatePassword(params: ActionParams) {
   const {

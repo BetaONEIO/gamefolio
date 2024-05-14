@@ -83,6 +83,7 @@ const loginUser = asyncHandler(async (req, res) => {
       username: user.username,
       email: user.email,
       profilePicture: user.profilePicture,
+      coverPicture: user.coverPicture,
       preferences: user.preferences,
       favoriteGames: user.favoriteGames,
       bio: user.bio,
@@ -309,6 +310,7 @@ const updateLoginUser = asyncHandler(async (req, res) => {
       username: user.username,
       bio: user.bio,
       profilePicture: user.profilePicture,
+      coverPicture: user.coverPicture,
       dateOfBirth: user.dateOfBirth,
       accountType: user.accountType,
       signupMethod: user.signupMethod,
@@ -354,6 +356,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
       username: user.username,
       bio: user.bio,
       profilePicture: user.profilePicture,
+      coverPicture: user.coverPicture,
       dateOfBirth: user.dateOfBirth,
       accountType: user.accountType,
       signupMethod: user.signupMethod,
@@ -397,6 +400,7 @@ const getProfileInfo = asyncHandler(async (req, res) => {
       username: user.username,
       bio: user.bio,
       profilePicture: user.profilePicture,
+      coverPicture: user.coverPicture,
       dateOfBirth: user.dateOfBirth,
       accountType: user.accountType,
       signupMethod: user.signupMethod,
@@ -556,6 +560,35 @@ const updateProfile = async (req, res) => {
     res
       .status(500)
       .json({ message: "Could not update profile", error: error.message });
+  }
+};
+
+// Controller to update user profile
+const updateCover = async (req, res) => {
+  const { userID, coverPicture } = req.body;
+  console.log("coverPicture: ", coverPicture);
+
+  try {
+    // Find the user by ID
+    console.log("updateProfile: ", req.body);
+    let user = await User.findById(userID);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update cover photo
+    user.coverPicture = coverPicture || user.coverPicture;
+
+    // Save the updated cover photo
+    await user.save();
+
+    res.status(200).json({ message: "Cover photo updated successfully" });
+  } catch (error) {
+    console.log("error: ", error.message);
+    res
+      .status(500)
+      .json({ message: "Could not update cover photo", error: error.message });
   }
 };
 
@@ -887,6 +920,7 @@ module.exports = {
   addFavoriteGames,
   report,
   updateProfile,
+  updateCover,
   addFollowers,
   removeFollower,
   removeFollowing,

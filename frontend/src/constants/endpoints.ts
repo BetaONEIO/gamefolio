@@ -18,6 +18,7 @@ export const PATH = {
     getProfileInfo: "user/profile/get",
     getAllUsers: "user/getAllUsers",
     updateProfile: "user/profile/update",
+    updateCover: "user/cover/update",
     updatePassword: "user/password/update",
     followUser: "user/follower/create",
     removeFollow: "user/follower/delete",
