@@ -222,7 +222,9 @@ function Account() {
   };
 
   const handleUploadImage = async (e: any) => {
+    console.log("yess click");
     const file = e.target.files ? e.target.files[0] : null;
+    console.log("file: ", file);
     if (file) {
       setImage(file);
       try {
@@ -238,6 +240,7 @@ function Account() {
             },
           }
         );
+
         onUpdateCoverPicture(response.data.imageURL);
         toastSuccess(response.data.message);
       } catch (error) {
@@ -390,10 +393,7 @@ function Account() {
               </div>
 
               <label htmlFor="dropzone-file">
-                <div
-                  className="flex h-10 px-2 items-center border-2 border-gray-50 rounded-xl gap-2 hover:opacity-80 cursor-pointer"
-                  onClick={handleUploadImage}
-                >
+                <div className="flex h-10 px-2 items-center border-2 border-gray-50 rounded-xl gap-2 hover:opacity-80 cursor-pointer">
                   <Image
                     className="w-5 h-4 object-cover"
                     src={SVG.Camera2}
@@ -403,7 +403,12 @@ function Account() {
                     alt="Account Profile"
                   />
                   <p className="font-normal">Edit coverphoto</p>
-                  <input id="dropzone-file" type="file" className="hidden" />
+                  <input
+                    id="dropzone-file"
+                    type="file"
+                    className="hidden"
+                    onChange={handleUploadImage}
+                  />
                 </div>
               </label>
             </div>

@@ -318,7 +318,7 @@ function Page({ params }: any) {
     throw new Error("Function not implemented.");
   }
 
-  const backgroundImage = `url(${IMAGES.Bgbackground})`;
+  const backgroundImage = `url(${profileInfoState.profileUserInfo.coverPicture})`;
 
   const sectionStyle = {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
@@ -334,10 +334,7 @@ function Page({ params }: any) {
           <div
             className="flex flex-col items-center lg:flex-row lg:justify-center gap-4 h-60 pl-8 mx-4 my-4"
             style={{
-              background: `linear-gradient(to bottom, transparent 20%, rgba(0, 0, 0, 0.9) 70%), ${backgroundImage}`,
-              backgroundRepeat: "no-repeat",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
+              background: `linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.9) 99%), ${backgroundImage} no-repeat center / cover`,
             }}
             key={profileInfoState?.profileUserInfo?._id}
           >
