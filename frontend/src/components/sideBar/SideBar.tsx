@@ -12,6 +12,7 @@ function SideBar() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   {
     /* Get the current route */
   }
@@ -32,6 +33,10 @@ function SideBar() {
   const isItemActive = (path: string) => {
     return currentRoute === path ? true : false;
   };
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
   return (
     <>
       <button
@@ -40,6 +45,7 @@ function SideBar() {
         aria-controls="sidebar-notification"
         type="button"
         className="inline-flex items-center p-2 mt-2 ml-3 text-sm rounded-lg sm:hidden"
+        onClick={toggleSidebar}
       >
         <span className="sr-only">Open sidebar</span>
         <Image src={SVG.SideBar} alt="sidebar" width={30} height={30} />
@@ -47,7 +53,9 @@ function SideBar() {
 
       <aside
         id="sidebar-notification"
-        className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-[#091619]"
+        className={`fixed top-0 left-0  w-64 h-screen transition-transform  z-50 ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } sm:translate-x-0 bg-[#091619]`}
       >
         <div className="flex flex-col justify-between h-full overflow-y-auto no-scrollbar py-4 px-3 border-r bg-[#050E10] border-[#050E10]">
           <div className="mb-16">

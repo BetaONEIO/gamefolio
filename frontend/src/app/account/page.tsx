@@ -630,7 +630,7 @@ function Account() {
                   {postState?.trendingVideos?.slice(0, 3).map((item: any) => (
                     <div
                       key={item._id}
-                      className="border-2 h-40 border-[#1C2C2E] rounded-lg p-2 gap-3 mt-2"
+                      className="border-2 h-40 border-[#1C2C2E] rounded-lg p-2 gap-3 mt-2 flex-wrap"
                     >
                       <div className="flex">
                         <video
