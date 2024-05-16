@@ -134,7 +134,7 @@ function Chat() {
 
   return (
     <>
-      <div className="hideScrollBar hidden relative  w-full flex-col bg-[#091619] gap-4 overflow-auto border-r  md:hidden lg:block">
+      <div className="hideScrollBar hidden relative z-20  w-full flex-col bg-[#091619] gap-4  border-r  md:hidden lg:block ">
         <div className="sticky top-0 z-40  flex justify-between items-center  gap-2 border-b border-gray-800 bg-[#091619] p-5">
           <div className="flex items-center gap-2">
             <img
@@ -177,7 +177,7 @@ function Chat() {
           {/* Messages */}
           <div
             id="chatContainer"
-            className="flex hideScrollBar  flex-col gap-4 p-2 h-full overflow-scroll"
+            className="flex hideScrollBar  flex-col gap-4 p-2 h-full mb-80 overflow-scroll"
           >
             {messageState?.chat?.messages.map((element: any, index: number) => {
               // console.log("ELEMENT: ", element);
@@ -262,7 +262,7 @@ function Chat() {
               src={SVG.ChatFile}
             />
           </div>
-          <div className="flex-grow mx-3 my-2 relative flex items-center rounded-lg bg-[#162423] p-2">
+          <div className="flex-grow mx-3 my-2 relative flex items-center rounded-lg bg-[#162423] p-2 px-6">
             <input
               type="text"
               className="flex-grow px-1 py-1 bg-[#162423] focus:outline-none"
@@ -271,25 +271,29 @@ function Chat() {
               {...register("message")}
             />
 
-            <button onClick={() => toggleEmoji()}>😀</button>
-            {emoji && (
-              <div className="absolute bottom-10 right-0">
-                <Picker
-                  data={data}
-                  onEmojiSelect={(data: any) => handleEmojiSelect(data.native)}
-                  previewPosition="none"
-                />
-              </div>
-            )}
+            <div className="flex gap-1">
+              <button onClick={() => toggleEmoji()}>😀</button>
+              {emoji && (
+                <div className="absolute bottom-10 right-0">
+                  <Picker
+                    data={data}
+                    onEmojiSelect={(data: any) =>
+                      handleEmojiSelect(data.native)
+                    }
+                    previewPosition="none"
+                  />
+                </div>
+              )}
 
-            <Image
-              className="hover:opacity-70"
-              alt="Message sent"
-              width={24}
-              height={24}
-              src={SVG.ChatMessageSent}
-              onClick={handleSubmit(handleSendMessage)}
-            />
+              <Image
+                className="hover:opacity-70"
+                alt="Message sent"
+                width={24}
+                height={24}
+                src={SVG.ChatMessageSent}
+                onClick={handleSubmit(handleSendMessage)}
+              />
+            </div>
           </div>
         </div>
       </div>
