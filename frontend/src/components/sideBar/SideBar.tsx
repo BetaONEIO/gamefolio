@@ -1,18 +1,23 @@
 "use client";
-import React, { useState } from "react";
+import { SVG } from "@/assets/SVG";
+import { IMAGES } from "@/assets/images";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { SVG } from "@/assets/SVG";
-import { IMAGES } from "@/assets/images";
-import AddNew from "../Modals/AddNew";
+import { useState } from "react";
 import { useSelector } from "react-redux";
+import AddNew from "../Modals/AddNew";
 
-function SideBar() {
+// Define types for props
+interface SideBarProps {
+  toggleSidebar: () => void;
+  sidebarOpen: boolean;
+}
+function SideBar({ toggleSidebar, sidebarOpen }: SideBarProps) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   {
     /* Get the current route */
   }
@@ -34,9 +39,6 @@ function SideBar() {
     return currentRoute === path ? true : false;
   };
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
   return (
     <>
       <button

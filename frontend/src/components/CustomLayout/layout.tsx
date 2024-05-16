@@ -1,14 +1,15 @@
 "use client";
-import React, { ReactNode, Suspense, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import SideBar from "@/components/sideBar/SideBar";
 import { ROUTES } from "@/labels/routes";
 import { dispatch } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
+import { useRouter } from "next/navigation";
+import React, { ReactNode, useEffect, useState } from "react";
 
 const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const router = useRouter();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const cookies = getCookieValue("gfoliotoken");
   const payload = {
@@ -24,13 +25,19 @@ const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
       router.replace(ROUTES.login);
     }
   }, []);
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
 
   return (
     <div className="antialiased bg-[#091619]">
       {/* <!-- Sidebar --> */}
-      <SideBar />
+      <SideBar toggleSidebar={toggleSidebar} sidebarOpen={sidebarOpen} />
       {/* Main Page */}
-      <main className="md:ml-64 h-auto ">
+      <main
+        className="md:ml-64 h-auto  "
+        onClick={sidebarOpen ? toggleSidebar : undefined}
+      >
         <div className="rounded-lg border-gray-600 h-screen overflow-y-scroll no-scrollbar">
           {children}
         </div>
