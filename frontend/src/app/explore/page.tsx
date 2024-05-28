@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { dispatch, useSelector } from "@/store";
@@ -13,9 +13,9 @@ import { usePathname } from "next/navigation";
 import { SVG } from "@/assets/SVG";
 import Modal from "@/components/Modals/Modal";
 import VideoDetails from "@/components/Modals/VideoDetails";
+import Loading from "./loading";
 
 function Explore() {
-  const authState = useSelector((state: any) => state.auth.userData) || [];
   const postState = useSelector((state: any) => state.post) || [];
   const userState = useSelector((state: any) => state.user) || [];
   const [videoDurations, setVideoDurations] = useState<{
@@ -52,6 +52,8 @@ function Explore() {
     dispatch(getAllUsers());
   }, [postState.refresh]);
 
+  if (postState.loading) return <Loading />;
+
   const userVideos = userState.userList.map((user: any) => {
     const videosForUser = postState.videos.filter(
       (post: any) => post?.userID?.username === user.username
@@ -87,7 +89,7 @@ function Explore() {
   }
 
   const formatTime = (seconds: number): string => {
-    if (isNaN(seconds)) return "Invalid time"; // Adding error handling
+    if (isNaN(seconds)) return "loading";
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
     const formattedTime = `${minutes}:${

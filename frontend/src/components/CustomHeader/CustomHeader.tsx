@@ -72,7 +72,9 @@ function CustomHeader({ children }: { children?: String }) {
                 width={30}
                 height={30}
               />
-              <p className="font-semibold pr-2 text-white">GG COIN</p>
+              <p className="sm:font-light md:font-semibold pr-2 sm:text-xs md:text-base lg:text-base text-white">
+                GG COIN
+              </p>
             </div>
           </Link>
 
