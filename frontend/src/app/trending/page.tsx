@@ -1,6 +1,7 @@
 "use client";
 import { Suspense, useEffect, useState } from "react";
 import Image from "next/image";
+import { IMAGES } from "@/assets/images";
 import { SVG } from "@/assets/SVG";
 import CustomHeader from "@/components/CustomHeader/CustomHeader";
 import Layout from "@/components/CustomLayout/layout";
@@ -20,7 +21,6 @@ import "swiper/css/effect-fade";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 // import required modules
-import { IMAGES } from "@/assets/images";
 import { EffectFade, Navigation, Pagination } from "swiper/modules";
 
 function Trending() {
@@ -95,7 +95,7 @@ function Trending() {
   }
 
   const formatTime = (seconds: number): string => {
-    if (isNaN(seconds)) return "Invalid time"; // Adding error handling
+    if (isNaN(seconds)) return "loading";
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
     const formattedTime = `${minutes}:${
