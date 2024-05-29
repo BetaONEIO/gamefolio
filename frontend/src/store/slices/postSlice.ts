@@ -75,7 +75,7 @@ export const slice = createSlice({
       state.trendingVideos = action.payload;
     },
     getFollowingPost(state, action) {
-      state.followingVideos = [...state.followingVideos, ...action.payload];
+      state.followingVideos = [...action.payload];
     },
     getUserBookmarks(state, action) {
       state.bookmarks = action.payload;
