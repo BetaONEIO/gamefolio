@@ -1,6 +1,4 @@
 "use client";
-import { Suspense, useEffect, useState } from "react";
-import Image from "next/image";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import CustomHeader from "@/components/CustomHeader/CustomHeader";
@@ -13,7 +11,8 @@ import VideoDetails from "@/components/Modals/VideoDetails";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import { leagueGothic } from "@/font/font";
 import { dispatch, useSelector } from "@/store";
-import { userSession } from "@/store/slices/authSlice";
+import { refreshPage, userSession } from "@/store/slices/authSlice";
+import { initChat } from "@/store/slices/chatSlice";
 import { getAllClipVideos } from "@/store/slices/clipSlice";
 import { getAllPostVideos, getUserBookmark } from "@/store/slices/postSlice";
 import { getCurrentUserStories } from "@/store/slices/storySlice";
@@ -21,13 +20,15 @@ import {
   followUser,
   getAllUsers,
   getProfileInfo,
+  removeFollow,
 } from "@/store/slices/userSlice";
 import { copyToClipboard, generateUniqueRoomId } from "@/utils/helpers";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import Loading from "./loading";
-import { initChat } from "@/store/slices/chatSlice";
-import { useRouter } from "next/navigation";
 
 interface MyVideosSectionProps {
   authState: any;
@@ -202,6 +203,7 @@ const MyBookmarkSection: React.FC<MyBookmarkSectionProps> = ({
 
 function Page({ params }: any) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
+  const authStateRefresh = useSelector((state: any) => state.auth.refresh);
   const profileInfoState = useSelector((state: any) => state.user) || [];
   const postState = useSelector((state: any) => state.post) || [];
   const clipState = useSelector((state: any) => state.clip) || [];
@@ -238,7 +240,7 @@ function Page({ params }: any) {
     dispatch(getAllClipVideos());
     dispatch(getAllUsers());
     dispatch(getCurrentUserStories(params));
-  }, [postState.refresh]);
+  }, [postState.refresh, authStateRefresh]);
 
   useEffect(() => {
     setIsPrivateAccount(
@@ -282,6 +284,7 @@ function Page({ params }: any) {
     };
 
     const successCallback = (response: any) => {
+      handlePageRefresh();
       toastSuccess(response.message);
     };
 
@@ -296,6 +299,30 @@ function Page({ params }: any) {
     };
 
     dispatch(followUser(params));
+  };
+
+  const handleUnFollowUser = async (userId: any) => {
+    const payload = {
+      userId: userId,
+      followerID: authState._id,
+    };
+
+    const successCallback = (response: any) => {
+      handlePageRefresh();
+      toastSuccess(response.message);
+    };
+
+    const errorCallback = (error: string) => {
+      toastError(error);
+    };
+
+    const params = {
+      payload,
+      successCallback,
+      errorCallback,
+    };
+
+    dispatch(removeFollow(params));
   };
 
   const handleModalToggle = (modalName: keyof typeof modalState) => {
@@ -314,9 +341,9 @@ function Page({ params }: any) {
     }));
   };
 
-  function handlePageRefresh(): void {
-    throw new Error("Function not implemented.");
-  }
+  const handlePageRefresh = () => {
+    dispatch(refreshPage());
+  };
 
   const backgroundImage = `url(${profileInfoState.profileUserInfo.coverPicture})`;
 
@@ -416,20 +443,28 @@ function Page({ params }: any) {
               </div>
 
               <div className="flex h-8 sm:gap-6 mt-3">
-                <button
-                  className="font-bold w-40 h-10 bg-[#292D32] text-white text-center py-[10px] px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
-                  onClick={() =>
-                    handleFollowUser(profileInfoState?.profileUserInfo?._id)
-                  }
-                >
-                  {authState?.following?.some(
-                    (user: any) =>
-                      user?.userID?._id ===
-                      profileInfoState?.profileUserInfo?._id
-                  )
-                    ? "Unfollow"
-                    : "Follow"}
-                </button>
+                {profileInfoState?.profileUserInfo?.follower?.some(
+                  (user: any) => user?.userID?._id === authState._id
+                ) ? (
+                  <button
+                    className="font-bold w-40 h-10 bg-[#292D32] text-white text-center py-[10px] px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
+                    onClick={() =>
+                      handleUnFollowUser(profileInfoState?.profileUserInfo?._id)
+                    }
+                  >
+                    Unfollow
+                  </button>
+                ) : (
+                  <button
+                    className="font-bold w-40 h-10 bg-[#292D32] text-white text-center py-[10px] px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
+                    onClick={() =>
+                      handleFollowUser(profileInfoState?.profileUserInfo?._id)
+                    }
+                  >
+                    Follow
+                  </button>
+                )}
+
                 <button
                   className="font-bold w-40 h-10 bg-[#37C535] text-white text-center py-[10px] px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
                   onClick={handleMessage}

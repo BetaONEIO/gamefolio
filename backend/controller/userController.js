@@ -666,6 +666,8 @@ const removeFollower = asyncHandler(async (req, res) => {
       (follower) => follower.userID.toString() === followerID
     );
 
+    console.log("follower.userId: ", user.followers);
+
     if (followerIndex === -1) {
       return res
         .status(400)

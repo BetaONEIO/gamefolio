@@ -18,6 +18,7 @@ export type InitialState = {
   userCredits: Credit | null;
   gallery: ImageResponse[] | null;
   forgetPasswordRequest: Object;
+  refresh: boolean;
 };
 
 const initialState: InitialState = {
@@ -28,6 +29,7 @@ const initialState: InitialState = {
   userCredits: null,
   gallery: null,
   forgetPasswordRequest: {},
+  refresh: false,
 };
 
 export const slice = createSlice({
@@ -61,10 +63,14 @@ export const slice = createSlice({
     setForgetState(state, action) {
       state.forgetPasswordRequest = action.payload;
     },
+    refreshPage(state) {
+      state.refresh = state.refresh ? false : true;
+    },
   },
 });
 
-export const { startLoading, stopLoading, getCredits } = slice.actions;
+export const { startLoading, stopLoading, getCredits, refreshPage } =
+  slice.actions;
 
 export function register(params: ActionParams) {
   return async () => {
