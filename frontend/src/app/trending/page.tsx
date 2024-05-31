@@ -12,6 +12,7 @@ import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import { getTrendingPosts, refreshPage } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
+import { fetchGameList } from "@/services/api";
 import Loading from "./loading";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -30,6 +31,9 @@ function Trending() {
   const [videoDurations, setVideoDurations] = useState<{
     [key: string]: number;
   }>({});
+  const [optionsForGame, setOptionsForGame] = useState([]);
+  const [searchText, setSearchText] = useState("");
+  const [filteredOptions, setFilteredOptions] = useState(optionsForGame);
 
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
@@ -42,7 +46,12 @@ function Trending() {
   useEffect(() => {
     dispatch(userSession(params));
     dispatch(getTrendingPosts());
+    handleGameList();
   }, [postState.refresh]);
+
+  useEffect(() => {
+    setFilteredOptions(optionsForGame);
+  }, [optionsForGame]);
 
   const [modalState, setModalState] = useState({
     isPostShareOpen: false,
@@ -103,6 +112,28 @@ function Trending() {
     }${remainingSeconds}`;
     return formattedTime;
   };
+
+  const handleGameList = async () => {
+    const gettingGameList = await fetchGameList();
+    setOptionsForGame(gettingGameList);
+  };
+
+  const debounce = (func: any, delay: any) => {
+    let timeoutId: any;
+    return function (...args: any) {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        func(...args);
+      }, delay);
+    };
+  };
+
+  const delayedSearch = debounce((inputValue: any) => {
+    const filtered = optionsForGame.filter((option: any) => {
+      return option?.name?.toLowerCase().includes(inputValue);
+    });
+    setFilteredOptions(filtered);
+  }, 1000);
 
   const handlePageRefresh = () => {
     dispatch(refreshPage());
@@ -184,143 +215,45 @@ function Trending() {
                   <span className="font-bold">Upcoming Updates</span>
                 </div>
                 <div className="flex flex-col gap-6">
-                  <div className="flex justify-between items-center">
-                    <div className="flex gap-2">
-                      <Image
-                        width={12}
-                        height={12}
-                        className="w-16 h-16"
-                        src={IMAGES.callofduty}
-                        alt="UploadStory"
-                      />
-                      <div className="flex flex-col ">
-                        <span className="text-xs font-bold text-[#43DD4E] ">
-                          Trending Now
-                        </span>
-                        <span className="text-lg text-white ">
-                          Call of duty
-                        </span>
-                        <span className="text-xs text-gray-500 ">
-                          New addition Arrived
-                        </span>
+                  {filteredOptions.map((item: any) => (
+                    <div
+                      key={item.id}
+                      className="flex justify-between items-center"
+                    >
+                      <div className="flex gap-2">
+                        <Image
+                          width={64}
+                          height={64}
+                          className="w-16 h-16"
+                          src={item.box_art_url.replace(
+                            "{width}x{height}",
+                            "64x64"
+                          )}
+                          alt={item.name}
+                        />
+                        <div className="flex flex-col">
+                          <span className="text-xs font-bold text-[#43DD4E]">
+                            Trending Now
+                          </span>
+                          <span className="text-lg text-white">
+                            {item.name}
+                          </span>
+                          <span className="text-sm text-[#A1A1A1]">
+                            This is awesome, check it out!
+                          </span>
+                        </div>
+                      </div>
+                      <div className="w-24 flex flex-col">
+                        <span className="text-xs text-right">Upcoming</span>
+                        <span className="text-xs text-right">{item.date}</span>
                       </div>
                     </div>
-
-                    <div>
-                      <Image
-                        className="cursor-pointer hover:opacity-80"
-                        src={SVG.Threedots}
-                        alt="Threedots"
-                        width={5}
-                        height={5}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="flex flex-col gap-6">
-                  <div className="flex justify-between items-center">
-                    <div className="flex gap-2">
-                      <Image
-                        width={12}
-                        height={12}
-                        className="w-16 h-16"
-                        src={IMAGES.callofduty}
-                        alt="UploadStory"
-                      />
-                      <div className="flex flex-col ">
-                        <span className="text-xs font-bold text-[#43DD4E] ">
-                          Trending Now
-                        </span>
-                        <span className="text-lg text-white ">
-                          Subway surfer
-                        </span>
-                        <span className="text-xs text-gray-500 ">
-                          New addition Arrived
-                        </span>
-                      </div>
-                    </div>
-
-                    <div>
-                      <Image
-                        className="cursor-pointer hover:opacity-80"
-                        src={SVG.Threedots}
-                        alt="Threedots"
-                        width={5}
-                        height={5}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="flex flex-col gap-6">
-                  <div className="flex justify-between items-center">
-                    <div className="flex gap-2">
-                      <Image
-                        width={12}
-                        height={12}
-                        className="w-16 h-16"
-                        src={IMAGES.callofduty}
-                        alt="UploadStory"
-                      />
-                      <div className="flex flex-col ">
-                        <span className="text-xs font-bold text-[#43DD4E] ">
-                          Trending Now
-                        </span>
-                        <span className="text-lg text-white ">PUBG Mobile</span>
-                        <span className="text-xs text-gray-500 ">
-                          New addition Arrived
-                        </span>
-                      </div>
-                    </div>
-
-                    <div>
-                      <Image
-                        className="cursor-pointer hover:opacity-80"
-                        src={SVG.Threedots}
-                        alt="Threedots"
-                        width={5}
-                        height={5}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="flex flex-col gap-6">
-                  <div className="flex justify-between items-center">
-                    <div className="flex gap-2">
-                      <Image
-                        width={12}
-                        height={12}
-                        className="w-16 h-16"
-                        src={IMAGES.callofduty}
-                        alt="UploadStory"
-                      />
-                      <div className="flex flex-col ">
-                        <span className="text-xs font-bold text-[#43DD4E] ">
-                          Trending Now
-                        </span>
-                        <span className="text-lg text-white ">
-                          Call of duty
-                        </span>
-                        <span className="text-xs text-gray-500 ">
-                          New addition Arrived
-                        </span>
-                      </div>
-                    </div>
-
-                    <div>
-                      <Image
-                        className="cursor-pointer hover:opacity-80"
-                        src={SVG.Threedots}
-                        alt="Threedots"
-                        width={5}
-                        height={5}
-                      />
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 mt-4">
               <p className="font-semibold text-base sm:text-lg lg:text-lg text-white">
                 Trending Games
               </p>

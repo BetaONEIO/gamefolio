@@ -6,6 +6,7 @@ const nextConfig = {
       "pbs.twimg.com",
       "d2m0dxds81dlzy.cloudfront.net",
       "id.twitch.tv",
+      "static-cdn.jtvnw.net",
     ],
   },
   webpack: (config) => {

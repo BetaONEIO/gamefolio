@@ -36,4 +36,5 @@ export const IMAGES = {
   pubg3: "/pubg3.svg",
   pubg4: "/pubg4.svg",
   SharePostImage: "/SharePostImage.png",
+  Frame: "/Frame.png",
 };

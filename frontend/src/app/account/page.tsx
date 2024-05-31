@@ -591,47 +591,71 @@ function Account() {
 
             <div className="hidden w-2/5 h-fit md:flex flex-col  sm:w-72 md:w-72 lg:w-96 h-screen border-2 border-[#1C2C2E] rounded-lg p-1 overflow-hidden overflow-y-auto">
               <h1 className="font-bold m-2">Current Badge</h1>
-              <div className="flex justify-center items-center gap-3 mt-2">
-                <Image
-                  src={IMAGES.AccountCurrentBadgeIcon}
-                  alt="Badge"
-                  width={45}
-                  height={45}
-                />
-                <Image
-                  src={IMAGES.Badges2}
-                  alt="Badge"
-                  width={40}
-                  height={40}
-                />
-                <Image
-                  src={IMAGES.Badges3}
-                  alt="Badge"
-                  width={40}
-                  height={40}
-                />
-                <Image
-                  src={IMAGES.Badges4}
-                  alt="Badge"
-                  width={40}
-                  height={40}
-                />
-                <Image
-                  src={IMAGES.Badges5}
-                  alt="Badge"
-                  width={40}
-                  height={40}
-                />
+              <div className="flex flex-row justify-between mt-2">
+                <div className="flex justify-center items-center gap-3">
+                  <Image
+                    src={IMAGES.AccountCurrentBadgeIcon}
+                    alt="Badge"
+                    width={35}
+                    height={35}
+                  />
+                  <Image
+                    src={IMAGES.Badges2}
+                    alt="Badge"
+                    width={30}
+                    height={30}
+                  />
+                  <Image
+                    src={IMAGES.Badges3}
+                    alt="Badge"
+                    width={30}
+                    height={30}
+                  />
+                  <Image
+                    src={IMAGES.Badges4}
+                    alt="Badge"
+                    width={30}
+                    height={30}
+                  />
+                  <Image
+                    src={IMAGES.Badges5}
+                    alt="Badge"
+                    width={30}
+                    height={30}
+                  />
+                </div>
+                <div className="flex item-center">
+                  <Image
+                    className="text-red-500"
+                    src={IMAGES.Frame}
+                    alt="Badge"
+                    width={35}
+                    height={35}
+                  />
+                </div>
               </div>
 
               <div className="rounded-lg p-2 gap-3 mt-2">
                 <h1 className="font-bold">Suggested Videos:</h1>
+
                 <div className="">
                   {postState?.trendingVideos?.slice(0, 3).map((item: any) => (
                     <div
                       key={item._id}
-                      className="border-2 h-40 border-[#1C2C2E] rounded-lg p-2 gap-3 mt-2 flex-wrap"
+                      className="border-2 h-48 border-[#1C2C2E] rounded-lg p-2 gap-3 mt-2 flex-wrap"
                     >
+                      <div className="flex justify-end items-center pb-1 rounded-md">
+                        <Image
+                          className="mr-2 cursor-pointer hover:opacity-80"
+                          src={SVG.Trending}
+                          alt="Trending"
+                          width={20}
+                          height={20}
+                        />
+                        <p className="font-semibold text-base sm:text-md lg:text-md text-white">
+                          Trending
+                        </p>
+                      </div>
                       <div className="flex">
                         <video
                           src={item.video}

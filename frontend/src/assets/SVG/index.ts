@@ -92,4 +92,5 @@ export const SVG = {
   Users: "/users.svg",
   ArrowUpSide: "/arrowupside.svg",
   Filter: "/filter.svg",
+  badgeArrow: "/badgeArrow",
 };

@@ -51,6 +51,8 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
     optionsForGame.push(...res);
   });
 
+  console.log("hello", optionsForGame);
+
   const [searchText, setSearchText] = useState("");
   const [filteredOptions, setFilteredOptions] = useState(optionsForGame);
 
@@ -70,7 +72,7 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
       return option?.name?.toLowerCase().includes(inputValue);
     });
     setFilteredOptions(filtered);
-  }, 2000); // Adjust the delay as needed
+  }, 1000);
 
   const handleSearch = (e: any) => {
     const inputValue = e.target.value.toLowerCase();
