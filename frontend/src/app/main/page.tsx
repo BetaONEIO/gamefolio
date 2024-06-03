@@ -1,7 +1,6 @@
 "use client";
 import Loading from "@/app/main/loading";
 import { SVG } from "@/assets/SVG";
-import { IMAGES } from "@/assets/images";
 import CustomHeader from "@/components/CustomHeader/CustomHeader";
 import Layout from "@/components/CustomLayout/layout";
 import MoreLoader from "@/components/CustomLoader/MoreLoader";
@@ -15,6 +14,7 @@ import VideoDetails from "@/components/Modals/VideoDetails";
 import handleCreateNotification from "@/components/Notification/Notification";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import FollowingStories from "@/components/story/FollowingStories";
+import { fetchGameList } from "@/services/api";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import {
@@ -34,6 +34,8 @@ function Main() {
   const postState = useSelector((state: any) => state.post) || [];
   const [postID, setPostID] = useState("");
   const [detailedPost, setDetailedPost] = useState("");
+  const [optionsForGame, setOptionsForGame] = useState([]);
+  const [filteredOptions, setFilteredOptions] = useState(optionsForGame);
   const [modalState, setModalState] = useState({
     isPostShareOpen: false,
     isVideoDetailOpen: false,
@@ -44,7 +46,6 @@ function Main() {
   });
 
   const { loading } = postState;
-
   const [page, setPage] = useState(1);
 
   const payload = {
@@ -57,15 +58,25 @@ function Main() {
     payload,
   };
 
+  const handleGameList = async () => {
+    const gettingGameList = await fetchGameList();
+    setOptionsForGame(gettingGameList);
+  };
+
   useEffect(() => {
     dispatch(userSession(params));
     dispatch(getFollowingPostOnly(params));
+    handleGameList();
   }, [page, postState.refresh]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleInfiniteScroll);
     return () => window.removeEventListener("scroll", handleInfiniteScroll);
   }, []);
+
+  useEffect(() => {
+    setFilteredOptions(optionsForGame);
+  }, [optionsForGame]);
 
   const handleInfiniteScroll = async () => {
     try {
@@ -198,6 +209,44 @@ function Main() {
     dispatch(refreshPage());
   };
 
+  const convertDateFormat = (dateString: any) => {
+    const date = new Date(dateString);
+
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? "PM" : "AM";
+
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+
+    const formattedTime = `${hours}:${minutes
+      .toString()
+      .padStart(2, "0")} ${ampm}`;
+
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const year = date.getFullYear().toString().slice(-2);
+
+    const formattedDate = `${month}/${day}/${year}`;
+
+    return `${formattedTime}-${formattedDate}`;
+  };
+
+  console.log("helo", authState?.notification);
+
+  const getNotificationClass = (status: any) => {
+    switch (status) {
+      case "new":
+        return "text-white";
+      case "semiold":
+        return "text-gray-400";
+      case "old":
+        return "text-gray-600";
+      default:
+        return "text-gray-600";
+    }
+  };
+
   return (
     <Layout>
       <CustomHeader>GAMEFOLIO FEED</CustomHeader>
@@ -209,7 +258,10 @@ function Main() {
         >
           <div className="flex w-full justify-center md:justify-between gap-4 px-4">
             {/* Trending */}
-            <div className="hidden w-2/5 h-fit md:flex flex-col gap-8 rounded-lg bg-[#091619] border border-[#1C2C2E] px-4 py-6 ">
+            <div
+              className="hidden w-[30rem] h-1/2 md:flex flex-col gap-6 rounded-lg bg-[#091619] border border-[#1C2C2E] px-4 py-6 overflow-y-auto"
+              style={styles.scroller}
+            >
               <div className="flex justify-between items-center">
                 <span className="font-bold">Trendings</span>
                 <Link href={"/trending"}>
@@ -218,38 +270,46 @@ function Main() {
                   </span>
                 </Link>
               </div>
-              <div className="flex flex-col gap-6">
-                <div className="flex justify-between items-center">
-                  <div className="flex gap-2">
-                    <Image
-                      width={12}
-                      height={12}
-                      className="w-16 h-16"
-                      src={IMAGES.callofduty}
-                      alt="UploadStory"
-                    />
-                    <div className="flex flex-col ">
-                      <span className="text-xs font-bold text-[#43DD4E]">
-                        Trending Now
-                      </span>
-                      <span className="text-lg text-white ">Call of duty</span>
-                      <span className="text-xs text-gray-500 ">
-                        New addition Arrived
-                      </span>
-                    </div>
-                  </div>
+              {filteredOptions.slice(0, 10).map((item: any) => (
+                <div className="flex flex-col gap-6">
+                  <div className="flex justify-between items-center">
+                    <div className="flex gap-2">
+                      <Image
+                        width={56}
+                        height={64}
+                        className="w-14 h-14 rounded-xl"
+                        src={item.box_art_url.replace(
+                          "{width}x{height}",
+                          "64x64"
+                        )}
+                        alt={item.name}
+                      />
 
-                  <div>
-                    <Image
-                      className="cursor-pointer hover:opacity-80"
-                      src={SVG.Threedots}
-                      alt="Threedots"
-                      width={5}
-                      height={5}
-                    />
+                      <div className="flex flex-col ">
+                        <span className="text-xs font-bold text-[#43DD4E]">
+                          Trending Now
+                        </span>
+                        <span className="text-md font-semibold text-white">
+                          {item.name}
+                        </span>
+                        <span className="text-xs text-gray-500 ">
+                          New addition Arrived
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* <div>
+                      <Image
+                        className="cursor-pointer hover:opacity-80"
+                        src={SVG.Threedots}
+                        alt="Threedots"
+                        width={5}
+                        height={5}
+                      />
+                    </div> */}
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
 
             {/* Story , Posts */}
@@ -383,16 +443,6 @@ function Main() {
                     <div className="mx-3">
                       <p className="text-neutral-300">{post?.description}</p>
                     </div>
-                    {/* 
-                    <ReactPlayer
-                      className="w-[710px] h-[185px] sm:h-[300px] my-2 sm:my-2"
-                      url={"post.video"} // Change 'src' to 'url'
-                      width="100%" // Adjust width and height as needed
-                      height="55%"
-                      controls={true} // Use 'true' instead of 'controls'
-                      controlsList="nodownload noremoteplayback noplaybackrate foobar"
-                      disablePictureInPicture
-                    /> */}
 
                     <video
                       className="w-[710px] h-[185px] sm:h-[300px] my-2 sm:my-2"
@@ -539,7 +589,7 @@ function Main() {
 
             {/* Notification */}
             <div
-              className="hidden w-6/12 h-96 md:flex flex-col gap-6 rounded-lg bg-[#091619] border border-[#1C2C2E] px-2 py-6 overflow-hidden overflow-y-auto"
+              className="hidden w-5/12 h-96 md:flex flex-col gap-6 rounded-lg bg-[#091619] border border-[#1C2C2E] px-2 py-6 overflow-hidden overflow-y-auto"
               style={styles.scroller}
             >
               <div className="flex justify-between items-center">
@@ -572,13 +622,7 @@ function Main() {
                           : notification.oppositionID.name}
                       </p>
                       <p className="w-32 text-[0.60rem] text-gray-400">
-                        {new Date(notification.date).toLocaleString("en-US", {
-                          hour: "numeric",
-                          minute: "numeric",
-                          day: "numeric",
-                          month: "short",
-                          year: "numeric",
-                        })}
+                        {convertDateFormat(notification.date)}
                       </p>
                     </div>
                     <span className="text-xs text-white mx-2">

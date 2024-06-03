@@ -14,6 +14,7 @@ import { SVG } from "@/assets/SVG";
 import Modal from "@/components/Modals/Modal";
 import VideoDetails from "@/components/Modals/VideoDetails";
 import Loading from "./loading";
+import { fetchGameList } from "@/services/api";
 
 function Explore() {
   const postState = useSelector((state: any) => state.post) || [];
@@ -23,9 +24,27 @@ function Explore() {
   }>({});
   const [postID, setPostID] = useState("");
   const [detailedPost, setDetailedPost] = useState("");
+  const [optionsForGame, setOptionsForGame] = useState([]);
+  const [filteredOptions, setFilteredOptions] = useState(optionsForGame);
   const [modalState, setModalState] = useState({
     isVideoDetailOpen: false,
   });
+
+  useEffect(() => {
+    const payload = {
+      userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
+    };
+    const params = { payload };
+
+    dispatch(userSession(params));
+    dispatch(getAllPostVideos());
+    dispatch(getAllUsers());
+    handleGameList();
+  }, [postState.refresh]);
+
+  useEffect(() => {
+    setFilteredOptions(optionsForGame);
+  }, [optionsForGame]);
 
   const handleModalToggle = (
     modalName: keyof typeof modalState,
@@ -40,17 +59,10 @@ function Explore() {
     }));
   };
 
-  const payload = {
-    userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
+  const handleGameList = async () => {
+    const gettingGameList = await fetchGameList();
+    setOptionsForGame(gettingGameList);
   };
-  const params = {
-    payload,
-  };
-  useEffect(() => {
-    dispatch(userSession(params));
-    dispatch(getAllPostVideos());
-    dispatch(getAllUsers());
-  }, [postState.refresh]);
 
   if (postState.loading) return <Loading />;
 
@@ -106,7 +118,6 @@ function Explore() {
   const isItemActive = (path: string) => {
     return currentRoute === path ? true : false;
   };
-
   return (
     <div className="flex flex-col py-2 overflow-y-scroll no-scrollbar mx-4">
       <div className="flex items-center">
@@ -128,17 +139,17 @@ function Explore() {
       </div>
 
       <div className="flex items-center my-2">
-        <div className="flex items-center overflow-scroll no-scrollbar gap-2 px-4">
-          {postState.videos.slice(0, 20).map((items: any) => (
-            <div key={items.id}>
+        <div className="flex items-center overflow-scroll no-scrollbar gap-2">
+          {filteredOptions.slice(0, 20).map((item: any) => (
+            <div key={item.id}>
               <div className="w-28 h-40">
-                <video
-                  src={items.video}
-                  width="100"
-                  height="133"
-                  controls={false}
-                  autoPlay={false}
-                  className="w-28 h-40 object-cover rounded-xl"
+                <Image
+                  width={40}
+                  height={40}
+                  className="w-28 h-40 rounded-xl"
+                  src={item.box_art_url.replace("{width}x{height}", "112x160")}
+                  alt={item.name}
+                  sizes="100vw"
                 />
               </div>
             </div>
@@ -164,7 +175,7 @@ function Explore() {
         </div>
       </div>
 
-      <div className="flex items-center p-2 overflow-scroll no-scrollbar gap-2">
+      <div className="flex items-center my-2 overflow-scroll no-scrollbar gap-2">
         {userState?.userList?.slice(0, 10).map((user: any) => (
           <div
             key={user?.userID}
@@ -177,31 +188,33 @@ function Explore() {
                 width={10}
                 height={10}
                 sizes="100vw"
-                alt="Account Profile"
+                alt="profile"
               />
-              <div>
-                <div className="mt-2">
-                  <span className="text-white">{user?.name}</span>
+              <Link href={`/account/${user?.username}`} key={user._id}>
+                <div>
+                  <div className="mt-2">
+                    <span className="text-white">{user?.name}</span>
+                  </div>
+                  <div
+                    className="flex items-center"
+                    onClick={() => copyToClipboard(user?.username)}
+                  >
+                    <p className="text-white">
+                      ({user?.username || "no_username"})
+                    </p>
+                    <Image
+                      className="cursor-pointer hover:opacity-80"
+                      src={SVG.AccountCopyUsername}
+                      width={16}
+                      height={16}
+                      alt="Copy Username"
+                    />
+                  </div>
                 </div>
-                <div
-                  className="flex items-center"
-                  onClick={() => copyToClipboard(user?.username)}
-                >
-                  <p className="text-white">
-                    ({user?.username || "no_username"})
-                  </p>
-                  <Image
-                    className="cursor-pointer hover:opacity-80"
-                    src={SVG.AccountCopyUsername}
-                    width={16}
-                    height={16}
-                    alt="Copy Username"
-                  />
-                </div>
-              </div>
+              </Link>
             </div>
 
-            <hr className="h-px border-0 bg-[#1C2C2E] w-full rounded-full" />
+            <hr className="h-px border-0 bg-[#1C2C2E] w-full rounded-full my-2" />
 
             <div className="flex flex-col flex-wrap justify-center text-center lg:justify-start lg:text-start">
               <div className="flex items-center justify-center gap-1">
@@ -266,7 +279,7 @@ function Explore() {
         {postState.videos.slice(0, 7).map((item: any) => (
           <div
             key={item?.userID}
-            className="flex-shrink-0 flex flex-col gap-2 w-68 h-64 border-2 border-[#1C2C2E] rounded-xl mx-1 pb-2"
+            className="flex-shrink-0 flex flex-col gap-2 w-68 h-64 border-2 border-[#1C2C2E] rounded-xl mx-1 pb-2 cursor-pointer hover:opacity-80"
             onClick={() =>
               handleModalToggle("isVideoDetailOpen", item._id, item)
             }
@@ -307,6 +320,7 @@ function Explore() {
                 </div>
               </div>
             </div>
+
             <div className="flex items-center justify-between text-center mx-4">
               <div className="flex items-center">
                 <Image

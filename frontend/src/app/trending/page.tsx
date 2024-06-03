@@ -53,6 +53,7 @@ function Trending() {
     setFilteredOptions(optionsForGame);
   }, [optionsForGame]);
 
+  // console.log(" hjeoeo", optionsForGame);
   const [modalState, setModalState] = useState({
     isPostShareOpen: false,
     isVideoDetailOpen: false,
@@ -208,14 +209,14 @@ function Trending() {
               </div>
 
               <div
-                className="hidden w-2/5 h-[22.5rem] md:flex flex-col gap-8 rounded-lg bg-[#091619] border border-[#1C2C2E] px-4 py-6 overflow-y-auto"
+                className="hidden w-2/5 h-[22.5rem] md:flex flex-col gap-6 rounded-lg bg-[#091619] border border-[#1C2C2E] px-4 py-6 overflow-y-auto"
                 style={styles.scroller}
               >
                 <div className="flex justify-start items-center">
                   <span className="font-bold">Upcoming Updates</span>
                 </div>
-                <div className="flex flex-col gap-6">
-                  {filteredOptions.map((item: any) => (
+                <div className="flex flex-col gap-4">
+                  {filteredOptions.slice(0, 20).map((item: any) => (
                     <div
                       key={item.id}
                       className="flex justify-between items-center"
@@ -224,7 +225,7 @@ function Trending() {
                         <Image
                           width={64}
                           height={64}
-                          className="w-16 h-16"
+                          className="w-16 h-16 rounded-xl"
                           src={item.box_art_url.replace(
                             "{width}x{height}",
                             "64x64"
@@ -232,20 +233,16 @@ function Trending() {
                           alt={item.name}
                         />
                         <div className="flex flex-col">
-                          <span className="text-xs font-bold text-[#43DD4E]">
+                          <span className="text-sm font-bold text-[#43DD4E]">
                             Trending Now
                           </span>
-                          <span className="text-lg text-white">
+                          <span className="text-md font-semibold text-white">
                             {item.name}
                           </span>
-                          <span className="text-sm text-[#A1A1A1]">
-                            This is awesome, check it out!
+                          <span className="text-xs text-[#A1A1A1]">
+                            New addition Arrived
                           </span>
                         </div>
-                      </div>
-                      <div className="w-24 flex flex-col">
-                        <span className="text-xs text-right">Upcoming</span>
-                        <span className="text-xs text-right">{item.date}</span>
                       </div>
                     </div>
                   ))}
@@ -275,7 +272,7 @@ function Trending() {
               {postState?.trendingVideos?.map((item: any) => (
                 <div
                   key={item?.userID}
-                  className="flex flex-col w-68 h-64 border-2 border-[#1C2C2E] rounded-xl my-2"
+                  className="flex flex-col w-68 h-60 border-2 border-[#1C2C2E] rounded-xl my-2 cursor-pointer hover:opacity-80"
                   onClick={() =>
                     handleModalToggle("isVideoDetailOpen", item._id, item)
                   }
@@ -283,7 +280,7 @@ function Trending() {
                   <div className="relative overflow-hidden rounded-t-xl aspect-w-16 aspect-h-9">
                     <video
                       src={item.video}
-                      className="object-cover w-full h-36 hover:opacity-80"
+                      className="object-cover w-full h-36"
                       controls={false}
                       autoPlay={false}
                       width={50}
@@ -297,7 +294,7 @@ function Trending() {
                   </div>
 
                   <div className="p-2">
-                    <div className="flex items-center gap-2 mb-2">
+                    <div className="flex items-center gap-2 mb-4">
                       <Image
                         className="rounded-full w-10 h-10 object-cover"
                         src={item?.userID?.profilePicture}
@@ -315,7 +312,7 @@ function Trending() {
                       </div>
                     </div>
 
-                    <div className="flex justify-between mx-2">
+                    <div className="flex justify-between mx-1">
                       <div className="flex items-center gap-2">
                         <Image
                           className="cursor-pointer hover:opacity-80"

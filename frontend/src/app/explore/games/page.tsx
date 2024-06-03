@@ -17,11 +17,15 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 // import required modules
 import { EffectFade, Navigation, Pagination } from "swiper/modules";
+import { fetchGameList } from "@/services/api";
+import Image from "next/image";
 
 function Games() {
   const postState = useSelector((state: any) => state.post) || [];
   const [postID, setPostID] = useState("");
   const [detailedPost, setDetailedPost] = useState("");
+  const [optionsForGame, setOptionsForGame] = useState([]);
+  const [filteredOptions, setFilteredOptions] = useState(optionsForGame);
   const [videoDurations, setVideoDurations] = useState<{
     [key: string]: number;
   }>({});
@@ -53,7 +57,17 @@ function Games() {
   useEffect(() => {
     dispatch(userSession(params));
     dispatch(getAllPostVideos());
+    handleGameList();
   }, []);
+
+  useEffect(() => {
+    setFilteredOptions(optionsForGame);
+  }, [optionsForGame]);
+
+  const handleGameList = async () => {
+    const gettingGameList = await fetchGameList();
+    setOptionsForGame(gettingGameList);
+  };
 
   if (postState.loading) return <Loading />;
 
@@ -124,16 +138,16 @@ function Games() {
 
       <div className="flex items-center my-2">
         <div className="flex items-center overflow-scroll no-scrollbar gap-2 px-4">
-          {postState.videos.slice(0, 20).map((items: any) => (
-            <div key={items.id}>
+          {filteredOptions.slice(0, 20).map((item: any) => (
+            <div key={item.id}>
               <div className="w-28 h-40">
-                <video
-                  src={items.video}
-                  width="100"
-                  height="133"
-                  controls={false}
-                  autoPlay={false}
-                  className="w-28 h-40 object-cover rounded-xl"
+                <Image
+                  width={40}
+                  height={40}
+                  className="w-28 h-40 rounded-xl"
+                  src={item.box_art_url.replace("{width}x{height}", "112x160")}
+                  alt={item.name}
+                  sizes="100vw"
                 />
               </div>
             </div>
