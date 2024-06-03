@@ -10,8 +10,10 @@ const registerUser = asyncHandler(async (req, res) => {
 
   // check if email exists in db
   const userExists = await User.findOne({ email });
+  // check if username exists in db
+  const usernameExists = await User.findOne({ username });
 
-  if (userExists) {
+  if (userExists || usernameExists) {
     return res.status(404).json({ message: "User already exist" });
     // throw new Error("User already exists");
   }
@@ -598,6 +600,11 @@ const addFollowers = asyncHandler(async (req, res) => {
 
   try {
     const user = await User.findById(userId);
+
+    if (userId === followerID) {
+      return res.status(400).json({ message: "Can't follow yourself" });
+    }
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -658,6 +665,8 @@ const removeFollower = asyncHandler(async (req, res) => {
     const followerIndex = user.followers.findIndex(
       (follower) => follower.userID.toString() === followerID
     );
+
+    console.log("follower.userId: ", user.followers);
 
     if (followerIndex === -1) {
       return res

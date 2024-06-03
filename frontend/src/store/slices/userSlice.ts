@@ -10,6 +10,7 @@ export type InitialState = {
   profileUserInfo?: any;
   userList?: any;
   profile?: any;
+  refresh: boolean;
 };
 
 const initialState: InitialState = {
@@ -18,6 +19,7 @@ const initialState: InitialState = {
   profileUserInfo: {},
   userList: [],
   profile: null,
+  refresh: false,
 };
 
 export const slice = createSlice({
@@ -48,8 +50,13 @@ export const slice = createSlice({
     setSearchUserInfo(state, action) {
       state.profileUserInfo = action.payload;
     },
+    refreshPage(state) {
+      state.refresh = state.refresh ? false : true;
+    },
   },
 });
+
+export const { refreshPage } = slice.actions;
 
 export function getUser(params: ActionParams) {
   return async () => {

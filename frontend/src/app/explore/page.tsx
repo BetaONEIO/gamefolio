@@ -1,18 +1,17 @@
 "use client";
-import { Suspense, useEffect, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { dispatch, useSelector } from "@/store";
+import { SVG } from "@/assets/SVG";
+import Modal from "@/components/Modals/Modal";
+import VideoDetails from "@/components/Modals/VideoDetails";
 import { leagueGothic } from "@/font/font";
+import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import { getAllPostVideos, refreshPage } from "@/store/slices/postSlice";
 import { getAllUsers } from "@/store/slices/userSlice";
 import { copyToClipboard } from "@/utils/helpers";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
-import { usePathname } from "next/navigation";
-import { SVG } from "@/assets/SVG";
-import Modal from "@/components/Modals/Modal";
-import VideoDetails from "@/components/Modals/VideoDetails";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import Loading from "./loading";
 import { fetchGameList } from "@/services/api";
 
@@ -114,10 +113,10 @@ function Explore() {
     dispatch(refreshPage());
   };
 
-  const currentRoute = usePathname();
-  const isItemActive = (path: string) => {
-    return currentRoute === path ? true : false;
-  };
+  // const currentRoute = usePathname();
+  // const isItemActive = (path: string) => {
+  //   return currentRoute === path ? true : false;
+  // };
   return (
     <div className="flex flex-col py-2 overflow-y-scroll no-scrollbar mx-4">
       <div className="flex items-center">

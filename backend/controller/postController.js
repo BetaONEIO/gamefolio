@@ -119,7 +119,7 @@ const getFollowingPosts = async (req, res) => {
       .populate("userID")
       .populate({ path: "comments.userID" });
 
-    console.log("post: ", posts);
+    console.log("post: getfollwoing ", posts);
     res.status(200).json({
       data: posts,
       message: "Successfully retrieved posts from users you are following",
@@ -241,6 +241,8 @@ const createVideoReaction = async (req, res) => {
       },
       { new: true }
     );
+
+    console.log({ data: updatedPost });
 
     res.status(201).json({
       data: updatedPost,

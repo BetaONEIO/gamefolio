@@ -58,15 +58,18 @@ function Main() {
     payload,
   };
 
+  console.log("postState.refresh: ", postState.refresh);
+  console.log("postState.refresh: ", postState.followingVideos);
+
   const handleGameList = async () => {
     const gettingGameList = await fetchGameList();
     setOptionsForGame(gettingGameList);
   };
 
   useEffect(() => {
+    console.log("postState.refresh: useffect");
     dispatch(userSession(params));
     dispatch(getFollowingPostOnly(params));
-    handleGameList();
   }, [page, postState.refresh]);
 
   useEffect(() => {
@@ -74,23 +77,19 @@ function Main() {
     return () => window.removeEventListener("scroll", handleInfiniteScroll);
   }, []);
 
-  useEffect(() => {
-    setFilteredOptions(optionsForGame);
-  }, [optionsForGame]);
-
-  const handleInfiniteScroll = async () => {
-    try {
-      if (
-        window.innerHeight + document.documentElement.scrollTop + 1 >=
-        document.documentElement.scrollHeight
-      ) {
-        // setLoading(true);
-        setPage((prev) => prev + 1);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const handleInfiniteScroll = async () => {
+  //   try {
+  //     if (
+  //       window.innerHeight + document.documentElement.scrollTop + 1 >=
+  //       document.documentElement.scrollHeight
+  //     ) {
+  //       // setLoading(true);
+  //       setPage((prev) => prev + 1);
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   const getNotificationMessage = (notificationType: any) => {
     console.log("Notification Type:", notificationType);
@@ -165,6 +164,7 @@ function Main() {
 
     const successCallback = (response: any) => {
       handleCreateNotification(authState._id, postID, postUserID, "like_post");
+
       handlePageRefresh();
     };
 
