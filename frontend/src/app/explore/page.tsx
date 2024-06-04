@@ -139,20 +139,27 @@ function Explore() {
 
       <div className="flex items-center my-2">
         <div className="flex items-center overflow-scroll no-scrollbar gap-2">
-          {filteredOptions.slice(0, 20).map((item: any) => (
-            <div key={item.id}>
-              <div className="w-28 h-40">
-                <Image
-                  width={40}
-                  height={40}
-                  className="w-28 h-40 rounded-xl"
-                  src={item.box_art_url.replace("{width}x{height}", "112x160")}
-                  alt={item.name}
-                  sizes="100vw"
-                />
+          {filteredOptions?.length === 0 ? (
+            <div className="flex justify-center w-28 h-40"></div>
+          ) : (
+            filteredOptions?.slice(0, 20).map((item: any) => (
+              <div key={item.id}>
+                <div className="w-28 h-40">
+                  <Image
+                    width={40}
+                    height={40}
+                    className="w-28 h-40 rounded-xl"
+                    src={item.box_art_url.replace(
+                      "{width}x{height}",
+                      "112x160"
+                    )}
+                    alt={item.name}
+                    sizes="100vw"
+                  />
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
 
@@ -274,7 +281,7 @@ function Explore() {
         </div>
       </div>
 
-      <div className="flex items-center gap-2 mt-2 overflow-x-auto no-scrollbar">
+      <div className="flex items-center grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-2 overflow-x-auto no-scrollbar">
         {postState.videos.slice(0, 7).map((item: any) => (
           <div
             key={item?.userID}

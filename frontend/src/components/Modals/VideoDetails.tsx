@@ -34,7 +34,7 @@ function VideoDetails({
     isReportModalOpen: false,
   });
 
-  console.log("detailedPost: ", detailedPost);
+  console.log("detailedPost: ", detailedPost.comments);
 
   const handleCreateComment = async (postID: any, comment: any) => {
     const payload = {
@@ -50,8 +50,8 @@ function VideoDetails({
         detailedPost?.userID?._id,
         "comment_post"
       );
-      handlePageRefresh();
       toastSuccess(response);
+      handlePageRefresh();
     };
 
     const errorCallback = (error: string) => {

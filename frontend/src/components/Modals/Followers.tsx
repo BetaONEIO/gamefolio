@@ -92,45 +92,55 @@ function Followers({ handleCloseModal, followerData }: FollowerProps) {
             </div>
 
             <div className="flex flex-col w-full sm:min-h-[350px] lg:min-h-[500px] max-h-[400px] sm:max-h-[350px] lg:max-h-[500px] overflow-y-auto no-scrollbar">
-              {filteredFollowerData?.map((user: any) => (
-                <div key={user?._id}>
-                  <div className="flex items-center my-3">
-                    <Image
-                      className="w-12 h-12 rounded-lg"
-                      src={user?.userID?.profilePicture || IMAGES.Profile}
-                      alt="Profile"
-                      width={50}
-                      height={50}
-                    />
-                    <div className="flex items-center justify-between w-full sm:w-full">
-                      <Link
-                        href={`/account/${user?.userID?.username}`}
-                        key={user?._id}
-                      >
-                        <div>
-                          <span className="ml-2 sm:ml-4 text-sm sm:text-base">
-                            {user?.userID?.name || 0}
-                          </span>
-                          <p className="ml-2 sm:ml-4 text-sm text-left">
-                            {user?.userID?.username || 0}
-                          </p>
-                        </div>
-                      </Link>
-                      <div>
-                        <button
-                          onClick={() => handleRemoveFollow(user?.userID?._id)}
-                          className={
-                            "w-[150px] h-[50] font-bold bg-[#162423] text-white text-center py-[5px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
-                          }
+              {filteredFollowerData?.length === 0 ? (
+                <div className="flex justify-center items-center sm:min-h-[350px] lg:min-h-[500px] max-h-[400px] sm:max-h-[350px] lg:max-h-[500px]">
+                  <p className="text-slate-300 text-sm">
+                    Once people follow you, you,ll see here.
+                  </p>
+                </div>
+              ) : (
+                filteredFollowerData?.map((user: any) => (
+                  <div key={user?._id}>
+                    <div className="flex items-center my-3 gap-2">
+                      <Image
+                        className="w-12 h-12 rounded-lg"
+                        src={user?.userID?.profilePicture || IMAGES.Profile}
+                        alt="Profile"
+                        width={50}
+                        height={50}
+                      />
+                      <div className="flex items-center justify-between w-full sm:w-full">
+                        <Link
+                          href={`/account/${user?.userID?.username}`}
+                          key={user?._id}
                         >
-                          {"Remove"}
-                        </button>
+                          <div>
+                            <span className="text-xs font-semibold sm:text-base">
+                              {user?.userID?.name || 0}
+                            </span>
+                            <p className="text-sm text-left">
+                              {user?.userID?.username || 0}
+                            </p>
+                          </div>
+                        </Link>
+                        <div>
+                          <button
+                            onClick={() =>
+                              handleRemoveFollow(user?.userID?._id)
+                            }
+                            className={
+                              "w-[150px] h-[50] font-bold bg-[#162423] text-white text-center py-[5px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
+                            }
+                          >
+                            {"Remove"}
+                          </button>
+                        </div>
                       </div>
                     </div>
+                    <hr className="border-t border-[#162423]" />
                   </div>
-                  <hr className="border-t border-[#162423]" />
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
         </div>

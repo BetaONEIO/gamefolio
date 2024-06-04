@@ -61,21 +61,26 @@ function Main() {
   console.log("postState.refresh: ", postState.refresh);
   console.log("postState.refresh: ", postState.followingVideos);
 
+  useEffect(() => {
+    console.log("postState.refresh: useffect");
+    dispatch(userSession(params));
+    dispatch(getFollowingPostOnly(params));
+    handleGameList();
+  }, [page, postState.refresh]);
+
+  useEffect(() => {
+    setFilteredOptions(optionsForGame);
+  }, [optionsForGame]);
+
   const handleGameList = async () => {
     const gettingGameList = await fetchGameList();
     setOptionsForGame(gettingGameList);
   };
 
-  useEffect(() => {
-    console.log("postState.refresh: useffect");
-    dispatch(userSession(params));
-    dispatch(getFollowingPostOnly(params));
-  }, [page, postState.refresh]);
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleInfiniteScroll);
-    return () => window.removeEventListener("scroll", handleInfiniteScroll);
-  }, []);
+  // useEffect(() => {
+  //   window.addEventListener("scroll", handleInfiniteScroll);
+  //   return () => window.removeEventListener("scroll", handleInfiniteScroll);
+  // }, []);
 
   // const handleInfiniteScroll = async () => {
   //   try {
@@ -232,8 +237,6 @@ function Main() {
     return `${formattedTime}-${formattedDate}`;
   };
 
-  console.log("helo", authState?.notification);
-
   const getNotificationClass = (status: any) => {
     switch (status) {
       case "new":
@@ -259,7 +262,7 @@ function Main() {
           <div className="flex w-full justify-center md:justify-between gap-4 px-4">
             {/* Trending */}
             <div
-              className="hidden w-[30rem] h-1/2 md:flex flex-col gap-6 rounded-lg bg-[#091619] border border-[#1C2C2E] px-4 py-6 overflow-y-auto"
+              className="hidden w-[30.5rem] h-1/2 md:flex flex-col gap-6 rounded-lg bg-[#091619] border border-[#1C2C2E] px-4 py-6 overflow-y-auto"
               style={styles.scroller}
             >
               <div className="flex justify-between items-center">
