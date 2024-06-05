@@ -18,6 +18,9 @@ export type InitialState = {
   userCredits: Credit | null;
   gallery: ImageResponse[] | null;
   videos: Array<any>;
+  postID: String;
+  detailedPost: Object;
+  comments: Array<any>;
   trendingVideos: Array<any>;
   followingVideos: Array<any>;
   bookmarks: Array<any>;
@@ -33,6 +36,9 @@ const initialState: InitialState = {
   userCredits: null,
   gallery: null,
   videos: [],
+  postID: "",
+  detailedPost: {},
+  comments: [],
   trendingVideos: [],
   followingVideos: [],
   bookmarks: [],
@@ -71,6 +77,12 @@ export const slice = createSlice({
     getAllPostVideos(state, action) {
       state.videos = action.payload;
     },
+    updatePostID(state, action) {
+      state.postID = action.payload;
+    },
+    updateDetailedPost(state, action) {
+      state.detailedPost = action.payload;
+    },
     getTrendingPosts(state, action) {
       state.trendingVideos = action.payload;
     },
@@ -89,8 +101,14 @@ export const slice = createSlice({
   },
 });
 
-export const { startLoading, stopLoading, getCredits, refreshPage } =
-  slice.actions;
+export const {
+  startLoading,
+  stopLoading,
+  getCredits,
+  refreshPage,
+  updatePostID,
+  updateDetailedPost,
+} = slice.actions;
 
 export function postVideo(params: ActionParams) {
   return async () => {
@@ -136,6 +154,29 @@ export function getAllPostVideos() {
       const [ok, response] = await API(options);
 
       dispatch(slice.actions.getAllPostVideos(response.data));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(slice.actions.stopLoading());
+    }
+  };
+}
+export function getUpdatedDetailedPost(params: ActionParams) {
+  return async () => {
+    const { payload } = params;
+    dispatch(slice.actions.startLoading());
+
+    const options: APIParams = {
+      method: "POST",
+      endpoint: PATH.post.getUpdatedComments,
+      payload: payload,
+      isToken: true,
+    };
+
+    try {
+      const [ok, response] = await API(options);
+
+      dispatch(slice.actions.updateDetailedPost(response.data));
     } catch (error) {
       console.log(error);
     } finally {
@@ -326,8 +367,8 @@ export function createComment(params: ActionParams) {
       const [ok, response] = await API(options);
 
       if (!ok || !response) return errorCallback(response.message);
-
       successCallback(response.message);
+      dispatch(slice.actions.updateDetailedPost(response.data));
     } catch (error) {
       errorCallback();
     } finally {

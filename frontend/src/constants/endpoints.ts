@@ -47,6 +47,7 @@ export const PATH = {
     getTrendingPosts: "post/video/trending/get",
     getFollowingPosts: "post/video/following/get",
     delete: "post/video/delete",
+    getUpdatedComments: "post/comments/get",
   },
 
   clip: {

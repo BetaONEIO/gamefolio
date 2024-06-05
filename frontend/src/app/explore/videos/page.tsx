@@ -215,7 +215,6 @@ function Video() {
       >
         <VideoDetails
           postID={postID}
-          detailedPost={detailedPost}
           handleCloseModal={() => handleModalToggle("isVideoDetailOpen")}
           handlePageRefresh={() => handlePageRefresh()}
         />

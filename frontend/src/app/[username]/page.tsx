@@ -637,7 +637,6 @@ function MyGamefolio({ params }: any) {
           >
             <VideoDetails
               postID={postID}
-              detailedPost={detailedPost}
               handleCloseModal={() => handleModalToggle("isVideoDetailOpen")}
               handlePageRefresh={() => handlePageRefresh()}
             />
