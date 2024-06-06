@@ -1,7 +1,11 @@
 "use client";
 import { SVG } from "@/assets/SVG";
 import { dispatch, useSelector } from "@/store";
-import { createComment, refreshPage } from "@/store/slices/postSlice";
+import {
+  createComment,
+  getUpdatedDetailedPost,
+  refreshPage,
+} from "@/store/slices/postSlice";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import Image from "next/image";
@@ -17,16 +21,13 @@ import handleCreateNotification from "../Notification/Notification";
 interface VideoDetailProps {
   handleCloseModal: () => void;
   postID: any;
-  detailedPost: any;
+
   handlePageRefresh: () => void;
 }
 
-function VideoDetails({
-  handleCloseModal,
-  postID,
-  detailedPost,
-}: VideoDetailProps) {
+function VideoDetails({ handleCloseModal, postID }: VideoDetailProps) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
+  const postState = useSelector((state: any) => state.post) || [];
   const [comments, setComments] = useState("");
   const [emoji, setEmoji] = useState(false);
   const [modalState, setModalState] = useState({
@@ -34,7 +35,8 @@ function VideoDetails({
     isReportModalOpen: false,
   });
 
-  console.log("detailedPost: ", detailedPost.comments);
+  // console.log("detailedPost: ", detailedPost.comments);
+  console.log("detailedPost: ", postState);
 
   const handleCreateComment = async (postID: any, comment: any) => {
     const payload = {
@@ -47,7 +49,7 @@ function VideoDetails({
       handleCreateNotification(
         authState._id,
         postID,
-        detailedPost?.userID?._id,
+        postState?.detailedPost?.userID?._id,
         "comment_post"
       );
       toastSuccess(response);
@@ -108,7 +110,7 @@ function VideoDetails({
   };
 
   const handleThreedotsClick = (postId: any) => {
-    if (authState._id == detailedPost?.userID?._id) {
+    if (authState._id == postState?.detailedPost?.userID?._id) {
       handleModalToggle("isPostDeleteOpen", postId);
     } else {
       handleModalToggle("isReportModalOpen", postId);
@@ -168,7 +170,7 @@ function VideoDetails({
                     <div className="flex justify-center items-center w-full">
                       <video
                         className="w-[710px] h-[185px] sm:h-[300px] my-2 sm:my-2"
-                        src={detailedPost.video}
+                        src={postState.detailedPost.video}
                         width={50}
                         height={50}
                         controls
@@ -186,7 +188,7 @@ function VideoDetails({
                   <div className="flex items-center my-0 sm:my-3 mx-3">
                     <Image
                       className="w-12 h-12 rounded-lg mr-2 sm:mr-4"
-                      src={detailedPost?.userID?.profilePicture}
+                      src={postState?.detailedPost?.userID?.profilePicture}
                       alt="Profile avatar"
                       width={50}
                       height={50}
@@ -194,25 +196,24 @@ function VideoDetails({
                     <div className="flex items-center justify-between w-full">
                       <div>
                         <Link
-                          href={`/account/${detailedPost?.userID?.username}`}
-                          key={detailedPost._id}
+                          href={`/account/${postState?.detailedPost?.userID?.username}`}
+                          key={postState?.detailedPost._id}
                         >
                           <h3 className="sm:text-lg sm:font-bold md:text-xl text-white text-base font-semibold">
-                            {detailedPost?.userID?.name}
+                            {postState?.detailedPost?.userID?.name}
                           </h3>
                         </Link>
                         <p className="sm:text-base text-sm font-light text-gray-400">
-                          {detailedPost?.date &&
-                            new Date(detailedPost.date).toLocaleString(
-                              "en-US",
-                              {
-                                hour: "numeric",
-                                minute: "numeric",
-                                day: "numeric",
-                                month: "short",
-                                year: "numeric",
-                              }
-                            )}
+                          {postState?.detailedPost?.date &&
+                            new Date(
+                              postState?.detailedPost?.date
+                            ).toLocaleString("en-US", {
+                              hour: "numeric",
+                              minute: "numeric",
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            })}
                         </p>
                       </div>
                       <div>
@@ -222,7 +223,9 @@ function VideoDetails({
                           alt="Threedots"
                           width={5}
                           height={5}
-                          onClick={() => handleThreedotsClick(detailedPost._id)}
+                          onClick={() =>
+                            handleThreedotsClick(postState?.detailedPost._id)
+                          }
                         />
                       </div>
                     </div>
@@ -230,7 +233,7 @@ function VideoDetails({
 
                   <div className="mx-4 my-2">
                     <p className="text-base font-light text-gray-200">
-                      {detailedPost?.description}
+                      {postState?.detailedPost?.description}
                     </p>
                   </div>
 
@@ -244,7 +247,7 @@ function VideoDetails({
                           width={50}
                           height={50}
                         />
-                        <p>{detailedPost?.reactions.length}</p>
+                        <p>{postState?.detailedPost?.reactions?.length}</p>
                       </div>
 
                       <Image
@@ -277,7 +280,7 @@ function VideoDetails({
                 <div className="border border-[#586769] mt-3"></div>
 
                 <div className="h-[9rem] sm:h-[20rem] mx-4 overflow-scroll overscroll-y-auto no-scrollbar">
-                  {detailedPost?.comments.map((comment: any) => (
+                  {postState?.detailedPost?.comments?.map((comment: any) => (
                     <div key={comment._id} className="flex flex-row gap-2 mt-3">
                       <Image
                         className="w-12 h-12 rounded-lg"

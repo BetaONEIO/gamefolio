@@ -290,6 +290,7 @@ const createComment = async (req, res) => {
     const { userID, commentText, postID } = req.body;
 
     const post = await Posts.findById(postID);
+
     if (!post) {
       return res
         .status(404)
@@ -302,7 +303,14 @@ const createComment = async (req, res) => {
     };
 
     post.comments.push(newComment);
+
     const updatedPost = await post.save();
+
+    const latestUpdatedPost = await Posts.findById(postID)
+      .sort({ date: -1 })
+      .populate("userID")
+      .populate({ path: "comments.userID" });
+
     const user = await User.findByIdAndUpdate(
       userID,
       {
@@ -313,7 +321,7 @@ const createComment = async (req, res) => {
 
     res
       .status(201)
-      .json({ data: updatedPost, message: "Successfully Comment Added" });
+      .json({ data: latestUpdatedPost, message: "Successfully Comment Added" });
   } catch (error) {
     console.error(error);
     res.status(500).json({

@@ -23,6 +23,7 @@ import {
   deleteVideoReaction,
   getFollowingPostOnly,
   refreshPage,
+  updateDetailedPost,
 } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
@@ -33,7 +34,7 @@ function Main() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const postState = useSelector((state: any) => state.post) || [];
   const [postID, setPostID] = useState("");
-  const [detailedPost, setDetailedPost] = useState("");
+  // const [detailedPost, setDetailedPost] = useState("");
   const [optionsForGame, setOptionsForGame] = useState([]);
   const [filteredOptions, setFilteredOptions] = useState(optionsForGame);
   const [modalState, setModalState] = useState({
@@ -48,20 +49,34 @@ function Main() {
   const { loading } = postState;
   const [page, setPage] = useState(1);
 
-  const payload = {
-    userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
-    limit: 2,
-    page: page,
-  };
+  console.log("postState.refresh: ", postState.refresh);
+  console.log("postState.refresh: ", postState.followingVideos);
 
-  const params = {
-    payload,
-  };
+  useEffect(() => {
+    const payload = {
+      userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
+      limit: 2,
+      page: page,
+    };
+
+    const params = {
+      payload,
+    };
+  });
 
   console.log("postState.refresh: ", postState.refresh);
   console.log("postState.refresh: ", postState.followingVideos);
 
   useEffect(() => {
+    const payload = {
+      userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
+      limit: 2,
+      page: page,
+    };
+
+    const params = {
+      payload,
+    };
     console.log("postState.refresh: useffect");
     dispatch(userSession(params));
     dispatch(getFollowingPostOnly(params));
@@ -77,6 +92,10 @@ function Main() {
     setOptionsForGame(gettingGameList);
   };
 
+  // useEffect(() => {
+  //   window.addEventListener("scroll", handleInfiniteScroll);
+  //   return () => window.removeEventListener("scroll", handleInfiniteScroll);
+  // }, []);
   // useEffect(() => {
   //   window.addEventListener("scroll", handleInfiniteScroll);
   //   return () => window.removeEventListener("scroll", handleInfiniteScroll);
@@ -121,7 +140,8 @@ function Main() {
     detailedPost?: any
   ) => {
     setPostID(postID);
-    setDetailedPost(detailedPost);
+    dispatch(updateDetailedPost(detailedPost));
+    // setDetailedPost(detailedPost);
     setModalState((prevState) => ({
       ...prevState,
       [modalName]: !prevState[modalName],
@@ -273,8 +293,8 @@ function Main() {
                   </span>
                 </Link>
               </div>
-              {filteredOptions.slice(0, 10).map((item: any) => (
-                <div className="flex flex-col gap-6">
+              {filteredOptions.slice(0, 10).map((item: any, index: number) => (
+                <div className="flex flex-col gap-6" key={index}>
                   <div className="flex justify-between items-center">
                     <div className="flex gap-2">
                       <Image
@@ -645,7 +665,6 @@ function Main() {
       >
         <VideoDetails
           postID={postID}
-          detailedPost={detailedPost}
           handleCloseModal={() => handleModalToggle("isVideoDetailOpen")}
           handlePageRefresh={() => handlePageRefresh()}
         />
