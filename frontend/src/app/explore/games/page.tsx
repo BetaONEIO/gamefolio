@@ -6,7 +6,6 @@ import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import { getAllPostVideos, refreshPage } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
-import Loading from "./loading";
 import Link from "next/link";
 import { IMAGES } from "@/assets/images";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -19,6 +18,19 @@ import "swiper/css/pagination";
 import { EffectFade, Navigation, Pagination } from "swiper/modules";
 import { fetchGameList } from "@/services/api";
 import Image from "next/image";
+
+const SkeletonLoaderGames = () => (
+  <div className="flex items-center">
+    <div className="flex items-center overflow-scroll no-scrollbar gap-2">
+      {[...Array(5)].map((_, index) => (
+        <div
+          key={index}
+          className="w-28 h-40 bg-gray-300 rounded-xl animate-pulse"
+        ></div>
+      ))}
+    </div>
+  </div>
+);
 
 function Games() {
   const postState = useSelector((state: any) => state.post) || [];
@@ -68,8 +80,6 @@ function Games() {
     const gettingGameList = await fetchGameList();
     setOptionsForGame(gettingGameList);
   };
-
-  if (postState.loading) return <Loading />;
 
   function padZero(value: number): string {
     return value < 10 ? `0${value}` : `${value}`;
@@ -138,20 +148,31 @@ function Games() {
 
       <div className="flex items-center my-2">
         <div className="flex items-center overflow-scroll no-scrollbar gap-2 px-4">
-          {filteredOptions.slice(0, 20).map((item: any) => (
-            <div key={item.id}>
-              <div className="w-28 h-40">
-                <Image
-                  width={40}
-                  height={40}
-                  className="w-28 h-40 rounded-xl"
-                  src={item.box_art_url.replace("{width}x{height}", "112x160")}
-                  alt={item.name}
-                  sizes="100vw"
-                />
+          {filteredOptions?.length === 0 ? (
+            <>
+              {[...Array(3)].map((_, index) => (
+                <SkeletonLoaderGames key={index} />
+              ))}
+            </>
+          ) : (
+            filteredOptions.slice(0, 20).map((item: any) => (
+              <div key={item.id}>
+                <div className="w-28 h-40">
+                  <Image
+                    width={40}
+                    height={40}
+                    className="w-28 h-40 rounded-xl"
+                    src={item.box_art_url.replace(
+                      "{width}x{height}",
+                      "112x160"
+                    )}
+                    alt={item.name}
+                    sizes="100vw"
+                  />
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
 
