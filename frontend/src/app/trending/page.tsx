@@ -59,6 +59,14 @@ const SkeletonLoaderVideo = () => {
   );
 };
 
+const trendingLoader = () => {
+  return (
+    <div className="relative w-[800px] h-[400px] rounded-lg overflow-hidden bg-gray-200 animate-pulse">
+      <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-skeleton"></div>
+    </div>
+  );
+};
+
 function Trending() {
   const postState = useSelector((state: any) => state.post) || [];
   const [postID, setPostID] = useState("");
@@ -98,6 +106,19 @@ function Trending() {
   const sectionStyle = {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
   };
+  const removeGame = (gameNameToRemove: any) => {
+    // Filter out the game named "Just Chatting"
+    const filteredGames = filteredOptions.filter(
+      (item: any) => item.name !== gameNameToRemove
+    );
+    return filteredGames;
+  };
+
+  // Assuming you have the name of the game as "Just Chatting"
+  const gameToRemove = "Just Chatting";
+
+  // Call removeGame function to filter out the game
+  const filteredGames = removeGame(gameToRemove);
 
   const handleModalToggle = (
     modalName: keyof typeof modalState,
@@ -204,43 +225,61 @@ function Trending() {
               </div>
             </div>
 
-            <div className="flex gap-4 h-80 w-full">
-              <Swiper
-                effect={"fade"}
-                navigation={true}
-                pagination={{ clickable: true }}
-                modules={[EffectFade, Navigation, Pagination]}
-                className="mySwiper h-80 w-full rounded-lg relative"
-              >
-                <SwiperSlide>
-                  <img src={IMAGES.TrendingPubg} style={styles.swiperImage} />
-                  <div style={styles.overlay}></div>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <img
-                    src="https://swiperjs.com/demos/images/nature-3.jpg"
-                    style={styles.swiperImage}
-                  />
-                  <div style={styles.overlay}></div>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <img
-                    src="https://swiperjs.com/demos/images/nature-4.jpg"
-                    style={styles.swiperImage}
-                  />
-                </SwiperSlide>
-              </Swiper>
+            <div className="flex gap-4 h-80 w-full relative">
+              <div className="relative w-[800px]">
+                <Swiper
+                  effect={"fade"}
+                  navigation={true}
+                  pagination={{ clickable: true }}
+                  modules={[EffectFade, Navigation, Pagination]}
+                  className="mySwiper h-80 w-full rounded-lg"
+                >
+                  {/* {filteredOptions.length === 0 ? (
+                    <>
+                      {[...Array(2)].map((_, index) => (
+                        <trendingLoader key={index} />
+                      ))}
+                    </>
+                  ) : ( */}
+                  {filteredGames.slice(0, 3).map((item: any) => (
+                    <SwiperSlide>
+                      <Image
+                        width={800}
+                        height={400}
+                        className="w-full h-full rounded-xl"
+                        src={item.box_art_url.replace(
+                          "{width}x{height}",
+                          "800x400"
+                        )}
+                        alt={item.name}
+                        style={styles.swiperImage}
+                        sizes="100vw"
+                      />
+                      <div style={styles.overlay}></div>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
 
-              <div className="absolute left-10 flex gap-4 mt-4">
-                <button className="rounded-2xl px-4 py-2 bg-[#292D32] text-white">
-                  Action
-                </button>
-                <button className="rounded-2xl px-4 py-2 bg-[#292D32] text-white">
-                  Fighting
-                </button>
-                <button className="rounded-2xl px-4 py-2 bg-[#292D32] text-white">
-                  Thrilling
-                </button>
+                <div className="absolute top-4 left-4 flex gap-4 z-10">
+                  <button
+                    className="rounded-2xl px-4 py-2 text-white cursor-pointer hover:opacity-80"
+                    style={{ backgroundColor: "rgba(41, 45, 50, 0.8)" }}
+                  >
+                    Action
+                  </button>
+                  <button
+                    className="rounded-2xl px-4 py-2 text-white cursor-pointer hover:opacity-80"
+                    style={{ backgroundColor: "rgba(41, 45, 50, 0.8)" }}
+                  >
+                    Fighting
+                  </button>
+                  <button
+                    className="rounded-2xl px-4 py-2 text-white cursor-pointer hover:opacity-80"
+                    style={{ backgroundColor: "rgba(41, 45, 50, 0.8)" }}
+                  >
+                    Thrilling
+                  </button>
+                </div>
               </div>
 
               <div
@@ -251,14 +290,14 @@ function Trending() {
                   <span className="font-bold">Upcoming Updates</span>
                 </div>
                 <div className="flex flex-col gap-4">
-                  {filteredOptions.length === 0 ? (
+                  {filteredGames.length === 0 ? (
                     <>
                       {[...Array(10)].map((_, index) => (
                         <SkeletonLoader key={index} />
                       ))}
                     </>
                   ) : (
-                    filteredOptions.slice(0, 20).map((item: any) => (
+                    filteredGames.slice(0, 20).map((item: any) => (
                       <div
                         key={item.id}
                         className="flex justify-between items-center"
@@ -453,26 +492,22 @@ const styles = {
     justifyContent: "space-between",
   },
   swiperContainer: {
-    width: "80%",
-    height: "30%",
+    // width: "80%",
+    // height: "30%",
   },
   swiperImage: {
     width: "100%",
     height: "100%",
   },
   overlay: {
-    position: "absolute" as "absolute", // Explicitly specify position type
-    top: 0,
-    left: 0,
     width: "100%",
     height: "100%",
-    background:
-      "linear-gradient(to top, rgba(0, 0, 0, 0.4) 100%, rgba(0, 0, 0, 0) 100%)",
+    //   background:
+    //     "linear-gradient(to top, rgba(0, 0, 0, 0.4) 100%, rgba(0, 0, 0, 0) 100%)",
   },
   scroller: {
     scrollbarColor: "#43DD4E #FFFFFF",
   },
-  // Add more styles as needed
 };
 
 export default Trending;

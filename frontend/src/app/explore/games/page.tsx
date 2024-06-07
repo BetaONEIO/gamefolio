@@ -7,7 +7,6 @@ import { userSession } from "@/store/slices/authSlice";
 import { getAllPostVideos, refreshPage } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Link from "next/link";
-import { IMAGES } from "@/assets/images";
 import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
 import "swiper/css";
@@ -38,9 +37,6 @@ function Games() {
   const [detailedPost, setDetailedPost] = useState("");
   const [optionsForGame, setOptionsForGame] = useState([]);
   const [filteredOptions, setFilteredOptions] = useState(optionsForGame);
-  const [videoDurations, setVideoDurations] = useState<{
-    [key: string]: number;
-  }>({});
   const [modalState, setModalState] = useState({
     isVideoDetailOpen: false,
   });
@@ -89,6 +85,20 @@ function Games() {
     dispatch(refreshPage());
   };
 
+  const removeGame = (gameNameToRemove: any) => {
+    // Filter out the game named "Just Chatting"
+    const filteredGames = filteredOptions.filter(
+      (item: any) => item.name !== gameNameToRemove
+    );
+    return filteredGames;
+  };
+
+  // Assuming you have the name of the game as "Just Chatting"
+  const gameToRemove = "Just Chatting";
+
+  // Call removeGame function to filter out the game
+  const filteredGames = removeGame(gameToRemove);
+
   return (
     <div className="m-2">
       <div className="mx-2">
@@ -97,35 +107,63 @@ function Games() {
         </p>
       </div>
 
-      <div className="flex gap-4 h-80 mx-3">
-        <Swiper
-          effect={"fade"}
-          navigation={true}
-          pagination={{
-            clickable: true,
-          }}
-          modules={[EffectFade, Navigation, Pagination]}
-          className="mySwiper h-80 w-full rounded-lg"
-        >
-          <SwiperSlide>
-            <img src={IMAGES.TrendingPubg} style={styles.swiperImage} />
-            <div style={styles.overlay}></div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <img
-              src="https://swiperjs.com/demos/images/nature-3.jpg"
-              style={styles.swiperImage}
-            />
-            <div style={styles.overlay}></div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <img
-              src="https://swiperjs.com/demos/images/nature-4.jpg"
-              style={styles.swiperImage}
-            />
-            <div style={styles.overlay}></div>
-          </SwiperSlide>
-        </Swiper>
+      <div className="flex gap-4 relative mx-4">
+        <div className="relative w-[1150px]">
+          <Swiper
+            effect={"fade"}
+            navigation={true}
+            pagination={{ clickable: true }}
+            modules={[EffectFade, Navigation, Pagination]}
+            className="mySwiper h-80  rounded-lg"
+          >
+            {filteredGames.length === 0 ? (
+              <>
+                {[...Array(2)].map((_, index) => (
+                  <SkeletonLoaderGames key={index} />
+                ))}
+              </>
+            ) : (
+              filteredGames.slice(0, 3).map((item: any) => (
+                <SwiperSlide>
+                  <Image
+                    width={400}
+                    height={400}
+                    className="w-full h-full rounded-xl"
+                    src={item.box_art_url.replace(
+                      "{width}x{height}",
+                      "400x600"
+                    )}
+                    alt={item.name}
+                    style={styles.swiperImage}
+                    sizes="100vw"
+                  />
+                  <div style={styles.overlay}></div>
+                </SwiperSlide>
+              ))
+            )}
+          </Swiper>
+
+          <div className="absolute top-4 left-4 flex gap-4 z-10">
+            <button
+              className="rounded-2xl px-4 py-2 text-white cursor-pointer hover:opacity-80"
+              style={{ backgroundColor: "rgba(41, 45, 50, 0.8)" }}
+            >
+              Action
+            </button>
+            <button
+              className="rounded-2xl px-4 py-2 text-white cursor-pointer hover:opacity-80"
+              style={{ backgroundColor: "rgba(41, 45, 50, 0.8)" }}
+            >
+              Fighting
+            </button>
+            <button
+              className="rounded-2xl px-4 py-2 text-white cursor-pointer hover:opacity-80"
+              style={{ backgroundColor: "rgba(41, 45, 50, 0.8)" }}
+            >
+              Thrilling
+            </button>
+          </div>
+        </div>
       </div>
 
       <div className="flex items-center my-2">
@@ -148,14 +186,14 @@ function Games() {
 
       <div className="flex items-center my-2">
         <div className="flex items-center overflow-scroll no-scrollbar gap-2 px-4">
-          {filteredOptions?.length === 0 ? (
+          {filteredGames?.length === 0 ? (
             <>
               {[...Array(3)].map((_, index) => (
                 <SkeletonLoaderGames key={index} />
               ))}
             </>
           ) : (
-            filteredOptions.slice(0, 20).map((item: any) => (
+            filteredGames.slice(0, 20).map((item: any) => (
               <div key={item.id}>
                 <div className="w-28 h-40">
                   <Image
@@ -205,13 +243,8 @@ const styles = {
     height: "100%",
   },
   overlay: {
-    position: "absolute" as "absolute", // Explicitly specify position type
-    top: 0,
-    left: 0,
     width: "100%",
     height: "100%",
-    background:
-      "linear-gradient(to top, rgba(0, 0, 0, 0.4) 100%, rgba(0, 0, 0, 0) 100%)",
   },
   scroller: {
     scrollbarColor: "#43DD4E #FFFFFF",

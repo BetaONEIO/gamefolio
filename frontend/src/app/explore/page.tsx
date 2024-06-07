@@ -176,6 +176,20 @@ function Explore() {
     dispatch(refreshPage());
   };
 
+  const removeGame = (gameNameToRemove: any) => {
+    // Filter out the game named "Just Chatting"
+    const filteredGames = filteredOptions.filter(
+      (item: any) => item.name !== gameNameToRemove
+    );
+    return filteredGames;
+  };
+
+  // Assuming you have the name of the game as "Just Chatting"
+  const gameToRemove = "Just Chatting";
+
+  // Call removeGame function to filter out the game
+  const filteredGames = removeGame(gameToRemove);
+
   return (
     <div className="flex flex-col py-2 overflow-y-scroll no-scrollbar mx-4">
       <div className="flex items-center">
@@ -198,14 +212,14 @@ function Explore() {
 
       <div className="flex items-center my-2">
         <div className="flex items-center overflow-scroll no-scrollbar gap-2">
-          {filteredOptions?.length === 0 ? (
+          {filteredGames?.length === 0 ? (
             <>
               {[...Array(3)].map((_, index) => (
                 <SkeletonLoaderGames key={index} />
               ))}
             </>
           ) : (
-            filteredOptions?.slice(0, 20).map((item: any) => (
+            filteredGames?.slice(0, 20).map((item: any) => (
               <div key={item.id}>
                 <div className="w-28 h-40">
                   <Image

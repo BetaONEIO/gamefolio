@@ -285,6 +285,20 @@ function Main() {
     return `${formattedTime}-${formattedDate}`;
   };
 
+  const removeGame = (gameNameToRemove: any) => {
+    // Filter out the game named "Just Chatting"
+    const filteredGames = filteredOptions.filter(
+      (item: any) => item.name !== gameNameToRemove
+    );
+    return filteredGames;
+  };
+
+  // Assuming you have the name of the game as "Just Chatting"
+  const gameToRemove = "Just Chatting";
+
+  // Call removeGame function to filter out the game
+  const filteredGames = removeGame(gameToRemove);
+
   return (
     <Layout>
       <CustomHeader>GAMEFOLIO FEED</CustomHeader>
@@ -308,14 +322,14 @@ function Main() {
                   </span>
                 </Link>
               </div>
-              {filteredOptions.length === 0 ? (
+              {filteredGames.length === 0 ? (
                 <>
                   {[...Array(4)].map((_, index) => (
                     <SkeletonLoader key={index} />
                   ))}
                 </>
               ) : (
-                filteredOptions.slice(0, 10).map((item: any, index: number) => (
+                filteredGames.slice(0, 10).map((item: any, index: number) => (
                   <div className="flex flex-col gap-6" key={index}>
                     <div className="flex justify-between items-center">
                       <div className="flex gap-2">
