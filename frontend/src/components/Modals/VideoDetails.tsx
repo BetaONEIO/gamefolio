@@ -51,6 +51,7 @@ function VideoDetails({ handleCloseModal, postID }: VideoDetailProps) {
         postState?.detailedPost?.userID?._id,
         "comment_post"
       );
+      setComments("");
       handlePageRefresh();
       toastSuccess(response);
     };
