@@ -35,6 +35,7 @@ function VideoDetails({ handleCloseModal, postID }: VideoDetailProps) {
     isReportModalOpen: false,
   });
 
+  // console.log("detailedPost: ", detailedPost.comments);
   console.log("detailedPost: ", postState);
 
   const handleCreateComment = async (postID: any, comment: any) => {
@@ -54,6 +55,7 @@ function VideoDetails({ handleCloseModal, postID }: VideoDetailProps) {
       setComments("");
       handlePageRefresh();
       toastSuccess(response);
+      handlePageRefresh();
     };
 
     const errorCallback = (error: string) => {

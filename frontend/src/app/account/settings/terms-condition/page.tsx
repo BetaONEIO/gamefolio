@@ -13,57 +13,175 @@ const TermsCondition = () => {
         </div>
         <div className="flex justify-start items-center">
           <span className="block font-bold mb-2 text-base text-white">
-            Version 1.0.0
+            Introduction
           </span>
         </div>
         <div className="flex-1">
-          Lorem ipsum dolor sit amet consectetur. Ut sed eu pulvinar orci massa
-          viverra non. Urna ut vel laoreet sit fames varius. Iaculis viverra
-          auctor eget dictum. Magna ante libero montes non facilisis augue
-          sollicitudin scelerisque. Dui sollicitudin suscipit cursus ut eget.
-          Euismod bibendum massa amet amet tempor risus. <br />
-          <br />
-          Nisi non nulla tellus viverra mauris. Scelerisque purus eu nascetur in
-          dolor odio maecenas. Eu a proin purus integer feugiat. Urna ut morbi
-          purus vitae ultrices dignissim in sagittis est. Mattis vitae viverra
-          lorem nunc morbi eget lacus. Facilisi rhoncus in commodo sapien
-          feugiat egestas scelerisque at sed. Et nulla turpis ornare
-          pellentesque. Neque magna cras adipiscing vitae integer orci sed.
-          Neque dui augue ultricies quisque vitae amet egestas. Mauris sem eget
-          ac facilisi a. Tristique pellentesque nunc nulla sit feugiat commodo.
-          Amet morbi enim mi cursus enim commodo consequat auctor. Iaculis ac
-          velit volutpat velit elit. Ornare bibendum fermentum sed vitae
-          interdum elit tincidunt porttitor tortor. Tempor scelerisque ut tellus
-          ultricies a. <br />
-          <br />
-          Tellus nunc accumsan non aliquet volutpat. Auctor vitae tortor ut amet
-          dolor mattis sit. Metus accumsan in iaculis ipsum ut quam faucibus.
-          Lectus quis netus sed sollicitudin fusce aenean lacus tempus aliquam.
-          Quis arcu tortor nunc tristique amet. Sed ut nisl maecenas vitae
-          pretium sed volutpat faucibus. Amet lectus imperdiet cursus
-          pellentesque sem. Commodo duis sed turpis a nisl fringilla. Erat at
-          donec nascetur in. <br />
-          <br />
-          Gravida eu donec cras iaculis quis nisl eros. Sapien sed nunc
-          ullamcorper tellus ut tortor nisl nulla. Tellus ultricies enim sed
-          amet. Arcu at tincidunt bibendum elit diam sagittis nullam pulvinar.
-          Netus mattis imperdiet eu mattis quis gravida arcu. Nisl viverra donec
-          vivamus feugiat mi id fringilla. Pulvinar elit feugiat vitae quisque.{" "}
+          Welcome to Gamefolio! These terms and conditions <b>("Terms")</b>{" "}
+          outline the rules and regulations for the use of Gamefolio's website
+          <b>(gamefolio.com)</b>, Android app, and iOS app{" "}
+          <b>(collectively, the "Services")</b>. By accessing or using our
+          Services, you agree to comply with and be bound by these Terms. If you
+          disagree with any part of the Terms, you may not use our Services.
           <br />
           <br />
-          Lobortis mauris semper tellus eu vitae vitae. Condimentum turpis
-          mattis aliquet auctor ac quis luctus aliquam erat. Quam porttitor at
-          accumsan eget consectetur scelerisque bibendum. Cras cum lobortis
-          sodales elementum fringilla. Viverra volutpat eget nibh urna. Blandit
-          lectus sit a fames sed diam. Penatibus proin tellus tincidunt
-          scelerisque. Orci tellus dictumst habitant nulla elit vel vitae sed.
-          Magna tristique nisl dui interdum nibh ornare in viverra viverra.
-          Augue tristique urna porttitor augue integer posuere massa elit neque.
-          Magna dignissim tempus accumsan pretium fermentum amet consequat.
-          Sapien interdum dictumst tempor quam sed sed eu. In gravida commodo
-          etiam turpis eget. Feugiat bibendum sed curabitur neque et enim eget.
-          Quisque fusce at proin molestie tempor. Ut ipsum. <br />
+          <div className="flex justify-start items-center">
+            <span className="block font-bold mb-2 text-base text-white">
+              Definitions
+            </span>
+          </div>
+          - <b>**"We," "us," "our"**</b> refers to Beta ONE Innovations LTD, the
+          owner of Gamefolio.
+          <br />- <b>**"You," "user"**</b> refers to the individual accessing or
+          using our Services. <br />- <b></b>
+          <b>**"Services"**</b> refers to the website, Android app, and iOS app
+          owned and operated by Beta ONE Innovations LTD.
           <br />
+          <br />
+          <div className="flex justify-start items-center">
+            <span className="block font-bold mb-2 text-base text-white">
+              Use of Services
+            </span>
+          </div>
+          <div className="flex justify-start items-center">
+            <span className="block font-bold mb-2 text-base text-white">
+              Eligibility
+            </span>
+          </div>
+          You must be at least 13 years old to use our Services. By using our
+          Services, you represent and warrant that you meet this age
+          requirement.
+          <br />
+          <br />
+          <div className="flex justify-start items-center">
+            <span className="block font-bold mb-2 text-base text-white">
+              Account Registration
+            </span>
+          </div>
+          To access certain features of our Services, you may be required to
+          create an account. You agree to provide accurate, current, and
+          complete information during the registration process and to update
+          such information as necessary to keep it accurate, current, and
+          complete.
+          <br />
+          <br />
+          <div className="flex justify-start items-center">
+            <span className="block font-bold mb-2 text-base text-white">
+              Account Security
+            </span>
+          </div>
+          You are responsible for safeguarding your account information,
+          including your password, and for any activities or actions under your
+          account. You agree to notify us immediately of any unauthorized use of
+          your account. <br />
+          <br />
+          <div className="flex justify-start items-center">
+            <span className="block font-bold mb-2 text-base text-white">
+              User Conduct
+            </span>
+          </div>
+          You agree not to use our Services for any unlawful purpose or in any
+          way that could harm, disable, overburden, or impair our Services.
+          Prohibited activities include, but are not limited to: <br />
+          <br />- Using our Services to engage in any fraudulent or illegal
+          activity. <br />
+          - Transmitting any worms, viruses, or any code of a destructive
+          nature. <br />- Attempting to gain unauthorized access to our Services
+          or other accounts, computer systems, or networks connected to our
+          Services. <br />
+          - Harassing, abusing, or harming another person or entity. <br />
+          <br />
+          <div className="flex justify-start items-center">
+            <span className="block font-bold mb-2 text-base text-white">
+              Intellectual Property
+            </span>
+          </div>
+          All content, features, and functionality on our Services, including
+          text, graphics, logos, icons, images, and software, are the exclusive
+          property of Beta ONE Innovations LTD and are protected by
+          international copyright, trademark, patent, trade secret, and other
+          intellectual property or proprietary rights laws.
+          <br />
+          <br />
+          <div className="flex justify-start items-center">
+            <span className="block font-bold mb-2 text-base text-white">
+              Trademarks
+            </span>
+          </div>
+          <b>"Gamefolio"</b> and all related names, logos, product and service
+          names, designs, and slogans are trademarks of Beta ONE Innovations
+          LTD. You must not use such marks without the prior written permission
+          of Beta ONE Innovations LTD.
+          <br />
+          <br />
+          <div className="flex justify-start items-center">
+            <span className="block font-bold mb-2 text-base text-white">
+              Termination
+            </span>
+          </div>
+          We may terminate or suspend your account and access to our Services
+          immediately, without prior notice or liability, for any reason
+          whatsoever, including without limitation if you breach these Terms.
+          Upon termination, your right to use our Services will immediately
+          cease.
+          <br />
+          <br />
+          <div className="flex justify-start items-center">
+            <span className="block font-bold mb-2 text-base text-white">
+              Limitation of Liability
+            </span>
+          </div>
+          In no event shall Beta ONE Innovations LTD, nor its directors,
+          employees, partners, agents, suppliers, or affiliates, be liable for
+          any indirect, incidental, special, consequential, or punitive damages,
+          including without limitation, loss of profits, data, use, goodwill, or
+          other intangible losses, resulting from (i) your use or inability to
+          use our Services; (ii) any unauthorized access to or use of our
+          servers and/or any personal information stored therein; (iii) any
+          interruption or cessation of transmission to or from our Services;
+          (iv) any bugs, viruses, trojan horses, or the like that may be
+          transmitted to or through our Services by any third party; (v) any
+          errors or omissions in any content or for any loss or damage incurred
+          as a result of your use of any content posted, emailed, transmitted,
+          or otherwise made available through our Services; and/or (vi) the
+          defamatory, offensive, or illegal conduct of any third party.
+          <br />
+          <br />
+          <div className="flex justify-start items-center">
+            <span className="block font-bold mb-2 text-base text-white">
+              Governing Law
+            </span>
+          </div>
+          These Terms shall be governed and construed in accordance with the
+          laws of the United Kingdom, without regard to its conflict of law
+          provisions.
+          <br />
+          <br />
+          <div className="flex justify-start items-center">
+            <span className="block font-bold mb-2 text-base text-white">
+              Changes to Terms
+            </span>
+          </div>
+          We reserve the right, at our sole discretion, to modify or replace
+          these Terms at any time. If a revision is material, we will try to
+          provide at least 30 days' notice prior to any new terms taking effect.
+          What constitutes a material change will be determined at our sole
+          discretion.
+          <br />
+          <br />
+          <div className="flex justify-start items-center">
+            <span className="block font-bold mb-2 text-base text-white">
+              Contact Us
+            </span>
+          </div>
+          If you have any questions about these Terms, please contact us:
+          <br />
+          <br />
+          - By email: hello@gamefolio.com <br />
+          - By visiting this page on our website: gamefolio.com/contact <br />
+          <br />
+          Effective Date: 6th June 2024 <br /> <br />© 2024 Beta ONE Innovations
+          LTD. All rights reserved.
         </div>
       </div>
     </Setting>

@@ -24,6 +24,49 @@ import "swiper/css/pagination";
 // import required modules
 import { EffectFade, Navigation, Pagination } from "swiper/modules";
 
+const SkeletonLoader = () => (
+  <div className="flex flex-col gap-6">
+    <div className="flex justify-between items-center">
+      <div className="flex gap-2">
+        <div className="w-14 h-14 bg-gray-700 rounded-xl animate-pulse"></div>
+        <div className="flex flex-col gap-1">
+          <div className="w-20 h-4 bg-gray-700 rounded animate-pulse"></div>
+          <div className="w-32 h-6 bg-gray-700 rounded animate-pulse"></div>
+          <div className="w-24 h-4 bg-gray-700 rounded animate-pulse"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+const SkeletonLoaderVideo = () => {
+  return (
+    <div className="flex-shrink-0 flex flex-col gap-2 w-68 h-56 border-2 border-[#1C2C2E] rounded-xl mx-1 animate-pulse overflow-x-auto">
+      <div className="relative w-full h-36 bg-gray-700 rounded-2xl"></div>
+      <div className="flex items-center gap-4">
+        <div className="w-10 h-6 ml-2 bg-gray-700 rounded-xl"></div>
+        <div>
+          <div className="w-24 h-4 bg-gray-700 rounded"></div>
+          <div className="w-16 h-3 mt-1 bg-gray-700 rounded"></div>
+        </div>
+      </div>
+      <div className="flex items-center justify-between text-center mx-4">
+        <div className="w-6 h-2 bg-gray-700 rounded-full"></div>
+        <div className="w-6 h-2 bg-gray-700 rounded-full"></div>
+        <div className="w-6 h-2 bg-gray-700 rounded-full"></div>
+      </div>
+    </div>
+  );
+};
+
+const trendingLoader = () => {
+  return (
+    <div className="relative w-[800px] h-[400px] rounded-lg overflow-hidden bg-gray-200 animate-pulse">
+      <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-skeleton"></div>
+    </div>
+  );
+};
+
 function Trending() {
   const postState = useSelector((state: any) => state.post) || [];
   const [postID, setPostID] = useState("");
@@ -63,6 +106,19 @@ function Trending() {
   const sectionStyle = {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
   };
+  const removeGame = (gameNameToRemove: any) => {
+    // Filter out the game named "Just Chatting"
+    const filteredGames = filteredOptions.filter(
+      (item: any) => item.name !== gameNameToRemove
+    );
+    return filteredGames;
+  };
+
+  // Assuming you have the name of the game as "Just Chatting"
+  const gameToRemove = "Just Chatting";
+
+  // Call removeGame function to filter out the game
+  const filteredGames = removeGame(gameToRemove);
 
   const handleModalToggle = (
     modalName: keyof typeof modalState,
@@ -169,43 +225,61 @@ function Trending() {
               </div>
             </div>
 
-            <div className="flex relative gap-4 h-80 w-full">
-              <Swiper
-                effect={"fade"}
-                navigation={true}
-                pagination={{ clickable: true }}
-                modules={[EffectFade, Navigation, Pagination]}
-                className="mySwiper h-80 w-full rounded-lg relative"
-              >
-                <SwiperSlide>
-                  <img src={IMAGES.TrendingPubg} style={styles.swiperImage} />
-                  <div style={styles.overlay}></div>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <img
-                    src="https://swiperjs.com/demos/images/nature-3.jpg"
-                    style={styles.swiperImage}
-                  />
-                  <div style={styles.overlay}></div>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <img
-                    src="https://swiperjs.com/demos/images/nature-4.jpg"
-                    style={styles.swiperImage}
-                  />
-                </SwiperSlide>
-              </Swiper>
+            <div className="flex gap-4 h-80 w-full relative">
+              <div className="relative w-[800px]">
+                <Swiper
+                  effect={"fade"}
+                  navigation={true}
+                  pagination={{ clickable: true }}
+                  modules={[EffectFade, Navigation, Pagination]}
+                  className="mySwiper h-80 w-full rounded-lg"
+                >
+                  {/* {filteredOptions.length === 0 ? (
+                    <>
+                      {[...Array(2)].map((_, index) => (
+                        <trendingLoader key={index} />
+                      ))}
+                    </>
+                  ) : ( */}
+                  {filteredGames.slice(0, 3).map((item: any) => (
+                    <SwiperSlide>
+                      <Image
+                        width={800}
+                        height={400}
+                        className="w-full h-full rounded-xl"
+                        src={item.box_art_url.replace(
+                          "{width}x{height}",
+                          "800x400"
+                        )}
+                        alt={item.name}
+                        style={styles.swiperImage}
+                        sizes="100vw"
+                      />
+                      <div style={styles.overlay}></div>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
 
-              <div className="absolute left-10 flex gap-4 mt-4">
-                <button className="rounded-2xl px-4 py-2 bg-[#292D32] text-white">
-                  Action
-                </button>
-                <button className="rounded-2xl px-4 py-2 bg-[#292D32] text-white">
-                  Fighting
-                </button>
-                <button className="rounded-2xl px-4 py-2 bg-[#292D32] text-white">
-                  Thrilling
-                </button>
+                <div className="absolute top-4 left-4 flex gap-4 z-10">
+                  <button
+                    className="rounded-2xl px-4 py-2 text-white cursor-pointer hover:opacity-80"
+                    style={{ backgroundColor: "rgba(41, 45, 50, 0.8)" }}
+                  >
+                    Action
+                  </button>
+                  <button
+                    className="rounded-2xl px-4 py-2 text-white cursor-pointer hover:opacity-80"
+                    style={{ backgroundColor: "rgba(41, 45, 50, 0.8)" }}
+                  >
+                    Fighting
+                  </button>
+                  <button
+                    className="rounded-2xl px-4 py-2 text-white cursor-pointer hover:opacity-80"
+                    style={{ backgroundColor: "rgba(41, 45, 50, 0.8)" }}
+                  >
+                    Thrilling
+                  </button>
+                </div>
               </div>
 
               <div
@@ -216,36 +290,44 @@ function Trending() {
                   <span className="font-bold">Upcoming Updates</span>
                 </div>
                 <div className="flex flex-col gap-4">
-                  {filteredOptions.slice(0, 20).map((item: any) => (
-                    <div
-                      key={item.id}
-                      className="flex justify-between items-center"
-                    >
-                      <div className="flex gap-2">
-                        <Image
-                          width={64}
-                          height={64}
-                          className="w-16 h-16 rounded-xl"
-                          src={item.box_art_url.replace(
-                            "{width}x{height}",
-                            "64x64"
-                          )}
-                          alt={item.name}
-                        />
-                        <div className="flex flex-col">
-                          <span className="text-sm font-bold text-[#43DD4E]">
-                            Trending Now
-                          </span>
-                          <span className="text-md font-semibold text-white">
-                            {item.name}
-                          </span>
-                          <span className="text-xs text-[#A1A1A1]">
-                            New addition Arrived
-                          </span>
+                  {filteredGames.length === 0 ? (
+                    <>
+                      {[...Array(10)].map((_, index) => (
+                        <SkeletonLoader key={index} />
+                      ))}
+                    </>
+                  ) : (
+                    filteredGames.slice(0, 20).map((item: any) => (
+                      <div
+                        key={item.id}
+                        className="flex justify-between items-center"
+                      >
+                        <div className="flex gap-2">
+                          <Image
+                            width={64}
+                            height={64}
+                            className="w-16 h-16 rounded-xl"
+                            src={item.box_art_url.replace(
+                              "{width}x{height}",
+                              "64x64"
+                            )}
+                            alt={item.name}
+                          />
+                          <div className="flex flex-col">
+                            <span className="text-sm font-bold text-[#43DD4E]">
+                              Trending Now
+                            </span>
+                            <span className="text-md font-semibold text-white">
+                              {item.name}
+                            </span>
+                            <span className="text-xs text-[#A1A1A1]">
+                              New addition Arrived
+                            </span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))
+                  )}
                 </div>
               </div>
             </div>
@@ -269,100 +351,110 @@ function Trending() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {postState?.trendingVideos?.map((item: any) => (
-                <div
-                  key={item?.userID}
-                  className="flex flex-col w-68 h-60 border-2 border-[#1C2C2E] rounded-xl my-2 cursor-pointer hover:opacity-80"
-                  onClick={() =>
-                    handleModalToggle("isVideoDetailOpen", item._id, item)
-                  }
-                >
-                  <div className="relative overflow-hidden rounded-t-xl aspect-w-16 aspect-h-9">
-                    <video
-                      src={item.video}
-                      className="object-cover w-full h-36"
-                      controls={false}
-                      autoPlay={false}
-                      width={50}
-                      height={50}
-                      onLoadedMetadata={(e) => handleVideoMetadata(e, item._id)}
-                    />
-
-                    <span className="absolute bottom-2 right-3 text-white">
-                      {formatTime(videoDurations[item._id])}
-                    </span>
-                  </div>
-
-                  <div className="p-2">
-                    <div className="flex items-center gap-2 mb-4">
-                      <Image
-                        className="rounded-full w-10 h-10 object-cover"
-                        src={item?.userID?.profilePicture}
-                        alt="Account Profile"
-                        height={40}
-                        width={40}
+              {postState?.trendingVideos?.length === 0 ? (
+                <>
+                  {[...Array(4)].map((_, index) => (
+                    <SkeletonLoaderVideo key={index} />
+                  ))}
+                </>
+              ) : (
+                postState?.trendingVideos?.map((item: any) => (
+                  <div
+                    key={item?.userID}
+                    className="flex flex-col w-68 h-60 border-2 border-[#1C2C2E] rounded-xl my-2 cursor-pointer hover:opacity-80"
+                    onClick={() =>
+                      handleModalToggle("isVideoDetailOpen", item._id, item)
+                    }
+                  >
+                    <div className="relative overflow-hidden rounded-t-xl aspect-w-16 aspect-h-9">
+                      <video
+                        src={item.video}
+                        className="object-cover w-full h-36"
+                        controls={false}
+                        autoPlay={false}
+                        width={50}
+                        height={50}
+                        onLoadedMetadata={(e) =>
+                          handleVideoMetadata(e, item._id)
+                        }
                       />
-                      <div>
-                        <p className="text-sm text-white">
-                          {item?.userID?.name}
-                        </p>
-                        <p className="text-xs text-gray-400">
-                          {formatTimeAgo(item.date)}
-                        </p>
-                      </div>
+
+                      <span className="absolute bottom-2 right-3 text-white">
+                        {formatTime(videoDurations[item._id])}
+                      </span>
                     </div>
 
-                    <div className="flex justify-between mx-1">
-                      <div className="flex items-center gap-2">
+                    <div className="p-2">
+                      <div className="flex items-center gap-2 mb-4">
                         <Image
-                          className="cursor-pointer hover:opacity-80"
-                          src={SVG.Like}
-                          alt="Like"
-                          width={20}
-                          height={20}
+                          className="rounded-full w-10 h-10 object-cover"
+                          src={item?.userID?.profilePicture}
+                          alt="Account Profile"
+                          height={40}
+                          width={40}
                         />
-                        <p className="text-white">
-                          {
-                            item.reactions.filter(
-                              (reaction: any) =>
-                                reaction.reactionType === "like"
-                            ).length
-                          }
-                        </p>
+                        <div>
+                          <p className="text-sm text-white">
+                            {item?.userID?.name}
+                          </p>
+                          <p className="text-xs text-gray-400">
+                            {formatTimeAgo(item.date)}
+                          </p>
+                        </div>
                       </div>
 
-                      <div className="flex items-center gap-2">
-                        <Image
-                          className="cursor-pointer hover:opacity-80"
-                          src={SVG.Love}
-                          alt="Love"
-                          width={20}
-                          height={20}
-                        />
-                        <p className="text-white">
-                          {
-                            item.reactions.filter(
-                              (reaction: any) =>
-                                reaction.reactionType === "love"
-                            ).length
-                          }
-                        </p>
-                      </div>
+                      <div className="flex justify-between mx-1">
+                        <div className="flex items-center gap-2">
+                          <Image
+                            className="cursor-pointer hover:opacity-80"
+                            src={SVG.Like}
+                            alt="Like"
+                            width={20}
+                            height={20}
+                          />
+                          <p className="text-white">
+                            {
+                              item.reactions.filter(
+                                (reaction: any) =>
+                                  reaction.reactionType === "like"
+                              ).length
+                            }
+                          </p>
+                        </div>
 
-                      <div className="flex items-center gap-2">
-                        <Image
-                          className="cursor-pointer hover:opacity-80"
-                          src={SVG.Comment}
-                          alt="Comment"
-                          width={25}
-                          height={25}
-                        />
-                        <p className="text-white">{item.comments.length}</p>
+                        <div className="flex items-center gap-2">
+                          <Image
+                            className="cursor-pointer hover:opacity-80"
+                            src={SVG.Love}
+                            alt="Love"
+                            width={20}
+                            height={20}
+                          />
+                          <p className="text-white">
+                            {
+                              item.reactions.filter(
+                                (reaction: any) =>
+                                  reaction.reactionType === "love"
+                              ).length
+                            }
+                          </p>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <Image
+                            className="cursor-pointer hover:opacity-80"
+                            src={SVG.Comment}
+                            alt="Comment"
+                            width={25}
+                            height={25}
+                          />
+                          <p className="text-white">{item.comments.length}</p>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
 
@@ -400,26 +492,22 @@ const styles = {
     justifyContent: "space-between",
   },
   swiperContainer: {
-    width: "80%",
-    height: "30%",
+    // width: "80%",
+    // height: "30%",
   },
   swiperImage: {
     width: "100%",
     height: "100%",
   },
   overlay: {
-    position: "absolute" as "absolute", // Explicitly specify position type
-    top: 0,
-    left: 0,
     width: "100%",
     height: "100%",
-    background:
-      "linear-gradient(to top, rgba(0, 0, 0, 0.4) 100%, rgba(0, 0, 0, 0) 100%)",
+    //   background:
+    //     "linear-gradient(to top, rgba(0, 0, 0, 0.4) 100%, rgba(0, 0, 0, 0) 100%)",
   },
   scroller: {
     scrollbarColor: "#43DD4E #FFFFFF",
   },
-  // Add more styles as needed
 };
 
 export default Trending;
