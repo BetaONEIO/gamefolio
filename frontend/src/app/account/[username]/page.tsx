@@ -14,7 +14,11 @@ import { dispatch, useSelector } from "@/store";
 import { refreshPage, userSession } from "@/store/slices/authSlice";
 import { initChat } from "@/store/slices/chatSlice";
 import { getAllClipVideos } from "@/store/slices/clipSlice";
-import { getAllPostVideos, getUserBookmark } from "@/store/slices/postSlice";
+import {
+  getAllPostVideos,
+  getUserBookmark,
+  updateDetailedPost,
+} from "@/store/slices/postSlice";
 import { getCurrentUserStories } from "@/store/slices/storySlice";
 import {
   followUser,
@@ -363,7 +367,7 @@ function Page({ params }: any) {
 
   const handleVideoDetailOpen = (postID: string, detailedPost: any) => {
     setPostID(postID);
-    setDetailedPost(detailedPost);
+    dispatch(updateDetailedPost(detailedPost));
     setModalState((prevState) => ({
       ...prevState,
       isVideoDetailOpen: true,

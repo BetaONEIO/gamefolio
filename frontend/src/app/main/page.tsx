@@ -169,7 +169,6 @@ function Main() {
   ) => {
     setPostID(postID);
     dispatch(updateDetailedPost(detailedPost));
-    // setDetailedPost(detailedPost);
     setModalState((prevState) => ({
       ...prevState,
       [modalName]: !prevState[modalName],

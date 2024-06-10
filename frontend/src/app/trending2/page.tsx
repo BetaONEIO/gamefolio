@@ -14,6 +14,7 @@ import {
   getAllPostVideos,
   getTrendingPosts,
   refreshPage,
+  updateDetailedPost,
 } from "@/store/slices/postSlice";
 import { getAllUsers } from "@/store/slices/userSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
@@ -85,7 +86,7 @@ function Page() {
     detailedPost?: any
   ) => {
     setPostID(postID);
-    setDetailedPost(detailedPost);
+    dispatch(updateDetailedPost(detailedPost));
     setModalState((prevState) => ({
       ...prevState,
       [modalName]: !prevState[modalName],

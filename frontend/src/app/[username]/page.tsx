@@ -14,7 +14,11 @@ import { leagueGothic } from "@/font/font";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import { getAllClipVideos } from "@/store/slices/clipSlice";
-import { getAllPostVideos, getUserBookmark } from "@/store/slices/postSlice";
+import {
+  getAllPostVideos,
+  getUserBookmark,
+  updateDetailedPost,
+} from "@/store/slices/postSlice";
 import { getCurrentUserStories } from "@/store/slices/storySlice";
 import { getAllUsers, getProfileInfo } from "@/store/slices/userSlice";
 import { copyToClipboard } from "@/utils/helpers";
@@ -204,7 +208,6 @@ function MyGamefolio({ params }: any) {
   const [selectedSection, setSelectedSection] = useState("videos");
   const [isPrivateAccount, setIsPrivateAccount] = useState(false);
   const [postID, setPostID] = useState("");
-  const [detailedPost, setDetailedPost] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
   const [modalState, setModalState] = useState({
@@ -258,7 +261,7 @@ function MyGamefolio({ params }: any) {
 
   const handleVideoDetailOpen = (postID: string, detailedPost: any) => {
     setPostID(postID);
-    setDetailedPost(detailedPost);
+    dispatch(updateDetailedPost(detailedPost));
     setModalState((prevState) => ({
       ...prevState,
       isVideoDetailOpen: true,

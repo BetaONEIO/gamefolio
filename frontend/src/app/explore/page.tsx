@@ -5,7 +5,11 @@ import VideoDetails from "@/components/Modals/VideoDetails";
 import { leagueGothic } from "@/font/font";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
-import { getAllPostVideos, refreshPage } from "@/store/slices/postSlice";
+import {
+  getAllPostVideos,
+  refreshPage,
+  updateDetailedPost,
+} from "@/store/slices/postSlice";
 import { getAllUsers } from "@/store/slices/userSlice";
 import { copyToClipboard } from "@/utils/helpers";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
@@ -114,7 +118,7 @@ function Explore() {
     detailedPost?: any
   ) => {
     setPostID(postID);
-    setDetailedPost(detailedPost);
+    dispatch(updateDetailedPost(detailedPost));
     setModalState((prevState) => ({
       ...prevState,
       [modalName]: !prevState[modalName],
