@@ -51,6 +51,14 @@ const MyVideosSection: React.FC<MyVideosSectionProps> = ({
       post?.userID?.username === profileInfoState.profileUserInfo.username
   );
 
+  if (userVideos.length === 0) {
+    return (
+      <div className="flex justify-center">
+        <p>No Videos to show</p>
+      </div>
+    );
+  }
+
   return (
     <Suspense fallback={<Loading />}>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
@@ -96,6 +104,14 @@ const ClipsSection: React.FC<ClipsProps> = ({
       post?.userID?.username === profileInfoState.profileUserInfo.username
   );
 
+  if (userVideos.length === 0) {
+    return (
+      <div className="flex justify-center">
+        <p>No Clips to show</p>
+      </div>
+    );
+  }
+
   return (
     <Suspense fallback={<Loading />}>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
@@ -132,7 +148,13 @@ interface StoryProps {
 
 const StorySection: React.FC<StoryProps> = ({ data }) => {
   const [isStoryModalOpen, setIsStoryModalOpen] = useState(false);
-
+  if (data.length === 0) {
+    return (
+      <div className="flex justify-center">
+        <p>No Stories to show</p>
+      </div>
+    );
+  }
   return (
     <Suspense fallback={<Loading />}>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
@@ -171,6 +193,13 @@ const MyBookmarkSection: React.FC<MyBookmarkSectionProps> = ({
   data,
   handleVideoDetailOpen,
 }) => {
+  if (data.length === 0) {
+    return (
+      <div className="flex justify-center">
+        <p>No Bookmarks to show</p>
+      </div>
+    );
+  }
   return (
     <Suspense fallback={<Loading />}>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
@@ -579,7 +608,7 @@ function Page({ params }: any) {
                   sizes="100vw"
                   alt="Account Profile"
                 />
-                <p className="font-normal">Conneted Succesfully</p>
+                <p className="font-normal">Connected Succesfully</p>
               </div>
 
               <div className="flex items-center gap-4 rounded-lg bg-[#162423] p-2 mt-2">
@@ -591,7 +620,7 @@ function Page({ params }: any) {
                   sizes="100vw"
                   alt="Account Profile"
                 />
-                <p className="font-normal">Conneted Succesfully</p>
+                <p className="font-normal">Connected Succesfully</p>
               </div>
             </div>
 

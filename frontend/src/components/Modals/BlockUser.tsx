@@ -84,7 +84,7 @@ function BlockUser({ handleCloseModal }: BlockUserProps) {
               {authState?.block?.length === 0 ? (
                 <div className="flex justify-center items-center sm:min-h-[350px] lg:min-h-[500px] max-h-[400px] sm:max-h-[350px] lg:max-h-[500px]">
                   <p className="text-slate-300 text-sm">
-                    Once you block people, you,ll see here
+                    Once you block people, you'll see here
                   </p>
                 </div>
               ) : (
