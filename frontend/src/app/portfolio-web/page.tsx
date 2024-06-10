@@ -30,7 +30,8 @@ function MyGamefolio() {
     isVideoDetailOpen: false,
     isStoryModalOpen: false,
   });
-  console.log("1234", profileInfoState);
+
+  console.log("jeje", profileInfoState.cover);
 
   const userVideos = postState.videos.filter(
     (post: any) => post?.userID?._id === authState._id
@@ -68,20 +69,19 @@ function MyGamefolio() {
   function handlePageRefresh(): void {
     throw new Error("Function not implemented.");
   }
-  console.log("hello124", profileInfoState.profileUserInfo.coverPicture);
 
-  const backgroundImage = `url(${profileInfoState.profileUserInfo.coverPicture})`;
+  const backgroundImage = `url(${authState.coverPicture})`;
 
   return (
     <Layout>
       <Suspense fallback={<Loading />}>
         <div
-          className="flex"
+          className="bg-no-repeat bg-cover bg-red-400"
           style={{
-            background: `linear-gradient(to bottom, transparent 25%, rgba(0, 0, 0, 0.9) 40%), ${backgroundImage}`,
+            background: `linear-gradient(to bottom, transparent 25%, rgba(0, 0, 0, 0.97) 35%), ${backgroundImage}`,
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
-            backgroundPosition: "center",
+            backgroundPosition: "center center",
           }}
         >
           {/* Top Bar */}

@@ -80,7 +80,7 @@ function CustomHeader({ children }: { children?: String }) {
 
           <div
             className="flex items-center p-1 mr-2 rounded-full bg-[#162423] cursor-pointer hover:opacity-60"
-            onClick={() => handleModalToggle("isBadgeOpen")}
+            // onClick={() => handleModalToggle("isBadgeOpen")}
           >
             <Image
               className="w-9 h-8"

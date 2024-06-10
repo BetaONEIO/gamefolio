@@ -269,7 +269,7 @@ function MyGamefolio({ params }: any) {
     throw new Error("Function not implemented.");
   }
 
-  const backgroundImage = `url(${IMAGES.Bgbackground})`;
+  const backgroundImage = `url(${profileInfoState?.profileUserInfo?.coverPicture})`;
 
   // Function to handle search and navigation to user profile
   // const handleSearch = (username: any) => {
@@ -352,7 +352,6 @@ function MyGamefolio({ params }: any) {
 
       <div className="flex justify-center w-full bg-[#091619]">
         <div>
-          {/* {filteredUsers.map((user: any) => ( */}
           <div
             className="flex flex-col items-center lg:flex-row lg:justify-center gap-4 h-60 pl-8 mx-4 my-2"
             style={{
@@ -441,7 +440,10 @@ function MyGamefolio({ params }: any) {
               </div>
 
               <div className="mx-10 mt-8">
-                <Link href={"/login"} key={authState._id}>
+                <Link
+                  href={`/account/${profileInfoState?.profileUserInfo?.username}`}
+                  key={authState._id}
+                >
                   <button className="font-bold w-64 h-10 bg-[#37C535] text-white text-center py-[10px] px-[20px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]">
                     Follow on gamefolio
                   </button>
@@ -587,7 +589,7 @@ function MyGamefolio({ params }: any) {
             </div>
           </div>
 
-          <hr className="border-t border-[#162423]" />
+          {/* <hr className="border-t border-[#162423]" />
 
           <div className="flex justify-center items-center gap-8 mt-4">
             <Image src={SVG.Facebook1} alt="Facebook" width={40} height={40} />
@@ -599,7 +601,7 @@ function MyGamefolio({ params }: any) {
               width={40}
               height={40}
             />
-          </div>
+          </div> */}
 
           <Modal
             isOpen={modalState.isShareModalOpen}

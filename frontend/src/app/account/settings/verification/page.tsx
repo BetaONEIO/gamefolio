@@ -34,6 +34,13 @@ const Verification = () => {
       icon: SVG.Steam,
       isVerified: false,
     },
+    {
+      id: 5,
+      name: "Kick",
+      status: "Connect your account with Gamefolio for verification",
+      icon: SVG.Steam,
+      isVerified: false,
+    },
   ];
   return (
     <Setting>

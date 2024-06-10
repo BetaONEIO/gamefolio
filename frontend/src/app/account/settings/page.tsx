@@ -146,7 +146,7 @@ function Setting({ children }: any) {
               </div>
             </Link>
             {/* Box 5 */}
-            <Link href="/account/settings/verification">
+            {/* <Link href="/account/settings/verification">
               <div className="hover:opacity-80 cursor-pointer bg-[#091619] h-fit p-4 rounded-xl">
                 <div className="flex flex-col md:flex-row gap-2 justify-start items-center h-full">
                   <Image
@@ -166,7 +166,7 @@ function Setting({ children }: any) {
                   </span>
                 </div>
               </div>
-            </Link>
+            </Link> */}
             {/* Box 6 */}
             <div
               className="hover:opacity-80 cursor-pointer bg-[#091619] h-fit p-4 rounded-xl"
