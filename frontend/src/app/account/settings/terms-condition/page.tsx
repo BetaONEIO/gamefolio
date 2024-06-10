@@ -17,10 +17,10 @@ const TermsCondition = () => {
           </span>
         </div>
         <div className="flex-1">
-          Welcome to Gamefolio! These terms and conditions <b>("Terms")</b>{" "}
-          outline the rules and regulations for the use of Gamefolio's website
-          <b>(gamefolio.com)</b>, Android app, and iOS app{" "}
-          <b>(collectively, the "Services")</b>. By accessing or using our
+          Welcome to Gamefolio! These terms and conditions <b>(Terms)</b>
+          outline the rules and regulations for the use of Gamefolios website
+          <b>(gamefolio.com)</b>, Android app, and iOS app
+          <b>(collectively, the Services)</b>. By accessing or using our
           Services, you agree to comply with and be bound by these Terms. If you
           disagree with any part of the Terms, you may not use our Services.
           <br />
@@ -30,12 +30,12 @@ const TermsCondition = () => {
               Definitions
             </span>
           </div>
-          - <b>**"We," "us," "our"**</b> refers to Beta ONE Innovations LTD, the
-          owner of Gamefolio.
-          <br />- <b>**"You," "user"**</b> refers to the individual accessing or
-          using our Services. <br />- <b></b>
-          <b>**"Services"**</b> refers to the website, Android app, and iOS app
-          owned and operated by Beta ONE Innovations LTD.
+          - <b>We, us, our</b> refers to Beta ONE Innovations LTD, the owner of
+          Gamefolio.
+          <br />- <b>You, user</b> refers to the individual accessing or using
+          our Services. <br />- <b></b>
+          <b>Services</b> refers to the website, Android app, and iOS app owned
+          and operated by Beta ONE Innovations LTD.
           <br />
           <br />
           <div className="flex justify-start items-center">
@@ -108,7 +108,7 @@ const TermsCondition = () => {
               Trademarks
             </span>
           </div>
-          <b>"Gamefolio"</b> and all related names, logos, product and service
+          <b>Gamefolio</b> and all related names, logos, product and service
           names, designs, and slogans are trademarks of Beta ONE Innovations
           LTD. You must not use such marks without the prior written permission
           of Beta ONE Innovations LTD.
@@ -164,7 +164,7 @@ const TermsCondition = () => {
           </div>
           We reserve the right, at our sole discretion, to modify or replace
           these Terms at any time. If a revision is material, we will try to
-          provide at least 30 days' notice prior to any new terms taking effect.
+          provide at least 30 days notice prior to any new terms taking effect.
           What constitutes a material change will be determined at our sole
           discretion.
           <br />
