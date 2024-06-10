@@ -20,6 +20,7 @@ import Loading from "./loading";
 function MyGamefolio() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const postState = useSelector((state: any) => state.post) || [];
+  const profileInfoState = useSelector((state: any) => state.user) || [];
   const [postID, setPostID] = useState("");
   const [detailedPost, setDetailedPost] = useState("");
   const [modalState, setModalState] = useState({
@@ -29,6 +30,7 @@ function MyGamefolio() {
     isVideoDetailOpen: false,
     isStoryModalOpen: false,
   });
+  console.log("1234", profileInfoState);
 
   const userVideos = postState.videos.filter(
     (post: any) => post?.userID?._id === authState._id
@@ -66,8 +68,9 @@ function MyGamefolio() {
   function handlePageRefresh(): void {
     throw new Error("Function not implemented.");
   }
+  console.log("hello124", profileInfoState.profileUserInfo.coverPicture);
 
-  const backgroundImage = `url(${IMAGES.bgImage})`;
+  const backgroundImage = `url(${profileInfoState.profileUserInfo.coverPicture})`;
 
   return (
     <Layout>

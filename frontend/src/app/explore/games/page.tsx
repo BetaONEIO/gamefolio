@@ -124,7 +124,7 @@ function Games() {
               </>
             ) : (
               filteredGames.slice(0, 3).map((item: any) => (
-                <SwiperSlide>
+                <SwiperSlide key={item.id}>
                   <Image
                     width={400}
                     height={400}

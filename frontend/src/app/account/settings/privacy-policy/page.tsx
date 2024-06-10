@@ -18,11 +18,11 @@ const PrivacyPolicy = () => {
         </div>
         <div className="flex-1">
           Welcome to Gamefolio! This Privacy Policy outlines how Beta ONE
-          Innovations LTD <b>("we," "us," or "our")</b> collects, uses,
-          discloses, and protects your information when you use our website
+          Innovations LTD <b>(we, us, or our)</b> collects, uses, discloses, and
+          protects your information when you use our website
           <b> (gamefolio.com)</b>, Android app, and iOS app{" "}
-          <b>(collectively, the "Services")</b>. By using our Services, you
-          agree to the collection and use of information in accordance with this
+          <b>(collectively, the Services)</b>. By using our Services, you agree
+          to the collection and use of information in accordance with this
           policy. <br />
           <br />
           <div className="flex justify-start items-center">
@@ -37,7 +37,7 @@ const PrivacyPolicy = () => {
           </div>
           When you use our Services, we may collect certain personally
           identifiable information that can be used to contact or identify you
-          <b> ("Personal Information")</b>. This may include, but is not limited
+          <b> (Personal Information)</b>. This may include, but is not limited
           to: <br />
           <br />
           - Email address <br />
@@ -57,11 +57,11 @@ const PrivacyPolicy = () => {
             </span>
           </div>
           We may also collect information on how the Services are accessed and
-          used <b>("Usage Data")</b>. This Usage Data may include information
-          such as your device's Internet Protocol <b>("IP")</b> address, browser
-          type, browser version, the pages of our Services that you visit, the
-          time and date of your visit, the time spent on those pages, unique
-          device identifiers, and other diagnostic data. <br />
+          used <b>(Usage Data)</b>. This Usage Data may include information such
+          as your device Internet Protocol <b>(IP)</b> address, browser type,
+          browser version, the pages of our Services that you visit, the time
+          and date of your visit, the time spent on those pages, unique device
+          identifiers, and other diagnostic data. <br />
           <br />
           <div className="flex justify-start items-center">
             <span className="block font-bold mb-2 text-base text-white">
@@ -158,17 +158,17 @@ const PrivacyPolicy = () => {
           <br />
           <div className="flex justify-start items-center">
             <span className="block font-bold mb-2 text-base text-white">
-              Children's Privacy
+              Childrens Privacy
             </span>
           </div>
           Our Services do not address anyone under the age of 13{" "}
-          <b>("Children")</b>. We do not knowingly collect personally
-          identifiable information from anyone under the age of 13. If you are a
-          parent or guardian and you are aware that your child has provided us
-          with Personal Information, please contact us. If we become aware that
-          we have collected Personal Information from children without
-          verification of parental consent, we take steps to remove that
-          information from our servers.
+          <b>(Children)</b>. We do not knowingly collect personally identifiable
+          information from anyone under the age of 13. If you are a parent or
+          guardian and you are aware that your child has provided us with
+          Personal Information, please contact us. If we become aware that we
+          have collected Personal Information from children without verification
+          of parental consent, we take steps to remove that information from our
+          servers.
           <br />
           <br />
           <div className="flex justify-start items-center">
