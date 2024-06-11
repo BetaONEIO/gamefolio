@@ -250,14 +250,12 @@ function Account() {
   };
 
   const handleUpdateCover = (data: any) => {
-    console.log("22: data: ", data);
     const payload = {
       userID: authState._id,
       ...data,
     };
 
     const successCallback = (response: any) => {
-      console.log("response: 22");
       toastSuccess(response);
       setUpdate(false);
     };
