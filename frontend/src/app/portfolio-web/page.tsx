@@ -10,7 +10,7 @@ import MoreOptions from "@/components/Modals/MoreOptions";
 import VideoDetails from "@/components/Modals/VideoDetails";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
-import { getAllPostVideos } from "@/store/slices/postSlice";
+import { getAllPostVideos, updateDetailedPost } from "@/store/slices/postSlice";
 import { getAllUsers, getProfileInfo } from "@/store/slices/userSlice";
 import { copyToClipboard } from "@/utils/helpers";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
@@ -22,7 +22,6 @@ function MyGamefolio() {
   const postState = useSelector((state: any) => state.post) || [];
   const profileInfoState = useSelector((state: any) => state.user) || [];
   const [postID, setPostID] = useState("");
-  const [detailedPost, setDetailedPost] = useState("");
   const [modalState, setModalState] = useState({
     isShareModalOpen: false,
     isFollowerModalOpen: false,
@@ -59,7 +58,7 @@ function MyGamefolio() {
 
   const handleVideoDetailOpen = (postID: string, detailedPost: any) => {
     setPostID(postID);
-    setDetailedPost(detailedPost);
+    dispatch(updateDetailedPost(detailedPost));
     setModalState((prevState) => ({
       ...prevState,
       isVideoDetailOpen: true,

@@ -4,7 +4,11 @@ import Modal from "@/components/Modals/Modal";
 import VideoDetails from "@/components/Modals/VideoDetails";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
-import { getAllPostVideos, refreshPage } from "@/store/slices/postSlice";
+import {
+  getAllPostVideos,
+  refreshPage,
+  updateDetailedPost,
+} from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -47,7 +51,7 @@ function Games() {
     detailedPost?: any
   ) => {
     setPostID(postID);
-    setDetailedPost(detailedPost);
+    dispatch(updateDetailedPost(detailedPost));
     setModalState((prevState) => ({
       ...prevState,
       [modalName]: !prevState[modalName],

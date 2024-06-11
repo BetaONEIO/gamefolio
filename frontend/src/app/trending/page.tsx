@@ -10,7 +10,11 @@ import Modal from "@/components/Modals/Modal";
 import VideoDetails from "@/components/Modals/VideoDetails";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
-import { getTrendingPosts, refreshPage } from "@/store/slices/postSlice";
+import {
+  getTrendingPosts,
+  refreshPage,
+  updateDetailedPost,
+} from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import { fetchGameList } from "@/services/api";
 import Loading from "./loading";
@@ -126,7 +130,7 @@ function Trending() {
     detailedPost?: any
   ) => {
     setPostID(postID);
-    setDetailedPost(detailedPost);
+    dispatch(updateDetailedPost(detailedPost));
     setModalState((prevState) => ({
       ...prevState,
       [modalName]: !prevState[modalName],

@@ -11,6 +11,7 @@ import {
   getTrendingPosts,
   getUserBookmark,
   removeUserBookmark,
+  updateDetailedPost,
 } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import { copyToClipboard } from "@/utils/helpers";
@@ -154,7 +155,6 @@ function Account() {
   const [image, setImage] = useState<File | null>(null);
   const [selectedSection, setSelectedSection] = useState("videos");
   const [postID, setPostID] = useState("");
-  const [detailedPost, setDetailedPost] = useState("");
   const [modalState, setModalState] = useState({
     isShareModalOpen: false,
     isFollowerModalOpen: false,
@@ -209,7 +209,7 @@ function Account() {
 
   const handleVideoDetailOpen = (postID: string, detailedPost: any) => {
     setPostID(postID);
-    setDetailedPost(detailedPost);
+    dispatch(updateDetailedPost(detailedPost));
     setModalState((prevState) => ({
       ...prevState,
       isVideoDetailOpen: true,
