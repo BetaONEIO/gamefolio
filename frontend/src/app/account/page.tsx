@@ -250,14 +250,12 @@ function Account() {
   };
 
   const handleUpdateCover = (data: any) => {
-    console.log("22: data: ", data);
     const payload = {
       userID: authState._id,
       ...data,
     };
 
     const successCallback = (response: any) => {
-      console.log("response: 22");
       toastSuccess(response);
       setUpdate(false);
     };
@@ -308,7 +306,7 @@ function Account() {
 
         <div style={sectionStyle} className="pt-4 z-50">
           <div
-            className="flex flex-col relative items-center lg:flex-row lg:justify-center gap-4 h-60 mx-4 my-4"
+            className="disable-blur flex flex-col relative items-center lg:flex-row lg:justify-center gap-4 h-60 mx-4 my-4"
             style={{
               background: `linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.9) 99%), ${backgroundImage} no-repeat center / cover`,
               backgroundSize: "cover",

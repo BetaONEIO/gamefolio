@@ -100,3 +100,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .swiper-pagination-bullet-active {
   background-color: #43dd4e !important;
 }
+
+/* high quality images */
+.disable-blur {
+  image-rendering: -webkit-optimize-contrast;
+}
