@@ -250,7 +250,7 @@ function Trending() {
                       <Image
                         width={800}
                         height={400}
-                        className="w-full h-full rounded-xl"
+                        className="w-full h-full rounded-xl bg-cover bg-no-repeat bg-center"
                         src={item.box_art_url.replace(
                           "{width}x{height}",
                           "800x400"

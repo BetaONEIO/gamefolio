@@ -35,6 +35,7 @@ router.post("/report/create", userController.report);
 
 //notification
 router.post("/notification/create", userController.createNotification);
+router.put("/notification/update", userController.updateNotification);
 
 // forget password otp
 router.post("/forgot-password/otp", userController.sendForgotPasswordOTP);

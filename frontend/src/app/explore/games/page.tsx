@@ -132,10 +132,10 @@ function Games() {
                   <Image
                     width={400}
                     height={400}
-                    className="w-full h-full rounded-xl"
+                    className="w-full h-full rounded-xl bg-cover bg-no-repeat bg-center"
                     src={item.box_art_url.replace(
                       "{width}x{height}",
-                      "400x600"
+                      "400x900"
                     )}
                     alt={item.name}
                     style={styles.swiperImage}

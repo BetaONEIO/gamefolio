@@ -903,10 +903,49 @@ const createNotification = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
     // Push the new notification to the user's notification array
-    user.notification.push({ notificationType, postID, oppositionID });
+    user.notification.push({
+      notificationType,
+      postID,
+      oppositionID,
+      isView: false,
+    });
     // Save the user with the updated notification
     await user.save();
     res.status(201).json({ message: "Notification created successfully" });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+// Controller to update an existing notification for a user
+const updateNotification = async (req, res) => {
+  const { userID, notificationID } = req.body;
+  console.log({ userID, notificationID });
+
+  try {
+    // Find the user by ID
+    const user = await User.findById(userID);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Find the notification by ID
+    const notification = user.notification.find((item) => {
+      return item._id.toString() === notificationID;
+    });
+
+    console.log({ notification });
+    if (!notification) {
+      return res.status(404).json({ message: "Notification not found" });
+    }
+
+    // Update the notification fields
+    notification.isView = true;
+
+    // Save the user with the updated notification
+    await user.save();
+
+    res.status(200).json({ message: "Notification updated successfully" });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -938,4 +977,5 @@ module.exports = {
   deactivateAccount,
   getAllNotifications,
   createNotification,
+  updateNotification,
 };

@@ -11,7 +11,11 @@ import Modal from "@/components/Modals/Modal";
 import Report from "@/components/Modals/Report";
 import SharePost from "@/components/Modals/SharePost";
 import VideoDetails from "@/components/Modals/VideoDetails";
-import handleCreateNotification from "@/components/Notification/Notification";
+import {
+  handleCreateNotification,
+  handleUpdateNotification,
+} from "@/components/Notification/Notification";
+
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import FollowingStories from "@/components/story/FollowingStories";
 import { fetchGameList } from "@/services/api";
@@ -100,7 +104,6 @@ function Main() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const postState = useSelector((state: any) => state.post) || [];
   const [postID, setPostID] = useState("");
-  // const [detailedPost, setDetailedPost] = useState("");
   const [optionsForGame, setOptionsForGame] = useState([]);
   const [filteredOptions, setFilteredOptions] = useState(optionsForGame);
   const [modalState, setModalState] = useState({
@@ -115,9 +118,6 @@ function Main() {
   const { loading } = postState;
   const [page, setPage] = useState(1);
 
-  console.log("postState.refresh: ", postState.refresh);
-  console.log("postState.refresh: ", postState.followingVideos);
-
   useEffect(() => {
     const payload = {
       userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
@@ -128,7 +128,6 @@ function Main() {
     const params = {
       payload,
     };
-    console.log("postState.refresh: useffect");
     dispatch(userSession(params));
     dispatch(getFollowingPostOnly(params));
     handleGameList();
@@ -144,7 +143,6 @@ function Main() {
   };
 
   const getNotificationMessage = (notificationType: any) => {
-    console.log("Notification Type:", notificationType);
     switch (notificationType) {
       case "like_post":
         return "Liked your post.";
@@ -216,7 +214,6 @@ function Main() {
 
     const successCallback = (response: any) => {
       handleCreateNotification(authState._id, postID, postUserID, "like_post");
-
       handlePageRefresh();
     };
 
@@ -691,7 +688,15 @@ function Main() {
                       sizes="100vw"
                     />
                     <div className="flex flex-col">
-                      <div className="flex items-center gap-2 mx-2">
+                      <div
+                        className="flex items-center gap-2 mx-2"
+                        onClick={() =>
+                          handleUpdateNotification(
+                            authState._id,
+                            notification._id
+                          )
+                        }
+                      >
                         <p className="w-28 text-xs text-white font-semibold">
                           {notification.oppositionID.name.length > 12
                             ? `${notification.oppositionID.name.substring(

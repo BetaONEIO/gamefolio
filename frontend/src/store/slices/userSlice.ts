@@ -246,6 +246,35 @@ export function createNotification(params: ActionParams) {
   };
 }
 
+export function updateNotification(params: ActionParams) {
+  return async () => {
+    const {
+      successCallback = () => {},
+      errorCallback = () => {},
+      payload,
+    } = params;
+
+    dispatch(slice.actions.startLoading());
+
+    const options: APIParams = {
+      method: "PUT",
+      endpoint: PATH.user.updateNotification,
+      isToken: false,
+      payload,
+    };
+
+    try {
+      const [ok, response] = await API(options);
+      if (!ok || !response) return errorCallback(response.message);
+      successCallback(response);
+    } catch (error) {
+      errorCallback(error);
+    } finally {
+      dispatch(slice.actions.stopLoading());
+    }
+  };
+}
+
 export function getNotification(params: ActionParams) {
   return async () => {
     const {

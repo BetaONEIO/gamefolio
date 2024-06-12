@@ -32,7 +32,7 @@ const SkeletonLoaderGames = () => (
 );
 
 const SkeletonLoaderUserProfile = () => (
-  <div className="flex flex-col h-36 border-2 border-gray-300 rounded-xl p-2 animate-pulse">
+  <div className="flex flex-col h-full border-2 border-gray-300 rounded-xl p-2 animate-pulse">
     <div className="flex items-center gap-4 mb-2">
       <div className="rounded-xl w-10 h-10 mt-2 ml-2 bg-gray-300"></div>
       <div className="flex flex-col gap-2">
@@ -373,7 +373,7 @@ function Explore() {
       <div className="flex items-center grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-2 overflow-x-auto no-scrollbar">
         {postState.videos.length === 0 ? (
           <>
-            {[...Array(6)].map((_, index) => (
+            {[...Array(4)].map((_, index) => (
               <SkeletonLoaderVideo key={index} />
             ))}
           </>
