@@ -15,8 +15,11 @@ interface SideBarProps {
 }
 function SideBar({ toggleSidebar, sidebarOpen }: SideBarProps) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
+  const messageState = useSelector((state: any) => state.chat) || [];
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  console.log("msgState: ", messageState);
 
   {
     /* Get the current route */
@@ -312,7 +315,9 @@ function SideBar({ toggleSidebar, sidebarOpen }: SideBarProps) {
                     <div>
                       <p className="mx-4">Messages</p>
                     </div>
-                    <p className="px-2 rounded-xl bg-[#586769]">2</p>
+                    <p className="px-2 rounded-xl bg-[#586769]">
+                      {messageState.messages.length}
+                    </p>
                   </div>
                 </button>
               </Link>
