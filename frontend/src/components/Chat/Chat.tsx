@@ -223,7 +223,9 @@ function Chat() {
                         <div className="bg-black border border-gray-900  p-2 rounded-full  px-4 py-2 text-white">
                           <span className="text-md">{element.content}</span>
                         </div>
-                        <SharePostMessage postData={element.postID} />
+                        {element.type === "sharepost" && (
+                          <SharePostMessage postData={element.postID} />
+                        )}
                         <span className="text-xs text-white">
                           {" "}
                           {formatTime(element?.timestamp)}
@@ -238,8 +240,7 @@ function Chat() {
         </div>
 
         {/* Bottom Input container */}
-
-        <div className="flex w-3/5 items-center  fixed  bottom-0 justify-around   bg-[#162423] px-4 ">
+        <div className="sticky bottom-0 z-40  flex justify-between items-center  gap-2 border-b border-gray-800 bg-[#162423] px-4 ">
           {/* Modals */}
           <Modal
             isOpen={modalState.isAttachmentViewOpen}
@@ -262,7 +263,7 @@ function Chat() {
               src={SVG.ChatFile}
             />
           </div>
-          <div className="flex-grow mx-3 my-2 relative flex items-center rounded-lg bg-[#162423] p-2 px-6">
+          <div className="flex-grow  mx-3 my-2 relative flex items-center rounded-lg bg-[#162423] p-2 px-6 ">
             <input
               type="text"
               className="flex-grow px-1 py-1 bg-[#162423] focus:outline-none"
