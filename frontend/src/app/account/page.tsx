@@ -308,7 +308,7 @@ function Account() {
           <div
             className="disable-blur flex flex-col relative items-center lg:flex-row lg:justify-center gap-4 h-60 mx-4 my-4"
             style={{
-              background: `linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.9) 99%), ${backgroundImage} no-repeat center / cover`,
+              background: `linear-gradient(to bottom, transparent 40%, rgba(9, 22, 25, 1) 99%), ${backgroundImage} no-repeat center / cover`,
               backgroundSize: "cover",
               backfaceVisibility: "visible",
             }}

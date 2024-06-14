@@ -1,6 +1,9 @@
 import { dispatch } from "@/store";
 import { toastError } from "../Toast/Toast";
-import { createNotification } from "@/store/slices/userSlice";
+import {
+  createNotification,
+  updateNotification,
+} from "@/store/slices/userSlice";
 
 const handleCreateNotification = async (
   authStateID: any,
@@ -34,4 +37,32 @@ const handleCreateNotification = async (
   dispatch(createNotification(params));
 };
 
-export default handleCreateNotification;
+const handleUpdateNotification = async (
+  authStateID: any,
+  notificationID: any
+) => {
+  const payload = {
+    userID: authStateID,
+    notificationID: notificationID,
+  };
+
+  console.log("unotidication", payload);
+
+  const successCallback = (response: any) => {
+    // handlePageRefresh();
+  };
+
+  const errorCallback = (error: string) => {
+    toastError(error);
+  };
+
+  const params = {
+    payload,
+    successCallback,
+    errorCallback,
+  };
+
+  dispatch(updateNotification(params));
+};
+
+export { handleCreateNotification, handleUpdateNotification };

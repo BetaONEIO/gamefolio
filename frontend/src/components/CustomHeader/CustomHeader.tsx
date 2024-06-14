@@ -8,8 +8,10 @@ import Link from "next/link";
 import { IMAGES } from "@/assets/images";
 import Modal from "../Modals/Modal";
 import Badges from "../Modals/Badges";
+import { useSelector } from "@/store";
 
 function CustomHeader({ children }: { children?: String }) {
+  const authState = useSelector((state: any) => state.auth.userData) || [];
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [modalState, setModalState] = useState({
@@ -28,6 +30,12 @@ function CustomHeader({ children }: { children?: String }) {
       router.push(`/${searchQuery}`);
     }
   };
+
+  const notificationIndex =
+    authState?.notification?.filter((item: any) => item.isView === false)
+      ?.length ?? 0;
+  console.log("number", notificationIndex);
+
   return (
     <>
       <div className="z-40 flex justify-between items-center py-4 bg-[#091619] sticky top-0 w-full px-4 sm:px-2 lg:px-4">
@@ -53,18 +61,27 @@ function CustomHeader({ children }: { children?: String }) {
           </button>
         </div>
 
-        <div className="flex items-center my-3 mx-2 gap-2">
+        <div className="flex items-center my-3 mx-2 gap-1">
           <Link href="/main">
-            <Image
-              className="cursor-pointer hover:opacity-60"
-              src={SVG.Notification}
-              alt="Setting"
-              width={24}
-              height={24}
-            />
+            <div className="relative">
+              <div className="p-1 rounded-3xl p-1.5 border-2 border-[#162423]">
+                <Image
+                  className="cursor-pointer hover:opacity-60"
+                  src={SVG.Notification}
+                  alt="Notification"
+                  width={22}
+                  height={22}
+                />
+              </div>
+              {notificationIndex > 0 && ( // Display the count only if notificationIndex is greater than 0
+                <span className="absolute top-0.5 right-1 bg-red-800 text-white text-xs font-bold rounded-full px-1">
+                  {notificationIndex}
+                </span>
+              )}
+            </div>
           </Link>
           <Link href="/account/my-folio">
-            <div className="flex items-center p-1 mr-2 rounded-full bg-[#162423] cursor-pointer hover:opacity-60">
+            <div className="flex items-center p-0.5 mr-2 rounded-full border-2 border-[#162423] cursor-pointer hover:opacity-60">
               <Image
                 className="mr-2"
                 src={SVG.GGcoin}
@@ -79,27 +96,30 @@ function CustomHeader({ children }: { children?: String }) {
           </Link>
 
           <div
-            className="flex items-center p-1 mr-2 rounded-full bg-[#162423] cursor-pointer hover:opacity-60"
+            className="flex items-center p-0.5 mr-2 rounded-full border-2 border-[#162423] cursor-pointer hover:opacity-60"
             // onClick={() => handleModalToggle("isBadgeOpen")}
           >
             <Image
               className="w-9 h-8"
               src={IMAGES.Badges}
               alt="GGcoin"
-              width={30}
-              height={30}
+              width={10}
+              height={10}
+              sizes="100vw"
             />
             <p className="font-semibold pr-2 text-white">Badges</p>
           </div>
 
           <Link href="/account/settings/edit-profile">
-            <Image
-              className="cursor-pointer hover:opacity-60"
-              src={SVG.Setting}
-              alt="Setting"
-              width={24}
-              height={24}
-            />
+            <div className="rounded-3xl p-1.5 border-2 border-[#162423]">
+              <Image
+                className="cursor-pointer hover:opacity-60"
+                src={SVG.Setting}
+                alt="Setting"
+                width={22}
+                height={22}
+              />
+            </div>
           </Link>
         </div>
       </div>

@@ -11,7 +11,11 @@ import Modal from "@/components/Modals/Modal";
 import Report from "@/components/Modals/Report";
 import SharePost from "@/components/Modals/SharePost";
 import VideoDetails from "@/components/Modals/VideoDetails";
-import handleCreateNotification from "@/components/Notification/Notification";
+import {
+  handleCreateNotification,
+  handleUpdateNotification,
+} from "@/components/Notification/Notification";
+
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import FollowingStories from "@/components/story/FollowingStories";
 import { fetchGameList } from "@/services/api";
@@ -26,8 +30,10 @@ import {
   updateDetailedPost,
 } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
+import { Truculenta } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
+import { AnyNode } from "postcss";
 import { Suspense, useEffect, useState } from "react";
 
 const SkeletonLoader = () => (
@@ -100,7 +106,6 @@ function Main() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const postState = useSelector((state: any) => state.post) || [];
   const [postID, setPostID] = useState("");
-  // const [detailedPost, setDetailedPost] = useState("");
   const [optionsForGame, setOptionsForGame] = useState([]);
   const [filteredOptions, setFilteredOptions] = useState(optionsForGame);
   const [modalState, setModalState] = useState({
@@ -115,9 +120,6 @@ function Main() {
   const { loading } = postState;
   const [page, setPage] = useState(1);
 
-  console.log("postState.refresh: ", postState.refresh);
-  console.log("postState.refresh: ", postState.followingVideos);
-
   useEffect(() => {
     const payload = {
       userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
@@ -128,7 +130,6 @@ function Main() {
     const params = {
       payload,
     };
-    console.log("postState.refresh: useffect");
     dispatch(userSession(params));
     dispatch(getFollowingPostOnly(params));
     handleGameList();
@@ -143,8 +144,9 @@ function Main() {
     setOptionsForGame(gettingGameList);
   };
 
+  const isView = authState?.notification?.every((item: any) => item.isView);
+
   const getNotificationMessage = (notificationType: any) => {
-    console.log("Notification Type:", notificationType);
     switch (notificationType) {
       case "like_post":
         return "Liked your post.";
@@ -178,6 +180,8 @@ function Main() {
   const sectionStyle = {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
   };
+
+  console.log("helll", authState.notification);
 
   const handleCreateBookmark = async (postID: any) => {
     const payload = {
@@ -216,7 +220,6 @@ function Main() {
 
     const successCallback = (response: any) => {
       handleCreateNotification(authState._id, postID, postUserID, "like_post");
-
       handlePageRefresh();
     };
 
@@ -662,10 +665,18 @@ function Main() {
               <div className="flex justify-between items-center">
                 <span className="font-bold">Notification</span>
                 <div className="flex gap-2">
-                  <span className="text-xs text-gray-500 cursor-pointer">
+                  <span
+                    className={`text-xs cursor-pointer ${
+                      isView ? "text-gray-500" : "text-[#43DD4E]"
+                    }`}
+                  >
                     Unread
                   </span>
-                  <span className="text-xs text-[#43DD4E] cursor-pointer">
+                  <span
+                    className={`text-xs cursor-pointer ${
+                      isView ? "text-[#43DD4E]" : "text-gray-500"
+                    }`}
+                  >
                     Read
                   </span>
                 </div>
@@ -680,7 +691,10 @@ function Main() {
                 authState?.notification?.map((notification: any) => (
                   <div
                     key={notification._id}
-                    className="flex items-center gap-1"
+                    className="flex items-center gap-1 cursor-pointer hover:opacity-80"
+                    onClick={() =>
+                      handleUpdateNotification(authState._id, notification._id)
+                    }
                   >
                     <Image
                       className="w-10 h-10 rounded-lg"
@@ -692,7 +706,13 @@ function Main() {
                     />
                     <div className="flex flex-col">
                       <div className="flex items-center gap-2 mx-2">
-                        <p className="w-28 text-xs text-white font-semibold">
+                        <p
+                          className={`w-28 text-xs text-white ${
+                            notification.isView === false
+                              ? "font-bold"
+                              : "font-normal"
+                          }`}
+                        >
                           {notification.oppositionID.name.length > 12
                             ? `${notification.oppositionID.name.substring(
                                 0,
@@ -700,11 +720,23 @@ function Main() {
                               )}`
                             : notification.oppositionID.name}
                         </p>
-                        <p className="w-32 text-[0.60rem] text-gray-400">
+                        <p
+                          className={`w-32 text-[0.60rem] text-gray-400 ${
+                            notification.isView === false
+                              ? "font-bold"
+                              : "font-normal"
+                          }`}
+                        >
                           {convertDateFormat(notification.date)}
                         </p>
                       </div>
-                      <span className="text-xs text-white mx-2">
+                      <span
+                        className={`text-xs text-white mx-2 ${
+                          notification.isView === false
+                            ? "font-bold"
+                            : "font-normal"
+                        }`}
+                      >
                         {getNotificationMessage(notification.notificationType)}
                       </span>
                     </div>

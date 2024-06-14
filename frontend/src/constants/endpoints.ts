@@ -28,6 +28,7 @@ export const PATH = {
     deactiveAccount: "user/deactivate",
     reportUser: "user/report/create",
     notification: "user/notification/create",
+    updateNotification: "user/notification/update",
     getNotification: "user/notification/get",
   },
 
