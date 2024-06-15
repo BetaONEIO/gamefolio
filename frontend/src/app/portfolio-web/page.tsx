@@ -124,17 +124,17 @@ function MyGamefolio() {
                   Message
                 </button>
               </div>
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between text-white">
                 <p>Posts</p>
                 <p>{userVideos.length || 0}</p>
               </div>
               <hr className="h-px border-0 bg-[#586769] my-2 " />
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between text-white">
                 <p>Followers</p>
                 <p>{authState?.follower?.length || 0}</p>
               </div>
               <hr className="h-px border-0 bg-[#586769] my-2 " />
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between text-white">
                 <p>Following</p>
                 <p>{authState?.following?.length || 0}</p>
               </div>
@@ -147,7 +147,9 @@ function MyGamefolio() {
                   sizes="100vw"
                   alt="Account Profile"
                 />
-                <p className="font-light text-xs ">Connect with Playstation</p>
+                <p className="text-white font-light text-xs ">
+                  Connect with Playstation
+                </p>
               </div>
 
               <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
@@ -159,7 +161,9 @@ function MyGamefolio() {
                   sizes="100vw"
                   alt="Account Profile"
                 />
-                <p className="font-normal text-xs ">Connect with Twitch</p>
+                <p className="text-white font-normal text-xs ">
+                  Connect with Twitch
+                </p>
               </div>
 
               <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
@@ -171,7 +175,9 @@ function MyGamefolio() {
                   sizes="100vw"
                   alt="Account Profile"
                 />
-                <p className="font-normal text-xs ">Connect with Xbox</p>
+                <p className="text-white font-normal text-xs ">
+                  Connect with Xbox
+                </p>
               </div>
 
               <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
@@ -183,10 +189,12 @@ function MyGamefolio() {
                   sizes="100vw"
                   alt="Account Profile"
                 />
-                <p className="font-normal text-xs ">Connect with Steam</p>
+                <p className="text-white font-normal text-xs ">
+                  Connect with Steam
+                </p>
               </div>
 
-              <h1 className="font-bold my-2">About Me:</h1>
+              <h1 className="text-white font-bold my-2">About Me:</h1>
               <p className="font-light text-xs text-[#7C7F80]">
                 {authState.bio}
               </p>

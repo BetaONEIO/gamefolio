@@ -15,7 +15,6 @@ import {
   handleCreateNotification,
   handleUpdateNotification,
 } from "@/components/Notification/Notification";
-
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import FollowingStories from "@/components/story/FollowingStories";
 import { fetchGameList } from "@/services/api";
@@ -30,10 +29,8 @@ import {
   updateDetailedPost,
 } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
-import { Truculenta } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import { AnyNode } from "postcss";
 import { Suspense, useEffect, useState } from "react";
 
 const SkeletonLoader = () => (
@@ -317,7 +314,7 @@ function Main() {
               style={styles.scroller}
             >
               <div className="flex justify-between items-center">
-                <span className="font-bold">Trendings</span>
+                <span className="text-white font-bold">Trendings</span>
                 <Link href={"/trending"}>
                   <span className="text-xs text-[#43DD4E] cursor-pointer">
                     See More
@@ -380,7 +377,9 @@ function Main() {
                 <FollowingStories />
               </div>
               <div className="bg-[#091619] border border-dashed border-green-800 rounded-lg flex flex-col px-4 py-6 justify-center items-start gap-4">
-                <span className="font-bold text-sm md:text-lg">Add New</span>
+                <span className="text-white font-bold text-sm md:text-lg">
+                  Add New
+                </span>
                 <div className="flex justify-between gap-2 w-full ">
                   <div
                     className="bg-[#162423] rounded-lg flex justify-center items-center w-6/12 h-24 gap-4 cursor-pointer hover:opacity-80"
@@ -395,7 +394,7 @@ function Main() {
                         height={24}
                       />
                     </div>
-                    <p className="font-bold">Post Clips</p>
+                    <p className="text-white font-bold">Post Clips</p>
                   </div>
 
                   <div
@@ -413,7 +412,7 @@ function Main() {
                         height={24}
                       />
                     </div>
-                    <p className="font-bold">Post Videos</p>
+                    <p className="text-white font-bold">Post Videos</p>
                   </div>
                 </div>
               </div>
@@ -663,7 +662,7 @@ function Main() {
               style={styles.scroller}
             >
               <div className="flex justify-between items-center">
-                <span className="font-bold">Notification</span>
+                <span className="text-white font-bold">Notification</span>
                 <div className="flex gap-2">
                   <span
                     className={`text-xs cursor-pointer ${

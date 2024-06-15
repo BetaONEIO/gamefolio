@@ -5,8 +5,8 @@ const TermsCondition = () => {
   return (
     <Setting>
       {/* Header */}
-      <div className="flex flex-col justify-center px-6 py-8  lg:py-0">
-        <div className="flex justify-start items-center">
+      <div className="flex flex-col justify-center px-6 py-8 lg:py-0 text-white ">
+        <div className="flex justify-start items-center text-white">
           <span className="block font-bold mb-2 text-lg text-white">
             Terms & Conditions
           </span>
@@ -16,8 +16,9 @@ const TermsCondition = () => {
             Introduction
           </span>
         </div>
-        <div className="flex-1">
-          Welcome to Gamefolio! These terms and conditions <b>(Terms)</b>
+        <div className="flex-1 text-white">
+          Welcome to Gamefolio! These terms and conditions <b>Terms</b>
+          {""}
           outline the rules and regulations for the use of Gamefolios website
           <b>(gamefolio.com)</b>, Android app, and iOS app
           <b>(collectively, the Services)</b>. By accessing or using our

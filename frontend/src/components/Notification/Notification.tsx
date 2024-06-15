@@ -2,8 +2,13 @@ import { dispatch } from "@/store";
 import { toastError } from "../Toast/Toast";
 import {
   createNotification,
+  refreshPage,
   updateNotification,
 } from "@/store/slices/userSlice";
+
+const handlePageRefresh = () => {
+  dispatch(refreshPage());
+};
 
 const handleCreateNotification = async (
   authStateID: any,
@@ -18,10 +23,8 @@ const handleCreateNotification = async (
     notificationType: notificationType,
   };
 
-  console.log(payload);
-
   const successCallback = (response: any) => {
-    // handlePageRefresh();
+    handlePageRefresh();
   };
 
   const errorCallback = (error: string) => {
@@ -46,10 +49,8 @@ const handleUpdateNotification = async (
     notificationID: notificationID,
   };
 
-  console.log("unotidication", payload);
-
   const successCallback = (response: any) => {
-    // handlePageRefresh();
+    handlePageRefresh();
   };
 
   const errorCallback = (error: string) => {
