@@ -5,7 +5,6 @@ import Image from "next/image";
 import { SVG } from "@/assets/SVG";
 import { leagueGothic } from "@/font/font";
 import Link from "next/link";
-import { IMAGES } from "@/assets/images";
 import Modal from "../Modals/Modal";
 import Badges from "../Modals/Badges";
 import { useSelector } from "@/store";
@@ -37,7 +36,7 @@ function CustomHeader({ children }: { children?: String }) {
 
   return (
     <>
-      <div className="z-40 flex justify-between items-center py-4 sticky top-0 w-full px-4 sm:px-2 lg:px-4">
+      <div className="z-40 flex justify-between items-center py-4 sticky top-0 w-full px-4 sm:px-2 lg:px-4 bg-[#091619]">
         <div
           className={`${leagueGothic.className} text-2xl sm:text-4xl lg:text-4xl text-white`}
         >
@@ -95,13 +94,13 @@ function CustomHeader({ children }: { children?: String }) {
           </Link>
 
           <div
-            className="flex items-center p-0.5 mr-2 rounded-full border-2 border-[#162423] cursor-pointer hover:opacity-60"
-            // onClick={() => handleModalToggle("isBadgeOpen")}
+            className="flex items-center gap-2 p-0.5 mr-2 rounded-full border-2 border-[#162423] cursor-pointer hover:opacity-60"
+            onClick={() => handleModalToggle("isBadgeOpen")}
           >
             <Image
-              className="w-9 h-8"
-              src={IMAGES.Badges}
-              alt="GGcoin"
+              className="w-7 h-8"
+              src={SVG.Badge1}
+              alt="Badges"
               width={10}
               height={10}
               sizes="100vw"

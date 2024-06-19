@@ -177,6 +177,81 @@ function Account() {
     },
   });
 
+  const totalCoinAmount = authState?.coins?.reduce(
+    (total: any, user: any) => total + user.coinAmount,
+    0
+  );
+
+  const badges = [
+    {
+      id: 1,
+      Image: SVG.Badge1,
+      userName: "Quick Starter",
+      Name: "Milestone 1000 coins",
+      coins: 10,
+    },
+    {
+      id: 2,
+      Image: SVG.Badge2,
+      userName: "Rapid Riser",
+      Name: "Milestone 1000 coins",
+      coins: 1000,
+    },
+    {
+      id: 3,
+      Image: SVG.Badge3,
+      userName: "Swift Performer",
+      Name: "Milestone 3000 coins",
+      coins: 3000,
+    },
+    {
+      id: 4,
+      Image: SVG.Badge4,
+      userName: "Speedy Striver",
+      Name: "Milestone 5000 coins",
+      coins: 5000,
+    },
+    {
+      id: 5,
+      Image: SVG.Badge5,
+      userName: "Fast Tracker",
+      Name: "Milestone 8000 coins",
+      coins: 8000,
+    },
+    {
+      id: 6,
+      Image: SVG.Badge6,
+      userName: "Blazing Achiever",
+      Name: "Milestone 10000 coins",
+      coins: 10000,
+    },
+    {
+      id: 7,
+      Image: SVG.Badge7,
+      userName: "Hyper Performer",
+      Name: "Milestone 15000 coins",
+      coins: 15000,
+    },
+    {
+      id: 8,
+      Image: SVG.Badge8,
+      userName: "Lightning Leader",
+      Name: "Milestone 20000 coins",
+      coins: 20000,
+    },
+    {
+      id: 9,
+      Image: SVG.Badge9,
+      userName: "Supersonic Champion",
+      Name: "Milestone 50000 coins",
+      coins: 50000,
+    },
+  ];
+
+  const achievedBadges = badges.filter(
+    (badge) => totalCoinAmount >= badge.coins
+  );
+
   const userVideos = postState.videos.filter(
     (post: any) => post?.userID?._id === authState._id
   );
@@ -605,48 +680,18 @@ function Account() {
 
             <div className="hidden w-2/5 h-fit md:flex flex-col  sm:w-72 md:w-72 lg:w-96 h-screen border-2 border-[#1C2C2E] rounded-lg p-1 overflow-hidden overflow-y-auto">
               <h1 className="text-white font-bold m-2">Current Badge</h1>
-              <div className="flex flex-row justify-between mt-2">
-                <div className="flex justify-center items-center gap-3">
-                  <Image
-                    src={IMAGES.AccountCurrentBadgeIcon}
-                    alt="Badge"
-                    width={35}
-                    height={35}
-                  />
-                  <Image
-                    src={IMAGES.Badges2}
-                    alt="Badge"
-                    width={30}
-                    height={30}
-                  />
-                  <Image
-                    src={IMAGES.Badges3}
-                    alt="Badge"
-                    width={30}
-                    height={30}
-                  />
-                  <Image
-                    src={IMAGES.Badges4}
-                    alt="Badge"
-                    width={30}
-                    height={30}
-                  />
-                  <Image
-                    src={IMAGES.Badges5}
-                    alt="Badge"
-                    width={30}
-                    height={30}
-                  />
-                </div>
-                <div className="flex item-center">
-                  <Image
-                    className="text-red-500"
-                    src={IMAGES.Frame}
-                    alt="Badge"
-                    width={35}
-                    height={35}
-                  />
-                </div>
+              <div className="flex flex-row mt-2 overflow-x-scroll no-scrollbar mx-2">
+                {achievedBadges.map((badge, index) => (
+                  <div key={index}>
+                    <Image
+                      src={badge.Image}
+                      alt="Badges"
+                      width="30"
+                      height="30"
+                      sizes="100vw"
+                    />
+                  </div>
+                ))}
               </div>
 
               <div className="rounded-lg p-2 gap-3 mt-2">
