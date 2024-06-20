@@ -5,8 +5,8 @@ const PrivacyPolicy = () => {
   return (
     <Setting>
       {/* Header */}
-      <div className="flex flex-col justify-center px-6 py-8  lg:py-0">
-        <div className="flex justify-start items-center">
+      <div className="flex flex-col justify-center px-6 py-8 lg:py-0 text-white">
+        <div className="flex justify-start items-center text-white">
           <span className="block font-bold mb-2 text-lg text-white">
             Privacy Policy
           </span>
@@ -16,7 +16,7 @@ const PrivacyPolicy = () => {
             Introduction
           </span>
         </div>
-        <div className="flex-1">
+        <div className="flex-1 text-white">
           Welcome to Gamefolio! This Privacy Policy outlines how Beta ONE
           Innovations LTD <b>(we, us, or our)</b> collects, uses, discloses, and
           protects your information when you use our website

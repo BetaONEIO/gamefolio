@@ -4,7 +4,7 @@ import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import { dispatch, useSelector } from "@/store";
 import { getUserMessages, setSelectedChat } from "@/store/slices/chatSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface MessageCardProps {
   currentUser: any; // Use 'any' type for messags
@@ -63,7 +63,13 @@ const MessageCard: React.FC<MessageCardProps> = ({ currentUser, message }) => {
 function Messages() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const messageState = useSelector((state: any) => state.chat) || [];
-  console.log("messageState: messages.tsx ", messageState.messages);
+  const [searchText, setSearchText] = useState("");
+  const [filteredChat, setFilteredChat] = useState(messageState?.messages);
+  console.log(
+    "messageState: messages.tsx ",
+    messageState.messages,
+    filteredChat
+  );
 
   const payload = {
     userID: authState._id,
@@ -76,6 +82,49 @@ function Messages() {
   }, [authState._id, messageState.chat]);
 
   console.log("length: ", messageState?.messages);
+
+  if (messageState.messages.length > 0 && filteredChat.length === 0) {
+    console.log("msgChaat");
+    setFilteredChat(messageState?.messages);
+  }
+
+  // Debounce function for delaying search
+  const debounce = (func: any, delay: any) => {
+    let timeoutId: any;
+    return function (...args: any) {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        func(...args);
+      }, delay);
+    };
+  };
+
+  console.log("filteredChat: ", filteredChat);
+
+  const delayedSearch = debounce((inputValue: any) => {
+    const filtered = messageState?.messages.filter((message: any) => {
+      const isCurrentUser = message?.participants[0]?._id === authState._id;
+      console.log(
+        "Xx: ",
+        message?.messages[message?.messages.length - 1]?.content
+          .toLowerCase()
+          .includes(inputValue)
+      );
+      if (isCurrentUser) {
+        return message?.messages[message?.messages.length - 1]?.content
+          .toLowerCase()
+          .includes(inputValue);
+      }
+    });
+    setFilteredChat(filtered);
+  }, 1000);
+
+  const handleSearch = (e: any) => {
+    const inputValue = e.target.value.toLowerCase();
+    setSearchText(inputValue);
+    delayedSearch(inputValue);
+  };
+
   if (messageState?.loading)
     return (
       <div className=" flex w-full flex-col gap-4 bg-[#091619] border-r border-gray-800  md:w-4/5 lg:w-2/5">
@@ -84,6 +133,7 @@ function Messages() {
         </div>
       </div>
     );
+
   return (
     <div className=" flex w-full flex-col gap-4 bg-[#091619] border-r border-gray-800  md:w-4/5 lg:w-2/5">
       <div className="hideScrollBar flex flex-col    overflow-y-auto">
@@ -106,6 +156,8 @@ function Messages() {
               <input
                 className="bg-transparent sm:text-sm outline-none rounded-lg block w-full p-2.5 text-[#586769]"
                 placeholder=" Search chat here..."
+                value={searchText}
+                onChange={handleSearch}
               />
             </div>
           </div>
@@ -113,8 +165,10 @@ function Messages() {
             <span className="text-xs font-semibold text-gray-500"></span>
           </div>
         </div>
-        {messageState?.messages.length > 0 ? (
-          messageState?.messages?.map((message: any) => (
+        {/* {messageState?.messages.length > 0 ? (
+          messageState?.messages?.map((message: any) => ( */}
+        {filteredChat.length > 0 ? (
+          filteredChat.map((message: any) => (
             <MessageCard
               currentUser={authState}
               key={message._id}

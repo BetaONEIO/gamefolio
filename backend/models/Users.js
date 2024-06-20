@@ -139,6 +139,10 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Posts",
       },
+      isView: {
+        type: Boolean,
+        enum: [true, false],
+      },
       date: {
         type: Date,
         default: Date.now,

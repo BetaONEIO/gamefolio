@@ -250,7 +250,7 @@ function Trending() {
                       <Image
                         width={800}
                         height={400}
-                        className="w-full h-full rounded-xl"
+                        className="w-full h-full rounded-xl bg-cover bg-no-repeat bg-center"
                         src={item.box_art_url.replace(
                           "{width}x{height}",
                           "800x400"
@@ -291,7 +291,7 @@ function Trending() {
                 style={styles.scroller}
               >
                 <div className="flex justify-start items-center">
-                  <span className="font-bold">Upcoming Updates</span>
+                  <span className="text-white font-bold">Upcoming Updates</span>
                 </div>
                 <div className="flex flex-col gap-4">
                   {filteredGames.length === 0 ? (

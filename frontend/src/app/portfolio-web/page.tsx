@@ -1,8 +1,6 @@
 "use client";
-import { Suspense, useEffect, useState } from "react";
-import Image from "next/image";
 import { SVG } from "@/assets/SVG";
-import { IMAGES } from "@/assets/images";
+import Layout from "@/components/CustomLayout/layout";
 import Followers from "@/components/Modals/Followers";
 import Following from "@/components/Modals/Following";
 import Modal from "@/components/Modals/Modal";
@@ -14,13 +12,13 @@ import { getAllPostVideos, updateDetailedPost } from "@/store/slices/postSlice";
 import { getAllUsers, getProfileInfo } from "@/store/slices/userSlice";
 import { copyToClipboard } from "@/utils/helpers";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
-import Layout from "@/components/CustomLayout/layout";
+import Image from "next/image";
+import { Suspense, useEffect, useState } from "react";
 import Loading from "./loading";
 
 function MyGamefolio() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const postState = useSelector((state: any) => state.post) || [];
-  const profileInfoState = useSelector((state: any) => state.user) || [];
   const [postID, setPostID] = useState("");
   const [modalState, setModalState] = useState({
     isShareModalOpen: false,
@@ -29,8 +27,6 @@ function MyGamefolio() {
     isVideoDetailOpen: false,
     isStoryModalOpen: false,
   });
-
-  console.log("jeje", profileInfoState.cover);
 
   const userVideos = postState.videos.filter(
     (post: any) => post?.userID?._id === authState._id
@@ -69,23 +65,26 @@ function MyGamefolio() {
     throw new Error("Function not implemented.");
   }
 
-  const backgroundImage = `url(${authState.coverPicture})`;
-
   return (
     <Layout>
       <Suspense fallback={<Loading />}>
-        <div
-          className="bg-no-repeat bg-cover bg-red-400"
-          style={{
-            background: `linear-gradient(to bottom, transparent 25%, rgba(0, 0, 0, 0.97) 35%), ${backgroundImage}`,
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
-            backgroundPosition: "center center",
-          }}
-        >
+        <div>
+          <div className="relative w-full h-80">
+            <Image
+              className="w-full h-80 object-cover"
+              src={authState.coverPicture}
+              layout="fill"
+              alt="cover photo"
+            />
+            <div
+              className="absolute inset-0 bg-gradient-to-t from-[#091619] via-transparent to-transparent"
+              style={{ opacity: 1 }}
+            ></div>
+          </div>
+
           {/* Top Bar */}
-          <div className="flex justify-end mx-3 w-full">
-            <div className="w-72 h-11/12 border-2 border-[#1C2C2E] rounded-lg p-2 pt-6 bg-[#091619] mt-24">
+          <div className="relative flex justify-end mx-3 w-full">
+            <div className="w-72 h-11/12 border-2 border-[#1C2C2E] rounded-lg p-2 pt-6 bg-[#091619]">
               <div className="flex justify-center">
                 <Image
                   className="rounded-xl w-32 h-32 object-cover border-2 border-[#43DD4E]"
@@ -125,17 +124,17 @@ function MyGamefolio() {
                   Message
                 </button>
               </div>
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between text-white">
                 <p>Posts</p>
                 <p>{userVideos.length || 0}</p>
               </div>
               <hr className="h-px border-0 bg-[#586769] my-2 " />
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between text-white">
                 <p>Followers</p>
                 <p>{authState?.follower?.length || 0}</p>
               </div>
               <hr className="h-px border-0 bg-[#586769] my-2 " />
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between text-white">
                 <p>Following</p>
                 <p>{authState?.following?.length || 0}</p>
               </div>
@@ -148,7 +147,9 @@ function MyGamefolio() {
                   sizes="100vw"
                   alt="Account Profile"
                 />
-                <p className="font-light text-xs ">Connect with Playstation</p>
+                <p className="text-white font-light text-xs ">
+                  Connect with Playstation
+                </p>
               </div>
 
               <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
@@ -160,7 +161,9 @@ function MyGamefolio() {
                   sizes="100vw"
                   alt="Account Profile"
                 />
-                <p className="font-normal text-xs ">Connect with Twitch</p>
+                <p className="text-white font-normal text-xs ">
+                  Connect with Twitch
+                </p>
               </div>
 
               <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
@@ -172,7 +175,9 @@ function MyGamefolio() {
                   sizes="100vw"
                   alt="Account Profile"
                 />
-                <p className="font-normal text-xs ">Connect with Xbox</p>
+                <p className="text-white font-normal text-xs ">
+                  Connect with Xbox
+                </p>
               </div>
 
               <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
@@ -184,16 +189,18 @@ function MyGamefolio() {
                   sizes="100vw"
                   alt="Account Profile"
                 />
-                <p className="font-normal text-xs ">Connect with Steam</p>
+                <p className="text-white font-normal text-xs ">
+                  Connect with Steam
+                </p>
               </div>
 
-              <h1 className="font-bold my-2">About Me:</h1>
+              <h1 className="text-white font-bold my-2">About Me:</h1>
               <p className="font-light text-xs text-[#7C7F80]">
                 {authState.bio}
               </p>
             </div>
 
-            <div className="w-8/12 justify-between items-center h-10  mt-56">
+            <div className="w-8/12 justify-between items-center h-10  mt-24">
               {/* header */}
               <div className="flex items-center">
                 <div className="flex justify-between items-center w-full sm:mx-2 lg:mx-4 relative">
@@ -255,7 +262,6 @@ function MyGamefolio() {
                   );
                 })}
               </div>
-              {/* </div> */}
             </div>
           </div>
         </div>

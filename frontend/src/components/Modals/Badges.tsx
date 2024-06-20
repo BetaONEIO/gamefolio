@@ -2,39 +2,92 @@ import Image from "next/image";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
+import { useSelector } from "@/store";
 
 interface BadgesProps {
   handleCloseModal: () => void;
 }
 
 function Badges({ handleCloseModal }: BadgesProps) {
-  const namesArray = [
-    { name: "CURRENT" },
-    { name: "CURRENT" },
-    { name: "CURRENT" },
-    { name: "CURRENT" },
-  ];
+  const authState = useSelector((state: any) => state.auth.userData) || [];
 
-  const dummy = [
+  const totalCoinAmount = authState?.coins?.reduce(
+    (total: any, user: any) => total + user.coinAmount,
+    0
+  );
+
+  const badges = [
     {
       id: 1,
-      Image: IMAGES.Turbo,
-      userName: "Turbo Achiever",
-      Name: "Milestone 100000 coins",
+      Image: SVG.Badge1,
+      userName: "Quick Starter",
+      Name: "Milestone 1000 coins",
+      coins: 10,
     },
     {
       id: 2,
-      Image: IMAGES.Turbo,
-      userName: "Turbo Achiever",
-      Name: "Milestone 100000 coins",
+      Image: SVG.Badge2,
+      userName: "Rapid Riser",
+      Name: "Milestone 1000 coins",
+      coins: 1000,
     },
     {
       id: 3,
-      Image: IMAGES.Turbo,
-      userName: "Turbo Achiever",
-      Name: "Milestone 100000 coins",
+      Image: SVG.Badge3,
+      userName: "Swift Performer",
+      Name: "Milestone 3000 coins",
+      coins: 3000,
+    },
+    {
+      id: 4,
+      Image: SVG.Badge4,
+      userName: "Speedy Striver",
+      Name: "Milestone 5000 coins",
+      coins: 5000,
+    },
+    {
+      id: 5,
+      Image: SVG.Badge5,
+      userName: "Fast Tracker",
+      Name: "Milestone 8000 coins",
+      coins: 8000,
+    },
+    {
+      id: 6,
+      Image: SVG.Badge6,
+      userName: "Blazing Achiever",
+      Name: "Milestone 10000 coins",
+      coins: 10000,
+    },
+    {
+      id: 7,
+      Image: SVG.Badge7,
+      userName: "Hyper Performer",
+      Name: "Milestone 15000 coins",
+      coins: 15000,
+    },
+    {
+      id: 8,
+      Image: SVG.Badge8,
+      userName: "Lightning Leader",
+      Name: "Milestone 20000 coins",
+      coins: 20000,
+    },
+    {
+      id: 9,
+      Image: SVG.Badge9,
+      userName: "Supersonic Champion",
+      Name: "Milestone 50000 coins",
+      coins: 50000,
     },
   ];
+
+  const achievedBadges = badges.filter(
+    (badge) => totalCoinAmount >= badge.coins
+  );
+  const upcomingBadges = badges.filter(
+    (badge) => totalCoinAmount < badge.coins
+  );
 
   const sectionStyle = {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
@@ -44,6 +97,7 @@ function Badges({ handleCloseModal }: BadgesProps) {
     backgroundColor: "rgba(0, 0, 0, 0.6)",
     backdropFilter: "blur(8px)",
   };
+
   return (
     <>
       <div
@@ -68,13 +122,13 @@ function Badges({ handleCloseModal }: BadgesProps) {
                 BADGES
               </h1>
 
-              <div className="sm:min-h-[350px] lg:min-h-[630px] max-h-[650px] sm:max-h-[350px] lg-max-h-[500px]">
+              <div className="sm:min-h-[350px] lg:min-h-[630px] max-h-[650px] sm:max-h-[350px] lg-max-h-[500px] overflow-y-auto no-scrollbar">
                 <div className="flex w-full h-80 overflow-scroll no-scrollbar px-4 ">
-                  {namesArray.map((items, index) => (
+                  {achievedBadges.map((badge, index) => (
                     <div key={index}>
-                      <div className="w-80 h-80 -mb-12">
+                      <div className="w-80 h-72 -mb-2">
                         <Image
-                          src={IMAGES.Badges}
+                          src={badge.Image}
                           alt="UploadStory"
                           width="12"
                           height="12"
@@ -82,7 +136,9 @@ function Badges({ handleCloseModal }: BadgesProps) {
                           className="h-full w-full"
                         />
                       </div>
-                      <span className="text-lg text-white">{items.name}</span>
+                      <span className="text-lg text-white">
+                        {badge.userName}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -95,7 +151,7 @@ function Badges({ handleCloseModal }: BadgesProps) {
                     Upcoming Badges
                   </p>
 
-                  {dummy.map((items, index) => (
+                  {upcomingBadges.map((badge, index) => (
                     <div
                       key={index}
                       className="p-2 m-2 text-sm text-left rounded-lg bg-[#091619] border-2 border-[#1C2C2E]"
@@ -103,16 +159,16 @@ function Badges({ handleCloseModal }: BadgesProps) {
                       <div className="flex items-center">
                         <Image
                           className="mr-4"
-                          src={items.Image}
+                          src={badge.Image}
                           alt="Video"
                           width={50}
                           height={60}
                         />
                         <div>
                           <span className="text-base font-semibold text-white">
-                            {items.userName}
+                            {badge.userName}
                           </span>
-                          <p className="text-white">{items.Name}</p>
+                          <p className="text-white">{badge.Name}</p>
                         </div>
                       </div>
                     </div>

@@ -177,6 +177,81 @@ function Account() {
     },
   });
 
+  const totalCoinAmount = authState?.coins?.reduce(
+    (total: any, user: any) => total + user.coinAmount,
+    0
+  );
+
+  const badges = [
+    {
+      id: 1,
+      Image: SVG.Badge1,
+      userName: "Quick Starter",
+      Name: "Milestone 1000 coins",
+      coins: 10,
+    },
+    {
+      id: 2,
+      Image: SVG.Badge2,
+      userName: "Rapid Riser",
+      Name: "Milestone 1000 coins",
+      coins: 1000,
+    },
+    {
+      id: 3,
+      Image: SVG.Badge3,
+      userName: "Swift Performer",
+      Name: "Milestone 3000 coins",
+      coins: 3000,
+    },
+    {
+      id: 4,
+      Image: SVG.Badge4,
+      userName: "Speedy Striver",
+      Name: "Milestone 5000 coins",
+      coins: 5000,
+    },
+    {
+      id: 5,
+      Image: SVG.Badge5,
+      userName: "Fast Tracker",
+      Name: "Milestone 8000 coins",
+      coins: 8000,
+    },
+    {
+      id: 6,
+      Image: SVG.Badge6,
+      userName: "Blazing Achiever",
+      Name: "Milestone 10000 coins",
+      coins: 10000,
+    },
+    {
+      id: 7,
+      Image: SVG.Badge7,
+      userName: "Hyper Performer",
+      Name: "Milestone 15000 coins",
+      coins: 15000,
+    },
+    {
+      id: 8,
+      Image: SVG.Badge8,
+      userName: "Lightning Leader",
+      Name: "Milestone 20000 coins",
+      coins: 20000,
+    },
+    {
+      id: 9,
+      Image: SVG.Badge9,
+      userName: "Supersonic Champion",
+      Name: "Milestone 50000 coins",
+      coins: 50000,
+    },
+  ];
+
+  const achievedBadges = badges.filter(
+    (badge) => totalCoinAmount >= badge.coins
+  );
+
   const userVideos = postState.videos.filter(
     (post: any) => post?.userID?._id === authState._id
   );
@@ -308,7 +383,7 @@ function Account() {
           <div
             className="disable-blur flex flex-col relative items-center lg:flex-row lg:justify-center gap-4 h-60 mx-4 my-4"
             style={{
-              background: `linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.9) 99%), ${backgroundImage} no-repeat center / cover`,
+              background: `linear-gradient(to bottom, transparent 40%, rgba(9, 22, 25, 1) 99%), ${backgroundImage} no-repeat center / cover`,
               backgroundSize: "cover",
               backfaceVisibility: "visible",
             }}
@@ -388,7 +463,7 @@ function Account() {
                     <span className="md:text-lg text-gray-400">Following</span>
                   </div>
                 </div>
-                <h1 className="font-bold">About Me!</h1>
+                <h1 className="text-white font-bold">About Me!</h1>
                 <p className="text-gray-400">{authState?.bio}</p>
               </div>
 
@@ -402,7 +477,7 @@ function Account() {
                     sizes="100vw"
                     alt="Account Profile"
                   />
-                  <p className="font-normal">Edit coverphoto</p>
+                  <p className="text-white font-normal">Edit coverphoto</p>
                   <input
                     id="dropzone-file"
                     type="file"
@@ -421,7 +496,7 @@ function Account() {
 
           <div className="flex mx-3">
             <div className="hidden w-2/5 h-fit md:flex flex-col sm:w-60 md:w-60 lg:w-96 h-80 border-2 border-[#1C2C2E] rounded-lg p-1">
-              <h1 className="font-bold my-2">Connect</h1>
+              <h1 className="text-white font-bold my-2">Connect</h1>
               <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
                 <Image
                   className="rounded-xl w-10 h-10 object-cover"
@@ -431,7 +506,9 @@ function Account() {
                   sizes="100vw"
                   alt="Account Profile"
                 />
-                <p className="font-light text-xs ">Connect with Playstation</p>
+                <p className="text-white font-light text-xs ">
+                  Connect with Playstation
+                </p>
               </div>
 
               <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
@@ -443,7 +520,9 @@ function Account() {
                   sizes="100vw"
                   alt="Account Profile"
                 />
-                <p className="font-normal text-xs ">Connect with Twitch</p>
+                <p className="text-white font-normal text-xs ">
+                  Connect with Twitch
+                </p>
               </div>
 
               <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
@@ -455,7 +534,9 @@ function Account() {
                   sizes="100vw"
                   alt="Account Profile"
                 />
-                <p className="font-normal text-xs ">Connect with Xbox</p>
+                <p className="text-white font-normal text-xs ">
+                  Connect with Xbox
+                </p>
               </div>
 
               <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
@@ -467,7 +548,9 @@ function Account() {
                   sizes="100vw"
                   alt="Account Profile"
                 />
-                <p className="font-normal text-xs ">Connect with Steam</p>
+                <p className="text-white font-normal text-xs ">
+                  Connect with Steam
+                </p>
               </div>
             </div>
 
@@ -495,7 +578,9 @@ function Account() {
                         width={24}
                         height={24}
                       />
-                      <span className="text-xs md:text-base">My Videos</span>
+                      <span className="text-white text-xs md:text-base">
+                        My Videos
+                      </span>
                     </div>
                     {selectedSection === "videos" && (
                       <div className="w-full h-1 bg-[#62C860] rounded-lg"></div>
@@ -522,7 +607,7 @@ function Account() {
                         width={22}
                         height={22}
                       />
-                      <span className="text-xs md:text-base">
+                      <span className="text-white text-xs md:text-base">
                         My Bookmarked
                       </span>
                     </div>
@@ -534,7 +619,9 @@ function Account() {
                 <hr className="h-px border-0 bg-gray-700" />
 
                 <div className="flex flex-col border border-dashed border-green-800 rounded-lg px-4 py-4 justify-center items-start gap-4">
-                  <span className="font-bold text-sm md:text-lg">Add New</span>
+                  <span className="text-white font-bold text-sm md:text-lg">
+                    Add New
+                  </span>
                   <div className="flex justify-between gap-2 w-full">
                     <div
                       className="bg-[#162423] rounded-lg flex justify-center items-center w-6/12 h-24 gap-2 cursor-pointer hover:opacity-80"
@@ -549,7 +636,7 @@ function Account() {
                           height={24}
                         />
                       </div>
-                      <p className="font-bold">Post Clips</p>
+                      <p className="text-white font-bold">Post Clips</p>
                     </div>
 
                     <div
@@ -567,7 +654,7 @@ function Account() {
                           height={24}
                         />
                       </div>
-                      <p className="font-bold">Post Videos</p>
+                      <p className="text-white font-bold">Post Videos</p>
                     </div>
                   </div>
                 </div>
@@ -590,53 +677,23 @@ function Account() {
             </div>
 
             <div className="hidden w-2/5 h-fit md:flex flex-col  sm:w-72 md:w-72 lg:w-96 h-screen border-2 border-[#1C2C2E] rounded-lg p-1 overflow-hidden overflow-y-auto">
-              <h1 className="font-bold m-2">Current Badge</h1>
-              <div className="flex flex-row justify-between mt-2">
-                <div className="flex justify-center items-center gap-3">
-                  <Image
-                    src={IMAGES.AccountCurrentBadgeIcon}
-                    alt="Badge"
-                    width={35}
-                    height={35}
-                  />
-                  <Image
-                    src={IMAGES.Badges2}
-                    alt="Badge"
-                    width={30}
-                    height={30}
-                  />
-                  <Image
-                    src={IMAGES.Badges3}
-                    alt="Badge"
-                    width={30}
-                    height={30}
-                  />
-                  <Image
-                    src={IMAGES.Badges4}
-                    alt="Badge"
-                    width={30}
-                    height={30}
-                  />
-                  <Image
-                    src={IMAGES.Badges5}
-                    alt="Badge"
-                    width={30}
-                    height={30}
-                  />
-                </div>
-                <div className="flex item-center">
-                  <Image
-                    className="text-red-500"
-                    src={IMAGES.Frame}
-                    alt="Badge"
-                    width={35}
-                    height={35}
-                  />
-                </div>
+              <h1 className="text-white font-bold m-2">Current Badge</h1>
+              <div className="flex flex-row mt-2 overflow-x-scroll no-scrollbar mx-2">
+                {achievedBadges.map((badge, index) => (
+                  <div key={index}>
+                    <Image
+                      src={badge.Image}
+                      alt="Badges"
+                      width="30"
+                      height="30"
+                      sizes="100vw"
+                    />
+                  </div>
+                ))}
               </div>
 
               <div className="rounded-lg p-2 gap-3 mt-2">
-                <h1 className="font-bold">Suggested Videos:</h1>
+                <h1 className="text-white font-bold">Suggested Videos:</h1>
 
                 <div className="">
                   {postState?.trendingVideos?.slice(0, 3).map((item: any) => (
