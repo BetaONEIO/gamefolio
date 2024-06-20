@@ -5,7 +5,6 @@ import Image from "next/image";
 import { SVG } from "@/assets/SVG";
 import { leagueGothic } from "@/font/font";
 import Link from "next/link";
-import { IMAGES } from "@/assets/images";
 import Modal from "../Modals/Modal";
 import Badges from "../Modals/Badges";
 import { useSelector } from "@/store";
@@ -34,11 +33,10 @@ function CustomHeader({ children }: { children?: String }) {
   const notificationIndex =
     authState?.notification?.filter((item: any) => item.isView === false)
       ?.length ?? 0;
-  console.log("number", notificationIndex);
 
   return (
     <>
-      <div className="z-40 flex justify-between items-center py-4 bg-[#091619] sticky top-0 w-full px-4 sm:px-2 lg:px-4">
+      <div className="z-40 flex justify-between items-center py-4 sticky top-0 w-full px-4 sm:px-2 lg:px-4 bg-[#091619]">
         <div
           className={`${leagueGothic.className} text-2xl sm:text-4xl lg:text-4xl text-white`}
         >
@@ -54,7 +52,7 @@ function CustomHeader({ children }: { children?: String }) {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
           <button
-            className="cursor-pointer hover:opacity-60"
+            className="text-white cursor-pointer hover:opacity-60"
             onClick={handleSearch}
           >
             Search
@@ -73,7 +71,7 @@ function CustomHeader({ children }: { children?: String }) {
                   height={22}
                 />
               </div>
-              {notificationIndex > 0 && ( // Display the count only if notificationIndex is greater than 0
+              {notificationIndex > 0 && (
                 <span className="absolute top-0.5 right-1 bg-red-800 text-white text-xs font-bold rounded-full px-1">
                   {notificationIndex}
                 </span>
@@ -96,13 +94,13 @@ function CustomHeader({ children }: { children?: String }) {
           </Link>
 
           <div
-            className="flex items-center p-0.5 mr-2 rounded-full border-2 border-[#162423] cursor-pointer hover:opacity-60"
-            // onClick={() => handleModalToggle("isBadgeOpen")}
+            className="flex items-center gap-2 p-0.5 mr-2 rounded-full border-2 border-[#162423] cursor-pointer hover:opacity-60"
+            onClick={() => handleModalToggle("isBadgeOpen")}
           >
             <Image
-              className="w-9 h-8"
-              src={IMAGES.Badges}
-              alt="GGcoin"
+              className="w-7 h-8"
+              src={SVG.Badge1}
+              alt="Badges"
               width={10}
               height={10}
               sizes="100vw"

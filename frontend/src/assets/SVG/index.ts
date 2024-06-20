@@ -93,4 +93,13 @@ export const SVG = {
   ArrowUpSide: "/arrowupside.svg",
   Filter: "/filter.svg",
   badgeArrow: "/badgeArrow",
+  Badge1: "/badge1.svg",
+  Badge2: "/badge2.svg",
+  Badge3: "/badge3.svg",
+  Badge4: "/badge4.svg",
+  Badge5: "/badge5.svg",
+  Badge6: "/badge6.svg",
+  Badge7: "/badge7.svg",
+  Badge8: "/badge8.svg",
+  Badge9: "/badge9.svg",
 };

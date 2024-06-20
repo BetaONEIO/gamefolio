@@ -291,7 +291,7 @@ function Trending() {
                 style={styles.scroller}
               >
                 <div className="flex justify-start items-center">
-                  <span className="font-bold">Upcoming Updates</span>
+                  <span className="text-white font-bold">Upcoming Updates</span>
                 </div>
                 <div className="flex flex-col gap-4">
                   {filteredGames.length === 0 ? (

@@ -1,23 +1,22 @@
 "use client";
-import { SVG } from "@/assets/SVG";
-import { dispatch, useSelector } from "@/store";
-import { createComment, refreshPage } from "@/store/slices/postSlice";
-import data from "@emoji-mart/data";
-import Picker from "@emoji-mart/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { SVG } from "@/assets/SVG";
+import { dispatch, useSelector } from "@/store";
+import { createComment, refreshPage } from "@/store/slices/postSlice";
 import { ToastContainer } from "react-toastify";
 import { handleCreateNotification } from "../Notification/Notification";
 import { toastError, toastSuccess } from "../Toast/Toast";
 import DeletePost from "./DeletePost";
 import Modal from "./Modal";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
 import Report from "./Report";
 
 interface VideoDetailProps {
   handleCloseModal: () => void;
   postID: any;
-
   handlePageRefresh: () => void;
 }
 
@@ -30,9 +29,6 @@ function VideoDetails({ handleCloseModal, postID }: VideoDetailProps) {
     isPostDeleteOpen: false,
     isReportModalOpen: false,
   });
-
-  // console.log("detailedPost: ", detailedPost.comments);
-  console.log("detailedPost: ", postState);
 
   const handleCreateComment = async (postID: any, comment: any) => {
     const payload = {
