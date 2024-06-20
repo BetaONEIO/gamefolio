@@ -6,8 +6,8 @@ import io from "socket.io-client";
 
 // export const BASE_URL = "http://localhost:4000/api";
 // export const BASE_URL2 = "http://localhost:4000";
-export const BASE_URL = "https://app.gamefolio.com:8080/api";
-export const BASE_URL2 = "https://app.gamefolio.com:8080";
+export const BASE_URL = "https://server.gamefolio.com:8080/api";
+export const BASE_URL2 = "https://server.gamefolio.com:8080";
 // export const BASE_URL = process.env.NEXT_PUBLIC_DEV_BASE_URL;
 
 export const API = async (params: APIParams) => {
