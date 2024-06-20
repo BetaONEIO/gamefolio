@@ -26,9 +26,9 @@ import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Loading from "./loading";
 
 interface MyVideosSectionProps {
-  authState: any; // Add authState as a prop
-  postState: any; // Add postState as a prop
-  profileInfoState: any; // Add profileInfoState as a prop
+  authState: any;
+  postState: any;
+  profileInfoState: any;
   handleVideoDetailOpen: (postID: any, detailedPost: any) => void;
 }
 
@@ -75,9 +75,9 @@ const MyVideosSection: React.FC<MyVideosSectionProps> = ({
 };
 
 interface ClipsProps {
-  authState: any; // Add authState as a prop
-  clipState: any; // Add postState as a prop
-  profileInfoState: any; // Add profileInfoState as a prop
+  authState: any;
+  clipState: any;
+  profileInfoState: any;
   handleVideoDetailOpen: (postID: any, detailedPost: any) => void;
 }
 
@@ -124,7 +124,6 @@ const ClipsSection: React.FC<ClipsProps> = ({
 
 interface StoryProps {
   data: Array<any>;
-  // isStoryModalOpen: () => void;
 }
 
 const StorySection: React.FC<StoryProps> = ({ data }) => {

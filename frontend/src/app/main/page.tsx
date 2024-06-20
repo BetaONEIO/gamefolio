@@ -310,7 +310,7 @@ function Main() {
           <div className="flex w-full justify-center md:justify-between gap-4 px-4">
             {/* Trending */}
             <div
-              className="hidden w-[30.5rem] h-1/2 md:flex flex-col gap-6 rounded-lg bg-[#091619] border border-[#1C2C2E] px-4 py-6 overflow-y-auto"
+              className="hidden w-[30.9rem] h-1/2 md:flex flex-col gap-6 rounded-lg bg-[#091619] border border-[#1C2C2E] px-4 py-6 overflow-y-auto"
               style={styles.scroller}
             >
               <div className="flex justify-between items-center">
@@ -658,7 +658,7 @@ function Main() {
 
             {/* Notification */}
             <div
-              className="hidden w-5/12 h-96 md:flex flex-col gap-6 rounded-lg bg-[#091619] border border-[#1C2C2E] px-2 py-6 overflow-hidden overflow-y-auto"
+              className="hidden w-[32.3rem] h-2/3 md:flex flex-col gap-4 rounded-lg bg-[#091619] border border-[#1C2C2E] px-2 py-6 overflow-hidden overflow-y-auto"
               style={styles.scroller}
             >
               <div className="flex justify-between items-center">
@@ -690,7 +690,11 @@ function Main() {
                 authState?.notification?.map((notification: any) => (
                   <div
                     key={notification._id}
-                    className="flex items-center gap-1 cursor-pointer hover:opacity-80"
+                    className={`flex items-center gap-0.2 cursor-pointer hover:opacity-80 hover:bg-[#162423] p-2 ${
+                      notification.isView === false
+                        ? "bg-[#162423]"
+                        : "bg-[#091619]"
+                    }`}
                     onClick={() =>
                       handleUpdateNotification(authState._id, notification._id)
                     }
@@ -703,13 +707,13 @@ function Main() {
                       height={12}
                       sizes="100vw"
                     />
-                    <div className="flex flex-col">
+                    <div className="flex flex-col gap-2">
                       <div className="flex items-center gap-2 mx-2">
                         <p
                           className={`w-28 text-xs text-white ${
                             notification.isView === false
                               ? "font-bold"
-                              : "font-normal"
+                              : "font-semibold"
                           }`}
                         >
                           {notification.oppositionID.name.length > 12
@@ -723,7 +727,7 @@ function Main() {
                           className={`w-32 text-[0.60rem] text-gray-400 ${
                             notification.isView === false
                               ? "font-bold"
-                              : "font-normal"
+                              : "font-semibold"
                           }`}
                         >
                           {convertDateFormat(notification.date)}
