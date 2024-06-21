@@ -207,4 +207,4 @@ export async function fetchGameList() {
 }
 
 // Socket
-export const socket = io("http://localhost:8000");
+export const socket = io("https://server.gamefolio.com:9090");
