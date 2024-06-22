@@ -133,7 +133,7 @@ function Explore() {
   // if (postState.loading) return <Loading />;
 
   const userVideos = userState.userList.map((user: any) => {
-    const videosForUser = postState.videos.filter(
+    const videosForUser = postState.videos?.filter(
       (post: any) => post?.userID?.username === user.username
     );
     return { username: user.username, videoCount: videosForUser.length };
@@ -182,7 +182,7 @@ function Explore() {
 
   const removeGame = (gameNameToRemove: any) => {
     // Filter out the game named "Just Chatting"
-    const filteredGames = filteredOptions.filter(
+    const filteredGames = filteredOptions?.filter(
       (item: any) => item.name !== gameNameToRemove
     );
     return filteredGames;
@@ -434,7 +434,7 @@ function Explore() {
                   />
                   <p className="text-white">
                     {
-                      item.reactions.filter(
+                      item.reactions?.filter(
                         (reaction: any) => reaction.reactionType === "like"
                       ).length
                     }
@@ -450,7 +450,7 @@ function Explore() {
                   />
                   <p className="text-white">
                     {
-                      item.reactions.filter(
+                      item.reactions?.filter(
                         (reaction: any) => reaction.reactionType === "love"
                       ).length
                     }

@@ -214,7 +214,7 @@ function Clip() {
                     <p className="text-white font-light text-xs sm:text-sm hover:opacity-80">
                       Liked by{" "}
                       {
-                        clip.reactions.filter(
+                        clip.reactions?.filter(
                           (reaction: any) => reaction.reactionType === "like"
                         ).length
                       }{" "}
@@ -247,7 +247,7 @@ function Clip() {
                         />
                         <p className="text-white">
                           {
-                            clip.reactions.filter(
+                            clip.reactions?.filter(
                               (reaction: any) =>
                                 reaction.reactionType === "like"
                             ).length

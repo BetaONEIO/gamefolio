@@ -82,10 +82,10 @@ function Badges({ handleCloseModal }: BadgesProps) {
     },
   ];
 
-  const achievedBadges = badges.filter(
+  const achievedBadges = badges?.filter(
     (badge) => totalCoinAmount >= badge.coins
   );
-  const upcomingBadges = badges.filter(
+  const upcomingBadges = badges?.filter(
     (badge) => totalCoinAmount < badge.coins
   );
 

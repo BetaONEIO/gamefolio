@@ -286,7 +286,7 @@ function Main() {
 
   const removeGame = (gameNameToRemove: any) => {
     // Filter out the game named "Just Chatting"
-    const filteredGames = filteredOptions.filter(
+    const filteredGames = filteredOptions?.filter(
       (item: any) => item.name !== gameNameToRemove
     );
     return filteredGames;
@@ -550,7 +550,7 @@ function Main() {
                           />
                           <p className="text-white">
                             {
-                              post.reactions.filter(
+                              post.reactions?.filter(
                                 (reaction: any) =>
                                   reaction.reactionType === "like"
                               ).length
@@ -581,7 +581,7 @@ function Main() {
                           />
                           <p className="text-white">
                             {
-                              post.reactions.filter(
+                              post.reactions?.filter(
                                 (reaction: any) =>
                                   reaction.reactionType === "love"
                               ).length

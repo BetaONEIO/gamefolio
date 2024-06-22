@@ -57,7 +57,7 @@ function AddStory({ handleCloseModal }: AddStoryProps) {
   };
 
   const delayedSearch = debounce((inputValue: any) => {
-    const filtered = optionsForGame.filter((option: any) => {
+    const filtered = optionsForGame?.filter((option: any) => {
       return option?.name?.toLowerCase().includes(inputValue);
     });
     setFilteredOptions(filtered);
@@ -77,7 +77,7 @@ function AddStory({ handleCloseModal }: AddStoryProps) {
     const inputValue = e.target.value.toLowerCase();
     setSearchTextMusic(inputValue);
 
-    const filtered = musicState.filter((option: any) =>
+    const filtered = musicState?.filter((option: any) =>
       option.toLowerCase().includes(inputValue)
     );
 

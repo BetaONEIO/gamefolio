@@ -28,7 +28,7 @@ function MyGamefolio() {
     isStoryModalOpen: false,
   });
 
-  const userVideos = postState.videos.filter(
+  const userVideos = postState.videos?.filter(
     (post: any) => post?.userID?._id === authState._id
   );
 

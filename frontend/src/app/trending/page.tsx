@@ -112,7 +112,7 @@ function Trending() {
   };
   const removeGame = (gameNameToRemove: any) => {
     // Filter out the game named "Just Chatting"
-    const filteredGames = filteredOptions.filter(
+    const filteredGames = filteredOptions?.filter(
       (item: any) => item.name !== gameNameToRemove
     );
     return filteredGames;
@@ -190,7 +190,7 @@ function Trending() {
   };
 
   const delayedSearch = debounce((inputValue: any) => {
-    const filtered = optionsForGame.filter((option: any) => {
+    const filtered = optionsForGame?.filter((option: any) => {
       return option?.name?.toLowerCase().includes(inputValue);
     });
     setFilteredOptions(filtered);
@@ -418,7 +418,7 @@ function Trending() {
                           />
                           <p className="text-white">
                             {
-                              item.reactions.filter(
+                              item.reactions?.filter(
                                 (reaction: any) =>
                                   reaction.reactionType === "like"
                               ).length
@@ -436,7 +436,7 @@ function Trending() {
                           />
                           <p className="text-white">
                             {
-                              item.reactions.filter(
+                              item.reactions?.filter(
                                 (reaction: any) =>
                                   reaction.reactionType === "love"
                               ).length
