@@ -113,7 +113,7 @@ function Report({ handleCloseModal }: ReportProps) {
                 {isDropdownOpen && (
                   <div className="absolute z-50 mt-2 w-full rounded-md shadow-lg">
                     <ul className="py-1 border bg-[#1C2C2E] border-gray-700 text-white border-t-0 rounded-b-lg">
-                      {optionsForGame.map((option) => (
+                      {optionsForGame?.map((option) => (
                         <li
                           key={option.value}
                           onClick={() => handleSelect(option.value)}

@@ -8,7 +8,7 @@ export default function Navbar() {
   const router = useRouter();
   return (
     <nav className="nav_container">
-      {navigationRoutes.map((singleRoute) => {
+      {navigationRoutes?.map((singleRoute) => {
         return (
           <NavigationLink
             key={singleRoute}

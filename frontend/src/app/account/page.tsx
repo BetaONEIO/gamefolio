@@ -50,7 +50,7 @@ const MyVideosSection: React.FC<MyVideosSectionProps> = ({
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
-      {userVideos.map((item: any) => {
+      {userVideos?.map((item: any) => {
         return (
           <div key={item._id} className="relative">
             <video
@@ -430,7 +430,7 @@ function Account() {
                     <span
                       className={`${leagueGothic.className} text-lg md:text-2xl font-normal text-white`}
                     >
-                      {userVideos.length || 0}
+                      {userVideos?.length || 0}
                     </span>
                     <span className="md:text-lg text-gray-400">Posts</span>
                   </div>
@@ -679,7 +679,7 @@ function Account() {
             <div className="hidden w-2/5 h-fit md:flex flex-col  sm:w-72 md:w-72 lg:w-96 h-screen border-2 border-[#1C2C2E] rounded-lg p-1 overflow-hidden overflow-y-auto">
               <h1 className="text-white font-bold m-2">Current Badge</h1>
               <div className="flex flex-row mt-2 overflow-x-scroll no-scrollbar mx-2">
-                {achievedBadges.map((badge, index) => (
+                {achievedBadges?.map((badge, index) => (
                   <div key={index}>
                     <Image
                       src={badge.Image}
@@ -696,7 +696,7 @@ function Account() {
                 <h1 className="text-white font-bold">Suggested Videos:</h1>
 
                 <div className="">
-                  {postState?.trendingVideos?.slice(0, 3).map((item: any) => (
+                  {postState?.trendingVideos?.slice(0, 3)?.map((item: any) => (
                     <div
                       key={item._id}
                       className="border-2 h-48 border-[#1C2C2E] rounded-lg p-2 gap-3 mt-2 flex-wrap"

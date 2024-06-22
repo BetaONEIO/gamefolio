@@ -32,7 +32,7 @@ const SelectGame = () => {
   const [selectedGames, setSelectedGames] = useState<string[]>([]);
 
   const handleCheckboxClick = (name: any) => {
-    if (selectedGames.length < 3 || selectedGames.includes(name)) {
+    if (selectedGames?.length < 3 || selectedGames.includes(name)) {
       // Toggle the selection of the game by name
       if (selectedGames.includes(name)) {
         setSelectedGames(
@@ -48,10 +48,10 @@ const SelectGame = () => {
 
   const handleNext = () => {
     // toastSuccess(message);
-    if (selectedGames.length < 3) {
+    if (selectedGames?.length < 3) {
       toastError("Please pick at least three");
       return;
-    } else if (selectedGames.length === 10) {
+    } else if (selectedGames?.length === 10) {
       toastError("Maximum Games exceeded");
       return;
     }
@@ -96,7 +96,7 @@ const SelectGame = () => {
           </div>
 
           <div className="flex flex-col w-full no-scrollbar h-4/6  overflow-y-auto">
-            {games.map((game) => (
+            {games?.map((game) => (
               <div className="flex items-center my-3" key={game.id}>
                 <Image
                   className="object-contain"
@@ -133,7 +133,7 @@ const SelectGame = () => {
           </div>
 
           <div className="flex justify-between items-center w-full">
-            <span className="text-white">{selectedGames.length} Selected</span>
+            <span className="text-white">{selectedGames?.length} Selected</span>
             <button
               onClick={handleNext}
               className="w-6/12 h-6/12 text-xs md:text-base bg-[#37C535]  text-white text-center py-[7px]  rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3"

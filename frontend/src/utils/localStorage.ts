@@ -53,10 +53,10 @@ export const getCookieValue = (cookieName: any) => {
   if (typeof document !== "undefined") {
     const decodedCookie = document.cookie;
     const cookieArray = decodedCookie.split(";");
-    for (let i = 0; i < cookieArray.length; i++) {
+    for (let i = 0; i < cookieArray?.length; i++) {
       let cookie = cookieArray[i].trim();
       if (cookie.indexOf(name) === 0) {
-        return cookie.substring(name.length, cookie.length);
+        return cookie.substring(name?.length, cookie?.length);
       }
     }
   }

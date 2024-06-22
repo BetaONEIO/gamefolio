@@ -316,7 +316,7 @@ function SideBar({ toggleSidebar, sidebarOpen }: SideBarProps) {
                       <p className="mx-4">Messages</p>
                     </div>
                     <p className="px-2 rounded-xl bg-[#586769]">
-                      {messageState.messages.length}
+                      {messageState.messages?.length}
                     </p>
                   </div>
                 </button>

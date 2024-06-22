@@ -27,11 +27,11 @@ function User() {
     dispatch(getAllUsers());
   }, [userState.refresh]);
 
-  const userVideos = userState.userList.map((user: any) => {
+  const userVideos = userState.userList?.map((user: any) => {
     const videosForUser = postState.videos?.filter(
       (post: any) => post?.userID?.username === user.username
     );
-    return { username: user.username, videoCount: videosForUser.length };
+    return { username: user.username, videoCount: videosForUser?.length };
   });
 
   return (
@@ -44,7 +44,7 @@ function User() {
       <div className="flex flex-wrap justify-start items-start h-64">
         {userState?.userList?.length === 0 ? (
           <>
-            {[...Array(8)].map((_, index) => (
+            {[...Array(8)]?.map((_, index) => (
               <SkeletonLoaderUser key={index} />
             ))}
           </>

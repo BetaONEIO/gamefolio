@@ -32,7 +32,7 @@ const ResetPassword = () => {
       forgetPasswordState?.email?.trim() === "" ||
       forgetPasswordState?.otp?.trim() === "" ||
       !forgetPasswordState?.email?.includes("@") ||
-      Object.keys(forgetPasswordState).length === 0
+      Object.keys(forgetPasswordState)?.length === 0
     ) {
       toastError("No email found");
       router.push("/login");

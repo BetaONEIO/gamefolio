@@ -31,7 +31,7 @@ const ForgotPassword = () => {
   };
 
   const handleForgetPassword = (data: any) => {
-    if (email.length === 0 || email === "" || !email.includes("@")) {
+    if (email?.length === 0 || email === "" || !email.includes("@")) {
       toastError("Please enter Email");
       return;
     }

@@ -417,7 +417,7 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
                           />
                         </div>
                         <ul className="py-1 bg-[#1C2C2E] text-white divide-y divide-[#162423] rounded-b-lg">
-                          {filteredOptionsMusic.map((option: any) => (
+                          {filteredOptionsMusic?.map((option: any) => (
                             <li
                               key={option.value}
                               onClick={() => handleSelectMusic(option)}

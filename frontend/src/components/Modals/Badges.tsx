@@ -124,7 +124,7 @@ function Badges({ handleCloseModal }: BadgesProps) {
 
               <div className="sm:min-h-[350px] lg:min-h-[630px] max-h-[650px] sm:max-h-[350px] lg-max-h-[500px] overflow-y-auto no-scrollbar">
                 <div className="flex w-full h-80 overflow-scroll no-scrollbar px-4 ">
-                  {achievedBadges.map((badge, index) => (
+                  {achievedBadges?.map((badge, index) => (
                     <div key={index}>
                       <div className="w-80 h-72 -mb-2">
                         <Image
@@ -151,7 +151,7 @@ function Badges({ handleCloseModal }: BadgesProps) {
                     Upcoming Badges
                   </p>
 
-                  {upcomingBadges.map((badge, index) => (
+                  {upcomingBadges?.map((badge, index) => (
                     <div
                       key={index}
                       className="p-2 m-2 text-sm text-left rounded-lg bg-[#091619] border-2 border-[#1C2C2E]"

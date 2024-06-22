@@ -50,7 +50,7 @@ const MyVideosSection: React.FC<MyVideosSectionProps> = ({
   return (
     <Suspense fallback={<Loading />}>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
-        {userVideos.map((item: any) => {
+        {userVideos?.map((item: any) => {
           return (
             <div key={item.id} className="relative">
               <video
@@ -95,7 +95,7 @@ const ClipsSection: React.FC<ClipsProps> = ({
   return (
     <Suspense fallback={<Loading />}>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
-        {userVideos.map((clip: any) => (
+        {userVideos?.map((clip: any) => (
           <div
             key={clip.id}
             className="relative"
@@ -406,7 +406,7 @@ function MyGamefolio({ params }: any) {
                     <span
                       className={`${leagueGothic.className} text-lg md:text-2xl font-normal text-white`}
                     >
-                      {userVideos.length || 0}
+                      {userVideos?.length || 0}
                     </span>
                     <span className="md:text-lg text-gray-400">Posts</span>
                   </div>

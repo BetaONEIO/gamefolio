@@ -15,7 +15,7 @@ const getAllMusicFiles = () => {
         // Example: Filter for .mp3 files
         return file.endsWith(".mp3");
       })
-      .map((file) => file.replace(".mp3", "")); // Remove the .mp3 extension
+      ?.map((file) => file.replace(".mp3", "")); // Remove the .mp3 extension
 
     return musicFiles;
   } catch (error) {
