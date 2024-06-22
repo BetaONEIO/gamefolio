@@ -22,11 +22,11 @@ function Gallery({ handleCloseModal }: GalleryProps) {
   ];
 
   const [checkboxes, setCheckboxes] = useState(
-    popular.map((game) => ({ id: game.id, isChecked: false }))
+    popular?.map((game) => ({ id: game.id, isChecked: false }))
   );
 
   const handleCheckboxClick = (id: any) => {
-    const updatedCheckboxes = checkboxes.map((checkbox) =>
+    const updatedCheckboxes = checkboxes?.map((checkbox) =>
       checkbox.id === id
         ? { ...checkbox, isChecked: !checkbox.isChecked }
         : checkbox
@@ -56,7 +56,7 @@ function Gallery({ handleCloseModal }: GalleryProps) {
 
           <div className="flex flex-col w-full sm:min-h-[350px] lg:min-h-[500px] max-h-[400px] sm:max-h-[350px] lg:max-h-[500px] overflow-y-auto no-scrollbar">
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 my-2 p-2">
-              {popular.map((game) => (
+              {popular?.map((game) => (
                 <div key={game.id} className="relative">
                   <Image
                     src={game.IMAGE}
@@ -67,7 +67,7 @@ function Gallery({ handleCloseModal }: GalleryProps) {
                     className="h-36 w-64 object-cover rounded-xl"
                   />
                   <span className="absolute bottom-2 right-2">8:31</span>
-                  {checkboxes.map((checkbox) => (
+                  {checkboxes?.map((checkbox) => (
                     <Image
                       key={checkbox.id}
                       src={checkbox.isChecked ? SVG.Tick : SVG.Untick}

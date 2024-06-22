@@ -39,7 +39,7 @@ const Preference = () => {
   const handleTabClick = (tabId: string) => {
     if (activeTabs.includes(tabId)) {
       setActiveTabs(activeTabs?.filter((id) => id !== tabId));
-    } else if (activeTabs.length < 10) {
+    } else if (activeTabs?.length < 10) {
       setActiveTabs([...activeTabs, tabId]);
     } else {
       toastError("Maximum preferences exceeded");
@@ -48,10 +48,10 @@ const Preference = () => {
 
   const handleNext = () => {
     // toastSuccess(message);
-    if (activeTabs.length < 3) {
+    if (activeTabs?.length < 3) {
       toastError("Please pick at least three");
       return;
-    } else if (activeTabs.length === 10) {
+    } else if (activeTabs?.length === 10) {
       toastError("Maximum preferences exceeded");
       return;
     }
@@ -104,7 +104,7 @@ const Preference = () => {
               id="myTab"
               role="tablist"
             >
-              {tabsData.map((tab) => (
+              {tabsData?.map((tab) => (
                 <li key={tab.id} className="mr-0.5 m-0.5" role="presentation">
                   <button
                     className={`inline-block px-2 font-normal rounded-full bg-[#162423] ${

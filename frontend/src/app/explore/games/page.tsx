@@ -25,7 +25,7 @@ import Image from "next/image";
 const SkeletonLoaderGames = () => (
   <div className="flex items-center">
     <div className="flex items-center overflow-scroll no-scrollbar gap-2">
-      {[...Array(5)].map((_, index) => (
+      {[...Array(5)]?.map((_, index) => (
         <div
           key={index}
           className="w-28 h-40 bg-gray-300 rounded-xl animate-pulse"
@@ -120,14 +120,14 @@ function Games() {
             modules={[EffectFade, Navigation, Pagination]}
             className="mySwiper h-80  rounded-lg"
           >
-            {filteredGames.length === 0 ? (
+            {filteredGames?.length === 0 ? (
               <>
-                {[...Array(2)].map((_, index) => (
+                {[...Array(2)]?.map((_, index) => (
                   <SkeletonLoaderGames key={index} />
                 ))}
               </>
             ) : (
-              filteredGames.slice(0, 3).map((item: any) => (
+              filteredGames?.slice(0, 3)?.map((item: any) => (
                 <SwiperSlide key={item.id}>
                   <Image
                     width={400}
@@ -192,12 +192,12 @@ function Games() {
         <div className="flex items-center overflow-scroll no-scrollbar gap-2 px-4">
           {filteredGames?.length === 0 ? (
             <>
-              {[...Array(3)].map((_, index) => (
+              {[...Array(3)]?.map((_, index) => (
                 <SkeletonLoaderGames key={index} />
               ))}
             </>
           ) : (
-            filteredGames.slice(0, 20).map((item: any) => (
+            filteredGames?.slice(0, 20)?.map((item: any) => (
               <div key={item.id}>
                 <div className="w-28 h-40">
                   <Image

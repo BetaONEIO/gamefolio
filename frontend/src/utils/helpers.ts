@@ -25,8 +25,8 @@ export const getTime = (datetime: string) => {
 };
 
 export const truncateText = (text: string, charLength: number = 50) => {
-  if (text.length > charLength) {
-    return `${text.slice(0, charLength - 3)}...`;
+  if (text?.length > charLength) {
+    return `${text?.slice(0, charLength - 3)}...`;
   }
   return text;
 };

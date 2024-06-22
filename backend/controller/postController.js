@@ -63,7 +63,7 @@ const getTrendingPosts = async (req, res) => {
 
     // Sort posts by counts and date
     const sortedPosts = posts.sort((a, b) => {
-      const getLength = (array) => (array ? array.length : 0);
+      const getLength = (array) => (array ? array?.length : 0);
       const likesDiff = getLength(b.reactions) - getLength(a.reactions);
       const commentsDiff = getLength(b.comments) - getLength(a.comments);
       const bookmarksDiff = getLength(b.bookmarks) - getLength(a.bookmarks);
@@ -106,7 +106,7 @@ const getFollowingPosts = async (req, res) => {
     }
 
     // Get the IDs of users that the current user is following
-    const followingIDs = currentUser.following.map((user) => user.userID);
+    const followingIDs = currentUser.following?.map((user) => user.userID);
 
     // Calculate skip value based on pagination
     const skip = limit * (page - 1);
@@ -586,13 +586,13 @@ const getUserBookmark = async (req, res) => {
 
     console.log("userBookmarkedPosts: ", userBookmarkedPosts);
 
-    if (!userBookmarkedPosts || userBookmarkedPosts.length === 0) {
+    if (!userBookmarkedPosts || userBookmarkedPosts?.length === 0) {
       return res
         .status(404)
         .json({ error: "Bookmarked posts not found for the specified user." });
     }
 
-    const bookmarks = userBookmarkedPosts.map((post) => {
+    const bookmarks = userBookmarkedPosts?.map((post) => {
       const bookmarkInfo = post.bookmarks.find(
         (b) => b.userID.toString() === decoded.id
       );

@@ -29,7 +29,7 @@ function ShareStory({ handleCloseModal }: ShareStoryProps) {
   const [users, setUsers] = useState(initialUsers);
 
   const handleUserButtonClick = (id: any) => {
-    const updatedUsers = users.map((user) =>
+    const updatedUsers = users?.map((user) =>
       user.id === id ? { ...user, isSend: !user.isSend } : user
     );
     setUsers(updatedUsers);
@@ -97,7 +97,7 @@ function ShareStory({ handleCloseModal }: ShareStoryProps) {
             </div>
 
             <div className="flex flex-col w-full sm:min-h-[350px] lg:min-h-[500px] max-h-[400px] sm:max-h-[350px] lg:max-h-[500px] overflow-y-auto no-scrollbar">
-              {users.map((user) => (
+              {users?.map((user) => (
                 <div key={user.id}>
                   <div className="flex items-center my-3">
                     <Image

@@ -277,7 +277,7 @@ function Main() {
 
     const month = date.getMonth() + 1;
     const day = date.getDate();
-    const year = date.getFullYear().toString().slice(-2);
+    const year = date.getFullYear().toString()?.slice(-2);
 
     const formattedDate = `${month}/${day}/${year}`;
 
@@ -321,14 +321,14 @@ function Main() {
                   </span>
                 </Link>
               </div>
-              {filteredGames.length === 0 ? (
+              {filteredGames?.length === 0 ? (
                 <>
-                  {[...Array(4)].map((_, index) => (
+                  {[...Array(4)]?.map((_, index) => (
                     <SkeletonLoader key={index} />
                   ))}
                 </>
               ) : (
-                filteredGames.slice(0, 10).map((item: any, index: number) => (
+                filteredGames?.slice(0, 10)?.map((item: any, index: number) => (
                   <div className="flex flex-col gap-6" key={index}>
                     <div className="flex justify-between items-center">
                       <div className="flex gap-2">
@@ -418,7 +418,7 @@ function Main() {
               </div>
               {postState?.followingVideos?.length === 0 ? (
                 <>
-                  {[...Array(1)].map((_, index) => (
+                  {[...Array(1)]?.map((_, index) => (
                     <PostLoader key={index} />
                   ))}
                 </>
@@ -553,7 +553,7 @@ function Main() {
                               post.reactions?.filter(
                                 (reaction: any) =>
                                   reaction.reactionType === "like"
-                              ).length
+                              )?.length
                             }
                           </p>
                         </div>
@@ -584,7 +584,7 @@ function Main() {
                               post.reactions?.filter(
                                 (reaction: any) =>
                                   reaction.reactionType === "love"
-                              ).length
+                              )?.length
                             }
                           </p>
                         </div>
@@ -682,7 +682,7 @@ function Main() {
               </div>
               {authState?.notification?.length == 0 ? (
                 <>
-                  {[...Array(5)].map((_, index) => (
+                  {[...Array(5)]?.map((_, index) => (
                     <PostLoader key={index} />
                   ))}
                 </>
@@ -712,7 +712,7 @@ function Main() {
                               : "font-normal"
                           }`}
                         >
-                          {notification.oppositionID.name.length > 12
+                          {notification.oppositionID.name?.length > 12
                             ? `${notification.oppositionID.name.substring(
                                 0,
                                 10

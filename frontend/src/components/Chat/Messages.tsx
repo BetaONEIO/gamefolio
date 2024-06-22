@@ -46,9 +46,9 @@ const MessageCard: React.FC<MessageCardProps> = ({ currentUser, message }) => {
         <div>
           <span className="text-xs font-normal text-white">
             {isCurrentUser
-              ? message?.messages[message?.messages.length - 1]?.content ||
+              ? message?.messages[message?.messages?.length - 1]?.content ||
                 "No messages yet"
-              : message?.messages[message?.messages.length - 1]?.content ||
+              : message?.messages[message?.messages?.length - 1]?.content ||
                 "No messages yet"}
           </span>
         </div>
@@ -83,7 +83,7 @@ function Messages() {
 
   console.log("length: ", messageState?.messages);
 
-  if (messageState.messages.length > 0 && filteredChat.length === 0) {
+  if (messageState.messages?.length > 0 && filteredChat?.length === 0) {
     console.log("msgChaat");
     setFilteredChat(messageState?.messages);
   }
@@ -106,12 +106,12 @@ function Messages() {
       const isCurrentUser = message?.participants[0]?._id === authState._id;
       console.log(
         "Xx: ",
-        message?.messages[message?.messages.length - 1]?.content
+        message?.messages[message?.messages?.length - 1]?.content
           .toLowerCase()
           .includes(inputValue)
       );
       if (isCurrentUser) {
-        return message?.messages[message?.messages.length - 1]?.content
+        return message?.messages[message?.messages?.length - 1]?.content
           .toLowerCase()
           .includes(inputValue);
       }
@@ -165,10 +165,10 @@ function Messages() {
             <span className="text-xs font-semibold text-gray-500"></span>
           </div>
         </div>
-        {/* {messageState?.messages.length > 0 ? (
+        {/* {messageState?.messages?.length > 0 ? (
           messageState?.messages?.map((message: any) => ( */}
-        {filteredChat.length > 0 ? (
-          filteredChat.map((message: any) => (
+        {filteredChat?.length > 0 ? (
+          filteredChat?.map((message: any) => (
             <MessageCard
               currentUser={authState}
               key={message._id}

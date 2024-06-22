@@ -125,14 +125,14 @@ function Video() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {postState.videos.length === 0 ? (
+        {postState.videos?.length === 0 ? (
           <>
-            {[...Array(4)].map((_, index) => (
+            {[...Array(4)]?.map((_, index) => (
               <SkeletonLoaderRecommendation key={index} />
             ))}
           </>
         ) : (
-          postState.videos.slice(0, 5).map((item: any) => {
+          postState.videos?.slice(0, 5)?.map((item: any) => {
             const hasLikeReacted = item.reactions.some(
               (reaction: any) =>
                 reaction.userID === authState._id &&
@@ -198,7 +198,7 @@ function Video() {
                         {
                           item.reactions?.filter(
                             (reaction: any) => reaction.reactionType === "like"
-                          ).length
+                          )?.length
                         }
                       </p>
                     </div>
@@ -215,7 +215,7 @@ function Video() {
                         {
                           item.reactions?.filter(
                             (reaction: any) => reaction.reactionType === "love"
-                          ).length
+                          )?.length
                         }
                       </p>
                     </div>
@@ -228,7 +228,7 @@ function Video() {
                         width={25}
                         height={25}
                       />
-                      <p className="text-white">{item.comments.length}</p>
+                      <p className="text-white">{item.comments?.length}</p>
                     </div>
                   </div>
                 </div>
