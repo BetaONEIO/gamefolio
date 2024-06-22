@@ -35,7 +35,9 @@ const SelectGame = () => {
     if (selectedGames.length < 3 || selectedGames.includes(name)) {
       // Toggle the selection of the game by name
       if (selectedGames.includes(name)) {
-        setSelectedGames(selectedGames.filter((gameName) => gameName !== name));
+        setSelectedGames(
+          selectedGames?.filter((gameName) => gameName !== name)
+        );
       } else {
         setSelectedGames([...selectedGames, name]);
       }

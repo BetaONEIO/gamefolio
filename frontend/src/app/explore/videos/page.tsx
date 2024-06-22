@@ -196,7 +196,7 @@ function Video() {
                       />
                       <p className="text-white">
                         {
-                          item.reactions.filter(
+                          item.reactions?.filter(
                             (reaction: any) => reaction.reactionType === "like"
                           ).length
                         }
@@ -213,7 +213,7 @@ function Video() {
                       />
                       <p className="text-white">
                         {
-                          item.reactions.filter(
+                          item.reactions?.filter(
                             (reaction: any) => reaction.reactionType === "love"
                           ).length
                         }

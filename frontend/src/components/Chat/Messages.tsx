@@ -102,7 +102,7 @@ function Messages() {
   console.log("filteredChat: ", filteredChat);
 
   const delayedSearch = debounce((inputValue: any) => {
-    const filtered = messageState?.messages.filter((message: any) => {
+    const filtered = messageState?.messages?.filter((message: any) => {
       const isCurrentUser = message?.participants[0]?._id === authState._id;
       console.log(
         "Xx: ",

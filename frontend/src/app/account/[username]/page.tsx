@@ -50,7 +50,7 @@ const MyVideosSection: React.FC<MyVideosSectionProps> = ({
   profileInfoState,
   handleVideoDetailOpen,
 }) => {
-  const userVideos = postState.videos.filter(
+  const userVideos = postState.videos?.filter(
     (post: any) =>
       post?.userID?.username === profileInfoState.profileUserInfo.username
   );
@@ -103,7 +103,7 @@ const ClipsSection: React.FC<ClipsProps> = ({
   profileInfoState,
   handleVideoDetailOpen,
 }) => {
-  const userVideos = clipState.videos.filter(
+  const userVideos = clipState.videos?.filter(
     (post: any) =>
       post?.userID?.username === profileInfoState.profileUserInfo.username
   );
@@ -254,7 +254,7 @@ function Page({ params }: any) {
   });
   const router = useRouter();
 
-  const userVideos = postState.videos.filter(
+  const userVideos = postState.videos?.filter(
     (post: any) => post?.userID?._id === profileInfoState?.profileUserInfo._id
   );
 

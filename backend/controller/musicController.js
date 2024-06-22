@@ -11,7 +11,7 @@ const getAllMusicFiles = () => {
 
     // Filter out non-music files (customize as per your file types)
     const musicFiles = files
-      .filter((file) => {
+      ?.filter((file) => {
         // Example: Filter for .mp3 files
         return file.endsWith(".mp3");
       })
@@ -33,12 +33,10 @@ const getAllMusic = async (req, res) => {
       .json({ data: musicFiles, message: "Music retrieved successfully" });
   } catch (error) {
     console.error("Error retrieving music:", error);
-    res
-      .status(500)
-      .json({
-        error: "Could not retrieve music.",
-        message: "Could not retrieve music",
-      });
+    res.status(500).json({
+      error: "Could not retrieve music.",
+      message: "Could not retrieve music",
+    });
   }
 };
 

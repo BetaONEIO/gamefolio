@@ -44,7 +44,7 @@ const MyVideosSection: React.FC<MyVideosSectionProps> = ({
   postState,
   handleVideoDetailOpen,
 }) => {
-  const userVideos = postState.videos.filter(
+  const userVideos = postState.videos?.filter(
     (post: any) => post?.userID?._id === authState._id
   );
 
@@ -248,11 +248,11 @@ function Account() {
     },
   ];
 
-  const achievedBadges = badges.filter(
+  const achievedBadges = badges?.filter(
     (badge) => totalCoinAmount >= badge.coins
   );
 
-  const userVideos = postState.videos.filter(
+  const userVideos = postState.videos?.filter(
     (post: any) => post?.userID?._id === authState._id
   );
 

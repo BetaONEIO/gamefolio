@@ -28,7 +28,7 @@ function User() {
   }, [userState.refresh]);
 
   const userVideos = userState.userList.map((user: any) => {
-    const videosForUser = postState.videos.filter(
+    const videosForUser = postState.videos?.filter(
       (post: any) => post?.userID?.username === user.username
     );
     return { username: user.username, videoCount: videosForUser.length };

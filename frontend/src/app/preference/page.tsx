@@ -38,7 +38,7 @@ const Preference = () => {
 
   const handleTabClick = (tabId: string) => {
     if (activeTabs.includes(tabId)) {
-      setActiveTabs(activeTabs.filter((id) => id !== tabId));
+      setActiveTabs(activeTabs?.filter((id) => id !== tabId));
     } else if (activeTabs.length < 10) {
       setActiveTabs([...activeTabs, tabId]);
     } else {
