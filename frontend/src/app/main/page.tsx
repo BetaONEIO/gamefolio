@@ -513,7 +513,7 @@ function Main() {
                       </div>
 
                       <video
-                        className="w-[710px] h-[185px] sm:h-[300px] my-2 sm:my-2"
+                        className="w-full h-[185px] sm:h-[300px] my-2 sm:my-2"
                         src={`${post.video}#t=0.1`}
                         style={{ aspectRatio: "16:9" }}
                         width={50}

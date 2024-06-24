@@ -83,8 +83,8 @@ function MyGamefolio() {
           </div>
 
           {/* Top Bar */}
-          <div className="relative flex justify-end mx-3 w-full">
-            <div className="w-72 h-11/12 border-2 border-[#1C2C2E] rounded-lg p-2 pt-6 bg-[#091619]">
+          <div className="flex justify-end absolute top-40 w-4/5 ">
+            <div className="w-72 h-4/5 border-2 border-[#1C2C2E] rounded-lg p-2 pt-6 bg-[#091619]">
               <div className="flex justify-center">
                 <Image
                   className="rounded-xl w-32 h-32 object-cover border-2 border-[#43DD4E]"
@@ -200,7 +200,7 @@ function MyGamefolio() {
               </p>
             </div>
 
-            <div className="w-8/12 justify-between items-center h-10  mt-24">
+            <div className="w-8/12 justify-between items-center h-10 mt-24">
               {/* header */}
               <div className="flex items-center">
                 <div className="flex justify-between items-center w-full sm:mx-2 lg:mx-4 relative">
@@ -236,13 +236,13 @@ function MyGamefolio() {
               {/* line */}
               <hr className="h-px border-0 bg-[#586769] my-2 mx-4" />
               {/* Profile */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4 h-full bg-[#091619]">
                 {userVideos.map((item: any) => {
                   return (
                     <div key={item.id} className="relative">
                       <video
                         src={item.video}
-                        className="w-96 sm:w-96 h-52 md:h-40  rounded-xl object-cover hover:opacity-80"
+                        className="w-96 sm:w-96 h-52 md:h-40 rounded-xl object-cover hover:opacity-80"
                         width={20}
                         height={20}
                         controls={false}
