@@ -21,7 +21,7 @@ import { fetchGameList } from "@/services/api";
 const SkeletonLoaderGames = () => (
   <div className="flex items-center">
     <div className="flex items-center overflow-scroll no-scrollbar gap-2">
-      {[...Array(5)].map((_, index) => (
+      {[...Array(5)]?.map((_, index) => (
         <div
           key={index}
           className="w-28 h-40 bg-gray-300 rounded-xl animate-pulse"
@@ -132,11 +132,11 @@ function Explore() {
 
   // if (postState.loading) return <Loading />;
 
-  const userVideos = userState.userList.map((user: any) => {
-    const videosForUser = postState.videos.filter(
+  const userVideos = userState.userList?.map((user: any) => {
+    const videosForUser = postState.videos?.filter(
       (post: any) => post?.userID?.username === user.username
     );
-    return { username: user.username, videoCount: videosForUser.length };
+    return { username: user.username, videoCount: videosForUser?.length };
   });
 
   const handleVideoMetadata = (
@@ -182,7 +182,7 @@ function Explore() {
 
   const removeGame = (gameNameToRemove: any) => {
     // Filter out the game named "Just Chatting"
-    const filteredGames = filteredOptions.filter(
+    const filteredGames = filteredOptions?.filter(
       (item: any) => item.name !== gameNameToRemove
     );
     return filteredGames;
@@ -218,12 +218,12 @@ function Explore() {
         <div className="flex items-center overflow-scroll no-scrollbar gap-2">
           {filteredGames?.length === 0 ? (
             <>
-              {[...Array(3)].map((_, index) => (
+              {[...Array(3)]?.map((_, index) => (
                 <SkeletonLoaderGames key={index} />
               ))}
             </>
           ) : (
-            filteredGames?.slice(0, 20).map((item: any) => (
+            filteredGames?.slice(0, 20)?.map((item: any) => (
               <div key={item.id}>
                 <div className="w-28 h-40">
                   <Image
@@ -265,12 +265,12 @@ function Explore() {
       <div className="flex items-center h-36 my-2 overflow-scroll no-scrollbar gap-2">
         {userState?.userList?.length === 0 ? (
           <>
-            {[...Array(6)].map((_, index) => (
+            {[...Array(6)]?.map((_, index) => (
               <SkeletonLoaderUserProfile key={index} />
             ))}
           </>
         ) : (
-          userState?.userList?.slice(0, 10).map((user: any) => (
+          userState?.userList?.slice(0, 10)?.map((user: any) => (
             <div
               key={user?.userID}
               className="flex flex-col border-2 border-[#1C2C2E] rounded-xl"
@@ -371,14 +371,14 @@ function Explore() {
       </div>
 
       <div className="flex items-center grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-2 overflow-x-auto no-scrollbar">
-        {postState.videos.length === 0 ? (
+        {postState.videos?.length === 0 ? (
           <>
-            {[...Array(4)].map((_, index) => (
+            {[...Array(4)]?.map((_, index) => (
               <SkeletonLoaderVideo key={index} />
             ))}
           </>
         ) : (
-          postState.videos.slice(0, 7).map((item: any) => (
+          postState.videos?.slice(0, 7)?.map((item: any) => (
             <div
               key={item?.userID}
               className="flex-shrink-0 flex flex-col gap-2 w-68 h-64 border-2 border-[#1C2C2E] rounded-xl mx-1 pb-2 cursor-pointer hover:opacity-80"
@@ -434,9 +434,9 @@ function Explore() {
                   />
                   <p className="text-white">
                     {
-                      item.reactions.filter(
+                      item.reactions?.filter(
                         (reaction: any) => reaction.reactionType === "like"
-                      ).length
+                      )?.length
                     }
                   </p>
                 </div>
@@ -450,9 +450,9 @@ function Explore() {
                   />
                   <p className="text-white">
                     {
-                      item.reactions.filter(
+                      item.reactions?.filter(
                         (reaction: any) => reaction.reactionType === "love"
-                      ).length
+                      )?.length
                     }
                   </p>
                 </div>
@@ -464,7 +464,7 @@ function Explore() {
                     width={25}
                     height={25}
                   />
-                  <p className="text-white">{item.comments.length}</p>
+                  <p className="text-white">{item.comments?.length}</p>
                 </div>
               </div>
             </div>

@@ -25,7 +25,7 @@ function ShareProfile({ handleCloseModal }: ShareProfileProps) {
   const [checkboxes, setCheckboxes] = useState(initialCheckboxes);
 
   const handleCheckboxClick = (id: any) => {
-    const updatedCheckboxes = checkboxes.map((checkbox) =>
+    const updatedCheckboxes = checkboxes?.map((checkbox) =>
       checkbox.id === id
         ? { ...checkbox, isChecked: !checkbox.isChecked }
         : checkbox
@@ -71,7 +71,7 @@ function ShareProfile({ handleCloseModal }: ShareProfileProps) {
             </div>
 
             <div className="flex flex-col w-full sm:min-h-[350px] lg:min-h-[500px] max-h-[400px] sm:max-h-[350px] lg:max-h-[500px] overflow-y-auto no-scrollbar">
-              {checkboxes.map((checkbox) => (
+              {checkboxes?.map((checkbox) => (
                 <div key={checkbox.id}>
                   <div className="flex items-center my-3">
                     <Image

@@ -50,12 +50,12 @@ const MyVideosSection: React.FC<MyVideosSectionProps> = ({
   profileInfoState,
   handleVideoDetailOpen,
 }) => {
-  const userVideos = postState.videos.filter(
+  const userVideos = postState.videos?.filter(
     (post: any) =>
       post?.userID?.username === profileInfoState.profileUserInfo.username
   );
 
-  if (userVideos.length === 0) {
+  if (userVideos?.length === 0) {
     return (
       <div className="flex justify-center">
         <p>No Videos to show</p>
@@ -66,7 +66,7 @@ const MyVideosSection: React.FC<MyVideosSectionProps> = ({
   return (
     <Suspense fallback={<Loading />}>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
-        {userVideos.map((item: any) => {
+        {userVideos?.map((item: any) => {
           return (
             <div key={item.id} className="relative">
               <video
@@ -103,12 +103,12 @@ const ClipsSection: React.FC<ClipsProps> = ({
   profileInfoState,
   handleVideoDetailOpen,
 }) => {
-  const userVideos = clipState.videos.filter(
+  const userVideos = clipState.videos?.filter(
     (post: any) =>
       post?.userID?.username === profileInfoState.profileUserInfo.username
   );
 
-  if (userVideos.length === 0) {
+  if (userVideos?.length === 0) {
     return (
       <div className="flex justify-center">
         <p>No Clips to show</p>
@@ -119,7 +119,7 @@ const ClipsSection: React.FC<ClipsProps> = ({
   return (
     <Suspense fallback={<Loading />}>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4">
-        {userVideos.map((clip: any) => (
+        {userVideos?.map((clip: any) => (
           <div
             key={clip.id}
             className="relative"
@@ -152,7 +152,7 @@ interface StoryProps {
 
 const StorySection: React.FC<StoryProps> = ({ data }) => {
   const [isStoryModalOpen, setIsStoryModalOpen] = useState(false);
-  if (data.length === 0) {
+  if (data?.length === 0) {
     return (
       <div className="flex justify-center">
         <p>No Stories to show</p>
@@ -197,7 +197,7 @@ const MyBookmarkSection: React.FC<MyBookmarkSectionProps> = ({
   data,
   handleVideoDetailOpen,
 }) => {
-  if (data.length === 0) {
+  if (data?.length === 0) {
     return (
       <div className="flex justify-center">
         <p>No Bookmarks to show</p>
@@ -254,7 +254,7 @@ function Page({ params }: any) {
   });
   const router = useRouter();
 
-  const userVideos = postState.videos.filter(
+  const userVideos = postState.videos?.filter(
     (post: any) => post?.userID?._id === profileInfoState?.profileUserInfo._id
   );
 
@@ -472,7 +472,7 @@ function Page({ params }: any) {
 
         <div style={sectionStyle} className="pt-4">
           <div
-            className="flex flex-col items-center lg:flex-row lg:justify-center gap-4 h-60 pl-8 mx-4 my-4"
+            className="disable-blur flex flex-col items-center lg:flex-row lg:justify-center gap-4 h-60 pl-8 mx-4 my-4"
             style={{
               background: `linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.9) 99%), ${backgroundImage} no-repeat center / cover`,
             }}
@@ -519,7 +519,7 @@ function Page({ params }: any) {
                     <span
                       className={`${leagueGothic.className} text-lg md:text-2xl font-normal text-white`}
                     >
-                      {userVideos.length || 0}
+                      {userVideos?.length || 0}
                     </span>
                     <span className="md:text-lg text-gray-400"> Posts</span>
                   </div>

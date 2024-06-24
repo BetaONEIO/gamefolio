@@ -33,11 +33,11 @@ function OtpVerification({ email, handleCloseModal }: ChangePasswordProps) {
   };
 
   const handleVerifyForgetOTP = (data: any) => {
-    if (email.length === 0 || email === "" || !email.includes("@")) {
+    if (email?.length === 0 || email === "" || !email.includes("@")) {
       toastError("No email found");
       return;
     }
-    if (otp.length !== 6 || otp === "") {
+    if (otp?.length !== 6 || otp === "") {
       toastError("Enter only 6 digit OTP");
       return;
     }

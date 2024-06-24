@@ -112,7 +112,7 @@ function Trending() {
   };
   const removeGame = (gameNameToRemove: any) => {
     // Filter out the game named "Just Chatting"
-    const filteredGames = filteredOptions.filter(
+    const filteredGames = filteredOptions?.filter(
       (item: any) => item.name !== gameNameToRemove
     );
     return filteredGames;
@@ -190,7 +190,7 @@ function Trending() {
   };
 
   const delayedSearch = debounce((inputValue: any) => {
-    const filtered = optionsForGame.filter((option: any) => {
+    const filtered = optionsForGame?.filter((option: any) => {
       return option?.name?.toLowerCase().includes(inputValue);
     });
     setFilteredOptions(filtered);
@@ -238,14 +238,14 @@ function Trending() {
                   modules={[EffectFade, Navigation, Pagination]}
                   className="mySwiper h-80 w-full rounded-lg"
                 >
-                  {/* {filteredOptions.length === 0 ? (
+                  {/* {filteredOptions?.length === 0 ? (
                     <>
-                      {[...Array(2)].map((_, index) => (
+                      {[...Array(2)]?.map((_, index) => (
                         <trendingLoader key={index} />
                       ))}
                     </>
                   ) : ( */}
-                  {filteredGames.slice(0, 3).map((item: any) => (
+                  {filteredGames?.slice(0, 3)?.map((item: any) => (
                     <SwiperSlide key={item.id}>
                       <Image
                         width={800}
@@ -294,14 +294,14 @@ function Trending() {
                   <span className="text-white font-bold">Upcoming Updates</span>
                 </div>
                 <div className="flex flex-col gap-4">
-                  {filteredGames.length === 0 ? (
+                  {filteredGames?.length === 0 ? (
                     <>
-                      {[...Array(10)].map((_, index) => (
+                      {[...Array(10)]?.map((_, index) => (
                         <SkeletonLoader key={index} />
                       ))}
                     </>
                   ) : (
-                    filteredGames.slice(0, 20).map((item: any) => (
+                    filteredGames?.slice(0, 20)?.map((item: any) => (
                       <div
                         key={item.id}
                         className="flex justify-between items-center"
@@ -357,7 +357,7 @@ function Trending() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {postState?.trendingVideos?.length === 0 ? (
                 <>
-                  {[...Array(4)].map((_, index) => (
+                  {[...Array(4)]?.map((_, index) => (
                     <SkeletonLoaderVideo key={index} />
                   ))}
                 </>
@@ -418,10 +418,10 @@ function Trending() {
                           />
                           <p className="text-white">
                             {
-                              item.reactions.filter(
+                              item.reactions?.filter(
                                 (reaction: any) =>
                                   reaction.reactionType === "like"
-                              ).length
+                              )?.length
                             }
                           </p>
                         </div>
@@ -436,10 +436,10 @@ function Trending() {
                           />
                           <p className="text-white">
                             {
-                              item.reactions.filter(
+                              item.reactions?.filter(
                                 (reaction: any) =>
                                   reaction.reactionType === "love"
-                              ).length
+                              )?.length
                             }
                           </p>
                         </div>
@@ -452,7 +452,7 @@ function Trending() {
                             width={25}
                             height={25}
                           />
-                          <p className="text-white">{item.comments.length}</p>
+                          <p className="text-white">{item.comments?.length}</p>
                         </div>
                       </div>
                     </div>

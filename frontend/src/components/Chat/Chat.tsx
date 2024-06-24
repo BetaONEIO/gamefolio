@@ -66,7 +66,7 @@ function Chat() {
     setValue("message", "");
   };
 
-  if (Object.keys(messageState?.chat).length === 0) {
+  if (Object.keys(messageState?.chat)?.length === 0) {
     return (
       <div className="flex h-full w-full items-center justify-center">
         <p className="text-white">No chat to show</p>
@@ -179,67 +179,74 @@ function Chat() {
             id="chatContainer"
             className="flex hideScrollBar  flex-col gap-4 p-2 h-full mb-80 overflow-scroll"
           >
-            {messageState?.chat?.messages.map((element: any, index: number) => {
-              // console.log("ELEMENT: ", element);
-              return (
-                <React.Fragment key={index}>
-                  {element?.sender?._id === authState._id ? (
-                    // Sender Message
-                    index === 0 ? (
-                      <div className="flex items-center justify-end gap-2">
-                        <div className="flex flex-col items-end gap-2">
-                          <div className="bg-[#62C860]  rounded-full  px-4 py-2 text-white">
-                            <span className="text-md">{element?.content}</span>
-                          </div>
-                          {element.type === "sharepost" && (
-                            <SharePostMessage postData={element.postID} />
-                          )}
+            {messageState?.chat?.messages?.map(
+              (element: any, index: number) => {
+                // console.log("ELEMENT: ", element);
+                return (
+                  <React.Fragment key={index}>
+                    {element?.sender?._id === authState._id ? (
+                      // Sender Message
+                      index === 0 ? (
+                        <div className="flex items-center justify-end gap-2">
+                          <div className="flex flex-col items-end gap-2">
+                            <div className="bg-[#62C860]  rounded-full  px-4 py-2 text-white">
+                              <span className="text-md">
+                                {element?.content}
+                              </span>
+                            </div>
+                            {element.type === "sharepost" && (
+                              <SharePostMessage postData={element.postID} />
+                            )}
 
-                          <span className="text-xs text-gray-100">
-                            {formatTime(element?.timestamp)}
-                          </span>
+                            <span className="text-xs text-gray-100">
+                              {formatTime(element?.timestamp)}
+                            </span>
+                          </div>
                         </div>
-                      </div>
+                      ) : (
+                        <div className="flex items-center justify-end gap-2">
+                          <div className="flex flex-col items-end gap-2">
+                            <div className="bg-[#62C860]  rounded-full  px-4 py-2 text-white">
+                              <span className="text-md">
+                                {element?.content}
+                              </span>
+                            </div>
+                            {element.type === "sharepost" && (
+                              <SharePostMessage postData={element.postID} />
+                            )}
+                            <span className="text-xs text-gray-100">
+                              {formatTime(element?.timestamp)}
+                            </span>
+                          </div>
+                        </div>
+                      )
                     ) : (
-                      <div className="flex items-center justify-end gap-2">
-                        <div className="flex flex-col items-end gap-2">
-                          <div className="bg-[#62C860]  rounded-full  px-4 py-2 text-white">
-                            <span className="text-md">{element?.content}</span>
+                      // Receiver Message
+
+                      <div className="flex items-center justify-start">
+                        <div className="ml-2 flex flex-col items-start gap-2  ">
+                          <div className="bg-black border border-gray-900  p-2 rounded-full  px-4 py-2 text-white">
+                            <span className="text-md">{element.content}</span>
                           </div>
                           {element.type === "sharepost" && (
                             <SharePostMessage postData={element.postID} />
                           )}
-                          <span className="text-xs text-gray-100">
+                          <span className="text-xs text-white">
+                            {" "}
                             {formatTime(element?.timestamp)}
                           </span>
                         </div>
                       </div>
-                    )
-                  ) : (
-                    // Receiver Message
-
-                    <div className="flex items-center justify-start">
-                      <div className="ml-2 flex flex-col items-start gap-2  ">
-                        <div className="bg-black border border-gray-900  p-2 rounded-full  px-4 py-2 text-white">
-                          <span className="text-md">{element.content}</span>
-                        </div>
-                        <SharePostMessage postData={element.postID} />
-                        <span className="text-xs text-white">
-                          {" "}
-                          {formatTime(element?.timestamp)}
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                </React.Fragment>
-              );
-            })}
+                    )}
+                  </React.Fragment>
+                );
+              }
+            )}
           </div>
         </div>
 
         {/* Bottom Input container */}
-
-        <div className="flex w-3/5 items-center  fixed  bottom-0 justify-around   bg-[#162423] px-4 ">
+        <div className="sticky bottom-0 z-40  flex justify-between items-center  gap-2 border-b border-gray-800 bg-[#162423] px-4 ">
           {/* Modals */}
           <Modal
             isOpen={modalState.isAttachmentViewOpen}
@@ -262,7 +269,7 @@ function Chat() {
               src={SVG.ChatFile}
             />
           </div>
-          <div className="flex-grow mx-3 my-2 relative flex items-center rounded-lg bg-[#162423] p-2 px-6">
+          <div className="flex-grow  mx-3 my-2 relative flex items-center rounded-lg bg-[#162423] p-2 px-6 ">
             <input
               type="text"
               className="flex-grow px-1 py-1 bg-[#162423] focus:outline-none"

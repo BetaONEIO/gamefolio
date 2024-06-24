@@ -28,7 +28,7 @@ function MyGamefolio() {
     isStoryModalOpen: false,
   });
 
-  const userVideos = postState.videos.filter(
+  const userVideos = postState.videos?.filter(
     (post: any) => post?.userID?._id === authState._id
   );
 
@@ -126,7 +126,7 @@ function MyGamefolio() {
               </div>
               <div className="flex items-center justify-between text-white">
                 <p>Posts</p>
-                <p>{userVideos.length || 0}</p>
+                <p>{userVideos?.length || 0}</p>
               </div>
               <hr className="h-px border-0 bg-[#586769] my-2 " />
               <div className="flex items-center justify-between text-white">
@@ -237,7 +237,7 @@ function MyGamefolio() {
               <hr className="h-px border-0 bg-[#586769] my-2 mx-4" />
               {/* Profile */}
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4 h-full bg-[#091619]">
-                {userVideos.map((item: any) => {
+                {userVideos?.map((item: any) => {
                   return (
                     <div key={item.id} className="relative">
                       <video

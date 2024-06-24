@@ -50,7 +50,7 @@ function SharePost({ postID, handleCloseModal }: SharePostProps) {
   console.log("postID: ", postID);
 
   const handleUserButtonClick = (id: any) => {
-    const updatedUsers = users.map((user) =>
+    const updatedUsers = users?.map((user) =>
       user.id === id ? { ...user, isSend: !user.isSend } : user
     );
     setUsers(updatedUsers);
@@ -146,17 +146,17 @@ function SharePost({ postID, handleCloseModal }: SharePostProps) {
               <input
                 className="w-full block p-2.5 outline-none bg-[#1C2C2E] "
                 placeholder="Search"
-                disabled={authState.follower.length === 0}
+                disabled={authState.follower?.length === 0}
               />
             </div>
 
             <div className="flex flex-col w-full sm:min-h-[350px] lg:min-h-[500px] max-h-[400px] sm:max-h-[350px] lg:max-h-[500px] overflow-y-auto no-scrollbar">
-              {authState.follower.length === 0 && (
+              {authState.follower?.length === 0 && (
                 <div className="flex items-center my-3 justify-center">
                   No Followers
                 </div>
               )}
-              {authState.follower.map((user: User) => (
+              {authState.follower?.map((user: User) => (
                 <div key={user.userID._id}>
                   <div className="flex items-center gap-2 my-3">
                     <Image

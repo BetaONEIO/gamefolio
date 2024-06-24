@@ -24,6 +24,10 @@ const registerUser = asyncHandler(async (req, res) => {
     username,
     email,
     password,
+    profilePicture:
+      "https://d2m0dxds81dlzy.cloudfront.net/0c3b16ab-236b-4cc6-9220-6636343aa8ee-default-profile-avatar.png",
+    coverPicture:
+      "https://d2m0dxds81dlzy.cloudfront.net/66dfb5a5-b198-41c4-b087-c7c4ac0f480a-banner.jpg",
     signupMethod: "email",
   });
 
@@ -36,6 +40,8 @@ const registerUser = asyncHandler(async (req, res) => {
       name: user.name,
       username: user.username,
       email: user.email,
+      profilePicture: user.profilePicture,
+      coverPicture: user.coverPicture,
       signupMethod: user.signupMethod,
       message: "Successfully Sign Up",
     });
@@ -410,6 +416,7 @@ const getProfileInfo = asyncHandler(async (req, res) => {
       following: user.following,
       block: user.block,
       report: user.report,
+      coins: user.coins,
       coin: user.coins,
     });
   } else {
