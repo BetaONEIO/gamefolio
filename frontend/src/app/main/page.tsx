@@ -178,8 +178,6 @@ function Main() {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
   };
 
-  console.log("helll", authState.notification);
-
   const handleCreateBookmark = async (postID: any) => {
     const payload = {
       userID: authState._id,
@@ -680,73 +678,85 @@ function Main() {
                   </span>
                 </div>
               </div>
-              {authState?.notification?.length == 0 ? (
+              {loading ? (
                 <>
                   {[...Array(5)]?.map((_, index) => (
-                    <PostLoader key={index} />
+                    <NotificationSkeletonLoader key={index} />
                   ))}
                 </>
               ) : (
-                authState?.notification?.map((notification: any) => (
-                  <div
-                    key={notification._id}
-                    className={`flex items-center gap-0.2 cursor-pointer hover:opacity-80 hover:bg-[#162423] p-2 ${
-                      notification.isView === false
-                        ? "bg-[#162423]"
-                        : "bg-[#091619]"
-                    }`}
-                    onClick={() =>
-                      handleUpdateNotification(authState._id, notification._id)
-                    }
-                  >
-                    <Image
-                      className="w-10 h-10 rounded-lg"
-                      src={notification.oppositionID.profilePicture}
-                      alt="picture"
-                      width={12}
-                      height={12}
-                      sizes="100vw"
-                    />
-                    <div className="flex flex-col gap-2">
-                      <div className="flex items-center gap-2 mx-2">
-                        <p
-                          className={`w-28 text-xs text-white ${
-                            notification.isView === false
-                              ? "font-bold"
-                              : "font-semibold"
-                          }`}
-                        >
-                          {notification.oppositionID.name?.length > 12
-                            ? `${notification.oppositionID.name.substring(
-                                0,
-                                10
-                              )}`
-                            : notification.oppositionID.name}
-                        </p>
-                        <p
-                          className={`w-32 text-[0.60rem] text-gray-400 ${
-                            notification.isView === false
-                              ? "font-bold"
-                              : "font-semibold"
-                          }`}
-                        >
-                          {convertDateFormat(notification.date)}
-                        </p>
-                      </div>
-                      <span
-                        className={`text-xs text-white mx-2 ${
-                          notification.isView === false
-                            ? "font-bold"
-                            : "font-normal"
-                        }`}
-                      >
-                        {getNotificationMessage(notification.notificationType)}
-                      </span>
+                <>
+                  {authState?.notification?.length === 0 ? (
+                    <div className="flex h-full justify-center items-center text-gray-500">
+                      No data available
                     </div>
-                  </div>
-                ))
+                  ) : (
+                    authState?.notification?.map((notification: any) => (
+                      <div
+                        key={notification._id}
+                        className={`flex items-center gap-0.2 cursor-pointer hover:opacity-80 hover:bg-[#162423] p-2 ${
+                          notification.isView === false
+                            ? "bg-[#162423]"
+                            : "bg-[#091619]"
+                        }`}
+                        onClick={() =>
+                          handleUpdateNotification(
+                            authState._id,
+                            notification._id
+                          )
+                        }
+                      >
+                        <Image
+                          className="w-10 h-10 rounded-lg"
+                          src={notification.oppositionID.profilePicture}
+                          alt="picture"
+                          width={12}
+                          height={12}
+                          sizes="100vw"
+                        />
+                        <div className="flex flex-col gap-2">
+                          <div className="flex items-center gap-2 mx-2">
+                            <p
+                              className={`w-28 text-xs text-white ${
+                                notification.isView === false
+                                  ? "font-bold"
+                                  : "font-semibold"
+                              }`}
+                            >
+                              {notification.oppositionID.name?.length > 12
+                                ? `${notification.oppositionID.name.substring(
+                                    0,
+                                    10
+                                  )}`
+                                : notification.oppositionID.name}
+                            </p>
+                            <p
+                              className={`w-32 text-[0.60rem] text-gray-400 ${
+                                notification.isView === false
+                                  ? "font-bold"
+                                  : "font-semibold"
+                              }`}
+                            >
+                              {convertDateFormat(notification.date)}
+                            </p>
+                          </div>
+                          <span
+                            className={`text-xs text-white mx-2 ${
+                              notification.isView === false
+                                ? "font-bold"
+                                : "font-normal"
+                            }`}
+                          >
+                            {getNotificationMessage(
+                              notification.notificationType
+                            )}
+                          </span>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </>
               )}
-              {loading && <NotificationSkeletonLoader />}
             </div>
           </div>
         </div>

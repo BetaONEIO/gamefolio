@@ -68,7 +68,7 @@ function MyGamefolio() {
   return (
     <Layout>
       <Suspense fallback={<Loading />}>
-        <div>
+        <div className="bg-[#091619] min-h-screen">
           <div className="relative w-full h-80">
             <Image
               className="w-full h-80 object-cover"
@@ -83,7 +83,7 @@ function MyGamefolio() {
           </div>
 
           {/* Top Bar */}
-          <div className="flex justify-end absolute top-40 w-4/5 ">
+          <div className="flex justify-end absolute top-40 w-4/5">
             <div className="w-72 h-4/5 border-2 border-[#1C2C2E] rounded-lg p-2 pt-6 bg-[#091619]">
               <div className="flex justify-center">
                 <Image
@@ -296,6 +296,7 @@ function MyGamefolio() {
           followingData={authState?.following}
         />
       </Modal>
+
       <Modal
         isOpen={modalState.isVideoDetailOpen}
         handleClose={() => handleModalToggle("isVideoDetailOpen")}
