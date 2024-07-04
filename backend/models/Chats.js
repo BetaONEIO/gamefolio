@@ -23,7 +23,7 @@ const chatSchema = new mongoose.Schema({
       },
       type: {
         type: String,
-        enum: ["sharepost", "initiated"],
+        enum: ["galleryvideo", "sharepost", "initiated"],
       },
       postID: {
         type: mongoose.Schema.Types.ObjectId,
@@ -33,6 +33,9 @@ const chatSchema = new mongoose.Schema({
         },
       },
       content: {
+        type: String,
+      },
+      video: {
         type: String,
       },
       timestamp: {

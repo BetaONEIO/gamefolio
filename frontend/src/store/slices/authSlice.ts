@@ -142,6 +142,46 @@ export function login(params: ActionParams) {
   };
 }
 
+export function verifyEmailLink(params: ActionParams) {
+  return async () => {
+    const {
+      successCallback = () => {},
+      errorCallback = () => {},
+      payload,
+    } = params;
+
+    dispatch(slice.actions.startLoading());
+
+    const options: APIParams = {
+      method: "POST",
+      endpoint: PATH.auth.verifyEmail,
+      payload: payload,
+      isToken: false,
+    };
+
+    try {
+      const [ok, response] = await API(options);
+
+      if (!ok && response.message)
+        if (!ok || !response) return errorCallback(response.message);
+
+      if (response) {
+        setToLocal("@token", response.token);
+        setToLocal("@userData", response);
+        dispatch(slice.actions.getUser(response));
+        dispatch(slice.actions.getToken(response.token));
+      }
+
+      successCallback(response);
+    } catch (error) {
+      if (error) return errorCallback("Please check your internet");
+      if (error) console.log(error);
+    } finally {
+      dispatch(slice.actions.stopLoading());
+    }
+  };
+}
+
 export function createPreferences(params: ActionParams) {
   const {
     successCallback = () => {},

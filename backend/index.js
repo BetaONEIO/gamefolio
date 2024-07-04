@@ -5,6 +5,7 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
 dotenv.config();
+const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const postRoutes = require("./routes/postRoutes");
 const clipsRoutes = require("./routes/clipsRoutes");
@@ -91,9 +92,12 @@ app.get("/api/store-token", (req, res) => {
   res.redirect(`${process.env.BASE_URL}/main`);
 });
 
-app.get("/main", (req, res) => {
-  res.send("Successfully authenticated");
-});
+// app.get("/main", (req, res) => {
+//   res.send("Successfully authenticated");
+// });
+
+// Auth API
+app.use("/api/auth", authRoutes);
 
 // User API
 app.use("/api/user", userRoutes);

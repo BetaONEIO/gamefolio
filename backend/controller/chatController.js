@@ -27,6 +27,7 @@ exports.createChatMessage = async (req, res) => {
       type,
       postID,
       content,
+      video,
       roomID,
       isSocket = true,
     } = req.body;
@@ -47,6 +48,7 @@ exports.createChatMessage = async (req, res) => {
         type,
         postID,
         content,
+        video: video,
       });
       updatedChat = await chat.save();
       theChat = await Chats.findById(updatedChat._id).populate("participants");
@@ -60,6 +62,7 @@ exports.createChatMessage = async (req, res) => {
             sender,
             type,
             postID,
+            video,
             content: JSON.stringify(content),
           },
         ],

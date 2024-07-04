@@ -2,6 +2,7 @@
 import Loading from "@/app/chat/loading";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
+import { useClientMediaQuery } from "@/hooks/useClientMediaQuery";
 import { dispatch, useSelector } from "@/store";
 import { getUserMessages, setSelectedChat } from "@/store/slices/chatSlice";
 import { useEffect, useState } from "react";
@@ -82,6 +83,7 @@ function Messages() {
   }, [authState._id, messageState.chat]);
 
   console.log("length: ", messageState?.messages);
+  const isMobile = useClientMediaQuery("(max-width: 600px)");
 
   if (messageState.messages?.length > 0 && filteredChat?.length === 0) {
     console.log("msgChaat");
@@ -124,6 +126,8 @@ function Messages() {
     setSearchText(inputValue);
     delayedSearch(inputValue);
   };
+  console.trace({ isMobile });
+  console.trace(messageState.chat);
 
   if (messageState?.loading)
     return (
@@ -135,7 +139,13 @@ function Messages() {
     );
 
   return (
-    <div className=" flex w-full flex-col gap-4 bg-[#091619] border-r border-gray-800  md:w-4/5 lg:w-2/5">
+    <div
+      className={
+        isMobile && Object.keys(messageState.chat).length >= 0
+          ? ` hidden`
+          : `flex w-full flex-col gap-4 bg-[#091619] border-r border-gray-800  md:w-4/5 lg:w-2/5`
+      }
+    >
       <div className="hideScrollBar flex flex-col    overflow-y-auto">
         <div className="flex items-center gap-2 border-b border-gray-800 p-4 cursor-pointer hover:bg-[#1C2C2E]">
           <div>
