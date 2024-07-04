@@ -1,16 +1,6 @@
 "use client";
-import { Suspense, useEffect, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
-import Followers from "@/components/Modals/Followers";
-import Following from "@/components/Modals/Following";
-import Modal from "@/components/Modals/Modal";
-import MoreOptions from "@/components/Modals/MoreOptions";
-import VideoDetails from "@/components/Modals/VideoDetails";
-import { leagueGothic } from "@/font/font";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import { getAllClipVideos } from "@/store/slices/clipSlice";
@@ -23,6 +13,10 @@ import { getCurrentUserStories } from "@/store/slices/storySlice";
 import { getAllUsers, getProfileInfo } from "@/store/slices/userSlice";
 import { copyToClipboard } from "@/utils/helpers";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 import Loading from "./loading";
 
 interface MyVideosSectionProps {
@@ -267,14 +261,8 @@ function MyGamefolio({ params }: any) {
     }));
   };
 
-  function handlePageRefresh(): void {
-    throw new Error("Function not implemented.");
-  }
-
-  const backgroundImage = `url(${profileInfoState?.profileUserInfo?.coverPicture})`;
-
   return (
-    <div className="relative ">
+    <div className="relative">
       <div className="relative w-full h-80">
         <Image
           className="w-full h-80 object-cover"
@@ -282,9 +270,13 @@ function MyGamefolio({ params }: any) {
           layout="fill"
           alt="cover photo"
         />
+        <div
+          className="absolute inset-0 bg-gradient-to-t from-[#091619] via-transparent to-transparent"
+          style={{ opacity: 1 }}
+        ></div>
       </div>
 
-      <div className="absolute top-40 flex justify-center w-full">
+      <div className="absolute top-40 flex justify-center w-full ">
         <div style={{ backgroundColor: "rgba(9, 22, 25, 0.6)" }}>
           <div className="flex flex-col items-center lg:flex-row lg:justify-center gap-4 h-60 pl-8 mx-4 my-2">
             <div className="w-32 h-32">
@@ -371,8 +363,8 @@ function MyGamefolio({ params }: any) {
             </div>
           </div>
 
-          <div className="justify-center w-full h-96">
-            <div key={authState?.userID} className="flex flex-col gap-4 mx-8">
+          <div className="justify-center w-full h-full">
+            <div key={authState?.userID} className="flex flex-col gap-4 mx-8 ">
               <div className="h-10 w-full flex justify-around items-center">
                 <div>
                   <div

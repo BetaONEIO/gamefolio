@@ -649,6 +649,7 @@ const getUserBookmark = async (req, res) => {
     });
   }
 };
+
 const removeBookmark = async (req, res) => {
   try {
     const { postID, userID, authUserID } = req.body;
