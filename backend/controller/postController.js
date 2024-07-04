@@ -1,6 +1,7 @@
 const Posts = require("../models/Posts.js"); // Import your Mongoose model
 const User = require("../models/Users.js");
 const jwt = require("jsonwebtoken");
+const generateUniqueLink = require("../utils/generateLink.js");
 
 // Create a new post
 const postVideo = async (req, res) => {
@@ -13,6 +14,7 @@ const postVideo = async (req, res) => {
       description,
       game,
       music,
+      url: generateUniqueLink(),
     });
 
     const post = await newPost.save();
@@ -30,6 +32,39 @@ const postVideo = async (req, res) => {
     res.status(500).json({
       message: "Could not create the post.",
       error: "Could not create the post.",
+    });
+  }
+};
+
+const getVideoLink = async (req, res) => {
+  const { videoUrl } = req.body;
+  console.log("videolink", videoUrl);
+  try {
+    // Find the post by ID
+    const post = await Posts.findOne({ url: videoUrl })
+      .populate("userID")
+      .populate({ path: "comments.userID" });
+
+    // Check if the post exists
+    if (!post) {
+      return res.status(404).json({
+        error: "Post not found.",
+        message: "No post found with the provided ID.",
+      });
+    }
+
+    // Assuming the post has a video link, adjust this according to your schema
+    const videoLink = post.video;
+
+    res.status(200).json({
+      data: videoLink,
+      message: "Successfully retrieved video link.",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Could not retrieve post.",
+      message: "There was an error retrieving the post.",
     });
   }
 };
@@ -683,4 +718,5 @@ module.exports = {
   addBookmark,
   getUserBookmark,
   removeBookmark,
+  getVideoLink,
 };

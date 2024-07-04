@@ -32,30 +32,32 @@ const SkeletonLoaderGames = () => (
 );
 
 const SkeletonLoaderUserProfile = () => (
-  <div className="flex flex-col h-full border-2 border-gray-300 rounded-xl p-2 animate-pulse">
-    <div className="flex items-center gap-4 mb-2">
-      <div className="rounded-xl w-10 h-10 mt-2 ml-2 bg-gray-300"></div>
-      <div className="flex flex-col gap-2">
-        <div className="h-3 w-52 bg-gray-300 rounded"></div>
-        <div className="h-3 w-52 bg-gray-300 rounded"></div>
+  <div className="flex flex-col border-2 border-[#1C2C2E] rounded-xl animate-pulse">
+    <div className="flex items-center gap-4 mb-2 p-2">
+      <div className="rounded-xl w-12 h-12 bg-gray-700"></div>
+      <div className="flex flex-col space-y-2">
+        <div className="w-24 h-4 bg-gray-700 rounded"></div>
+        <div className="w-32 h-4 bg-gray-700 rounded"></div>
       </div>
     </div>
-    <div className="h-px bg-gray-300 w-full rounded-full my-2"></div>
-    <div className="flex flex-col flex-wrap justify-center text-center lg:justify-start lg:text-start">
+
+    <hr className="h-px border-0 bg-[#1C2C2E] w-full rounded-full my-2" />
+
+    <div className="flex flex-col flex-wrap justify-center text-center lg:justify-start lg:text-start p-2">
       <div className="flex items-center justify-center gap-1">
-        <div className="flex flex-col">
-          <div className="h-6 w-10 bg-gray-300 rounded"></div>
-          <div className="h-4 w-12 bg-gray-300 rounded"></div>
+        <div className="flex flex-col items-center">
+          <div className="w-10 h-6 bg-gray-700 rounded"></div>
+          <div className="w-14 h-4 bg-gray-700 rounded mt-1"></div>
         </div>
-        <div className="border-r border-gray-300 h-12 rounded-full"></div>
-        <div className="flex flex-col">
-          <div className="h-6 w-10 bg-gray-300 rounded"></div>
-          <div className="h-4 w-12 bg-gray-300 rounded"></div>
+        <div className="border-r border-[#1C2C2E] h-12 rounded-full mx-2"></div>
+        <div className="flex flex-col items-center">
+          <div className="w-10 h-6 bg-gray-700 rounded"></div>
+          <div className="w-14 h-4 bg-gray-700 rounded mt-1"></div>
         </div>
-        <div className="border-r border-gray-300 h-12 rounded-full"></div>
-        <div className="flex flex-col">
-          <div className="h-6 w-10 bg-gray-300 rounded"></div>
-          <div className="h-4 w-12 bg-gray-300 rounded"></div>
+        <div className="border-r border-[#1C2C2E] h-12 rounded-full mx-2"></div>
+        <div className="flex flex-col items-center">
+          <div className="w-10 h-6 bg-gray-700 rounded"></div>
+          <div className="w-14 h-4 bg-gray-700 rounded mt-1"></div>
         </div>
       </div>
     </div>
@@ -378,7 +380,7 @@ function Explore() {
             ))}
           </>
         ) : (
-          postState.videos?.slice(0, 7)?.map((item: any) => (
+          postState.videos?.slice(0, 4)?.map((item: any) => (
             <div
               key={item?.userID}
               className="flex-shrink-0 flex flex-col gap-2 w-68 h-64 border-2 border-[#1C2C2E] rounded-xl mx-1 pb-2 cursor-pointer hover:opacity-80"

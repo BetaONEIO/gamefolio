@@ -68,7 +68,7 @@ function MyGamefolio() {
   return (
     <Layout>
       <Suspense fallback={<Loading />}>
-        <div className="bg-[#091619] min-h-screen">
+        <div className="">
           <div className="relative w-full h-80">
             <Image
               className="w-full h-80 object-cover"
@@ -84,7 +84,7 @@ function MyGamefolio() {
 
           {/* Top Bar */}
           <div className="flex justify-end absolute top-40 w-4/5">
-            <div className="w-72 h-4/5 border-2 border-[#1C2C2E] rounded-lg p-2 pt-6 bg-[#091619]">
+            <div className="w-72 h-fit border-2 border-[#1C2C2E] rounded-lg p-2 pt-6 bg-[#091619]">
               <div className="flex justify-center">
                 <Image
                   className="rounded-xl w-32 h-32 object-cover border-2 border-[#43DD4E]"
@@ -236,7 +236,7 @@ function MyGamefolio() {
               {/* line */}
               <hr className="h-px border-0 bg-[#586769] my-2 mx-4" />
               {/* Profile */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4 h-full bg-[#091619]">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4 h-full">
                 {userVideos?.map((item: any) => {
                   return (
                     <div key={item.id} className="relative">

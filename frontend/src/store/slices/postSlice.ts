@@ -26,6 +26,7 @@ export type InitialState = {
   bookmarks: Array<any>;
   allMusic: Array<any>;
   refresh: boolean;
+  customVideo: string;
 };
 
 const initialState: InitialState = {
@@ -44,6 +45,7 @@ const initialState: InitialState = {
   bookmarks: [],
   allMusic: [],
   refresh: false,
+  customVideo: "",
 };
 
 export const slice = createSlice({
@@ -98,6 +100,9 @@ export const slice = createSlice({
     refreshPage(state) {
       state.refresh = state.refresh ? false : true;
     },
+    setCustomVideoURL(state, action) {
+      state.customVideo = action.payload;
+    },
   },
 });
 
@@ -131,6 +136,36 @@ export function postVideo(params: ActionParams) {
       if (!ok || !response) return errorCallback(response.message);
 
       successCallback(response.message);
+    } catch (error) {
+      errorCallback();
+    } finally {
+      dispatch(slice.actions.stopLoading());
+    }
+  };
+}
+
+export function getVideoLink(params: ActionParams) {
+  return async () => {
+    const {
+      successCallback = () => {},
+      errorCallback = () => {},
+      payload,
+    } = params;
+
+    dispatch(slice.actions.startLoading());
+
+    const options: APIParams = {
+      method: "POST",
+      endpoint: PATH.post.getVideoLink,
+      payload: payload,
+      isToken: false,
+    };
+    try {
+      const [ok, response] = await API(options);
+      if (!ok || !response) return errorCallback(response.message);
+
+      successCallback(response.message);
+      dispatch(slice.actions.setCustomVideoURL(response.data));
     } catch (error) {
       errorCallback();
     } finally {

@@ -49,6 +49,7 @@ export const PATH = {
     getFollowingPosts: "post/video/following/get",
     delete: "post/video/delete",
     getUpdatedComments: "post/comments/get",
+    getVideoLink: "post/getVideoLink/get",
   },
 
   clip: {
