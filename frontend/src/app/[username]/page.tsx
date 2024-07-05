@@ -1,16 +1,6 @@
 "use client";
-import { Suspense, useEffect, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
-import Followers from "@/components/Modals/Followers";
-import Following from "@/components/Modals/Following";
-import Modal from "@/components/Modals/Modal";
-import MoreOptions from "@/components/Modals/MoreOptions";
-import VideoDetails from "@/components/Modals/VideoDetails";
-import { leagueGothic } from "@/font/font";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import { getAllClipVideos } from "@/store/slices/clipSlice";
@@ -23,12 +13,16 @@ import { getCurrentUserStories } from "@/store/slices/storySlice";
 import { getAllUsers, getProfileInfo } from "@/store/slices/userSlice";
 import { copyToClipboard } from "@/utils/helpers";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 import Loading from "./loading";
 
 interface MyVideosSectionProps {
-  authState: any; // Add authState as a prop
-  postState: any; // Add postState as a prop
-  profileInfoState: any; // Add profileInfoState as a prop
+  authState: any;
+  postState: any;
+  profileInfoState: any;
   handleVideoDetailOpen: (postID: any, detailedPost: any) => void;
 }
 
@@ -75,9 +69,9 @@ const MyVideosSection: React.FC<MyVideosSectionProps> = ({
 };
 
 interface ClipsProps {
-  authState: any; // Add authState as a prop
-  clipState: any; // Add postState as a prop
-  profileInfoState: any; // Add profileInfoState as a prop
+  authState: any;
+  clipState: any;
+  profileInfoState: any;
   handleVideoDetailOpen: (postID: any, detailedPost: any) => void;
 }
 
@@ -124,7 +118,6 @@ const ClipsSection: React.FC<ClipsProps> = ({
 
 interface StoryProps {
   data: Array<any>;
-  // isStoryModalOpen: () => void;
 }
 
 const StorySection: React.FC<StoryProps> = ({ data }) => {
@@ -268,103 +261,24 @@ function MyGamefolio({ params }: any) {
     }));
   };
 
-  function handlePageRefresh(): void {
-    throw new Error("Function not implemented.");
-  }
-
-  const backgroundImage = `url(${profileInfoState?.profileUserInfo?.coverPicture})`;
-
-  // Function to handle search and navigation to user profile
-  // const handleSearch = (username: any) => {
-  //   setSearchUsername(username);
-  //   const user = profileInfoState.find(
-  //     (user: any) => user.username === username
-  //   );
-  //   if (user) {
-  //     // If user found, navigate to their profile
-  //     router.push(`/account/${username}`);
-  //   }
-  // };
-
   return (
-    <>
-      <div className="z-50 flex justify-between items-center py-4 bg-[#091619] sticky top-0 w-full px-4 sm:px-2 lg:px-4">
+    <div className="relative">
+      <div className="relative w-full h-80">
+        <Image
+          className="w-full h-80 object-cover"
+          src={authState.coverPicture}
+          layout="fill"
+          alt="cover photo"
+        />
         <div
-          className={`${leagueGothic.className} text-2xl sm:text-4xl lg:text-4xl text-white`}
-        >
-          PORTFOLIO
-        </div>
-
-        <div className="w-2/3 sm:w-1/3 lg:w-2/5 bg-[#1C2C2E] ml-16 flex gap-2 p-2 sm:p-3 items-center rounded-lg overflow-hidden">
-          <Image src={SVG.Search} alt="logo" width={25} height={25} />
-          <input
-            className="bg-[#1C2C2E] outline-none text-white flex-grow text-sm sm:text-base"
-            placeholder="Search"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <button onClick={handleSearch}>Search</button>
-        </div>
-
-        <div className="flex items-center my-3 mx-2 gap-2">
-          <Link href="">
-            <Image
-              className="cursor-pointer hover:opacity-60"
-              src={SVG.Notification}
-              alt="Setting"
-              width={24}
-              height={24}
-            />
-          </Link>
-          <Link href="/account/my-folio">
-            <div className="flex items-center p-1 mr-2 rounded-full bg-[#162423]">
-              <Image
-                className="mr-2"
-                src={SVG.GGcoin}
-                alt="GGcoin"
-                width={30}
-                height={30}
-              />
-              <p className="font-semibold pr-2 text-white">GG COIN</p>
-            </div>
-          </Link>
-
-          <Link href="">
-            <div className="flex items-center p-1 mr-2 rounded-full bg-[#162423]">
-              <Image
-                className="w-9 h-8"
-                src={IMAGES.Badges}
-                alt="GGcoin"
-                width={30}
-                height={30}
-              />
-              <p className="font-semibold pr-2 text-white">Badges</p>
-            </div>
-          </Link>
-          <Link href="/account/settings/edit-profile">
-            <Image
-              className="cursor-pointer hover:opacity-60"
-              src={SVG.Setting}
-              alt="Setting"
-              width={24}
-              height={24}
-            />
-          </Link>
-        </div>
+          className="absolute inset-0 bg-gradient-to-t from-[#091619] via-transparent to-transparent"
+          style={{ opacity: 1 }}
+        ></div>
       </div>
 
-      <div className="flex justify-center w-full bg-[#091619]">
-        <div>
-          <div
-            className="flex flex-col items-center lg:flex-row lg:justify-center gap-4 h-60 pl-8 mx-4 my-2"
-            style={{
-              background: `linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.9) 99%), ${backgroundImage}`,
-              backgroundRepeat: "no-repeat",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }}
-            key={profileInfoState?.profileUserInfo?._id}
-          >
+      <div className="absolute top-40 flex justify-center w-full ">
+        <div style={{ backgroundColor: "rgba(9, 22, 25, 0.6)" }}>
+          <div className="flex flex-col items-center lg:flex-row lg:justify-center gap-4 h-60 pl-8 mx-4 my-2">
             <div className="w-32 h-32">
               <Image
                 className="rounded-xl w-32 h-32 object-cover border-2 border-[#43DD4E]"
@@ -403,37 +317,31 @@ function MyGamefolio({ params }: any) {
 
                 <div className="flex h-8 items-center justify-start md:gap-8">
                   <div className="flex items-center gap-2 ">
-                    <span
-                      className={`${leagueGothic.className} text-lg md:text-2xl font-normal text-white`}
-                    >
+                    <span className="text-lg md:text-2xl font-normal text-white">
                       {userVideos?.length || 0}
                     </span>
                     <span className="md:text-lg text-gray-400">Posts</span>
                   </div>
 
-                  {/* Vertical divider */}
                   <div className="border-r border-gray-700 h-full rounded-full mx-2"></div>
+
                   <div
                     className="flex items-center gap-2 hover:opacity-80 cursor-pointer"
                     onClick={() => handleModalToggle("isFollowerModalOpen")}
                   >
-                    <span
-                      className={`${leagueGothic.className} text-lg md:text-2xl font-normal text-white`}
-                    >
+                    <span className="text-lg md:text-2xl font-normal text-white">
                       {profileInfoState?.profileUserInfo?.follower?.length || 0}
                     </span>
                     <span className="md:text-lg text-gray-400">Followers</span>
                   </div>
-                  {/* Vertical divider */}
-                  <div className="border-r border-gray-700 h-full  rounded-full mx-2"></div>
+
+                  <div className="border-r border-gray-700 h-full rounded-full mx-2"></div>
 
                   <div
                     className="flex items-center gap-2 hover:opacity-80 cursor-pointer"
                     onClick={() => handleModalToggle("isFollowingModalOpen")}
                   >
-                    <span
-                      className={`${leagueGothic.className} text-lg md:text-2xl font-normal text-white`}
-                    >
+                    <span className="text-lg md:text-2xl font-normal text-white">
                       {profileInfoState?.profileUserInfo?.following?.length ||
                         0}
                     </span>
@@ -448,16 +356,15 @@ function MyGamefolio({ params }: any) {
                   key={authState._id}
                 >
                   <button className="font-bold w-64 h-10 bg-[#37C535] text-white text-center py-[10px] px-[20px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]">
-                    Follow on gamefolio
+                    Follow on Gamefolio
                   </button>
                 </Link>
               </div>
             </div>
           </div>
 
-          <div className="justify-center w-full h-96">
-            {/* Profile */}
-            <div key={authState?.userID} className="flex flex-col gap-4 mx-8">
+          <div className="justify-center w-full h-full">
+            <div key={authState?.userID} className="flex flex-col gap-4 mx-8 ">
               <div className="h-10 w-full flex justify-around items-center">
                 <div>
                   <div
@@ -501,7 +408,7 @@ function MyGamefolio({ params }: any) {
                           : "opacity-100"
                       }`}
                       src={SVG.Clips}
-                      alt="My clips"
+                      alt="My Clips"
                       width={24}
                       height={24}
                     />
@@ -514,20 +421,20 @@ function MyGamefolio({ params }: any) {
                 <div>
                   <div
                     className={`flex justify-center w-16 gap-2 my-6 cursor-pointer ${
-                      selectedSection === "videos"
+                      selectedSection === "story"
                         ? "text-white"
                         : "text-gray-500"
                     }`}
                     onClick={() => setSelectedSection("story")}
                   >
                     <Image
-                      className={` ${
+                      className={`${
                         selectedSection !== "story"
                           ? "opacity-40"
                           : "opacity-100"
                       }`}
                       src={SVG.Story}
-                      alt="My story"
+                      alt="My Story"
                       width={24}
                       height={24}
                     />
@@ -553,7 +460,7 @@ function MyGamefolio({ params }: any) {
                           : "opacity-100"
                       }`}
                       src={SVG.AccountMyBookmarked}
-                      alt="My bookmarked"
+                      alt="My Bookmarked"
                       width={24}
                       height={24}
                     />
@@ -591,64 +498,9 @@ function MyGamefolio({ params }: any) {
               </div>
             </div>
           </div>
-
-          {/* <hr className="border-t border-[#162423]" />
-
-          <div className="flex justify-center items-center gap-8 mt-4">
-            <Image src={SVG.Facebook1} alt="Facebook" width={40} height={40} />
-            <Image src={SVG.Instagram} alt="Facebook" width={40} height={40} />
-            <Image src={SVG.X} alt="Facebook" width={40} height={40} />
-            <Image
-              src={SVG.GamefolioCoin}
-              alt="Facebook"
-              width={40}
-              height={40}
-            />
-          </div> */}
-
-          <Modal
-            isOpen={modalState.isShareModalOpen}
-            handleClose={() => handleModalToggle("isShareModalOpen")}
-          >
-            <MoreOptions
-              handleCloseModal={() => handleModalToggle("isShareModalOpen")}
-              data={authState?.userID}
-            />
-          </Modal>
-
-          <Modal
-            isOpen={modalState.isFollowerModalOpen}
-            handleClose={() => handleModalToggle("isFollowerModalOpen")}
-          >
-            <Followers
-              handleCloseModal={() => handleModalToggle("isFollowerModalOpen")}
-              followerData={authState?.follower}
-            />
-          </Modal>
-
-          <Modal
-            isOpen={modalState.isFollowingModalOpen}
-            handleClose={() => handleModalToggle("isFollowingModalOpen")}
-          >
-            <Following
-              handleCloseModal={() => handleModalToggle("isFollowingModalOpen")}
-              followingData={authState?.following}
-            />
-          </Modal>
-
-          <Modal
-            isOpen={modalState.isVideoDetailOpen}
-            handleClose={() => handleModalToggle("isVideoDetailOpen")}
-          >
-            <VideoDetails
-              postID={postID}
-              handleCloseModal={() => handleModalToggle("isVideoDetailOpen")}
-              handlePageRefresh={() => handlePageRefresh()}
-            />
-          </Modal>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

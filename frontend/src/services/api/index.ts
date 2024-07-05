@@ -8,6 +8,7 @@ export const BASE_URL = "http://localhost:4000/api";
 export const BASE_URL2 = "http://localhost:4000";
 // export const BASE_URL = "https://server.gamefolio.com:8080/api";
 // export const BASE_URL2 = "https://server.gamefolio.com:8080";
+
 // export const BASE_URL = process.env.NEXT_PUBLIC_DEV_BASE_URL;
 
 export const API = async (params: APIParams) => {
@@ -207,5 +208,4 @@ export async function fetchGameList() {
 }
 
 // Socket
-// export const socket = io("https://server.gamefolio.com:9090");
-export const socket = io("http://localhost:8000");
+export const socket = io("https://server.gamefolio.com:9090");

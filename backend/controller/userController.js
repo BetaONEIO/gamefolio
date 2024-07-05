@@ -458,6 +458,7 @@ const getProfileInfo = asyncHandler(async (req, res) => {
       block: user.block,
       report: user.report,
       coins: user.coins,
+      coin: user.coins,
     });
   } else {
     return res.status(404).json({
