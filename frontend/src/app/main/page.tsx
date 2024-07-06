@@ -116,8 +116,9 @@ function Main() {
     isAddClipsOpen: false,
     isAddVideoOpen: false,
   });
-  const [video, setVideo] = useState(null);
-  const [videoUrl, setVideoUrl] = useState(window.location.href);
+
+  // const [videoUrl, setVideoUrl] = useState(window.location.href);
+  const [refreshPage, setRefreshPage] = useState(false);
 
   const { loading } = postState;
   const [page, setPage] = useState(1);
@@ -125,8 +126,9 @@ function Main() {
   const router = useRouter();
   // console.log("chk: ", window.location.href);
 
-  // const videoUrl = window.location.href;
-  console.warn(router);
+  const videoUrl = typeof window !== "undefined" ? window.location.href : "";
+
+  console.log("rr: ", router);
 
   useEffect(() => {
     const payload = {
@@ -171,12 +173,16 @@ function Main() {
 
       dispatch(getVideoLink(params));
     };
-    if (videoUrl.includes("?v=")) {
+    if (videoUrl?.includes("?v=")) {
       handleVideoLink(videoUrl);
     } else {
       dispatch(setCustomVideoURL([]));
     }
-  }, []);
+  }, [router]);
+
+  const handleVideoLink = (videoURL: string) => {
+    router.push(videoURL);
+  };
 
   const handleGameList = async () => {
     const gettingGameList = await fetchGameList();
@@ -1020,7 +1026,7 @@ function Main() {
                     </div>
                   ) : (
                     authState?.notification?.map((notification: any) => (
-                      <Link
+                      <a
                         href={notification?.postID?.url}
                         key={notification._id}
                       >
@@ -1084,7 +1090,7 @@ function Main() {
                             </span>
                           </div>
                         </div>
-                      </Link>
+                      </a>
                     ))
                   )}
                 </>

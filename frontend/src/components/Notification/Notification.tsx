@@ -5,6 +5,7 @@ import {
   refreshPage,
   updateNotification,
 } from "@/store/slices/userSlice";
+import { useRouter } from "next/navigation";
 
 const handlePageRefresh = () => {
   dispatch(refreshPage());
@@ -44,6 +45,7 @@ const handleUpdateNotification = async (
   authStateID: any,
   notificationID: any
 ) => {
+  const router = useRouter();
   const payload = {
     userID: authStateID,
     notificationID: notificationID,
