@@ -1,11 +1,10 @@
 import { dispatch } from "@/store";
-import { toastError } from "../Toast/Toast";
 import {
   createNotification,
   refreshPage,
   updateNotification,
 } from "@/store/slices/userSlice";
-import { useRouter } from "next/navigation";
+import { toastError } from "../Toast/Toast";
 
 const handlePageRefresh = () => {
   dispatch(refreshPage());
@@ -45,7 +44,6 @@ const handleUpdateNotification = async (
   authStateID: any,
   notificationID: any
 ) => {
-  const router = useRouter();
   const payload = {
     userID: authStateID,
     notificationID: notificationID,

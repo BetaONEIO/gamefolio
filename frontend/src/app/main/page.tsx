@@ -304,7 +304,7 @@ function Main() {
   };
 
   const handlePageRefresh = () => {
-    dispatch(refreshPage());
+    // dispatch(refreshPage());
   };
 
   const convertDateFormat = (dateString: any) => {
