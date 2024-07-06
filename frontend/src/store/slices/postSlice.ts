@@ -26,7 +26,7 @@ export type InitialState = {
   bookmarks: Array<any>;
   allMusic: Array<any>;
   refresh: boolean;
-  customVideo: string;
+  customVideo: Array<any>;
 };
 
 const initialState: InitialState = {
@@ -45,7 +45,7 @@ const initialState: InitialState = {
   bookmarks: [],
   allMusic: [],
   refresh: false,
-  customVideo: "",
+  customVideo: [],
 };
 
 export const slice = createSlice({
@@ -113,6 +113,7 @@ export const {
   refreshPage,
   updatePostID,
   updateDetailedPost,
+  setCustomVideoURL,
 } = slice.actions;
 
 export function postVideo(params: ActionParams) {

@@ -38,10 +38,10 @@ const postVideo = async (req, res) => {
 
 const getVideoLink = async (req, res) => {
   const { videoUrl } = req.body;
-  console.log("videolink", videoUrl);
+
   try {
     // Find the post by ID
-    const post = await Posts.findOne({ url: videoUrl })
+    const post = await Posts.find({ url: videoUrl })
       .populate("userID")
       .populate({ path: "comments.userID" });
 
@@ -53,11 +53,8 @@ const getVideoLink = async (req, res) => {
       });
     }
 
-    // Assuming the post has a video link, adjust this according to your schema
-    const videoLink = post.video;
-
     res.status(200).json({
-      data: videoLink,
+      data: post,
       message: "Successfully retrieved video link.",
     });
   } catch (error) {
