@@ -12,27 +12,6 @@ export type Headers = {
   "Content-Type"?: ContentType;
   Authorization?: string;
   [key: string]: string;
-  
-};
-
-export type APIParams = {
-  method: string;
-  endpoint?: string;
-  payload?: any;
-  baseURL?: string;
-  ContentType?: string;
-  isToken?: boolean;
-  headers?: Headers;
-  isFormData?: boolean;
-  file?: string;
-  toJSON?: boolean;
-};
-
-export type APIOption = {
-  method: string;
-  headers: Headers;
-  credentials?: RequestCredentials;
-  body?: string | FormData | Blob;
 };
 
 export interface ActionParams {
@@ -41,3 +20,23 @@ export interface ActionParams {
   successCallback?: (response?: any) => void;
   errorCallback?: (response?: any) => void;
 }
+
+export type APIParams = {
+  method: string;
+  endpoint?: string;
+  baseURL?: string;
+  payload?: any;
+  isToken?: boolean;
+  isFormData?: boolean;
+  file?: string;
+  headers?: HeadersInit;
+  toJSON?: boolean;
+};
+
+export type APIOption = {
+  method: string;
+  headers: HeadersInit;
+  credentials?: RequestCredentials;
+  body?: string | FormData | Blob;
+  signal?: AbortSignal;
+};

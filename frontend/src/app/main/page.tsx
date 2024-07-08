@@ -124,11 +124,8 @@ function Main() {
   const [page, setPage] = useState(1);
 
   const router = useRouter();
-  // console.log("chk: ", window.location.href);
 
   const videoUrl = typeof window !== "undefined" ? window.location.href : "";
-
-  console.log("rr: ", router);
 
   useEffect(() => {
     const payload = {
@@ -141,6 +138,7 @@ function Main() {
       payload,
     };
     dispatch(userSession(params));
+    console.log("user session ////////////////");
     dispatch(getFollowingPostOnly(params));
     handleGameList();
   }, [page, postState.refresh]);

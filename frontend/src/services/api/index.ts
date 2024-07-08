@@ -11,103 +11,220 @@ export const BASE_URL2 = "http://localhost:4000";
 
 // export const BASE_URL = process.env.NEXT_PUBLIC_DEV_BASE_URL;
 
-export const API = async (params: APIParams) => {
-  let {
-    method,
-    endpoint = "",
-    baseURL = "",
-    payload = null,
-    isToken = true,
-    isFormData = false,
-    file = "",
-    headers = {},
-    toJSON = true,
-  } = params;
+// export const API = async (params: APIParams) => {
+//   let {
+//     method,
+//     endpoint = "",
+//     baseURL = "",
+//     payload = null,
+//     isToken = true,
+//     isFormData = false,
+//     file = "",
+//     headers = {},
+//     toJSON = true,
+//   } = params;
 
-  method = method.toUpperCase();
-  let body = null;
-  let URL = `${BASE_URL}/${endpoint}`;
+//   method = method.toUpperCase();
+//   let body = null;
+//   let URL = `${BASE_URL}/${endpoint}`;
 
-  if (baseURL) {
-    URL = baseURL;
-  }
+//   if (baseURL) {
+//     URL = baseURL;
+//   }
 
-  if (isFormData) {
-    const formData = new FormData();
-    Object.entries(payload).forEach(([key, value]) => {
-      formData.append(key, value as any);
-    });
-    body = formData;
-  } else if (file) {
-    const req = new Request(file);
-    const resp = await fetch(req);
-    body = await resp.blob();
-  } else {
-    body = JSON.stringify(payload);
-  }
+//   if (isFormData) {
+//     const formData = new FormData();
+//     Object.entries(payload).forEach(([key, value]) => {
+//       formData.append(key, value as any);
+//     });
+//     body = formData;
+//   } else if (file) {
+//     const req = new Request(file);
+//     const resp = await fetch(req);
+//     body = await resp.blob();
+//   } else {
+//     body = JSON.stringify(payload);
+//   }
 
-  if (isToken) {
-    const token = getFromLocal("@token");
-    headers = { ...headers, Authorization: `Bearer ${token}` };
-  }
+//   if (isToken) {
+//     const token = getFromLocal("@token");
+//     headers = { ...headers, Authorization: `Bearer ${token}` };
+//   }
 
-  let options: APIOption = {
-    method,
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      ...headers,
-    },
+//   let options: APIOption = {
+//     method,
+//     headers: {
+//       Accept: "application/json",
+//       "Content-Type": "application/json",
+//       ...headers,
+//     },
 
-    credentials: "include",
-    body,
-  };
+//     credentials: "include",
+//     body,
+//   };
 
-  if (method === "GET") {
-    delete options.body;
-  }
+//   if (method === "GET") {
+//     delete options.body;
+//   }
 
-  if (!navigator.onLine) {
-    throw new Error(ERRORS.noInternet);
-  }
+//   if (!navigator.onLine) {
+//     throw new Error(ERRORS.noInternet);
+//   }
 
-  // console.log(options, "options", URL);
+//   // console.log(options, "options", URL);
 
-  try {
-    let response: Response | any = await fetch(URL, options);
-    // console.log(response);
-    const ok = response.ok;
-    const headers = response.headers;
+//   try {
+//     let response: Response | any = await fetch(URL, options);
+//     // console.log(response);
+//     const ok = response.ok;
+//     const headers = response.headers;
 
-    if (toJSON === false) {
-      return [ok, {}];
+//     if (toJSON === false) {
+//       return [ok, {}];
+//     }
+
+//     if (response?.status === 401) {
+//       return [false, {}];
+//     }
+
+//     if (response?.status !== 500) {
+//       response = await response.text();
+//       response = response ? JSON.parse(response) : {};
+//     } else {
+//       console.log(`❌ API ERR1 [${endpoint}] =====> `, response);
+//       response = {};
+//     }
+
+//     if (!ok) {
+//       console.log(
+//         `❌ API ERR2 [${endpoint}] =====> `,
+//         JSON.stringify(response)
+//       );
+//     }
+
+//     return [ok, response, headers];
+//   } catch (error) {
+//     console.log(`❌ API ERR3 [${endpoint}] =====> `, error);
+//     throw error;
+//   }
+// };
+
+export const API = (() => {
+  const controllers = new Map<string, AbortController>();
+
+  return async (params: APIParams): Promise<[boolean, any, Headers?]> => {
+    let {
+      method,
+      endpoint = "",
+      baseURL = "",
+      payload = null,
+      isToken = true,
+      isFormData = false,
+      file = "",
+      headers = {},
+      toJSON = true,
+    } = params;
+
+    method = method.toUpperCase();
+    let body: string | FormData | Blob | null = null;
+    let URL = `${BASE_URL}/${endpoint}`;
+
+    if (baseURL) {
+      URL = baseURL;
     }
 
-    if (response?.status === 401) {
-      return [false, {}];
-    }
-
-    if (response?.status !== 500) {
-      response = await response.text();
-      response = response ? JSON.parse(response) : {};
+    if (isFormData) {
+      const formData = new FormData();
+      Object.entries(payload).forEach(([key, value]) => {
+        formData.append(key, value as any);
+      });
+      body = formData;
+    } else if (file) {
+      const req = new Request(file);
+      const resp = await fetch(req);
+      body = await resp.blob();
     } else {
-      console.log(`❌ API ERR1 [${endpoint}] =====> `, response);
-      response = {};
+      body = JSON.stringify(payload);
     }
 
-    if (!ok) {
-      console.log(
-        `❌ API ERR2 [${endpoint}] =====> `,
-        JSON.stringify(response)
-      );
+    if (isToken) {
+      const token = getFromLocal("@token");
+      headers = { ...headers, Authorization: `Bearer ${token}` };
     }
 
-    return [ok, response, headers];
-  } catch (error) {
-    console.log(`❌ API ERR3 [${endpoint}] =====> `, error);
-    throw error;
-  }
-};
+    let options: APIOption = {
+      method,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        ...headers,
+      },
+      credentials: "include",
+      body,
+    };
+
+    if (method === "GET") {
+      delete options.body;
+    }
+
+    if (!navigator.onLine) {
+      throw new Error(ERRORS.noInternet);
+    }
+
+    // Create a new AbortController for this request
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    // Abort previous request if a new one is made
+    if (controllers.has(endpoint)) {
+      controllers.get(endpoint)?.abort();
+    }
+    controllers.set(endpoint, controller);
+
+    options.signal = signal;
+
+    try {
+      let response: Response | any = await fetch(URL, options);
+      const ok = response.ok;
+      const headers = response.headers;
+
+      if (toJSON === false) {
+        return [ok, {}, headers];
+      }
+
+      if (response?.status === 401) {
+        return [false, {}, headers];
+      }
+
+      if (response?.status !== 500) {
+        response = await response.text();
+        response = response ? JSON.parse(response) : {};
+      } else {
+        console.log(`❌ API ERR1 [${endpoint}] =====> `, response);
+        response = {};
+      }
+
+      if (!ok) {
+        console.log(
+          `❌ API ERR2 [${endpoint}] =====> `,
+          JSON.stringify(response)
+        );
+      }
+
+      return [ok, response, headers];
+    } catch (error) {
+      if ((error as DOMException).name === "AbortError") {
+        console.log(`❌ API call to [${endpoint}] was aborted`);
+      } else {
+        console.log(`❌ API ERR3 [${endpoint}] =====> `, error);
+      }
+      throw error;
+    } finally {
+      // Clean up the controller once the request is complete
+      controllers.delete(endpoint);
+    }
+  };
+})();
 
 // Games List
 
@@ -208,4 +325,5 @@ export async function fetchGameList() {
 }
 
 // Socket
-export const socket = io("https://server.gamefolio.com:9090");
+// export const socket = io("https://server.gamefolio.com:9090");
+export const socket = io("http://localhost:8000");
