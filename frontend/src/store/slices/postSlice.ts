@@ -27,6 +27,7 @@ export type InitialState = {
   allMusic: Array<any>;
   refresh: boolean;
   customVideo: Array<any>;
+  isScroll: boolean;
 };
 
 const initialState: InitialState = {
@@ -46,6 +47,7 @@ const initialState: InitialState = {
   allMusic: [],
   refresh: false,
   customVideo: [],
+  isScroll: false,
 };
 
 export const slice = createSlice({
@@ -63,6 +65,9 @@ export const slice = createSlice({
 
     stopLoading(state) {
       state.loading = false;
+    },
+    setIsScroll(state, action) {
+      state.isScroll = action.payload;
     },
     getUser(state, action) {
       state.userData = action.payload;
@@ -89,7 +94,7 @@ export const slice = createSlice({
       state.trendingVideos = action.payload;
     },
     getFollowingPost(state, action) {
-      state.followingVideos = [...action.payload];
+      state.followingVideos = [...state.followingVideos, ...action.payload];
     },
     getUserBookmarks(state, action) {
       state.bookmarks = action.payload;
@@ -114,6 +119,7 @@ export const {
   updatePostID,
   updateDetailedPost,
   setCustomVideoURL,
+  setIsScroll,
 } = slice.actions;
 
 export function postVideo(params: ActionParams) {
@@ -259,6 +265,7 @@ export function getFollowingPostOnly(params: ActionParams) {
       const [ok, response] = await API(options);
 
       dispatch(slice.actions.getFollowingPost(response.data));
+      dispatch(slice.actions.setIsScroll(false));
       dispatch(slice.actions.stopLoading());
     } catch (error) {
       console.log("error", error);

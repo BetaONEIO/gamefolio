@@ -26,14 +26,14 @@ import {
   deleteVideoReaction,
   getFollowingPostOnly,
   getVideoLink,
-  refreshPage,
   setCustomVideoURL,
+  setIsScroll,
   updateDetailedPost,
 } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
 const SkeletonLoader = () => (
@@ -119,8 +119,9 @@ function Main() {
 
   // const [videoUrl, setVideoUrl] = useState(window.location.href);
   const [refreshPage, setRefreshPage] = useState(false);
+  const [myLoading, setLoading] = useState(true);
 
-  const { loading } = postState;
+  const { loading, isScroll } = postState;
   const [page, setPage] = useState(1);
 
   const router = useRouter();
@@ -137,11 +138,34 @@ function Main() {
     const params = {
       payload,
     };
+
     dispatch(userSession(params));
-    console.log("user session ////////////////");
     dispatch(getFollowingPostOnly(params));
     handleGameList();
-  }, [page, postState.refresh]);
+  }, [isScroll === true, postState.refresh]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleInfiniteScroll);
+    return () => window.removeEventListener("scroll", handleInfiniteScroll);
+  }, []);
+
+  console.log("loading: ", myLoading);
+
+  const handleInfiniteScroll = async () => {
+    try {
+      if (
+        isScroll === false &&
+        window.innerHeight + document.documentElement.scrollTop + 1 >=
+          document.documentElement.scrollHeight
+      ) {
+        dispatch(setIsScroll(true));
+
+        setPage((prev) => prev + 1);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     setFilteredOptions(optionsForGame);
@@ -461,7 +485,7 @@ function Main() {
                 </div>
               </div>
 
-              {loading ? (
+              {loading && myLoading ? (
                 <>
                   {[...Array(1)]?.map((_, index) => (
                     <PostLoader key={index} />
