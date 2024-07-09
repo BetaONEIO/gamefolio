@@ -94,8 +94,24 @@ export const slice = createSlice({
       state.trendingVideos = action.payload;
     },
     getFollowingPost(state, action) {
-      state.followingVideos = [...state.followingVideos, ...action.payload];
+      const existingIds = new Set(
+        state.followingVideos.map((video) => video._id)
+      );
+
+      const uniqueVideos = action.payload.reduce(
+        (acc: Array<string>, video: any) => {
+          if (!existingIds.has(video._id)) {
+            existingIds.add(video._id);
+            acc.push(video);
+          }
+          return acc;
+        },
+        []
+      );
+
+      state.followingVideos = [...state.followingVideos, ...uniqueVideos];
     },
+
     getUserBookmarks(state, action) {
       state.bookmarks = action.payload;
     },

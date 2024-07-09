@@ -159,7 +159,6 @@ function Main() {
           document.documentElement.scrollHeight
       ) {
         dispatch(setIsScroll(true));
-
         setPage((prev) => prev + 1);
       }
     } catch (error) {

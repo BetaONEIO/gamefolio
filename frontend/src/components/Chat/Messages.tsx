@@ -126,12 +126,16 @@ function Messages() {
     setSearchText(inputValue);
     delayedSearch(inputValue);
   };
-  console.trace({ isMobile });
-  console.trace(messageState.chat);
 
   if (messageState?.loading)
     return (
-      <div className=" flex w-full flex-col gap-4 bg-[#091619] border-r border-gray-800  md:w-4/5 lg:w-2/5">
+      <div
+        className={
+          isMobile && Object.keys(messageState.chat).length > 0
+            ? ` hidden`
+            : ` flex w-full flex-col gap-4 bg-[#091619] border-r border-gray-800  md:w-4/5 lg:w-2/5`
+        }
+      >
         <div className="hideScrollBar flex flex-col  gap-4  overflow-y-auto">
           <Loading />
         </div>
@@ -141,7 +145,7 @@ function Messages() {
   return (
     <div
       className={
-        isMobile && Object.keys(messageState.chat).length >= 0
+        isMobile && Object.keys(messageState.chat).length > 0
           ? ` hidden`
           : `flex w-full flex-col gap-4 bg-[#091619] border-r border-gray-800  md:w-4/5 lg:w-2/5`
       }

@@ -8,7 +8,7 @@ import { setSelectedChat } from "@/store/slices/chatSlice";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Toaster } from "react-hot-toast";
 import AttachmentView from "../Modals/AttachmentView";
@@ -27,6 +27,7 @@ function Chat() {
     isAttachmentViewOpen: false,
     isGalleryOpen: false,
   });
+  const chatContainerRef = useRef<HTMLDivElement>(null);
   const {
     register,
     handleSubmit,
@@ -44,17 +45,22 @@ function Chat() {
 
     // Listening to the incoming message from recipient
     socket.on("newMessage", (data) => {
-      console.log("Data receiving from server ..: ", data);
+      // console.log("Data receiving from server ..: ", data);
       // Dispatching chat data to our chatSlice to maintain state
       dispatch(setSelectedChat(data));
     });
+
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
 
     return () => {
       socket.off("disconnect");
     };
   }, [messageState.chat]);
 
-  console.log("MESSAGE STATE: chat.tsx", messageState.chat);
+  // console.log("MESSAGE STATE: chat.tsx", messageState.chat);
 
   const handleSendMessage = (data: any) => {
     socket.emit("sendMessage", {
@@ -78,7 +84,7 @@ function Chat() {
 
   const isCurrentUser =
     messageState?.chat?.participants?.[0]?._id === authState?._id;
-  console.log("IS CURRENT USER: ", { isCurrentUser, messageState });
+  // console.log("IS CURRENT USER: ", { isCurrentUser, messageState });
 
   const NotCurrentUser = () => {
     return messageState?.chat?.participants?.[0]?._id !== authState?._id
@@ -194,6 +200,7 @@ function Chat() {
           <div
             id="chatContainer"
             className="flex hideScrollBar  flex-col gap-4 p-2 h-full mb-80 overflow-scroll"
+            ref={chatContainerRef}
           >
             {messageState?.chat?.messages?.map(
               (element: any, index: number) => {
