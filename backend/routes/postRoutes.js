@@ -9,6 +9,9 @@ router.post("/video/create", rateLimiter, postController.postVideo);
 // Get all posts
 router.get("/video/get", postController.getAllPostVideos);
 
+// Get all VideoLink
+router.post("/getVideoLink/get", postController.getVideoLink);
+
 // Get trending posts
 router.get("/video/trending/get", postController.getTrendingPosts);
 

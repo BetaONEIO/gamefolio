@@ -3,7 +3,11 @@ const User = require("../models/Users.js");
 const jwt = require("jsonwebtoken");
 const generateToken = require("../utils/generateToken.js");
 const generateOTP = require("../utils/generateOtp.js");
-const { sendEmail, sendForgotOtpEmail } = require("../utils/sendEmail.js");
+const {
+  sendEmail,
+  sendForgotOtpEmail,
+  sendVerificationEmail,
+} = require("../utils/sendEmail.js");
 
 const registerUser = asyncHandler(async (req, res) => {
   const { name, username, email, password } = req.body;
@@ -25,13 +29,14 @@ const registerUser = asyncHandler(async (req, res) => {
     email,
     password,
     profilePicture:
-      "https://d2m0dxds81dlzy.cloudfront.net/0c3b16ab-236b-4cc6-9220-6636343aa8ee-default-profile-avatar.png",
+      "https://d2m0dxds81dlzy.cloudfront.net/bdbc549d-d3ae-44ac-8caf-d158aa9f3078-defaultProfileImage.png",
     coverPicture:
       "https://d2m0dxds81dlzy.cloudfront.net/66dfb5a5-b198-41c4-b087-c7c4ac0f480a-banner.jpg",
     signupMethod: "email",
   });
 
   if (user) {
+    sendVerificationEmail(user);
     sendEmail(user);
     res.status(201).json({
       _id: user._id,
@@ -71,6 +76,11 @@ const loginUser = asyncHandler(async (req, res) => {
       user.accountStatus = "active";
       user.deactivatedAt = null;
       await user.save();
+    }
+    if (user.accountStatus === "pending") {
+      return res.status(400).json({
+        message: "Please verify your email first to login",
+      });
     }
 
     // verified token returns user id
@@ -165,6 +175,37 @@ const verifyEmailOTP = asyncHandler(async (req, res) => {
   } else {
     return res.status(401).send("Something went wrong");
   }
+});
+
+const verifyEmailLink = asyncHandler(async (req, res) => {
+  const { token } = req.body;
+  console.log("token: ", token);
+
+  if (!token) {
+    return res.status(400).send("Invalid token");
+  }
+
+  let decoded;
+  try {
+    decoded = jwt.verify(token, process.env.JWT_SECRET);
+  } catch (error) {
+    return res.status(400).send("Invalid or expired token");
+  }
+
+  const user = await User.findById(decoded.id);
+
+  if (!user) {
+    return res.status(400).send("User not found");
+  }
+
+  if (user.accountStatus === "active") {
+    return res.status(402).json({ message: "Already verified" });
+  }
+
+  user.accountStatus = "active";
+  await user.save();
+
+  return res.json("Email verified successfully");
 });
 
 // Forgot password controllers
@@ -417,6 +458,7 @@ const getProfileInfo = asyncHandler(async (req, res) => {
       block: user.block,
       report: user.report,
       coins: user.coins,
+      coin: user.coins,
     });
   } else {
     return res.status(404).json({
@@ -968,6 +1010,7 @@ module.exports = {
   getAllUsers,
   sendEmailOTP,
   verifyEmailOTP,
+  verifyEmailLink,
   sendForgotPasswordOTP,
   verifyForgetPasswordOTP,
   resetPassword,

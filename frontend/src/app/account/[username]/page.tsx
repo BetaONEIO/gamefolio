@@ -281,6 +281,84 @@ function Page({ params }: any) {
     );
   }, [profileInfoState]);
 
+  const totalCoinAmount = authState?.coins?.reduce(
+    (total: any, user: any) => total + user.coinAmount,
+    0
+  );
+
+  const badges = [
+    {
+      id: 1,
+      Image: SVG.Badge1,
+      userName: "Quick Starter",
+      Name: "Milestone 1000 coins",
+      coins: 10,
+    },
+    {
+      id: 2,
+      Image: SVG.Badge2,
+      userName: "Rapid Riser",
+      Name: "Milestone 1000 coins",
+      coins: 1000,
+    },
+    {
+      id: 3,
+      Image: SVG.Badge3,
+      userName: "Swift Performer",
+      Name: "Milestone 3000 coins",
+      coins: 3000,
+    },
+    {
+      id: 4,
+      Image: SVG.Badge4,
+      userName: "Speedy Striver",
+      Name: "Milestone 5000 coins",
+      coins: 5000,
+    },
+    {
+      id: 5,
+      Image: SVG.Badge5,
+      userName: "Fast Tracker",
+      Name: "Milestone 8000 coins",
+      coins: 8000,
+    },
+    {
+      id: 6,
+      Image: SVG.Badge6,
+      userName: "Blazing Achiever",
+      Name: "Milestone 10000 coins",
+      coins: 10000,
+    },
+    {
+      id: 7,
+      Image: SVG.Badge7,
+      userName: "Hyper Performer",
+      Name: "Milestone 15000 coins",
+      coins: 15000,
+    },
+    {
+      id: 8,
+      Image: SVG.Badge8,
+      userName: "Lightning Leader",
+      Name: "Milestone 20000 coins",
+      coins: 20000,
+    },
+    {
+      id: 9,
+      Image: SVG.Badge9,
+      userName: "Supersonic Champion",
+      Name: "Milestone 50000 coins",
+      coins: 50000,
+    },
+  ];
+
+  const achievedBadges = badges.filter(
+    (badge) => totalCoinAmount >= badge.coins
+  );
+  const upcomingBadges = badges.filter(
+    (badge) => totalCoinAmount < badge.coins
+  );
+
   const handleMessage = async () => {
     const payload = {
       roomID: generateUniqueRoomId(),
@@ -289,6 +367,8 @@ function Page({ params }: any) {
       content: "Hello",
       isSocket: false,
     };
+
+    console.log("profileInfoState", profileInfoState);
 
     const successCallback = (response: any) => {
       toastSuccess(response);
@@ -508,43 +588,27 @@ function Page({ params }: any) {
             </div>
           </div>
 
-          <div className="flex justify-between w-10/12 my-4 mx-4">
+          <div className="flex justify-between w-10/12 my-6 mx-10">
             <div>
               <p className="font-bold">Current Badge:</p>
-              <div className="flex justify-center items-center gap-8 mt-2">
-                <Image
-                  src={IMAGES.AccountCurrentBadgeIcon}
-                  alt="Badge"
-                  width={40}
-                  height={40}
-                />
-                <Image
-                  src={IMAGES.Badges2}
-                  alt="Badge"
-                  width={40}
-                  height={40}
-                />
-                <Image
-                  src={IMAGES.Badges3}
-                  alt="Badge"
-                  width={40}
-                  height={40}
-                />
-                <Image
-                  src={IMAGES.Badges4}
-                  alt="Badge"
-                  width={40}
-                  height={40}
-                />
-                <Image
-                  src={IMAGES.Badges5}
-                  alt="Badge"
-                  width={40}
-                  height={40}
-                />
+              <div className="flex items-center gap-4 mt-2">
+                {achievedBadges.map((badge, index) => (
+                  <div key={index}>
+                    <div className="w-10 h-10 -mb-2">
+                      <Image
+                        src={badge.Image}
+                        alt="UploadStory"
+                        width="12"
+                        height="12"
+                        sizes="100vw"
+                        className="h-full w-full"
+                      />
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-            <div>
+            {/* <div>
               <p className="font-bold">Share via:</p>
               <div className="flex justify-center items-center gap-8 mt-2">
                 <Image
@@ -567,13 +631,13 @@ function Page({ params }: any) {
                   height={40}
                 />
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* Top Bar */}
 
-          <div className="flex mx-3">
-            <div className="w-80 border-2 border-[#1C2C2E] rounded-lg p-2">
+          {/* <div className="flex mx-3"> */}
+          {/* <div className="w-80 border-2 border-[#1C2C2E] rounded-lg p-2">
               <h1 className="font-bold my-2">About Me:</h1>
               <p className="font-light text-xs text-[#7C7F80]">
                 {profileInfoState?.profileUserInfo?.bio}
@@ -600,7 +664,7 @@ function Page({ params }: any) {
                   sizes="100vw"
                   alt="Account Profile"
                 />
-                <p className="font-normal">Conneted Succesfully</p>
+                <p className="font-normal">Connected Succesfully</p>
               </div>
 
               <div className="flex items-center gap-4 rounded-lg bg-[#162423] p-2 mt-2">
@@ -626,160 +690,159 @@ function Page({ params }: any) {
                 />
                 <p className="font-normal">Connected Succesfully</p>
               </div>
-            </div>
+            </div> */}
 
-            <div className="w-4/6 justify-around items-center h-10">
-              {/* Profile */}
-              <div key={authState?.userID} className="flex flex-col gap-4 mx-8">
-                <div className="h-10 w-full flex justify-around items-center">
-                  <div>
-                    <div
-                      className={`flex justify-center w-16 gap-2 my-6 cursor-pointer ${
-                        selectedSection === "videos"
-                          ? "text-white"
-                          : "text-gray-500"
+          <div className="w-full justify-center items-center h-screen">
+            {/* Profile */}
+            <div key={authState?.userID} className="flex flex-col gap-4 mx-8">
+              <div className="h-10 w-full flex justify-around items-center">
+                <div>
+                  <div
+                    className={`flex justify-center w-16 gap-2 my-6 cursor-pointer ${
+                      selectedSection === "videos"
+                        ? "text-white"
+                        : "text-gray-500"
+                    }`}
+                    onClick={() => setSelectedSection("videos")}
+                  >
+                    <Image
+                      className={`${
+                        selectedSection !== "videos"
+                          ? "opacity-40"
+                          : "opacity-100"
                       }`}
-                      onClick={() => setSelectedSection("videos")}
-                    >
-                      <Image
-                        className={`${
-                          selectedSection !== "videos"
-                            ? "opacity-40"
-                            : "opacity-100"
-                        }`}
-                        src={SVG.AccountMyVideos}
-                        alt="My Videos"
-                        width={24}
-                        height={24}
-                      />
-                    </div>
-                    {selectedSection === "videos" && (
-                      <div className="w-16 h-1 bg-[#62C860] rounded-lg"></div>
-                    )}
+                      src={SVG.AccountMyVideos}
+                      alt="My Videos"
+                      width={24}
+                      height={24}
+                    />
                   </div>
-
-                  <div>
-                    <div
-                      className={`flex justify-center w-16 gap-2 my-6 cursor-pointer ${
-                        selectedSection === "clips"
-                          ? "text-white"
-                          : "text-gray-500"
-                      }`}
-                      onClick={() => setSelectedSection("clips")}
-                    >
-                      <Image
-                        className={`${
-                          selectedSection !== "clips"
-                            ? "opacity-40"
-                            : "opacity-100"
-                        }`}
-                        src={SVG.Clips}
-                        alt="My clips"
-                        width={24}
-                        height={24}
-                      />
-                    </div>
-                    {selectedSection === "clips" && (
-                      <div className="w-16 h-1 bg-[#62C860] rounded-lg"></div>
-                    )}
-                  </div>
-
-                  <div>
-                    <div
-                      className={`flex justify-center w-16 gap-2 my-6 cursor-pointer ${
-                        selectedSection === "videos"
-                          ? "text-white"
-                          : "text-gray-500"
-                      }`}
-                      onClick={() => setSelectedSection("story")}
-                    >
-                      <Image
-                        className={` ${
-                          selectedSection !== "story"
-                            ? "opacity-40"
-                            : "opacity-100"
-                        }`}
-                        src={SVG.Story}
-                        alt="My story"
-                        width={24}
-                        height={24}
-                      />
-                    </div>
-                    {selectedSection === "story" && (
-                      <div className="w-16 h-1 bg-[#62C860] rounded-lg"></div>
-                    )}
-                  </div>
-
-                  <div>
-                    <div
-                      className={`flex justify-center w-16 gap-2 my-6 cursor-pointer ${
-                        selectedSection === "bookmarked"
-                          ? "text-white"
-                          : "text-gray-500"
-                      }`}
-                      onClick={() => setSelectedSection("bookmarked")}
-                    >
-                      <Image
-                        className={`${
-                          selectedSection !== "bookmarked"
-                            ? "opacity-40"
-                            : "opacity-100"
-                        }`}
-                        src={SVG.AccountMyBookmarked}
-                        alt="My bookmarked"
-                        width={24}
-                        height={24}
-                      />
-                    </div>
-                    {selectedSection === "bookmarked" && (
-                      <div className="w-16 h-1 bg-[#62C860] rounded-lg"></div>
-                    )}
-                  </div>
+                  {selectedSection === "videos" && (
+                    <div className="w-16 h-1 bg-[#62C860] rounded-lg"></div>
+                  )}
                 </div>
-                <hr className="h-px border-0 bg-gray-700" />
-                {/* green line */}
 
-                {/* Content Section */}
-                {authState?.following?.some(
-                  (user: any) =>
-                    user?.userID?._id ===
-                      profileInfoState?.profileUserInfo?._id ||
-                    !isPrivateAccount
-                ) ? (
-                  // User is following, show videos
-                  <div>
-                    {selectedSection === "videos" ? (
-                      <MyVideosSection
-                        authState={authState}
-                        postState={postState}
-                        profileInfoState={profileInfoState}
-                        handleVideoDetailOpen={handleVideoDetailOpen}
-                      />
-                    ) : selectedSection === "bookmarked" ? (
-                      <MyBookmarkSection
-                        data={postState.bookmarks}
-                        handleVideoDetailOpen={handleVideoDetailOpen}
-                      />
-                    ) : selectedSection === "clips" ? (
-                      <ClipsSection
-                        authState={authState}
-                        clipState={clipState}
-                        profileInfoState={profileInfoState}
-                        handleVideoDetailOpen={handleVideoDetailOpen}
-                      />
-                    ) : (
-                      <StorySection data={storyState.currentUserStories} />
-                    )}
+                <div>
+                  <div
+                    className={`flex justify-center w-16 gap-2 my-6 cursor-pointer ${
+                      selectedSection === "clips"
+                        ? "text-white"
+                        : "text-gray-500"
+                    }`}
+                    onClick={() => setSelectedSection("clips")}
+                  >
+                    <Image
+                      className={`${
+                        selectedSection !== "clips"
+                          ? "opacity-40"
+                          : "opacity-100"
+                      }`}
+                      src={SVG.Clips}
+                      alt="My clips"
+                      width={24}
+                      height={24}
+                    />
                   </div>
-                ) : (
-                  // User is not following, show private account message
-                  <div className="flex justify-center">
-                    <p>This is a private account.</p>
+                  {selectedSection === "clips" && (
+                    <div className="w-16 h-1 bg-[#62C860] rounded-lg"></div>
+                  )}
+                </div>
+
+                <div>
+                  <div
+                    className={`flex justify-center w-16 gap-2 my-6 cursor-pointer ${
+                      selectedSection === "videos"
+                        ? "text-white"
+                        : "text-gray-500"
+                    }`}
+                    onClick={() => setSelectedSection("story")}
+                  >
+                    <Image
+                      className={` ${
+                        selectedSection !== "story"
+                          ? "opacity-40"
+                          : "opacity-100"
+                      }`}
+                      src={SVG.Story}
+                      alt="My story"
+                      width={24}
+                      height={24}
+                    />
                   </div>
-                )}
+                  {selectedSection === "story" && (
+                    <div className="w-16 h-1 bg-[#62C860] rounded-lg"></div>
+                  )}
+                </div>
+
+                <div>
+                  <div
+                    className={`flex justify-center w-16 gap-2 my-6 cursor-pointer ${
+                      selectedSection === "bookmarked"
+                        ? "text-white"
+                        : "text-gray-500"
+                    }`}
+                    onClick={() => setSelectedSection("bookmarked")}
+                  >
+                    <Image
+                      className={`${
+                        selectedSection !== "bookmarked"
+                          ? "opacity-40"
+                          : "opacity-100"
+                      }`}
+                      src={SVG.AccountMyBookmarked}
+                      alt="My bookmarked"
+                      width={24}
+                      height={24}
+                    />
+                  </div>
+                  {selectedSection === "bookmarked" && (
+                    <div className="w-16 h-1 bg-[#62C860] rounded-lg"></div>
+                  )}
+                </div>
               </div>
+              <hr className="h-px border-0 bg-gray-700" />
+              {/* green line */}
+
+              {/* Content Section */}
+              {authState?.following?.some(
+                (user: any) =>
+                  user?.userID?._id ===
+                    profileInfoState?.profileUserInfo?._id || !isPrivateAccount
+              ) ? (
+                // User is following, show videos
+                <div>
+                  {selectedSection === "videos" ? (
+                    <MyVideosSection
+                      authState={authState}
+                      postState={postState}
+                      profileInfoState={profileInfoState}
+                      handleVideoDetailOpen={handleVideoDetailOpen}
+                    />
+                  ) : selectedSection === "bookmarked" ? (
+                    <MyBookmarkSection
+                      data={postState.bookmarks}
+                      handleVideoDetailOpen={handleVideoDetailOpen}
+                    />
+                  ) : selectedSection === "clips" ? (
+                    <ClipsSection
+                      authState={authState}
+                      clipState={clipState}
+                      profileInfoState={profileInfoState}
+                      handleVideoDetailOpen={handleVideoDetailOpen}
+                    />
+                  ) : (
+                    <StorySection data={storyState.currentUserStories} />
+                  )}
+                </div>
+              ) : (
+                // User is not following, show private account message
+                <div className="flex justify-center">
+                  <p>This is a private account.</p>
+                </div>
+              )}
             </div>
           </div>
+          {/* </div> */}
 
           <Modal
             isOpen={modalState.isShareModalOpen}

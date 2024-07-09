@@ -230,7 +230,7 @@ function Trending() {
             </div>
 
             <div className="flex gap-4 h-80 w-full relative">
-              <div className="relative w-[800px]">
+              <div className="relative w-[70%]">
                 <Swiper
                   effect={"fade"}
                   navigation={true}

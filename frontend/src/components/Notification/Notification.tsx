@@ -1,10 +1,10 @@
 import { dispatch } from "@/store";
-import { toastError } from "../Toast/Toast";
 import {
   createNotification,
   refreshPage,
   updateNotification,
 } from "@/store/slices/userSlice";
+import { toastError } from "../Toast/Toast";
 
 const handlePageRefresh = () => {
   dispatch(refreshPage());

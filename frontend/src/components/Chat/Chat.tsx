@@ -8,23 +8,26 @@ import { setSelectedChat } from "@/store/slices/chatSlice";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Toaster } from "react-hot-toast";
 import AttachmentView from "../Modals/AttachmentView";
+import Gallery from "../Modals/Gallery";
 import Modal from "../Modals/Modal";
 import { toastError } from "../Toast/Toast";
-import Gallery from "../Modals/Gallery";
+import GalleryVideoMessage from "./Messages/GalleryVideoMessage";
 import SharePostMessage from "./Messages/SharePostMessage";
 
 function Chat() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const messageState = useSelector((state: any) => state.chat) || [];
+  const [galleryVideo, setGalleryVideo] = useState<string>("");
   const [emoji, setEmoji] = useState(false);
   const [modalState, setModalState] = useState({
     isAttachmentViewOpen: false,
     isGalleryOpen: false,
   });
+  const chatContainerRef = useRef<HTMLDivElement>(null);
   const {
     register,
     handleSubmit,
@@ -42,17 +45,22 @@ function Chat() {
 
     // Listening to the incoming message from recipient
     socket.on("newMessage", (data) => {
-      console.log("Data receiving from server ..: ", data);
+      // console.log("Data receiving from server ..: ", data);
       // Dispatching chat data to our chatSlice to maintain state
       dispatch(setSelectedChat(data));
     });
+
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
 
     return () => {
       socket.off("disconnect");
     };
   }, [messageState.chat]);
 
-  console.log("MESSAGE STATE: chat.tsx", messageState.chat);
+  // console.log("MESSAGE STATE: chat.tsx", messageState.chat);
 
   const handleSendMessage = (data: any) => {
     socket.emit("sendMessage", {
@@ -68,7 +76,7 @@ function Chat() {
 
   if (Object.keys(messageState?.chat)?.length === 0) {
     return (
-      <div className="flex h-full w-full items-center justify-center">
+      <div className="hideScrollBar hidden relative z-20  flex-col bg-[#091619] gap-4  border-r  md:hidden lg:flex  h-full w-full items-center justify-center">
         <p className="text-white">No chat to show</p>
       </div>
     );
@@ -76,7 +84,7 @@ function Chat() {
 
   const isCurrentUser =
     messageState?.chat?.participants?.[0]?._id === authState?._id;
-  console.log("IS CURRENT USER: ", { isCurrentUser, messageState });
+  // console.log("IS CURRENT USER: ", { isCurrentUser, messageState });
 
   const NotCurrentUser = () => {
     return messageState?.chat?.participants?.[0]?._id !== authState?._id
@@ -101,11 +109,13 @@ function Chat() {
 
   const handleModalToggle = (
     modalName: keyof typeof modalState,
+    videoData?: string,
     error?: string
   ) => {
     if (error) {
       toastError(error);
     }
+    setGalleryVideo(videoData ?? "");
     setModalState((prevState) => ({
       ...prevState,
       [modalName]: !prevState[modalName],
@@ -132,11 +142,23 @@ function Chat() {
     }
   };
 
+  const handleBackBtn = () => {
+    dispatch(setSelectedChat({}));
+  };
+
   return (
     <>
-      <div className="hideScrollBar hidden relative z-20  w-full flex-col bg-[#091619] gap-4  border-r  md:hidden lg:block ">
+      <div className="hideScrollBar  relative z-20  w-full flex-col bg-[#091619] gap-4  border-r   lg:block ">
         <div className="sticky top-0 z-40  flex justify-between items-center  gap-2 border-b border-gray-800 bg-[#091619] p-5">
           <div className="flex items-center gap-2">
+            <Image
+              className="block md:hidden"
+              src={SVG.Back}
+              alt="Back"
+              width={25}
+              height={25}
+              onClick={handleBackBtn}
+            />
             <img
               className="h-10 w-10 rounded-xl"
               alt="person"
@@ -178,6 +200,7 @@ function Chat() {
           <div
             id="chatContainer"
             className="flex hideScrollBar  flex-col gap-4 p-2 h-full mb-80 overflow-scroll"
+            ref={chatContainerRef}
           >
             {messageState?.chat?.messages?.map(
               (element: any, index: number) => {
@@ -206,13 +229,18 @@ function Chat() {
                       ) : (
                         <div className="flex items-center justify-end gap-2">
                           <div className="flex flex-col items-end gap-2">
-                            <div className="bg-[#62C860]  rounded-full  px-4 py-2 text-white">
-                              <span className="text-md">
-                                {element?.content}
-                              </span>
-                            </div>
+                            {element?.content?.trim("").length >= 0 && (
+                              <div className="bg-[#62C860]  rounded-full  px-4 py-2 text-white">
+                                <span className="text-md">
+                                  {element?.content}
+                                </span>
+                              </div>
+                            )}
                             {element.type === "sharepost" && (
                               <SharePostMessage postData={element.postID} />
+                            )}
+                            {element.type === "galleryvideo" && (
+                              <GalleryVideoMessage videoData={element.video} />
                             )}
                             <span className="text-xs text-gray-100">
                               {formatTime(element?.timestamp)}
@@ -225,11 +253,17 @@ function Chat() {
 
                       <div className="flex items-center justify-start">
                         <div className="ml-2 flex flex-col items-start gap-2  ">
-                          <div className="bg-black border border-gray-900  p-2 rounded-full  px-4 py-2 text-white">
-                            <span className="text-md">{element.content}</span>
-                          </div>
+                          {element?.content?.trim("").length >= 0 && (
+                            <div className="bg-black border border-gray-900  p-2 rounded-full  px-4 py-2 text-white">
+                              <span className="text-md">{element.content}</span>
+                            </div>
+                          )}
+
                           {element.type === "sharepost" && (
                             <SharePostMessage postData={element.postID} />
+                          )}
+                          {element.type === "galleryvideo" && (
+                            <GalleryVideoMessage videoData={element.video} />
                           )}
                           <span className="text-xs text-white">
                             {" "}
@@ -254,7 +288,9 @@ function Chat() {
           >
             <AttachmentView
               handleCloseModal={() => handleModalToggle("isAttachmentViewOpen")}
-              handleGalleryModal={() => handleModalToggle("isGalleryOpen")}
+              handleGalleryModal={(videoData: string) =>
+                handleModalToggle("isGalleryOpen", videoData)
+              }
             />
           </Modal>
           <div
@@ -308,7 +344,11 @@ function Chat() {
         isOpen={modalState.isGalleryOpen}
         handleClose={() => handleModalToggle("isGalleryOpen")}
       >
-        <Gallery handleCloseModal={() => handleModalToggle("isGalleryOpen")} />
+        <Gallery
+          receiverID={NotCurrentUser()}
+          galleryVideo={galleryVideo}
+          handleCloseModal={() => handleModalToggle("isGalleryOpen")}
+        />
       </Modal>
     </>
   );

@@ -26,6 +26,8 @@ export type InitialState = {
   bookmarks: Array<any>;
   allMusic: Array<any>;
   refresh: boolean;
+  customVideo: Array<any>;
+  isScroll: boolean;
 };
 
 const initialState: InitialState = {
@@ -44,6 +46,8 @@ const initialState: InitialState = {
   bookmarks: [],
   allMusic: [],
   refresh: false,
+  customVideo: [],
+  isScroll: false,
 };
 
 export const slice = createSlice({
@@ -61,6 +65,9 @@ export const slice = createSlice({
 
     stopLoading(state) {
       state.loading = false;
+    },
+    setIsScroll(state, action) {
+      state.isScroll = action.payload;
     },
     getUser(state, action) {
       state.userData = action.payload;
@@ -87,8 +94,24 @@ export const slice = createSlice({
       state.trendingVideos = action.payload;
     },
     getFollowingPost(state, action) {
-      state.followingVideos = [...action.payload];
+      const existingIds = new Set(
+        state.followingVideos.map((video) => video._id)
+      );
+
+      const uniqueVideos = action.payload.reduce(
+        (acc: Array<string>, video: any) => {
+          if (!existingIds.has(video._id)) {
+            existingIds.add(video._id);
+            acc.push(video);
+          }
+          return acc;
+        },
+        []
+      );
+
+      state.followingVideos = [...state.followingVideos, ...uniqueVideos];
     },
+
     getUserBookmarks(state, action) {
       state.bookmarks = action.payload;
     },
@@ -97,6 +120,9 @@ export const slice = createSlice({
     },
     refreshPage(state) {
       state.refresh = state.refresh ? false : true;
+    },
+    setCustomVideoURL(state, action) {
+      state.customVideo = action.payload;
     },
   },
 });
@@ -108,6 +134,8 @@ export const {
   refreshPage,
   updatePostID,
   updateDetailedPost,
+  setCustomVideoURL,
+  setIsScroll,
 } = slice.actions;
 
 export function postVideo(params: ActionParams) {
@@ -131,6 +159,36 @@ export function postVideo(params: ActionParams) {
       if (!ok || !response) return errorCallback(response.message);
 
       successCallback(response.message);
+    } catch (error) {
+      errorCallback();
+    } finally {
+      dispatch(slice.actions.stopLoading());
+    }
+  };
+}
+
+export function getVideoLink(params: ActionParams) {
+  return async () => {
+    const {
+      successCallback = () => {},
+      errorCallback = () => {},
+      payload,
+    } = params;
+
+    dispatch(slice.actions.startLoading());
+
+    const options: APIParams = {
+      method: "POST",
+      endpoint: PATH.post.getVideoLink,
+      payload: payload,
+      isToken: false,
+    };
+    try {
+      const [ok, response] = await API(options);
+      if (!ok || !response) return errorCallback(response.message);
+
+      successCallback(response.message);
+      dispatch(slice.actions.setCustomVideoURL(response.data));
     } catch (error) {
       errorCallback();
     } finally {
@@ -223,6 +281,7 @@ export function getFollowingPostOnly(params: ActionParams) {
       const [ok, response] = await API(options);
 
       dispatch(slice.actions.getFollowingPost(response.data));
+      dispatch(slice.actions.setIsScroll(false));
       dispatch(slice.actions.stopLoading());
     } catch (error) {
       console.log("error", error);

@@ -69,8 +69,8 @@ const userSchema = new mongoose.Schema({
 
   accountStatus: {
     type: String,
-    enum: ["active", "deactive"],
-    default: "active",
+    enum: ["active", "pending", "deactive"],
+    default: "pending",
   },
   deactivatedAt: {
     type: Date,

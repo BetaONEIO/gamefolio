@@ -22,6 +22,10 @@ const postSchema = new mongoose.Schema({
     type: String,
   },
 
+  url: {
+    type: String,
+  },
+
   reactions: [
     {
       userID: {

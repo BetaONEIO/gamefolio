@@ -105,3 +105,15 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .disable-blur {
   image-rendering: -webkit-optimize-contrast;
 }
+
+body, html {
+  background-color: #091619;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+
+#__next {
+  height: 100%;
+}

@@ -75,10 +75,10 @@ function init(server) {
   });
 
   // Socket server
-  const port = process.env.SOCKET_PORT;
-  console.log("S PORT: ", port);
-  server.listen(8000, () => {
-    console.log(`Socket Servers running on http://localhost:${8000}`);
+  const { BASE_URL, SOCKET_PORT } = process.env;
+
+  server.listen(SOCKET_PORT, () => {
+    console.log(`Socket Servers running on ${BASE_URL}:${SOCKET_PORT}`);
   });
 }
 
