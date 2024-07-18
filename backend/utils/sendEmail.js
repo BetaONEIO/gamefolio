@@ -122,7 +122,7 @@ const sendVerificationEmail = (user) => {
     // (This part depends on your database setup and is not shown here)
 
     // Create the verification link
-    const verificationLink = `http://localhost:3000/verify?token=${token}`;
+    const verificationLink = `${process.env.WEB_URL}/verify?token=${token}`;
 
     // Read the content of the verification email template
     const verificationEmail = fs.readFileSync(
