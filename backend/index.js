@@ -26,7 +26,7 @@ require("./Authentication/twitterAuth");
 myDbConnection();
 
 app.use(express.json());
-app.use(cors({ credentials: true, origin: process.env.VERCEL_URL }));
+app.use(cors({ credentials: true, origin: process.env.WEB_URL }));
 
 // Initialize express-session before passport.initialize
 
