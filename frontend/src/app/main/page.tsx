@@ -1049,24 +1049,24 @@ function Main() {
                     authState?.notification?.map((notification: any) => (
                       <a
                         href={notification?.postID?.url}
-                        key={notification._id}
+                        key={notification?._id}
                       >
                         <div
                           className={`flex items-center gap-0.2 cursor-pointer hover:opacity-80 hover:bg-[#162423] p-2 ${
-                            notification.isView === false
+                            notification?.isView === false
                               ? "bg-[#162423]"
                               : "bg-[#091619]"
                           }`}
                           onClick={() =>
                             handleUpdateNotification(
                               authState._id,
-                              notification._id
+                              notification?._id
                             )
                           }
                         >
                           <Image
                             className="w-10 h-10 rounded-lg"
-                            src={notification.oppositionID.profilePicture}
+                            src={notification?.oppositionID?.profilePicture}
                             alt="picture"
                             width={12}
                             height={12}
@@ -1076,37 +1076,37 @@ function Main() {
                             <div className="flex items-center gap-2 mx-2">
                               <p
                                 className={`w-28 text-xs text-white ${
-                                  notification.isView === false
+                                  notification?.isView === false
                                     ? "font-bold"
                                     : "font-semibold"
                                 }`}
                               >
-                                {notification.oppositionID.name?.length > 12
-                                  ? `${notification.oppositionID.name.substring(
+                                {notification?.oppositionID?.name?.length > 12
+                                  ? `${notification?.oppositionID?.name.substring(
                                       0,
                                       10
                                     )}`
-                                  : notification.oppositionID.name}
+                                  : notification?.oppositionID?.name}
                               </p>
                               <p
                                 className={`w-32 text-[0.60rem] text-gray-400 ${
-                                  notification.isView === false
+                                  notification?.isView === false
                                     ? "font-bold"
                                     : "font-semibold"
                                 }`}
                               >
-                                {convertDateFormat(notification.date)}
+                                {convertDateFormat(notification?.date)}
                               </p>
                             </div>
                             <span
                               className={`text-xs text-white mx-2 ${
-                                notification.isView === false
+                                notification?.isView === false
                                   ? "font-bold"
                                   : "font-normal"
                               }`}
                             >
                               {getNotificationMessage(
-                                notification.notificationType
+                                notification?.notificationType
                               )}
                             </span>
                           </div>
