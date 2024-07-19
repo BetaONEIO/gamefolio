@@ -79,7 +79,7 @@ app.get(
   })
 );
 
-// Store the Twitter access token in a secure location (e.g., session)
+// Store the Google/Twitter access token in a secure location (e.g., session)
 app.get("/api/store-token", (req, res) => {
   const accessToken = generateToken(req.user._id);
   req.session.token = accessToken;
@@ -89,7 +89,7 @@ app.get("/api/store-token", (req, res) => {
     httpOnly: false,
   });
   // res.redirect("http://localhost:3000/main");
-  res.redirect(`${process.env.BASE_URL}/main`);
+  res.redirect(`${process.env.WEB_URL}/main`);
 });
 
 // app.get("/main", (req, res) => {
