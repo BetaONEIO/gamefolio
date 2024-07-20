@@ -40,7 +40,7 @@ passport.use(
     {
       consumerKey: process.env.TWITTER_CLIENT_ID,
       consumerSecret: process.env.TWITTER_CLIENT_SECRET,
-      callbackURL: `${process.env.BASE_URL}/auth/twitter/callback`,
+      callbackURL: `${process.env.BASE_URL}:8080/auth/twitter/callback`,
       passReqToCallback: true,
       includeEmail: true,
     },
