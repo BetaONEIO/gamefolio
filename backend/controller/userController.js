@@ -48,7 +48,8 @@ const registerUser = asyncHandler(async (req, res) => {
       profilePicture: user.profilePicture,
       coverPicture: user.coverPicture,
       signupMethod: user.signupMethod,
-      message: "Successfully Sign Up",
+      message:
+        "Signup successful! You have been sent a verify link to your email, please click on this to get started",
     });
   } else {
     return res.status(400).json({

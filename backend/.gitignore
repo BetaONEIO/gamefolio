@@ -10,7 +10,10 @@ npm-debug.*
 *.orig.*
 web-build/
 
+.env.*
 .env
+.env.development
+.env.production
 # Ignore .mp3 files
 *.mp3
 

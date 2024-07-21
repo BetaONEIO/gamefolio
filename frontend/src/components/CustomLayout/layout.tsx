@@ -12,6 +12,8 @@ const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const cookies = getCookieValue("gfoliotoken");
+  console.log("cookies: ", cookies);
+
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
   };

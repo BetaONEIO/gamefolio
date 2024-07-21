@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "serverStart": "nodemon index.js",
     "dev": "cross-env NODE_ENV=development ts-node-dev --respawn index.js",
-    "prod": "cross-env NODE_ENV=production ts-node-dev --respawn index.js"
+    "prod": "cross-env NODE_ENV=production ts-node-dev --respawn index.js",
+    "knip": "knip"
   },
   "author": "",
   "license": "ISC",
@@ -44,6 +45,9 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "@types/node": "^20.14.10",
+    "knip": "^5.25.1",
+    "nodemon": "^2.0.22",
+    "typescript": "^5.5.3"
   }
 }
