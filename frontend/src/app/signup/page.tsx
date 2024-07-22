@@ -112,6 +112,9 @@ const Signup = () => {
                 value={form.username}
                 onChange={onChange}
               />
+              <p className="mt-2 text-xs font-normal text-gray-600">
+                Example: john_doe123
+              </p>
             </div>
 
             <div>
@@ -146,6 +149,9 @@ const Signup = () => {
                 value={form.password}
                 onChange={onChange}
               />
+              <p className="mt-2 text-xs font-normal text-gray-600">
+                Example: Password123@
+              </p>
             </div>
 
             <button

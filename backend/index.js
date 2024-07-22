@@ -37,7 +37,7 @@ app.use(
     cookie: {
       secure: false,
     },
-    resave: true,
+    resave: false,
     saveUninitialized: false,
   })
 );
@@ -83,11 +83,13 @@ app.get(
 app.get("/api/store-token", (req, res) => {
   const accessToken = generateToken(req.user._id);
   req.session.token = accessToken;
+  console.log("test===");
+
   const twelveHours = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
   res.cookie("gfoliotoken", accessToken, {
     maxAge: twelveHours,
-    secure: true,
-    domain: "localhost",
+    // secure: true,
+    domain: process.env.DOMAIN,
   });
   // res.redirect("http://localhost:3000/main");
   res.redirect(`${process.env.WEB_URL}/main`);

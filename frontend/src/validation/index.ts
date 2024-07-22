@@ -32,7 +32,6 @@ export const validateForgetPassword = ({ email = "" }) => {
   return "";
 };
 
-
 export const validateResetPassword = ({
   password = "",
   confirmPassword = "",
@@ -58,4 +57,3 @@ export const validateResetPassword = ({
 
   return "";
 };
-
