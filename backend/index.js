@@ -36,9 +36,8 @@ app.use(
     secret: "Rk8%&7wP3z$Q2tY!a@S#vG5bU9rK6mN", // Replace with a strong and secure secret
     cookie: {
       secure: false,
-      domain: process.env.DOMAIN,
     },
-    resave: true,
+    resave: false,
     saveUninitialized: false,
   })
 );
