@@ -6,9 +6,12 @@ import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import { dispatch } from "@/store";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { ToastContainer } from "react-toastify";
-import { validateResetPassword } from "@/validation";
+import {
+  validateResetPassword,
+  validateResetPasswordInputFields,
+} from "@/validation";
 import { resetPasswordRequest } from "@/store/slices/authSlice";
 import CustomBackground from "@/components/CustomBackground/custombackground";
 
@@ -25,6 +28,46 @@ const ResetPassword = () => {
     handleForgetPasswordState();
   }, [forgetPasswordState]);
 
+  const inputRefs = {
+    password: useRef<HTMLInputElement>(null),
+    confirmPassword: useRef<HTMLInputElement>(null),
+  };
+  const errorRefs = {
+    password: useRef<HTMLParagraphElement>(null),
+    confirmPassword: useRef<HTMLParagraphElement>(null),
+  };
+
+  const validateFields = (name: string, value: string) => {
+    const errorMsg = validateResetPasswordInputFields({ [name]: value });
+
+    const inputRef = inputRefs[name as keyof typeof inputRefs];
+    const errorRef = errorRefs[name as keyof typeof errorRefs];
+    if (inputRef.current && errorRef && errorRef.current) {
+      if (errorMsg === false) {
+        errorRef.current.style.display = "none";
+        errorRef.current.textContent = "";
+        inputRef.current.style.border = "";
+      } else {
+        errorRef.current.style.display = "block";
+        errorRef.current.textContent = errorMsg as string;
+        inputRef.current.style.border = "1px solid red";
+      }
+    }
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.currentTarget || {}; // Add a fallback to prevent destructuring from null
+
+    if (name && value !== undefined) {
+      // Ensure name and value are not undefined or null
+      setResetPassword({
+        ...resetPassword,
+        [e.currentTarget.name]: e.currentTarget.value,
+      });
+      validateFields(name, value);
+    }
+  };
+
   const handleForgetPasswordState = () => {
     if (
       !forgetPasswordState ||
@@ -40,13 +83,6 @@ const ResetPassword = () => {
     }
 
     return false;
-  };
-
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setResetPassword({
-      ...resetPassword,
-      [e.currentTarget.name]: e.currentTarget.value,
-    });
   };
 
   const handleResetPassword = () => {
@@ -116,6 +152,7 @@ const ResetPassword = () => {
                 New Password
               </label>
               <input
+                ref={inputRefs.password}
                 type="password"
                 name="password"
                 id="password"
@@ -123,8 +160,12 @@ const ResetPassword = () => {
                 placeholder="New Password"
                 required
                 value={resetPassword.password}
-                onChange={onChange}
+                onChange={handleChange}
               />
+              <p
+                ref={errorRefs.password}
+                className="mt-2 text-xs  font-normal text-gray-600 base-input-message"
+              ></p>
             </div>
 
             <div>
@@ -135,6 +176,7 @@ const ResetPassword = () => {
                 Repeat New Password
               </label>
               <input
+                ref={inputRefs.confirmPassword}
                 type="password"
                 id="confirmPassword"
                 name="confirmPassword"
@@ -142,8 +184,12 @@ const ResetPassword = () => {
                 placeholder="Confirm New Password"
                 required
                 value={resetPassword.confirmPassword}
-                onChange={onChange}
+                onChange={handleChange}
               />
+              <p
+                ref={errorRefs.confirmPassword}
+                className="mt-2 text-xs  font-normal text-gray-600 base-input-message"
+              ></p>
             </div>
 
             <button

@@ -86,3 +86,16 @@ export const generateUniqueRoomId = () => {
   const uniqueNumber = Math.floor(Math.random() * 9000) + 1000;
   return uniqueNumber;
 };
+export const debounce = (func: Function, delay: number) => {
+  let timeoutId: NodeJS.Timeout | null = null;
+
+  return (...args: any[]) => {
+    if (timeoutId !== null) {
+      clearTimeout(timeoutId);
+    }
+
+    timeoutId = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+};

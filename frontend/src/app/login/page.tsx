@@ -1,5 +1,5 @@
 "use client";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { IMAGES } from "@/assets/images";
@@ -8,7 +8,7 @@ import { RootState, dispatch, useSelector } from "@/store";
 import { ROUTES } from "@/labels/routes";
 import { login } from "@/store/slices/authSlice";
 import { getFromLocal } from "@/utils/localStorage";
-import { validateLogin } from "@/validation";
+import { validateLogin, validateLoginInputFields } from "@/validation";
 import { ToastContainer } from "react-toastify";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import CustomBackground from "@/components/CustomBackground/custombackground";
@@ -23,11 +23,41 @@ const Page = () => {
 
   const { email, password } = formData;
 
+  const inputRefs = {
+    email: useRef<HTMLInputElement>(null),
+    password: useRef<HTMLInputElement>(null),
+  };
+  const errorRefs = {
+    email: useRef<HTMLParagraphElement>(null),
+    password: useRef<HTMLParagraphElement>(null),
+  };
+
+  const validateFields = (name: string, value: string) => {
+    const errorMsg = validateLoginInputFields({ [name]: value });
+
+    const inputRef = inputRefs[name as keyof typeof inputRefs];
+    const errorRef = errorRefs[name as keyof typeof errorRefs];
+    if (inputRef.current && errorRef && errorRef.current) {
+      if (errorMsg === false) {
+        errorRef.current.style.display = "none";
+        errorRef.current.textContent = "";
+        inputRef.current.style.border = "";
+      } else {
+        errorRef.current.style.display = "block";
+        errorRef.current.textContent = errorMsg as string;
+        inputRef.current.style.border = "1px solid red";
+      }
+    }
+  };
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    const { name, value } = e.currentTarget || {}; // Add a fallback to prevent destructuring from null
+
+    if (name && value !== undefined) {
+      // Ensure name and value are not undefined or null
+      setFormData((prevForm) => ({ ...prevForm, [name]: value }));
+      validateFields(name, value);
+    }
   };
 
   const onLogin = async () => {
@@ -72,7 +102,7 @@ const Page = () => {
   return (
     <CustomBackground>
       <div className="flex flex-col items-center justify-center px-6 py-8 ">
-        <div className="p-6 space-y-4 sm:p-8 md:w-96 bg-[#091619] rounded-xl border border-[#1C2C2E]">
+        <div className="p-6 space-y-4 sm:p-8 md:w-96 bg-[#091619] rounded-xl border border-[#1C2C2E] h-screen overflow-scroll">
           <div className="flex justify-center items-center">
             <Image
               src={IMAGES.logo}
@@ -99,6 +129,7 @@ const Page = () => {
                 Email
               </label>
               <input
+                ref={inputRefs.email}
                 type="email"
                 name="email"
                 className="bg-[#162423] sm:text-sm outline-none rounded-lg block w-full p-3 text-white"
@@ -106,6 +137,10 @@ const Page = () => {
                 value={email}
                 onChange={handleChange}
               />
+              <p
+                ref={errorRefs.email}
+                className="mt-2 text-xs  font-normal text-gray-600 base-input-message"
+              ></p>
             </div>
 
             <div>
@@ -116,6 +151,7 @@ const Page = () => {
                 Password
               </label>
               <input
+                ref={inputRefs.password}
                 type="password"
                 name="password"
                 id="password"
@@ -124,6 +160,10 @@ const Page = () => {
                 value={password}
                 onChange={handleChange}
               />
+              <p
+                ref={errorRefs.password}
+                className="mt-2 text-xs  font-normal text-gray-600 base-input-message"
+              ></p>
             </div>
 
             <button
