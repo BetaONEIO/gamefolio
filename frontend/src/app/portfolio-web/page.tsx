@@ -84,7 +84,7 @@ function MyGamefolio() {
 
           {/* Top Bar */}
           <div className="flex justify-end absolute top-40 w-4/5">
-            <div className="w-72 h-fit border-2 border-[#1C2C2E] rounded-lg p-2 pt-6 bg-[#091619]">
+            <div className="hidden md:block w-72 h-fit border-2 border-[#1C2C2E] rounded-lg p-2 pt-6 bg-[#091619] ">
               <div className="flex justify-center">
                 <Image
                   className="rounded-xl w-32 h-32 object-cover border-2 border-[#43DD4E]"
@@ -116,15 +116,15 @@ function MyGamefolio() {
                 </div>
               </div>
 
-              <div className="flex h-8 gap-2 my-6">
+              {/* <div className="flex h-8 gap-2 my-6">
                 <button className="font-bold w-40 h-10 bg-[#292D32] text-white text-center py-[10px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]">
                   follow
                 </button>
                 <button className="font-bold w-40 h-10 bg-[#37C535] text-white text-center py-[10px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]">
                   Message
                 </button>
-              </div>
-              <div className="flex items-center justify-between text-white">
+              </div> */}
+              <div className="flex items-center justify-between text-white mt-6">
                 <p>Posts</p>
                 <p>{userVideos?.length || 0}</p>
               </div>
@@ -138,7 +138,7 @@ function MyGamefolio() {
                 <p>Following</p>
                 <p>{authState?.following?.length || 0}</p>
               </div>
-              <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
+              <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-10">
                 <Image
                   className="rounded-xl w-10 h-10 object-cover"
                   src={SVG.PlayStation}
@@ -200,7 +200,7 @@ function MyGamefolio() {
               </p>
             </div>
 
-            <div className="w-8/12 justify-between items-center h-10 mt-24">
+            <div className="w-8/12 justify-between items-center h-10 mt-24 ">
               {/* header */}
               <div className="flex items-center">
                 <div className="flex justify-between items-center w-full sm:mx-2 lg:mx-4 relative">

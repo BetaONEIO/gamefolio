@@ -84,7 +84,9 @@ const Page = () => {
             />
           </div>
 
-          <h1 className={`${leagueGothic.className} text-4xl`}>LOGIN</h1>
+          <h1 className={`${leagueGothic.className} text-4xl text-white`}>
+            LOGIN
+          </h1>
           <hr className="w-7 border-t-4 border-[#43DD4E] rounded-lg" />
 
           <form
