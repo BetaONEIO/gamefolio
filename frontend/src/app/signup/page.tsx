@@ -1,17 +1,17 @@
 "use client";
-import { ChangeEvent, useState } from "react";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { IMAGES } from "@/assets/images";
+import CustomBackground from "@/components/CustomBackground/custombackground";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import { leagueGothic } from "@/font/font";
 import { ROUTES } from "@/labels/routes";
-import { RootState, dispatch, useSelector } from "@/store";
+import { dispatch } from "@/store";
 import { register } from "@/store/slices/authSlice";
-import { validateRegister } from "@/validation";
+import { validateRegister, validateRegisterInputFields } from "@/validation";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { ChangeEvent, useRef, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import CustomBackground from "@/components/CustomBackground/custombackground";
 
 const Signup = () => {
   const router = useRouter();
@@ -21,12 +21,45 @@ const Signup = () => {
     email: "",
     password: "",
   });
-  const validateName = (name: any) => {
-    const pattern = /^[A-Za-z\s]+$/;
-    return pattern.test(name);
+  const inputRefs = {
+    name: useRef<HTMLInputElement>(null),
+    username: useRef<HTMLInputElement>(null),
+    email: useRef<HTMLInputElement>(null),
+    password: useRef<HTMLInputElement>(null),
   };
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.currentTarget.name]: e.currentTarget.value });
+  const errorRefs = {
+    name: useRef<HTMLParagraphElement>(null),
+    username: useRef<HTMLParagraphElement>(null),
+    email: useRef<HTMLParagraphElement>(null),
+    password: useRef<HTMLParagraphElement>(null),
+  };
+
+  const validateFields = (name: string, value: string) => {
+    const errorMsg = validateRegisterInputFields({ [name]: value });
+
+    const inputRef = inputRefs[name as keyof typeof inputRefs];
+    const errorRef = errorRefs[name as keyof typeof errorRefs];
+    if (inputRef.current && errorRef && errorRef.current) {
+      if (errorMsg === false) {
+        errorRef.current.style.display = "none";
+        errorRef.current.textContent = "";
+        inputRef.current.style.border = "";
+      } else {
+        errorRef.current.style.display = "block";
+        errorRef.current.textContent = errorMsg as string;
+        inputRef.current.style.border = "1px solid red";
+      }
+    }
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.currentTarget || {}; // Add a fallback to prevent destructuring from null
+
+    if (name && value !== undefined) {
+      // Ensure name and value are not undefined or null
+      setForm((prevForm) => ({ ...prevForm, [name]: value }));
+      validateFields(name, value);
+    }
   };
 
   const onRegister = () => {
@@ -62,7 +95,7 @@ const Signup = () => {
   return (
     <CustomBackground>
       <div className="flex flex-col items-center justify-center px-6 py-8 ">
-        <div className="p-6 space-y-4 sm:p-8 md:w-96 bg-[#091619] rounded-xl border border-[#1C2C2E]">
+        <div className="p-6 space-y-4 sm:p-8 md:w-96 bg-[#091619] rounded-xl border border-[#1C2C2E] h-screen overflow-scroll">
           <div className="flex justify-center items-center">
             <Image
               src={IMAGES.logo}
@@ -89,13 +122,18 @@ const Signup = () => {
                 Name
               </label>
               <input
+                ref={inputRefs.name}
                 type="text"
                 name="name"
                 className="bg-[#162423] sm:text-sm outline-none rounded-lg block w-full p-2.5 text-white"
                 placeholder="Name"
                 value={form.name}
-                onChange={onChange}
+                onChange={handleChange}
               />
+              <p
+                ref={errorRefs.name}
+                className="mt-2 text-xs  font-normal text-gray-600 base-input-message"
+              ></p>
             </div>
             <div>
               <label
@@ -105,16 +143,18 @@ const Signup = () => {
                 Username
               </label>
               <input
+                ref={inputRefs.username}
                 type="text"
                 name="username"
-                className="bg-[#162423] sm:text-sm outline-none rounded-lg block w-full p-2.5 text-white"
+                className="bg-[#162423] sm:text-sm outline-none rounded-lg block w-full p-2.5 text-white "
                 placeholder="Username"
                 value={form.username}
-                onChange={onChange}
+                onChange={handleChange}
               />
-              <p className="mt-2 text-xs font-normal text-gray-600">
-                Example: john_doe123
-              </p>
+              <p
+                ref={errorRefs.username}
+                className="mt-2 text-xs  font-normal text-gray-600 base-input-message"
+              ></p>
             </div>
 
             <div>
@@ -125,13 +165,18 @@ const Signup = () => {
                 Email
               </label>
               <input
+                ref={inputRefs.email}
                 type="email"
                 name="email"
                 className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-2.5 text-white"
                 placeholder="Email Address"
                 value={form.email}
-                onChange={onChange}
+                onChange={handleChange}
               />
+              <p
+                ref={errorRefs.email}
+                className="mt-2 text-xs  font-normal text-gray-600 base-input-message"
+              ></p>
             </div>
 
             <div>
@@ -142,16 +187,18 @@ const Signup = () => {
                 Password
               </label>
               <input
+                ref={inputRefs.password}
                 type="password"
                 name="password"
                 className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-2.5 text-white"
                 placeholder="Password"
                 value={form.password}
-                onChange={onChange}
+                onChange={handleChange}
               />
-              <p className="mt-2 text-xs font-normal text-gray-600">
-                Example: Password123@
-              </p>
+              <p
+                ref={errorRefs.password}
+                className="mt-2 text-xs  font-normal text-gray-600 base-input-message"
+              ></p>
             </div>
 
             <button
