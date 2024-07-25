@@ -68,7 +68,7 @@ function MyGamefolio() {
   return (
     <Layout>
       <Suspense fallback={<Loading />}>
-        <div className="flex justify-center bg-red-400 ">
+        <div className="flex justify-center">
           <div className="relative w-full h-80">
             <Image
               className="w-full h-80 object-cover"
@@ -207,7 +207,7 @@ function MyGamefolio() {
               </div>
             </div>
 
-            <div className="w-8/12 justify-between items-center h-10 mt-24">
+            <div className="w-full lg:w-8/12 justify-center lg:justify-between items-center h-10 mt-10 lg:mt-24">
               {/* header */}
               <div className="flex items-center">
                 <div className="flex justify-between items-center w-full sm:mx-2 lg:mx-4 relative">
