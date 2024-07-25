@@ -130,12 +130,12 @@ function Games() {
               filteredGames?.slice(0, 3)?.map((item: any) => (
                 <SwiperSlide key={item.id}>
                   <Image
-                    width={400}
-                    height={400}
+                    width={1920}
+                    height={1080}
                     className="w-full h-full rounded-xl  bg-cover bg-no-repeat bg-center hover:scale-105 transition-transform duration-100"
                     src={item.box_art_url.replace(
                       "{width}x{height}",
-                      "400x900"
+                      "1920x1080"
                     )}
                     alt={item.name}
                     style={styles.swiperImage}
