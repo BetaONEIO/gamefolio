@@ -21,7 +21,7 @@ function Badges({ handleCloseModal }: BadgesProps) {
       id: 1,
       Image: SVG.Badge1,
       userName: "Quick Starter",
-      Name: "Milestone 1000 coins",
+      Name: "Milestone 10 coins",
       coins: 10,
     },
     {
@@ -117,7 +117,7 @@ function Badges({ handleCloseModal }: BadgesProps) {
               </button>
 
               <h1
-                className={`${leagueGothic.className} text-center text-3xl dark-text-white pt-4`}
+                className={`${leagueGothic.className} text-center text-3xl dark-text-white pt-4 text-white`}
               >
                 BADGES
               </h1>

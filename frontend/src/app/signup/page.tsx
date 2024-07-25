@@ -107,7 +107,9 @@ const Signup = () => {
             />
           </div>
 
-          <h1 className={`${leagueGothic.className} text-4xl`}>SIGNUP</h1>
+          <h1 className={`${leagueGothic.className} text-4xl text-white`}>
+            SIGNUP
+          </h1>
           <hr className="w-7 border-t-4 border-[#43DD4E] rounded-lg" />
 
           <form

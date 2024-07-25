@@ -372,7 +372,7 @@ function Main() {
       <Suspense fallback={<Loading />}>
         <div
           style={sectionStyle}
-          className="flex bg-[#091619] h-full justify-center py-4 overflow-y-scroll no-scrollbar"
+          className="flex bg-[#091619] h-screen justify-center py-4 overflow-y-scroll no-scrollbar"
         >
           <div className="flex w-full justify-center md:justify-between gap-4 px-4">
             {/* Trending */}
@@ -398,11 +398,11 @@ function Main() {
                 filteredGames?.slice(0, 10)?.map((item: any, index: number) => (
                   <div className="flex flex-col gap-6" key={index}>
                     <div className="flex justify-between items-center">
-                      <div className="flex gap-2">
+                      <div className="flex gap-2 overflow-hidden rounded-xl">
                         <Image
                           width={56}
                           height={64}
-                          className="w-14 h-14 rounded-xl"
+                          className="w-14 h-14 rounded-xl hover:scale-105 transition-transform duration-100"
                           src={item.box_art_url.replace(
                             "{width}x{height}",
                             "64x64"
@@ -414,10 +414,10 @@ function Main() {
                           <span className="text-xs font-bold text-[#43DD4E]">
                             Trending Now
                           </span>
-                          <span className="text-md font-semibold text-white">
+                          <span className="text-md font-semibold text-white hover:text-[#43DD4E]">
                             {item.name}
                           </span>
-                          <span className="text-xs text-gray-500 ">
+                          <span className="text-xs text-gray-500  hover:opacity-80">
                             New addition Arrived
                           </span>
                         </div>
