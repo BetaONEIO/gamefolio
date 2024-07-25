@@ -68,7 +68,7 @@ function MyGamefolio() {
   return (
     <Layout>
       <Suspense fallback={<Loading />}>
-        <div className="">
+        <div className="flex justify-center bg-red-400 ">
           <div className="relative w-full h-80">
             <Image
               className="w-full h-80 object-cover"
@@ -83,124 +83,131 @@ function MyGamefolio() {
           </div>
 
           {/* Top Bar */}
-          <div className="flex justify-end absolute top-40 w-4/5">
-            <div className="w-72 h-fit border-2 border-[#1C2C2E] rounded-lg p-2 pt-6 bg-[#091619]">
-              <div className="flex justify-center">
-                <Image
-                  className="rounded-xl w-32 h-32 object-cover border-2 border-[#43DD4E]"
-                  src={authState?.profilePicture}
-                  width={10}
-                  height={10}
-                  sizes="100vw"
-                  alt="Account Profile"
-                />
-              </div>
-              <span className="flex justify-center font-semibold text-white">
-                {authState?.name}
-              </span>
-              <div className="flex items-center gap-6 justify-center">
-                <div
-                  className="flex items-center"
-                  onClick={() => copyToClipboard(authState?.username)}
-                >
-                  <p className="text-white">
-                    ({authState?.username || "no_username"})
-                  </p>
+          <div className="flex flex-col lg:flex-row w-screen  lg:justify-end absolute top-80 lg:top-40 lg:w-4/5">
+            <div className="border-2 border-[#1C2C2E] rounded-lg p-2 pt-6 bg-[#091619] w-auto overflow-x-auto lg:w-72 h-fit lg:h-fit flex flex-col lg:flex-col gap-8 justify-center  lg:gap-1 ">
+              <div className="flex flex-col justify-center">
+                <div className="flex justify-center">
                   <Image
-                    className="cursor-pointer hover:opacity-80"
-                    src={SVG.AccountCopyUsername}
-                    width={16}
-                    height={16}
-                    alt="Copy Username"
+                    className="rounded-xl w-32 h-32 object-cover border-2 border-[#43DD4E]"
+                    src={authState?.profilePicture}
+                    width={10}
+                    height={10}
+                    sizes="100vw"
+                    alt="Account Profile"
                   />
                 </div>
-              </div>
+                <span className="flex justify-center font-semibold text-white">
+                  {authState?.name}
+                </span>
+                <div className="flex items-center gap-6 justify-center">
+                  <div
+                    className="flex items-center"
+                    onClick={() => copyToClipboard(authState?.username)}
+                  >
+                    <p className="text-white">
+                      ({authState?.username || "no_username"})
+                    </p>
+                    <Image
+                      className="cursor-pointer hover:opacity-80"
+                      src={SVG.AccountCopyUsername}
+                      width={16}
+                      height={16}
+                      alt="Copy Username"
+                    />
+                  </div>
+                </div>
 
-              <div className="flex h-8 gap-2 my-6">
-                <button className="font-bold w-40 h-10 bg-[#292D32] text-white text-center py-[10px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]">
-                  follow
-                </button>
-                <button className="font-bold w-40 h-10 bg-[#37C535] text-white text-center py-[10px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]">
-                  Message
-                </button>
+                <div className="flex justify-center h-8 gap-2 my-6">
+                  <button className="font-bold w-40 h-10 bg-[#292D32] text-white text-center py-[10px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]">
+                    follow
+                  </button>
+                  <button className="font-bold w-40 h-10 bg-[#37C535] text-white text-center py-[10px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]">
+                    Message
+                  </button>
+                </div>
+                <div className="flex items-center justify-between text-white">
+                  <p>Posts</p>
+                  <p>{userVideos?.length || 0}</p>
+                </div>
+                <hr className="h-px border-0 bg-[#586769] my-2 " />
+                <div className="flex items-center justify-between text-white">
+                  <p>Followers</p>
+                  <p>{authState?.follower?.length || 0}</p>
+                </div>
+                <hr className="h-px border-0 bg-[#586769] my-2 " />
+                <div className="flex items-center justify-between text-white">
+                  <p>Following</p>
+                  <p>{authState?.following?.length || 0}</p>
+                </div>
               </div>
-              <div className="flex items-center justify-between text-white">
-                <p>Posts</p>
-                <p>{userVideos?.length || 0}</p>
-              </div>
-              <hr className="h-px border-0 bg-[#586769] my-2 " />
-              <div className="flex items-center justify-between text-white">
-                <p>Followers</p>
-                <p>{authState?.follower?.length || 0}</p>
-              </div>
-              <hr className="h-px border-0 bg-[#586769] my-2 " />
-              <div className="flex items-center justify-between text-white">
-                <p>Following</p>
-                <p>{authState?.following?.length || 0}</p>
-              </div>
-              <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
-                <Image
-                  className="rounded-xl w-10 h-10 object-cover"
-                  src={SVG.PlayStation}
-                  width={10}
-                  height={10}
-                  sizes="100vw"
-                  alt="Account Profile"
-                />
-                <p className="text-white font-light text-xs ">
-                  Connect with Playstation
-                </p>
-              </div>
+              <div className="flex flex-col justify-center ">
+                <div className="flex flex-row w-56 gap-2 lg:flex-col  lg:w-full">
+                  <div className="flex  items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
+                    <Image
+                      className="rounded-xl w-10 h-10 object-cover"
+                      src={SVG.PlayStation}
+                      width={10}
+                      height={10}
+                      sizes="100vw"
+                      alt="Account Profile"
+                    />
+                    <p className="hidden lg:block text-white font-light text-xs ">
+                      Connect with Playstation
+                    </p>
+                  </div>
 
-              <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
-                <Image
-                  className="rounded-xl w-10 h-10 object-cover"
-                  src={SVG.Twitch}
-                  width={10}
-                  height={10}
-                  sizes="100vw"
-                  alt="Account Profile"
-                />
-                <p className="text-white font-normal text-xs ">
-                  Connect with Twitch
-                </p>
-              </div>
+                  <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
+                    <Image
+                      className="rounded-xl w-10 h-10 object-cover"
+                      src={SVG.Twitch}
+                      width={10}
+                      height={10}
+                      sizes="100vw"
+                      alt="Account Profile"
+                    />
+                    <p className="hidden lg:block text-white font-normal text-xs ">
+                      Connect with Twitch
+                    </p>
+                  </div>
 
-              <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
-                <Image
-                  className="rounded-xl w-10 h-10 object-cover"
-                  src={SVG.Xbox}
-                  width={10}
-                  height={10}
-                  sizes="100vw"
-                  alt="Account Profile"
-                />
-                <p className="text-white font-normal text-xs ">
-                  Connect with Xbox
-                </p>
-              </div>
+                  <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
+                    <Image
+                      className="rounded-xl w-10 h-10 object-cover"
+                      src={SVG.Xbox}
+                      width={10}
+                      height={10}
+                      sizes="100vw"
+                      alt="Account Profile"
+                    />
+                    <p className="hidden lg:block text-white font-normal text-xs ">
+                      Connect with Xbox
+                    </p>
+                  </div>
 
-              <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
-                <Image
-                  className="rounded-xl w-10 h-10 object-cover"
-                  src={SVG.Steam}
-                  width={10}
-                  height={10}
-                  sizes="100vw"
-                  alt="Account Profile"
-                />
-                <p className="text-white font-normal text-xs ">
-                  Connect with Steam
-                </p>
+                  <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
+                    <Image
+                      className="rounded-xl w-10 h-10 object-cover"
+                      src={SVG.Steam}
+                      width={10}
+                      height={10}
+                      sizes="100vw"
+                      alt="Account Profile"
+                    />
+                    <p className="hidden lg:block text-white font-normal text-xs ">
+                      Connect with Steam
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-col">
+                  <h1 className="text-white font-bold my-2">About Me:</h1>
+                  <p className="font-light text-xs text-[#7C7F80]">
+                    {authState.bio}
+                  </p>
+                </div>
               </div>
-
-              <h1 className="text-white font-bold my-2">About Me:</h1>
-              <p className="font-light text-xs text-[#7C7F80]">
-                {authState.bio}
-              </p>
             </div>
 
-            <div className="w-8/12 justify-between items-center h-10 mt-24">
+            <div className="w-full lg:w-8/12 justify-center lg:justify-between items-center h-10 mt-10 lg:mt-24">
               {/* header */}
               <div className="flex items-center">
                 <div className="flex justify-between items-center w-full sm:mx-2 lg:mx-4 relative">
