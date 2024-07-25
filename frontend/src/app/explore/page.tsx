@@ -227,11 +227,11 @@ function Explore() {
           ) : (
             filteredGames?.slice(0, 20)?.map((item: any) => (
               <div key={item.id}>
-                <div className="w-28 h-40">
+                <div className="w-28 h-40 overflow-hidden rounded-xl">
                   <Image
                     width={40}
                     height={40}
-                    className="w-28 h-40 rounded-xl"
+                    className="w-28 h-40 hover:scale-105 transition-transform duration-100"
                     src={item.box_art_url.replace(
                       "{width}x{height}",
                       "112x160"
@@ -289,13 +289,15 @@ function Explore() {
                 <Link href={`/account/${user?.username}`} key={user._id}>
                   <div>
                     <div className="mt-2">
-                      <span className="text-white">{user?.name}</span>
+                      <span className="font-semibold text-white hover:text-[#43DD4E]">
+                        {user?.name?.split(" ").slice(0, 2).join(" ")}
+                      </span>
                     </div>
                     <div
                       className="flex items-center"
                       onClick={() => copyToClipboard(user?.username)}
                     >
-                      <p className="text-white">
+                      <p className="text-white  hover:text-[#43DD4E]">
                         ({user?.username || "no_username"})
                       </p>
                       <Image
@@ -383,15 +385,15 @@ function Explore() {
           postState.videos?.slice(0, 4)?.map((item: any) => (
             <div
               key={item?.userID}
-              className="flex-shrink-0 flex flex-col gap-2 w-68 h-64 border-2 border-[#1C2C2E] rounded-xl mx-1 pb-2 cursor-pointer hover:opacity-80"
+              className="flex-shrink-0 flex flex-col gap-2 w-64 h-64 border-2 border-[#1C2C2E] rounded-xl mx-1 pb-2 cursor-pointer hover:opacity-80"
               onClick={() =>
                 handleModalToggle("isVideoDetailOpen", item._id, item)
               }
             >
-              <div className="relative">
+              <div className="relative overflow-hidden rounded-xl">
                 <video
                   src={item.video}
-                  className="w-full h-36 rounded-2xl hover:opacity-80"
+                  className="w-96 h-36 rounded-xl hover:opacity-80 hover:scale-105 transition-transform duration-300"
                   controls={false}
                   autoPlay={false}
                   width={50}
@@ -413,12 +415,12 @@ function Explore() {
                 />
                 <div>
                   <div>
-                    <span className="text-xs sm:text-sm text-white">
-                      {item?.userID?.name}
+                    <span className="font-semibold text-xs sm:text-sm text-white hover:text-[#43DD4E]">
+                      {item?.userID?.name.split(" ").slice(0, 2).join(" ")}
                     </span>
                   </div>
                   <div className="flex items-center">
-                    <p className="text-sm font-light text-gray-400">
+                    <p className="text-sm font-light text-gray-400 hover:opacity-80">
                       {formatTimeAgo(item.date)}
                     </p>
                   </div>

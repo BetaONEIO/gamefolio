@@ -117,7 +117,7 @@ function Video() {
   };
 
   return (
-    <div className="m-4">
+    <div className="m-4 h-screen">
       <div className="flex items-center mx-2 mb-2">
         <p className="font-semibold sm:text-lg text-xs text-white">
           Video Recommended for you
@@ -155,7 +155,7 @@ function Video() {
                 <div className="relative overflow-hidden rounded-t-xl aspect-w-16 aspect-h-9">
                   <video
                     src={item.video}
-                    className="object-cover w-full h-36 hover:opacity-80"
+                    className="object-cover w-full h-36 rounded-xl hover:opacity-80 hover:scale-105 transition-transform duration-300"
                     controls={false}
                     autoPlay={false}
                     width={50}
@@ -178,8 +178,10 @@ function Video() {
                       width={40}
                     />
                     <div>
-                      <p className="text-sm text-white">{item?.userID?.name}</p>
-                      <p className="text-xs text-gray-400">
+                      <p className="text-sm text-white font-semibold  hover:text-[#43DD4E]">
+                        {item?.userID?.name}
+                      </p>
+                      <p className="text-xs text-gray-400 hover:opacity-80">
                         {formatTimeAgo(item.date)}
                       </p>
                     </div>
@@ -188,7 +190,7 @@ function Video() {
                   <div className="flex justify-between mx-2">
                     <div className="flex items-center gap-2">
                       <Image
-                        className="cursor-pointer hover:opacity-80"
+                        className="cursor-pointe hover:opacity-80"
                         src={SVG.Like}
                         alt="Like"
                         width={20}

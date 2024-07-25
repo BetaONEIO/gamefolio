@@ -250,7 +250,7 @@ function Trending() {
                       <Image
                         width={800}
                         height={400}
-                        className="w-full h-full rounded-xl bg-cover bg-no-repeat bg-center"
+                        className="w-full h-full rounded-xl bg-cover bg-no-repeat bg-center hover:scale-105 transition-transform duration-100"
                         src={item.box_art_url.replace(
                           "{width}x{height}",
                           "800x400"
@@ -266,19 +266,19 @@ function Trending() {
 
                 <div className="absolute top-4 left-4 flex gap-4 z-10">
                   <button
-                    className="rounded-2xl px-4 py-2 text-white cursor-pointer hover:opacity-80"
+                    className="font-semibold rounded-2xl px-4 py-2 text-white cursor-pointer hover:text-[#43DD4E]"
                     style={{ backgroundColor: "rgba(41, 45, 50, 0.8)" }}
                   >
                     Action
                   </button>
                   <button
-                    className="rounded-2xl px-4 py-2 text-white cursor-pointer hover:opacity-80"
+                    className="font-semibold rounded-2xl px-4 py-2 text-white cursor-pointer hover:text-[#43DD4E]"
                     style={{ backgroundColor: "rgba(41, 45, 50, 0.8)" }}
                   >
                     Fighting
                   </button>
                   <button
-                    className="rounded-2xl px-4 py-2 text-white cursor-pointer hover:opacity-80"
+                    className="font-semibold rounded-2xl px-4 py-2 text-white cursor-pointer hover:text-[#43DD4E]"
                     style={{ backgroundColor: "rgba(41, 45, 50, 0.8)" }}
                   >
                     Thrilling
@@ -306,11 +306,11 @@ function Trending() {
                         key={item.id}
                         className="flex justify-between items-center"
                       >
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 overflow-hidden rounded-xl">
                           <Image
                             width={64}
                             height={64}
-                            className="w-16 h-16 rounded-xl"
+                            className="w-16 h-16 rounded-xl hover:scale-105 transition-transform duration-100"
                             src={item.box_art_url.replace(
                               "{width}x{height}",
                               "64x64"
@@ -321,10 +321,10 @@ function Trending() {
                             <span className="text-sm font-bold text-[#43DD4E]">
                               Trending Now
                             </span>
-                            <span className="text-md font-semibold text-white">
+                            <span className="text-md font-semibold hover:text-[#43DD4E]">
                               {item.name}
                             </span>
-                            <span className="text-xs text-[#A1A1A1]">
+                            <span className="text-xs text-[#A1A1A1] hover:opacity-80">
                               New addition Arrived
                             </span>
                           </div>
@@ -373,7 +373,7 @@ function Trending() {
                     <div className="relative overflow-hidden rounded-t-xl aspect-w-16 aspect-h-9">
                       <video
                         src={item.video}
-                        className="object-cover w-full h-36"
+                        className="object-cover w-full h-36 rounded-xl hover:scale-105 transition-transform duration-100"
                         controls={false}
                         autoPlay={false}
                         width={50}
@@ -391,17 +391,20 @@ function Trending() {
                     <div className="p-2">
                       <div className="flex items-center gap-2 mb-4">
                         <Image
-                          className="rounded-full w-10 h-10 object-cover"
+                          className="rounded-xl w-10 h-10 object-cover "
                           src={item?.userID?.profilePicture}
                           alt="Account Profile"
                           height={40}
                           width={40}
                         />
                         <div>
-                          <p className="text-sm text-white">
-                            {item?.userID?.name}
+                          <p className="font-semibold text-sm text-white hover:text-[#43DD4E]">
+                            {item?.userID?.name
+                              .split(" ")
+                              .slice(0, 2)
+                              .join(" ")}
                           </p>
-                          <p className="text-xs text-gray-400">
+                          <p className="text-xs text-gray-400 hover:opacity-80">
                             {formatTimeAgo(item.date)}
                           </p>
                         </div>

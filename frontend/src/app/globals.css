@@ -138,4 +138,13 @@ html {
   font-weight: 500;
   transition: color 3s ease-in;
   color: rgb(242, 112, 138);
+/* Define the normal and lifted states */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover,
+.card.is-lifted {
+  transform: translateY(-5px); /* Adjust value for the lift effect */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adjust shadow for a lifting appearance */
 }

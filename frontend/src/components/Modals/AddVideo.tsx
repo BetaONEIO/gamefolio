@@ -261,8 +261,10 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
                         >
                           {({ remainingTime }) => {
                             return (
-                              <div className="flex flex-col justify-center items-center ">
-                                <span className="text-xs">Estimated Time</span>
+                              <div className="flex flex-col justify-center items-center text-white">
+                                <span className="text-xs text-white">
+                                  Estimated Time
+                                </span>
                                 {remainingTime}
                               </div>
                             );
