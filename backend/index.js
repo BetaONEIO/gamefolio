@@ -89,7 +89,6 @@ app.get("/api/store-token", (req, res) => {
     maxAge: twelveHours,
     // secure: true,
     domain: process.env.DOMAIN,
-    d,
   });
   // res.redirect("http://localhost:3000/main");
   res.redirect(`${process.env.WEB_URL}/main`);

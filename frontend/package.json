@@ -28,6 +28,7 @@
     "react": "18.2.0",
     "react-countdown-circle-timer": "^3.2.1",
     "react-dom": "18.2.0",
+    "react-google-recaptcha": "^3.1.0",
     "react-hook-form": "^7.48.2",
     "react-hot-toast": "^2.4.1",
     "react-insta-stories": "^2.6.2",
@@ -41,6 +42,7 @@
   "devDependencies": {
     "@babel/preset-react": "^7.24.7",
     "@types/node": "^20.14.10",
+    "@types/react-google-recaptcha": "^2.1.9",
     "knip": "^5.25.1",
     "typescript": "^5.5.3"
   }
