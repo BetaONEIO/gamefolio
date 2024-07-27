@@ -16,9 +16,11 @@ import Image from "next/image";
 import { Suspense, useEffect, useState } from "react";
 import Loading from "./loading";
 
-function MyGamefolio() {
+function MyGamefolio({ params }: any) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
+  const profileInfoState = useSelector((state: any) => state.user) || [];
   const postState = useSelector((state: any) => state.post) || [];
+  const [isPrivateAccount, setIsPrivateAccount] = useState(false);
   const [postID, setPostID] = useState("");
   const [modalState, setModalState] = useState({
     isShareModalOpen: false,
@@ -28,22 +30,28 @@ function MyGamefolio() {
     isStoryModalOpen: false,
   });
 
-  const userVideos = postState.videos?.filter(
+  const userVideosLength = postState.videos?.filter(
     (post: any) => post?.userID?._id === authState._id
   );
 
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
   };
-  const params = {
+  const myparams = {
     payload,
   };
   useEffect(() => {
-    dispatch(userSession(params));
+    dispatch(userSession(myparams));
     dispatch(getProfileInfo({ payload: params }));
     dispatch(getAllPostVideos());
     dispatch(getAllUsers());
   }, [postState.refresh]);
+
+  useEffect(() => {
+    setIsPrivateAccount(
+      profileInfoState?.profileUserInfo?.accountType === "private"
+    );
+  }, [profileInfoState]);
 
   const handleModalToggle = (modalName: keyof typeof modalState) => {
     setModalState((prevState) => ({
@@ -65,6 +73,11 @@ function MyGamefolio() {
     throw new Error("Function not implemented.");
   }
 
+  const userVideos = postState.videos?.filter(
+    (post: any) =>
+      post?.userID?.username === profileInfoState.profileUserInfo.username
+  );
+
   return (
     <Layout>
       <Suspense fallback={<Loading />}>
@@ -83,13 +96,13 @@ function MyGamefolio() {
           </div>
 
           {/* Top Bar */}
-          <div className="flex flex-col lg:flex-row w-screen  lg:justify-end absolute top-80 lg:top-40 lg:w-4/5">
+          <div className="flex flex-col lg:flex-row w-screen lg:justify-end absolute top-80 lg:top-40 lg:w-4/5 ">
             <div className="border-2 border-[#1C2C2E] rounded-lg p-2 pt-6 bg-[#091619] w-auto overflow-x-auto lg:w-72 h-fit lg:h-fit flex flex-col lg:flex-col gap-8 justify-center  lg:gap-1 ">
               <div className="flex flex-col justify-center">
                 <div className="flex justify-center">
                   <Image
                     className="rounded-xl w-32 h-32 object-cover border-2 border-[#43DD4E]"
-                    src={authState?.profilePicture}
+                    src={profileInfoState?.profileUserInfo?.profilePicture}
                     width={10}
                     height={10}
                     sizes="100vw"
@@ -97,7 +110,7 @@ function MyGamefolio() {
                   />
                 </div>
                 <span className="flex justify-center font-semibold text-white">
-                  {authState?.name}
+                  {profileInfoState?.profileUserInfo?.name}
                 </span>
                 <div className="flex items-center gap-6 justify-center">
                   <div
@@ -105,7 +118,7 @@ function MyGamefolio() {
                     onClick={() => copyToClipboard(authState?.username)}
                   >
                     <p className="text-white">
-                      ({authState?.username || "no_username"})
+                      ({profileInfoState?.profileUserInfo?.username})
                     </p>
                     <Image
                       className="cursor-pointer hover:opacity-80"
@@ -132,12 +145,17 @@ function MyGamefolio() {
                 <hr className="h-px border-0 bg-[#586769] my-2 " />
                 <div className="flex items-center justify-between text-white">
                   <p>Followers</p>
-                  <p>{authState?.follower?.length || 0}</p>
+                  <p>
+                    {profileInfoState?.profileUserInfo?.follower?.length || 0}
+                  </p>
                 </div>
                 <hr className="h-px border-0 bg-[#586769] my-2 " />
                 <div className="flex items-center justify-between text-white">
                   <p>Following</p>
-                  <p>{authState?.following?.length || 0}</p>
+                  <p>
+                    {" "}
+                    {profileInfoState?.profileUserInfo?.following?.length || 0}
+                  </p>
                 </div>
               </div>
               <div className="flex flex-col justify-center ">
@@ -201,7 +219,7 @@ function MyGamefolio() {
                 <div className="flex flex-col">
                   <h1 className="text-white font-bold my-2">About Me:</h1>
                   <p className="font-light text-xs text-[#7C7F80]">
-                    {authState.bio}
+                    {profileInfoState?.profileUserInfo?.bio}
                   </p>
                 </div>
               </div>
@@ -213,7 +231,7 @@ function MyGamefolio() {
                 <div className="flex justify-between items-center w-full sm:mx-2 lg:mx-4 relative">
                   <div>
                     <p className="font-semibold text-base sm:text-lg lg:text-lg text-white">
-                      Portfolio
+                      My Gamefolio
                     </p>
                   </div>
 

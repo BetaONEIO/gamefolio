@@ -42,9 +42,9 @@ const SkeletonLoader = () => (
       <div className="flex gap-2">
         <div className="w-14 h-14 bg-gray-700 rounded-xl animate-pulse"></div>
         <div className="flex flex-col gap-1">
-          <div className="w-20 h-4 bg-gray-700 rounded animate-pulse"></div>
-          <div className="w-32 h-6 bg-gray-700 rounded animate-pulse"></div>
-          <div className="w-24 h-4 bg-gray-700 rounded animate-pulse"></div>
+          <div className="w-20 h-3 bg-gray-700 rounded animate-pulse"></div>
+          <div className="w-32 h-5 bg-gray-700 rounded animate-pulse"></div>
+          <div className="w-24 h-3 bg-gray-700 rounded animate-pulse"></div>
         </div>
       </div>
     </div>
@@ -381,7 +381,7 @@ function Main() {
               style={styles.scroller}
             >
               <div className="flex justify-between items-center">
-                <span className="text-white font-bold">Trendings</span>
+                <span className="text-white font-bold">Trending</span>
                 <Link href={"/trending"}>
                   <span className="text-xs text-[#43DD4E] cursor-pointer">
                     See More
@@ -410,14 +410,14 @@ function Main() {
                           alt={item.name}
                         />
 
-                        <div className="flex flex-col ">
+                        <div className="flex flex-col">
                           <span className="text-xs font-bold text-[#43DD4E]">
                             Trending Now
                           </span>
                           <span className="text-md font-semibold text-white hover:text-[#43DD4E]">
                             {item.name}
                           </span>
-                          <span className="text-xs text-gray-500  hover:opacity-80">
+                          <span className="text-xs text-gray-500 hover:opacity-80">
                             New addition Arrived
                           </span>
                         </div>

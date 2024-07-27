@@ -111,14 +111,14 @@ function Games() {
         </p>
       </div>
 
-      <div className="flex gap-4 relative mx-4">
-        <div className="relative w-[1150px]">
+      <div className="flex flex-col md:flex-row gap-4 relative mx-4">
+        <div className="relative w-full md:w-[1150px]">
           <Swiper
             effect={"fade"}
             navigation={true}
             pagination={{ clickable: true }}
             modules={[EffectFade, Navigation, Pagination]}
-            className="mySwiper h-80  rounded-lg"
+            className="mySwiper h-80 rounded-lg"
           >
             {filteredGames?.length === 0 ? (
               <>
@@ -132,7 +132,7 @@ function Games() {
                   <Image
                     width={1920}
                     height={1080}
-                    className="w-full h-full rounded-xl  bg-cover bg-no-repeat bg-center hover:scale-105 transition-transform duration-100"
+                    className="w-full h-full rounded-xl bg-cover bg-no-repeat bg-center hover:scale-105 transition-transform duration-100"
                     src={item.box_art_url.replace(
                       "{width}x{height}",
                       "1920x1080"
@@ -147,7 +147,7 @@ function Games() {
             )}
           </Swiper>
 
-          <div className="absolute top-4 left-4 flex gap-4 z-10">
+          <div className="absolute top-4 left-4 flex flex-wrap gap-4 z-10">
             <button
               className="font-semibold rounded-2xl px-4 py-2 text-white cursor-pointer hover:opacity-80 hover:text-[#43DD4E]"
               style={{ backgroundColor: "rgba(41, 45, 50, 0.8)" }}

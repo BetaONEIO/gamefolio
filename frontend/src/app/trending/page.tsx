@@ -29,14 +29,14 @@ import "swiper/css/pagination";
 import { EffectFade, Navigation, Pagination } from "swiper/modules";
 
 const SkeletonLoader = () => (
-  <div className="flex flex-col gap-6">
+  <div className="flex flex-col gap-6 w-24">
     <div className="flex justify-between items-center">
       <div className="flex gap-2">
         <div className="w-14 h-14 bg-gray-700 rounded-xl animate-pulse"></div>
         <div className="flex flex-col gap-1">
-          <div className="w-20 h-4 bg-gray-700 rounded animate-pulse"></div>
-          <div className="w-32 h-6 bg-gray-700 rounded animate-pulse"></div>
-          <div className="w-24 h-4 bg-gray-700 rounded animate-pulse"></div>
+          <div className="w-20 h-3 bg-gray-700 rounded animate-pulse"></div>
+          <div className="w-32 h-5 bg-gray-700 rounded animate-pulse"></div>
+          <div className="w-24 h-3 bg-gray-700 rounded animate-pulse"></div>
         </div>
       </div>
     </div>
@@ -236,7 +236,7 @@ function Trending() {
                   navigation={true}
                   pagination={{ clickable: true }}
                   modules={[EffectFade, Navigation, Pagination]}
-                  className="mySwiper h-80 w-full rounded-lg"
+                  className="mySwiper h-80 sm:w-full rounded-lg"
                 >
                   {/* {filteredOptions?.length === 0 ? (
                     <>
@@ -287,12 +287,13 @@ function Trending() {
               </div>
 
               <div
-                className="hidden w-2/5 h-[22.5rem] md:flex flex-col gap-6 rounded-lg bg-[#091619] border border-[#1C2C2E] px-4 py-6 overflow-y-auto"
+                className="hidden w-[30%] h-[22.5rem] md:flex flex-col gap-6 rounded-lg bg-[#091619] border border-[#1C2C2E] px-4 py-6 overflow-y-auto"
                 style={styles.scroller}
               >
                 <div className="flex justify-start items-center">
                   <span className="text-white font-bold">Upcoming Updates</span>
                 </div>
+
                 <div className="flex flex-col gap-4">
                   {filteredGames?.length === 0 ? (
                     <>
