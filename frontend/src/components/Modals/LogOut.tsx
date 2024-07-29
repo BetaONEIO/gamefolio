@@ -17,10 +17,11 @@ function LogOut({ handleCloseModal }: LogOutProps) {
 
   // handle logout
   const handleLogout = () => {
-    removeCookie("connect.sid");
-    removeCookie("gfoliotoken");
+    removeCookie("connect.sid", process.env.NEXT_PUBLIC_CONNECT_SID_DOMAIN);
+    removeCookie("gfoliotoken", process.env.NEXT_PUBLIC_GFOLIO_TOKEN_DOMAIN);
     removeFromLocal("@token");
     removeFromLocal("@userData");
+
     router.replace(ROUTES.login);
   };
 

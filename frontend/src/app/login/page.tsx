@@ -1,17 +1,17 @@
 "use client";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { IMAGES } from "@/assets/images";
+import CustomBackground from "@/components/CustomBackground/custombackground";
+import { toastError, toastSuccess } from "@/components/Toast/Toast";
+import { leagueGothic } from "@/font/font";
+import { ROUTES } from "@/labels/routes";
+import { RootState, dispatch, useSelector } from "@/store";
+import { login } from "@/store/slices/authSlice";
+import { getCookieValue, getFromLocal } from "@/utils/localStorage";
+import { validateLogin, validateLoginInputFields } from "@/validation";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { IMAGES } from "@/assets/images";
-import { leagueGothic } from "@/font/font";
-import { RootState, dispatch, useSelector } from "@/store";
-import { ROUTES } from "@/labels/routes";
-import { login } from "@/store/slices/authSlice";
-import { getFromLocal } from "@/utils/localStorage";
-import { validateLogin, validateLoginInputFields } from "@/validation";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { ToastContainer } from "react-toastify";
-import { toastError, toastSuccess } from "@/components/Toast/Toast";
-import CustomBackground from "@/components/CustomBackground/custombackground";
 
 const Page = () => {
   const router = useRouter();
@@ -90,9 +90,9 @@ const Page = () => {
     dispatch(login(params));
   };
 
-  // Will Update in Future
+  // If user is already login, redirect to main
   useEffect(() => {
-    if (getFromLocal("@token")) {
+    if (getFromLocal("@token") || getCookieValue("gfoliotoken")) {
       router.replace(ROUTES.main);
     } else {
       router.replace(ROUTES.login);

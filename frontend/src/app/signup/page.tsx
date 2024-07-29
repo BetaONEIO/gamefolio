@@ -12,15 +12,18 @@ import { useRouter } from "next/navigation";
 import { ChangeEvent, useRef, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Signup = () => {
   const router = useRouter();
+  const [captchaValue, setCaptchaValue] = useState<string | null>(null);
   const [form, setForm] = useState({
     name: "",
     username: "",
     email: "",
     password: "",
   });
+  const recaptchaRef = useRef<any>();
   const inputRefs = {
     name: useRef<HTMLInputElement>(null),
     username: useRef<HTMLInputElement>(null),
@@ -62,7 +65,16 @@ const Signup = () => {
     }
   };
 
+  const handleCaptchaChange = (value: string | null) => {
+    setCaptchaValue(value);
+  };
+
   const onRegister = () => {
+    // Check if captcha is filled
+    if (!captchaValue) {
+      toastError("Please complete the reCAPTCHA.");
+      return;
+    }
     const payload = {
       name: form.name.trim(),
       username: form.username.trim(),
@@ -202,6 +214,12 @@ const Signup = () => {
                 className="mt-2 text-xs  font-normal text-gray-600 base-input-message"
               ></p>
             </div>
+
+            <ReCAPTCHA
+              ref={recaptchaRef}
+              sitekey={process.env["NEXT_PUBLIC_RECAPTCHA_KEY"] as string}
+              onChange={handleCaptchaChange}
+            />
 
             <button
               className="w-full h-12 bg-[#37C535] font-bold text-white text-center rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3"
