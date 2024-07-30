@@ -13,10 +13,12 @@ import { ChangeEvent, useRef, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ReCAPTCHA from "react-google-recaptcha";
+import Link from "next/link";
 
 const Signup = () => {
   const router = useRouter();
   const [captchaValue, setCaptchaValue] = useState<string | null>(null);
+  const [isChecked, setIsChecked] = useState(false);
   const [form, setForm] = useState({
     name: "",
     username: "",
@@ -68,13 +70,11 @@ const Signup = () => {
   const handleCaptchaChange = (value: string | null) => {
     setCaptchaValue(value);
   };
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsChecked(e.target.checked);
+  };
 
   const onRegister = () => {
-    // Check if captcha is filled
-    if (!captchaValue) {
-      toastError("Please complete the reCAPTCHA.");
-      return;
-    }
     const payload = {
       name: form.name.trim(),
       username: form.username.trim(),
@@ -84,6 +84,19 @@ const Signup = () => {
 
     const errorMsg = validateRegister(payload);
     if (errorMsg) return toastError(errorMsg);
+
+    // Check if captcha is filled
+    if (!captchaValue) {
+      toastError("Please complete the reCAPTCHA.");
+      return;
+    }
+    // Check if terms condition and privacy policy is checked or not
+    if (!isChecked) {
+      toastError(
+        "Please agree to our terms and conditions and privacy policy to proceed"
+      );
+      return;
+    }
 
     const successCallback = async (message: string) => {
       toastSuccess(message);
@@ -220,6 +233,33 @@ const Signup = () => {
               sitekey={process.env["NEXT_PUBLIC_RECAPTCHA_KEY"] as string}
               onChange={handleCaptchaChange}
             />
+
+            <div className="flex ">
+              <div>
+                <input
+                  type="checkbox"
+                  className="mr-2 leading-tight"
+                  checked={isChecked}
+                  onChange={handleCheckboxChange}
+                />
+              </div>
+              <span className="text-sm">
+                Please agree to our{" "}
+                <Link
+                  href="https://gamefolio.com/terms-and-conditions"
+                  className="text-blue-500"
+                >
+                  terms and conditions
+                </Link>{" "}
+                and{" "}
+                <Link
+                  href="https://gamefolio.com/privacy-policy"
+                  className="text-blue-500"
+                >
+                  privacy policy
+                </Link>
+              </span>
+            </div>
 
             <button
               className="w-full h-12 bg-[#37C535] font-bold text-white text-center rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3"
