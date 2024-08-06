@@ -15,6 +15,8 @@ import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
 import { Suspense, useEffect, useState } from "react";
 import Loading from "./loading";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 function MyGamefolio({ params }: any) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
@@ -22,6 +24,7 @@ function MyGamefolio({ params }: any) {
   const postState = useSelector((state: any) => state.post) || [];
   const [isPrivateAccount, setIsPrivateAccount] = useState(false);
   const [postID, setPostID] = useState("");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [modalState, setModalState] = useState({
     isShareModalOpen: false,
     isFollowerModalOpen: false,
@@ -68,6 +71,15 @@ function MyGamefolio({ params }: any) {
       isVideoDetailOpen: true,
     }));
   };
+  const currentRoute = usePathname();
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const isItemActive = (path: string) => {
+    return currentRoute === path ? true : false;
+  };
 
   function handlePageRefresh(): void {
     throw new Error("Function not implemented.");
@@ -77,6 +89,9 @@ function MyGamefolio({ params }: any) {
     (post: any) =>
       post?.userID?.username === profileInfoState.profileUserInfo.username
   );
+
+  const isCurrentUserProfile =
+    authState.username === profileInfoState.profileUserInfo.username;
 
   return (
     <Layout>
@@ -96,8 +111,63 @@ function MyGamefolio({ params }: any) {
           </div>
 
           {/* Top Bar */}
-          <div className="flex flex-col lg:flex-row w-screen lg:justify-end absolute top-80 lg:top-40 lg:w-4/5 ">
-            <div className="border-2 border-[#1C2C2E] rounded-lg p-2 pt-6 bg-[#091619] w-auto overflow-x-auto lg:w-72 h-fit lg:h-fit flex flex-col lg:flex-col gap-8 justify-center  lg:gap-1 ">
+          <div className="flex flex-col lg:flex-row w-screen lg:justify-end absolute top-80 lg:top-40 lg:w-4/5">
+            <div className="border-2 border-[#1C2C2E] rounded-lg p-2 pt-6 bg-[#091619] w-auto overflow-x-auto lg:w-72 h-fit lg:h-fit flex flex-col lg:flex-col gap-8 justify-center lg:gap-1">
+              <div className="flex justify-end">
+                <button
+                  className="px-3 py-2 cursor-pointer hover:opacity-80"
+                  onClick={toggleDropdown}
+                >
+                  <Image
+                    src={SVG.Threedot}
+                    width={20}
+                    height={20}
+                    className="w-9 h-8 rounded-full"
+                    alt="account"
+                  />
+                </button>
+
+                <div
+                  id="dropdown"
+                  className={`${
+                    isDropdownOpen ? "block" : "hidden"
+                  } flex justify-center border-2 border-[#43DD4E] rounded-lg mt--2 bg-[#162423]`}
+                  style={{
+                    borderWidth: "2px",
+                    borderColor: "#43DD4E",
+                    position: "absolute",
+                    top: "8.5%",
+                    left: "30%",
+                    transform: "translateX(-50%)",
+                    width: "120px",
+                  }}
+                >
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "-10px",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      borderLeft: "5px solid transparent",
+                      borderRight: "5px solid transparent",
+                      borderBottom: `10px solid #43DD4E`,
+                    }}
+                  />
+                  <ul>
+                    <li>
+                      <span className="font-normal cursor-pointer hover:opacity-80">
+                        Share
+                      </span>
+                    </li>
+                    <li>
+                      <span className="font-normal cursor-pointer hover:opacity-80">
+                        Report
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
               <div className="flex flex-col justify-center">
                 <div className="flex justify-center">
                   <Image
@@ -130,14 +200,16 @@ function MyGamefolio({ params }: any) {
                   </div>
                 </div>
 
-                <div className="flex justify-center h-8 gap-2 my-6">
-                  <button className="font-bold w-40 h-10 bg-[#292D32] text-white text-center py-[10px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]">
-                    follow
-                  </button>
-                  <button className="font-bold w-40 h-10 bg-[#37C535] text-white text-center py-[10px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]">
-                    Message
-                  </button>
-                </div>
+                {!isCurrentUserProfile && (
+                  <div className="flex justify-center h-8 gap-2 my-6">
+                    <button className="font-bold w-40 h-10 bg-[#292D32] text-white text-center py-[10px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]">
+                      follow
+                    </button>
+                    <button className="font-bold w-40 h-10 bg-[#37C535] text-white text-center py-[10px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]">
+                      Message
+                    </button>
+                  </div>
+                )}
                 <div className="flex items-center justify-between text-white">
                   <p>Posts</p>
                   <p>{userVideos?.length || 0}</p>
