@@ -1,9 +1,8 @@
 const jwt = require("jsonwebtoken");
 
 const authMiddleware = async (req, res, next) => {
-  console.log("req.header: ", req.headers.authorization);
   // Get the token from the request headers or any other location where it's stored
-  const token = req.headers.authorization;
+  const token = req.headers.authorization.split(" ")[1]; // removing Bearer
 
   // Verify the token
   try {
@@ -11,6 +10,7 @@ const authMiddleware = async (req, res, next) => {
     if (decoded && decoded.exp && decoded.exp * 1000 > Date.now()) {
       req.token = token;
       req.decodeduid = decoded.id;
+
       next();
     }
   } catch (error) {

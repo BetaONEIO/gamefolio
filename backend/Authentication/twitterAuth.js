@@ -16,7 +16,6 @@ const findOrCreate = async (profile, done) => {
     return done(null, { ...user, token });
   } else {
     try {
-      console.log("PROFILE: ", profile);
       const newUser = new User({
         name: profile.displayName,
         email: profile.emails[0].value,
@@ -53,7 +52,6 @@ passport.use(
 );
 
 passport.serializeUser((user, done) => {
-  console.log("USER: serialize ", user._doc._id);
   done(null, user._doc._id); // Serialize the user object, you may want to use a unique identifier
 });
 
