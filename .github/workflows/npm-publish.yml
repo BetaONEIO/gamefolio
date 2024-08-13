@@ -19,21 +19,25 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
+        working-directory: backend
         run: |
-          npm install --prefix backend
-          npm ci --prefix backend
+          npm install
+          npm ci
 
       - name: Create .env file
+        working-directory: backend
         run: |
-          echo "${{ secrets.PROD_ENV_FILE }}" > backend/.env
+          echo "${{ secrets.PROD_ENV_FILE }}" > .env
 
       - name: Build backend
+        working-directory: backend
         run: |
-          npm run build --prefix backend
+          npm run build
 
       - name: Archive backend
+        working-directory: backend
         run: |
-          tar -czf backend.tar.gz -C backend .
+          tar -czf backend.tar.gz .
 
   deploy:
     runs-on: self-hosted
