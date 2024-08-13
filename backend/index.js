@@ -80,7 +80,7 @@ app.get(
   })
 );
 
-// Store the Google/Twitter access token in a secure location (e.g.. session)
+// Store the Google/Twitter access token in a secure location (e.g... session)
 app.get("/api/store-token", (req, res) => {
   const accessToken = generateToken(req.user._id);
   req.session.token = accessToken;
