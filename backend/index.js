@@ -91,7 +91,7 @@ app.get("/api/store-token", (req, res) => {
     secure: true,
     domain: process.env.DOMAIN,
   });
-  // res.redirect("http://localhost:3000/main")
+  // res.redirect("http://localhost:3000/main");
   res.redirect(`${process.env.WEB_URL}/main`);
 });
 
