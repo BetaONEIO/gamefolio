@@ -9,14 +9,13 @@ jobs:
   build_backend:
     runs-on: self-hosted
     steps:
-    name: Setup NodeJS
-    steps:
+     - name: Setup NodeJS
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '20' # it will install the latest nightly release for node 16
-      - run: npm ci
-      - run: npm test
+      run: npm ci
+      run: npm test
 
 
 
