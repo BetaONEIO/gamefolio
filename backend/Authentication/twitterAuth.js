@@ -16,7 +16,6 @@ const findOrCreate = async (profile, done) => {
     return done(null, { ...user, token });
   } else {
     try {
-      console.log("PROFILE: ", profile);
       const newUser = new User({
         name: profile.displayName,
         email: profile.emails[0].value,
