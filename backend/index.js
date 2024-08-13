@@ -4,11 +4,6 @@ const passport = require("passport");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
-// Construct the path to the .env file based on NODE_ENV
-const envFilePath = __dirname + `/.env.${process.env.NODE_ENV}`;
-
-// Log the path to the console
-console.log(`Environment file path: ${envFilePath}`);
 dotenv.config({ path: __dirname + `/.env.${process.env.NODE_ENV}` });
 const signupVerifyUsernameRoutes = require("./routes/signupVerifyUsernameRoutes");
 const authRoutes = require("./routes/authRoutes");
