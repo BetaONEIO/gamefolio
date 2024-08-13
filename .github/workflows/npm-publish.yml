@@ -4,6 +4,7 @@ on:
     branches: ["hamza"]
     paths:
       - "backend/**"
+
 jobs:
   build_backend:
     runs-on: self-hosted
@@ -14,29 +15,25 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20" # Specify the Node.js version you want to use
+          node-version: "20"
           cache: "npm"
 
       - name: Install dependencies
         run: |
-          cd backend
-          npm install --package-lock-only
-          npm ci
+          npm install --prefix backend
+          npm ci --prefix backend
 
       - name: Create .env file
         run: |
-          cd backend
-          echo "${{ secrets.PROD_ENV_FILE }}" > .env
+          echo "${{ secrets.PROD_ENV_FILE }}" > backend/.env
 
       - name: Build backend
         run: |
-          cd backend
-          npm run build
+          npm run build --prefix backend
 
       - name: Archive backend
         run: |
-          cd backend
-          tar -czf backend.tar.gz .
+          tar -czf backend.tar.gz -C backend .
 
   deploy:
     runs-on: self-hosted
@@ -47,4 +44,5 @@ jobs:
 
       - name: Deploy backend
         run: |
+          scp backend/backend.tar.gz ec2-user@your-ec2-instance:/var/www/backend/backend.tar.gz
           ssh ec2-user@your-ec2-instance 'cd /var/www/backend && tar -xzf backend.tar.gz && npm start'
