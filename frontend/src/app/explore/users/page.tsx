@@ -27,15 +27,15 @@ function User() {
     dispatch(getAllUsers());
   }, [userState.refresh]);
 
-  const userVideos = userState.userList.map((user: any) => {
-    const videosForUser = postState.videos.filter(
+  const userVideos = userState.userList?.map((user: any) => {
+    const videosForUser = postState.videos?.filter(
       (post: any) => post?.userID?.username === user.username
     );
-    return { username: user.username, videoCount: videosForUser.length };
+    return { username: user.username, videoCount: videosForUser?.length };
   });
 
   return (
-    <div className="m-2">
+    <div className="m-2 h-screen">
       <div>
         <p className="font-semibold text-base sm:text-lg lg:text-lg text-white mx-2">
           User Profiles
@@ -44,7 +44,7 @@ function User() {
       <div className="flex flex-wrap justify-start items-start h-64">
         {userState?.userList?.length === 0 ? (
           <>
-            {[...Array(8)].map((_, index) => (
+            {[...Array(8)]?.map((_, index) => (
               <SkeletonLoaderUser key={index} />
             ))}
           </>
@@ -52,12 +52,12 @@ function User() {
           userState?.userList?.map((user: any) => (
             <div
               key={user?.userID}
-              className="flex flex-col h-44 gap-2 border-2 border-[#1C2C2E] rounded-xl mx-1 my-2"
+              className="flex flex-col w-68 h-44 gap-2 border-2 border-[#1C2C2E] rounded-xl mx-1 my-2"
             >
               <Link href={`/account/${user?.username}`} key={user._id}>
-                <div className="flex items-center gap-4 mb-2">
+                <div className="flex items-center gap-4 mb-2 mx-2">
                   <Image
-                    className="rounded-xl w-16 h-16 mt-2 ml-2 object-cover"
+                    className="rounded-xl w-16 h-16 mt-2 object-cover"
                     src={user?.profilePicture}
                     alt="Profile"
                     width={10}
@@ -66,13 +66,16 @@ function User() {
                   />
                   <div>
                     <div>
-                      <span className="text-white">{user?.name}</span>
+                      <span className="text-white font-semibold hover:text-[#43DD4E]">
+                        {" "}
+                        {user?.name?.split(" ").slice(0, 2).join(" ")}
+                      </span>
                     </div>
                     <div
                       className="flex items-center"
                       onClick={() => copyToClipboard(user?.username)}
                     >
-                      <p className="text-white">
+                      <p className="text-white hover:text-[#43DD4E]">
                         ({user?.username || "no_username"})
                       </p>
                       <Image

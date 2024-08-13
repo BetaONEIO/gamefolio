@@ -4,7 +4,9 @@ const passport = require("passport");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
-dotenv.config();
+dotenv.config({ path: __dirname + `/.env.${process.env.NODE_ENV}` });
+const signupVerifyUsernameRoutes = require("./routes/signupVerifyUsernameRoutes");
+const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const postRoutes = require("./routes/postRoutes");
 const clipsRoutes = require("./routes/clipsRoutes");
@@ -18,14 +20,14 @@ const authMiddleware = require("./middleware/authMiddleware");
 const rateLimiter = require("./middleware/rateLimiter");
 
 const app = express();
-const port = 4000;
+const { PORT } = process.env;
 require("./Authentication/googleAuth");
 require("./Authentication/twitterAuth");
 
 myDbConnection();
 
 app.use(express.json());
-app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+app.use(cors({ credentials: true, origin: process.env.WEB_URL }));
 
 // Initialize express-session before passport.initialize
 
@@ -78,22 +80,26 @@ app.get(
   })
 );
 
-// Store the Twitter access token in a secure location (e.g., session)
+// Store the Google/Twitter access token in a secure location (e.g., session)
 app.get("/api/store-token", (req, res) => {
   const accessToken = generateToken(req.user._id);
   req.session.token = accessToken;
+
   const twelveHours = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
   res.cookie("gfoliotoken", accessToken, {
     maxAge: twelveHours,
-    httpOnly: false,
+    secure: true,
+    domain: process.env.DOMAIN,
   });
   // res.redirect("http://localhost:3000/main");
-  res.redirect(`${process.env.BASE_URL}/main`);
+  res.redirect(`${process.env.WEB_URL}/main`);
 });
 
-app.get("/main", (req, res) => {
-  res.send("Successfully authenticated");
-});
+// Signup verify API
+app.use("/api/signup", signupVerifyUsernameRoutes);
+
+// Auth API
+app.use("/api/auth", authRoutes);
 
 // User API
 app.use("/api/user", userRoutes);
@@ -126,8 +132,8 @@ app.post("/test", rateLimiter, (req, res) => {
   res.send("Hello, world!");
 });
 
-app.listen(port, () => {
-  console.log(`Server is listening on port ${port}`);
+app.listen(PORT, () => {
+  console.log(`Server is listening on PORT ${PORT}`);
 });
 
 module.exports = { app };

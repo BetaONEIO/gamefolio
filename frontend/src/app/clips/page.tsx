@@ -130,12 +130,12 @@ function Clip() {
     <Layout>
       <Suspense fallback={<Loading />}>
         <div className="flex flex-col justify-center items-center py-4">
-          {clipState.videos.length === 0 ? (
+          {clipState.videos?.length === 0 ? (
             <div className="flex justify-center items-center w-11/12 sm:w-5/12 h-screen">
               <p className=" text-white text-lg">Nothing To Show</p>
             </div>
           ) : (
-            clipState.videos.map((clip: any) => {
+            clipState.videos?.map((clip: any) => {
               const hasLikeReacted = clip.reactions.some(
                 (reaction: any) =>
                   reaction.userID === authState._id &&
@@ -211,18 +211,18 @@ function Clip() {
                   />
 
                   <div className="absolute inset-x-0 bottom-20 p-4 flex items-center justify-between">
-                    <p className="font-light text-xs sm:text-sm hover:opacity-80">
+                    <p className="text-white font-light text-xs sm:text-sm hover:opacity-80">
                       Liked by{" "}
                       {
-                        clip.reactions.filter(
+                        clip.reactions?.filter(
                           (reaction: any) => reaction.reactionType === "like"
-                        ).length
+                        )?.length
                       }{" "}
-                      others
+                      and others
                     </p>
                   </div>
                   <div className="absolute inset-x-0 bottom-14 p-4 flex items-center justify-between">
-                    <p className="font-light text-xs sm:text-sm hover:opacity-80">
+                    <p className="text-white font-light text-xs sm:text-sm hover:opacity-80">
                       {clip?.music}
                     </p>
                   </div>
@@ -247,10 +247,10 @@ function Clip() {
                         />
                         <p className="text-white">
                           {
-                            clip.reactions.filter(
+                            clip.reactions?.filter(
                               (reaction: any) =>
                                 reaction.reactionType === "like"
-                            ).length
+                            )?.length
                           }
                         </p>
                       </div>

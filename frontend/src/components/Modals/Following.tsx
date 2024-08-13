@@ -45,7 +45,7 @@ function Following({ handleCloseModal, followingData }: FollowingProps) {
     dispatch(removeFollowing(params));
   };
 
-  const filteredFollowerData = followingData.filter((user: any) => {
+  const filteredFollowerData = followingData?.filter((user: any) => {
     const lowerCaseQuery = searchQuery.toLowerCase();
     const userName = user?.userID?.name.toLowerCase();
     const userUsername = user?.userID?.username.toLowerCase();

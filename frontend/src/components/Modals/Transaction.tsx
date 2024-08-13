@@ -101,7 +101,7 @@ function Transaction({
             </div>
 
             <div className="flex flex-col w-full sm:min-h-[350px] lg:min-h-[400px] max-h-[400px] sm:max-h-[350px] lg:max-h-[400px] overflow-y-auto no-scrollbar">
-              {filteredCoins.map((coin: any) => (
+              {filteredCoins?.map((coin: any) => (
                 <div key={coin._id}>
                   <div className="flex items-center my-3">
                     <Image
@@ -135,7 +135,7 @@ function Transaction({
 
             <div className="flex items-center w-full my-5">
               {dataFetched &&
-                (filteredCoins.length > 0 ? (
+                (filteredCoins?.length > 0 ? (
                   <PDFDownloadLink
                     document={<TransactionPDF filteredCoins={filteredCoins} />}
                     fileName="transaction_history.pdf"
@@ -173,7 +173,7 @@ const TransactionPDF = ({ filteredCoins }: { filteredCoins: any[] }) => (
       <Text style={{ fontSize: 20, marginBottom: 10, textAlign: "center" }}>
         Transaction History
       </Text>
-      {filteredCoins.map((coin: any) => (
+      {filteredCoins?.map((coin: any) => (
         <View key={coin._id}>
           <Text style={{ fontSize: 12, marginBottom: 5 }}>
             {`${coin.coinType} - ${coin.coinAmount} Coin - ${format(

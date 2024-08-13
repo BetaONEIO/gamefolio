@@ -25,7 +25,7 @@ import Image from "next/image";
 const SkeletonLoaderGames = () => (
   <div className="flex items-center">
     <div className="flex items-center overflow-scroll no-scrollbar gap-2">
-      {[...Array(5)].map((_, index) => (
+      {[...Array(5)]?.map((_, index) => (
         <div
           key={index}
           className="w-28 h-40 bg-gray-300 rounded-xl animate-pulse"
@@ -91,7 +91,7 @@ function Games() {
 
   const removeGame = (gameNameToRemove: any) => {
     // Filter out the game named "Just Chatting"
-    const filteredGames = filteredOptions.filter(
+    const filteredGames = filteredOptions?.filter(
       (item: any) => item.name !== gameNameToRemove
     );
     return filteredGames;
@@ -104,38 +104,38 @@ function Games() {
   const filteredGames = removeGame(gameToRemove);
 
   return (
-    <div className="m-2">
+    <div className="m-2 h-screen">
       <div className="mx-2">
         <p className="font-semibold text-base sm:text-lg lg:text-lg text-white m-2">
           Trending Games Now
         </p>
       </div>
 
-      <div className="flex gap-4 relative mx-4">
-        <div className="relative w-[1150px]">
+      <div className="flex flex-col md:flex-row gap-4 relative mx-4">
+        <div className="relative w-full md:w-[1150px]">
           <Swiper
             effect={"fade"}
             navigation={true}
             pagination={{ clickable: true }}
             modules={[EffectFade, Navigation, Pagination]}
-            className="mySwiper h-80  rounded-lg"
+            className="mySwiper h-80 rounded-lg"
           >
-            {filteredGames.length === 0 ? (
+            {filteredGames?.length === 0 ? (
               <>
-                {[...Array(2)].map((_, index) => (
+                {[...Array(2)]?.map((_, index) => (
                   <SkeletonLoaderGames key={index} />
                 ))}
               </>
             ) : (
-              filteredGames.slice(0, 3).map((item: any) => (
+              filteredGames?.slice(0, 3)?.map((item: any) => (
                 <SwiperSlide key={item.id}>
                   <Image
-                    width={400}
-                    height={400}
-                    className="w-full h-full rounded-xl"
+                    width={1920}
+                    height={1080}
+                    className="w-full h-full rounded-xl bg-cover bg-no-repeat bg-center hover:scale-105 transition-transform duration-100"
                     src={item.box_art_url.replace(
                       "{width}x{height}",
-                      "400x600"
+                      "1920x1080"
                     )}
                     alt={item.name}
                     style={styles.swiperImage}
@@ -147,21 +147,21 @@ function Games() {
             )}
           </Swiper>
 
-          <div className="absolute top-4 left-4 flex gap-4 z-10">
+          <div className="absolute top-4 left-4 flex flex-wrap gap-4 z-10">
             <button
-              className="rounded-2xl px-4 py-2 text-white cursor-pointer hover:opacity-80"
+              className="font-semibold rounded-2xl px-4 py-2 text-white cursor-pointer hover:opacity-80 hover:text-[#43DD4E]"
               style={{ backgroundColor: "rgba(41, 45, 50, 0.8)" }}
             >
               Action
             </button>
             <button
-              className="rounded-2xl px-4 py-2 text-white cursor-pointer hover:opacity-80"
+              className="font-semibold rounded-2xl px-4 py-2 text-white cursor-pointer hover:opacity-80 hover:text-[#43DD4E]"
               style={{ backgroundColor: "rgba(41, 45, 50, 0.8)" }}
             >
               Fighting
             </button>
             <button
-              className="rounded-2xl px-4 py-2 text-white cursor-pointer hover:opacity-80"
+              className="font-semibold rounded-2xl px-4 py-2 text-white cursor-pointer hover:opacity-80 hover:text-[#43DD4E]"
               style={{ backgroundColor: "rgba(41, 45, 50, 0.8)" }}
             >
               Thrilling
@@ -192,18 +192,18 @@ function Games() {
         <div className="flex items-center overflow-scroll no-scrollbar gap-2 px-4">
           {filteredGames?.length === 0 ? (
             <>
-              {[...Array(3)].map((_, index) => (
+              {[...Array(3)]?.map((_, index) => (
                 <SkeletonLoaderGames key={index} />
               ))}
             </>
           ) : (
-            filteredGames.slice(0, 20).map((item: any) => (
+            filteredGames?.slice(0, 20)?.map((item: any) => (
               <div key={item.id}>
-                <div className="w-28 h-40">
+                <div className="w-28 h-40 overflow-hidden rounded-xl">
                   <Image
                     width={40}
                     height={40}
-                    className="w-28 h-40 rounded-xl"
+                    className="w-28 h-40  hover:scale-105 transition-transform duration-100"
                     src={item.box_art_url.replace(
                       "{width}x{height}",
                       "112x160"

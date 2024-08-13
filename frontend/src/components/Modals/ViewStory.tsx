@@ -66,7 +66,7 @@ function ViewStory({ storyUserID, handleCloseModal }: ViewStoryProps) {
     handleGetUserStories();
   }, []);
 
-  if (storyState.loading || storyState.userStories.length === 0) {
+  if (storyState.loading || storyState.userStories?.length === 0) {
     return (
       <div
         style={myBGStyleModal}
@@ -152,7 +152,7 @@ function ViewStory({ storyUserID, handleCloseModal }: ViewStoryProps) {
     );
   };
 
-  const renderStories = storyState?.userStories.map((story: any) => ({
+  const renderStories = storyState?.userStories?.map((story: any) => ({
     content: () => customStoryLayout(story),
   }));
 

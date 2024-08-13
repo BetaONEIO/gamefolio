@@ -1,6 +1,7 @@
 const Posts = require("../models/Posts.js"); // Import your Mongoose model
 const User = require("../models/Users.js");
 const jwt = require("jsonwebtoken");
+const generateUniqueLink = require("../utils/generateLink.js");
 
 // Create a new post
 const postVideo = async (req, res) => {
@@ -13,6 +14,7 @@ const postVideo = async (req, res) => {
       description,
       game,
       music,
+      url: generateUniqueLink(),
     });
 
     const post = await newPost.save();
@@ -30,6 +32,36 @@ const postVideo = async (req, res) => {
     res.status(500).json({
       message: "Could not create the post.",
       error: "Could not create the post.",
+    });
+  }
+};
+
+const getVideoLink = async (req, res) => {
+  const { videoUrl } = req.body;
+
+  try {
+    // Find the post by ID
+    const post = await Posts.find({ url: videoUrl })
+      .populate("userID")
+      .populate({ path: "comments.userID" });
+
+    // Check if the post exists
+    if (!post) {
+      return res.status(404).json({
+        error: "Post not found.",
+        message: "No post found with the provided ID.",
+      });
+    }
+
+    res.status(200).json({
+      data: post,
+      message: "Successfully retrieved video link.",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Could not retrieve post.",
+      message: "There was an error retrieving the post.",
     });
   }
 };
@@ -63,7 +95,7 @@ const getTrendingPosts = async (req, res) => {
 
     // Sort posts by counts and date
     const sortedPosts = posts.sort((a, b) => {
-      const getLength = (array) => (array ? array.length : 0);
+      const getLength = (array) => (array ? array?.length : 0);
       const likesDiff = getLength(b.reactions) - getLength(a.reactions);
       const commentsDiff = getLength(b.comments) - getLength(a.comments);
       const bookmarksDiff = getLength(b.bookmarks) - getLength(a.bookmarks);
@@ -106,7 +138,7 @@ const getFollowingPosts = async (req, res) => {
     }
 
     // Get the IDs of users that the current user is following
-    const followingIDs = currentUser.following.map((user) => user.userID);
+    const followingIDs = currentUser.following?.map((user) => user.userID);
 
     // Calculate skip value based on pagination
     const skip = limit * (page - 1);
@@ -586,13 +618,13 @@ const getUserBookmark = async (req, res) => {
 
     console.log("userBookmarkedPosts: ", userBookmarkedPosts);
 
-    if (!userBookmarkedPosts || userBookmarkedPosts.length === 0) {
+    if (!userBookmarkedPosts || userBookmarkedPosts?.length === 0) {
       return res
         .status(404)
         .json({ error: "Bookmarked posts not found for the specified user." });
     }
 
-    const bookmarks = userBookmarkedPosts.map((post) => {
+    const bookmarks = userBookmarkedPosts?.map((post) => {
       const bookmarkInfo = post.bookmarks.find(
         (b) => b.userID.toString() === decoded.id
       );
@@ -614,6 +646,7 @@ const getUserBookmark = async (req, res) => {
     });
   }
 };
+
 const removeBookmark = async (req, res) => {
   try {
     const { postID, userID, authUserID } = req.body;
@@ -683,4 +716,5 @@ module.exports = {
   addBookmark,
   getUserBookmark,
   removeBookmark,
+  getVideoLink,
 };

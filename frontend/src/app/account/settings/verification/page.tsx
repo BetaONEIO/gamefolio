@@ -54,7 +54,7 @@ const Verification = () => {
             </span>
           </div>
           <div className="flex w-full flex-wrap gap-4 justify-start">
-            {VERIFICATION_DATA.map((data, index) => (
+            {VERIFICATION_DATA?.map((data, index) => (
               <div className="flex flex-col w-full" key={index}>
                 <div className="flex flex-col items- justify-center md:flex-row md:items-center md:justify-between gap-4 flex-1 basis-full p-2">
                   <div className="flex gap-4">

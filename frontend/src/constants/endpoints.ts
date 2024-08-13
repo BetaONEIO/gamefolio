@@ -2,6 +2,7 @@ export const PATH = {
   auth: {
     register: "user/signup",
     login: "user/signin",
+    updateUsername: "user/username/update",
     loginTwitter: "success",
     sendForgotPasswordOTP: "user/forgot-password/otp",
     verifyForgotPasswordOTP: "user/forgot-password/otp/verify",
@@ -28,6 +29,7 @@ export const PATH = {
     deactiveAccount: "user/deactivate",
     reportUser: "user/report/create",
     notification: "user/notification/create",
+    updateNotification: "user/notification/update",
     getNotification: "user/notification/get",
   },
 
@@ -48,6 +50,7 @@ export const PATH = {
     getFollowingPosts: "post/video/following/get",
     delete: "post/video/delete",
     getUpdatedComments: "post/comments/get",
+    getVideoLink: "post/getVideoLink/get",
   },
 
   clip: {
@@ -90,5 +93,8 @@ export const PATH = {
     create: "post/bookmark/create",
     get: "post/bookmark/get",
     remove: "post/bookmark/remove",
+  },
+  signupUsername: {
+    verify: "signup/verify/username",
   },
 };

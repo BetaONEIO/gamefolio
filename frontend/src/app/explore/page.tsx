@@ -21,7 +21,7 @@ import { fetchGameList } from "@/services/api";
 const SkeletonLoaderGames = () => (
   <div className="flex items-center">
     <div className="flex items-center overflow-scroll no-scrollbar gap-2">
-      {[...Array(5)].map((_, index) => (
+      {[...Array(5)]?.map((_, index) => (
         <div
           key={index}
           className="w-28 h-40 bg-gray-300 rounded-xl animate-pulse"
@@ -32,30 +32,32 @@ const SkeletonLoaderGames = () => (
 );
 
 const SkeletonLoaderUserProfile = () => (
-  <div className="flex flex-col h-36 border-2 border-gray-300 rounded-xl p-2 animate-pulse">
-    <div className="flex items-center gap-4 mb-2">
-      <div className="rounded-xl w-10 h-10 mt-2 ml-2 bg-gray-300"></div>
-      <div className="flex flex-col gap-2">
-        <div className="h-3 w-52 bg-gray-300 rounded"></div>
-        <div className="h-3 w-52 bg-gray-300 rounded"></div>
+  <div className="flex flex-col border-2 border-[#1C2C2E] rounded-xl animate-pulse">
+    <div className="flex items-center gap-4 mb-2 p-2">
+      <div className="rounded-xl w-12 h-12 bg-gray-700"></div>
+      <div className="flex flex-col space-y-2">
+        <div className="w-24 h-4 bg-gray-700 rounded"></div>
+        <div className="w-32 h-4 bg-gray-700 rounded"></div>
       </div>
     </div>
-    <div className="h-px bg-gray-300 w-full rounded-full my-2"></div>
-    <div className="flex flex-col flex-wrap justify-center text-center lg:justify-start lg:text-start">
+
+    <hr className="h-px border-0 bg-[#1C2C2E] w-full rounded-full my-2" />
+
+    <div className="flex flex-col flex-wrap justify-center text-center lg:justify-start lg:text-start p-2">
       <div className="flex items-center justify-center gap-1">
-        <div className="flex flex-col">
-          <div className="h-6 w-10 bg-gray-300 rounded"></div>
-          <div className="h-4 w-12 bg-gray-300 rounded"></div>
+        <div className="flex flex-col items-center">
+          <div className="w-10 h-6 bg-gray-700 rounded"></div>
+          <div className="w-14 h-4 bg-gray-700 rounded mt-1"></div>
         </div>
-        <div className="border-r border-gray-300 h-12 rounded-full"></div>
-        <div className="flex flex-col">
-          <div className="h-6 w-10 bg-gray-300 rounded"></div>
-          <div className="h-4 w-12 bg-gray-300 rounded"></div>
+        <div className="border-r border-[#1C2C2E] h-12 rounded-full mx-2"></div>
+        <div className="flex flex-col items-center">
+          <div className="w-10 h-6 bg-gray-700 rounded"></div>
+          <div className="w-14 h-4 bg-gray-700 rounded mt-1"></div>
         </div>
-        <div className="border-r border-gray-300 h-12 rounded-full"></div>
-        <div className="flex flex-col">
-          <div className="h-6 w-10 bg-gray-300 rounded"></div>
-          <div className="h-4 w-12 bg-gray-300 rounded"></div>
+        <div className="border-r border-[#1C2C2E] h-12 rounded-full mx-2"></div>
+        <div className="flex flex-col items-center">
+          <div className="w-10 h-6 bg-gray-700 rounded"></div>
+          <div className="w-14 h-4 bg-gray-700 rounded mt-1"></div>
         </div>
       </div>
     </div>
@@ -132,11 +134,11 @@ function Explore() {
 
   // if (postState.loading) return <Loading />;
 
-  const userVideos = userState.userList.map((user: any) => {
-    const videosForUser = postState.videos.filter(
+  const userVideos = userState.userList?.map((user: any) => {
+    const videosForUser = postState.videos?.filter(
       (post: any) => post?.userID?.username === user.username
     );
-    return { username: user.username, videoCount: videosForUser.length };
+    return { username: user.username, videoCount: videosForUser?.length };
   });
 
   const handleVideoMetadata = (
@@ -182,7 +184,7 @@ function Explore() {
 
   const removeGame = (gameNameToRemove: any) => {
     // Filter out the game named "Just Chatting"
-    const filteredGames = filteredOptions.filter(
+    const filteredGames = filteredOptions?.filter(
       (item: any) => item.name !== gameNameToRemove
     );
     return filteredGames;
@@ -218,18 +220,18 @@ function Explore() {
         <div className="flex items-center overflow-scroll no-scrollbar gap-2">
           {filteredGames?.length === 0 ? (
             <>
-              {[...Array(3)].map((_, index) => (
+              {[...Array(3)]?.map((_, index) => (
                 <SkeletonLoaderGames key={index} />
               ))}
             </>
           ) : (
-            filteredGames?.slice(0, 20).map((item: any) => (
+            filteredGames?.slice(0, 20)?.map((item: any) => (
               <div key={item.id}>
-                <div className="w-28 h-40">
+                <div className="w-28 h-40 overflow-hidden rounded-xl">
                   <Image
                     width={40}
                     height={40}
-                    className="w-28 h-40 rounded-xl"
+                    className="w-28 h-40 hover:scale-105 transition-transform duration-100"
                     src={item.box_art_url.replace(
                       "{width}x{height}",
                       "112x160"
@@ -265,12 +267,12 @@ function Explore() {
       <div className="flex items-center h-36 my-2 overflow-scroll no-scrollbar gap-2">
         {userState?.userList?.length === 0 ? (
           <>
-            {[...Array(6)].map((_, index) => (
+            {[...Array(6)]?.map((_, index) => (
               <SkeletonLoaderUserProfile key={index} />
             ))}
           </>
         ) : (
-          userState?.userList?.slice(0, 10).map((user: any) => (
+          userState?.userList?.slice(0, 10)?.map((user: any) => (
             <div
               key={user?.userID}
               className="flex flex-col border-2 border-[#1C2C2E] rounded-xl"
@@ -287,13 +289,15 @@ function Explore() {
                 <Link href={`/account/${user?.username}`} key={user._id}>
                   <div>
                     <div className="mt-2">
-                      <span className="text-white">{user?.name}</span>
+                      <span className="font-semibold text-white hover:text-[#43DD4E]">
+                        {user?.name?.split(" ").slice(0, 2).join(" ")}
+                      </span>
                     </div>
                     <div
                       className="flex items-center"
                       onClick={() => copyToClipboard(user?.username)}
                     >
-                      <p className="text-white">
+                      <p className="text-white  hover:text-[#43DD4E]">
                         ({user?.username || "no_username"})
                       </p>
                       <Image
@@ -371,25 +375,25 @@ function Explore() {
       </div>
 
       <div className="flex items-center grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-2 overflow-x-auto no-scrollbar">
-        {postState.videos.length === 0 ? (
+        {postState.videos?.length === 0 ? (
           <>
-            {[...Array(6)].map((_, index) => (
+            {[...Array(4)]?.map((_, index) => (
               <SkeletonLoaderVideo key={index} />
             ))}
           </>
         ) : (
-          postState.videos.slice(0, 7).map((item: any) => (
+          postState.videos?.slice(0, 4)?.map((item: any) => (
             <div
               key={item?.userID}
-              className="flex-shrink-0 flex flex-col gap-2 w-68 h-64 border-2 border-[#1C2C2E] rounded-xl mx-1 pb-2 cursor-pointer hover:opacity-80"
+              className="flex-shrink-0 flex flex-col gap-2 w-64 h-64 border-2 border-[#1C2C2E] rounded-xl mx-1 pb-2 cursor-pointer hover:opacity-80"
               onClick={() =>
                 handleModalToggle("isVideoDetailOpen", item._id, item)
               }
             >
-              <div className="relative">
+              <div className="relative overflow-hidden rounded-xl">
                 <video
                   src={item.video}
-                  className="w-full h-36 rounded-2xl hover:opacity-80"
+                  className="w-96 h-36 rounded-xl hover:opacity-80 hover:scale-105 transition-transform duration-300"
                   controls={false}
                   autoPlay={false}
                   width={50}
@@ -411,12 +415,12 @@ function Explore() {
                 />
                 <div>
                   <div>
-                    <span className="text-xs sm:text-sm text-white">
-                      {item?.userID?.name}
+                    <span className="font-semibold text-xs sm:text-sm text-white hover:text-[#43DD4E]">
+                      {item?.userID?.name.split(" ").slice(0, 2).join(" ")}
                     </span>
                   </div>
                   <div className="flex items-center">
-                    <p className="text-sm font-light text-gray-400">
+                    <p className="text-sm font-light text-gray-400 hover:opacity-80">
                       {formatTimeAgo(item.date)}
                     </p>
                   </div>
@@ -434,9 +438,9 @@ function Explore() {
                   />
                   <p className="text-white">
                     {
-                      item.reactions.filter(
+                      item.reactions?.filter(
                         (reaction: any) => reaction.reactionType === "like"
-                      ).length
+                      )?.length
                     }
                   </p>
                 </div>
@@ -450,9 +454,9 @@ function Explore() {
                   />
                   <p className="text-white">
                     {
-                      item.reactions.filter(
+                      item.reactions?.filter(
                         (reaction: any) => reaction.reactionType === "love"
-                      ).length
+                      )?.length
                     }
                   </p>
                 </div>
@@ -464,7 +468,7 @@ function Explore() {
                     width={25}
                     height={25}
                   />
-                  <p className="text-white">{item.comments.length}</p>
+                  <p className="text-white">{item.comments?.length}</p>
                 </div>
               </div>
             </div>

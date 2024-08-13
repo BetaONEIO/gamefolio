@@ -1,12 +1,27 @@
 "use client";
-import Link from "next/link";
-import Image from "next/image";
-import { IMAGES } from "@/assets/images";
 import { SVG } from "@/assets/SVG";
+import { IMAGES } from "@/assets/images";
+import { ROUTES } from "@/labels/routes";
 import { BASE_URL2 } from "@/services/api";
+import { getCookieValue, getFromLocal } from "@/utils/localStorage";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import CustomBackground from "../CustomBackground/custombackground";
 
 const LandingPage = () => {
+  const router = useRouter();
+
+  // If user is already login, redirect to main
+  useEffect(() => {
+    if (getFromLocal("@token") || getCookieValue("gfoliotoken")) {
+      router.replace(ROUTES.main);
+    } else {
+      router.replace(ROUTES.landingPage);
+    }
+  }, []);
+
   return (
     <CustomBackground>
       <div className="flex flex-col items-center justify-center px-6 py-8 ">
@@ -42,7 +57,9 @@ const LandingPage = () => {
           <button className="w-80 h-[50] bg-[#32CCFE] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3">
             <div className="flex items-center gap-2">
               <Image src={SVG.Twitter} alt="Email" width={20} height={20} />
-              <Link href={`${BASE_URL2}/auth/twitter`}>Login with twitter</Link>
+              <Link href={`${BASE_URL2}/auth/twitter`}>
+                Login with Twitter/X
+              </Link>
             </div>
           </button>
 

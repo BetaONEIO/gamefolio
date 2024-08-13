@@ -7,8 +7,9 @@ import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import { leagueGothic } from "@/font/font";
 import { dispatch, useSelector } from "@/store";
 import { forgotPasswordOTP } from "@/store/slices/authSlice";
+import { validateForgetPasswordInputFields } from "@/validation";
 import Image from "next/image";
-import { useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { ToastContainer } from "react-toastify";
 
 const ForgotPassword = () => {
@@ -16,6 +17,41 @@ const ForgotPassword = () => {
   const [modalState, setModalState] = useState({
     isOtpVerificationModalOpen: false,
   });
+
+  const inputRefs = {
+    email: useRef<HTMLInputElement>(null),
+  };
+  const errorRefs = {
+    email: useRef<HTMLParagraphElement>(null),
+  };
+
+  const validateFields = (name: string, value: string) => {
+    const errorMsg = validateForgetPasswordInputFields({ [name]: value });
+
+    const inputRef = inputRefs[name as keyof typeof inputRefs];
+    const errorRef = errorRefs[name as keyof typeof errorRefs];
+    if (inputRef.current && errorRef && errorRef.current) {
+      if (errorMsg === false) {
+        errorRef.current.style.display = "none";
+        errorRef.current.textContent = "";
+        inputRef.current.style.border = "";
+      } else {
+        errorRef.current.style.display = "block";
+        errorRef.current.textContent = errorMsg as string;
+        inputRef.current.style.border = "1px solid red";
+      }
+    }
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.currentTarget || {}; // Add a fallback to prevent destructuring from null
+
+    if (name && value !== undefined) {
+      // Ensure name and value are not undefined or null
+      setEmail(value);
+      validateFields(name, value);
+    }
+  };
 
   const handleModalToggle = (
     modalName: keyof typeof modalState,
@@ -31,7 +67,7 @@ const ForgotPassword = () => {
   };
 
   const handleForgetPassword = (data: any) => {
-    if (email.length === 0 || email === "" || !email.includes("@")) {
+    if (email?.length === 0 || email === "" || !email.includes("@")) {
       toastError("Please enter Email");
       return;
     }
@@ -89,14 +125,20 @@ const ForgotPassword = () => {
               Email
             </label>
             <input
+              ref={inputRefs.email}
               type="email"
               id="email"
+              name="email"
               className="bg-[#162423] sm:text-sm outline-none rounded-lg block w-full p-3 text-white"
               placeholder="Email Address"
               required
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handleChange}
             />
+            <p
+              ref={errorRefs.email}
+              className="mt-2 text-xs  font-normal text-gray-600 base-input-message"
+            ></p>
           </div>
 
           <button

@@ -33,13 +33,13 @@ function FeedBack({ handleCloseModal }: FeedBackProps) {
 
   const handleChange = (event: any) => {
     const newText = event.target.value;
-    if (newText.length <= maxLength) {
+    if (newText?.length <= maxLength) {
       setText(newText);
     }
   };
 
   const wordLimitClassName =
-    text.length > maxLength ? "text-red-500" : "text-green-500";
+    text?.length > maxLength ? "text-red-500" : "text-green-500";
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -98,7 +98,7 @@ function FeedBack({ handleCloseModal }: FeedBackProps) {
                 {isDropdownOpen && (
                   <div className="absolute z-50 mt-2 w-full rounded-md shadow-lg">
                     <ul className="py-1 border bg-[#1C2C2E] border-gray-700 text-white border-t-0 rounded-b-lg">
-                      {optionsForReason.map((option) => (
+                      {optionsForReason?.map((option) => (
                         <li
                           key={option.value}
                           onClick={() => handleSelect(option.value)}
@@ -144,7 +144,7 @@ function FeedBack({ handleCloseModal }: FeedBackProps) {
                 <p
                   className={`absolute right-7 bottom-2 ${wordLimitClassName}`}
                 >
-                  {text.length}/{maxLength} words
+                  {text?.length}/{maxLength} words
                 </p>
               </div>
             </div>

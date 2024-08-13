@@ -1,6 +1,50 @@
 import { REGEX } from "@/constants/regex";
 import { ERRORS } from "@/labels/error";
 
+export const validateRegisterInputFields = (input: {
+  [key: string]: string;
+}): string | boolean => {
+  const name = input.name?.trim();
+  const username = input.username?.trim();
+  const email = input.email?.trim();
+  const password = input.password?.trim();
+
+  if (name) {
+    if (name.length < 4) return "Name must be at least 4 characters";
+    if (name.length > 12) return "Name can be a maximum of 12 characters";
+    if (!/^[A-Za-z ]+$/.test(name))
+      return "Name can only contain letters and spaces";
+    if (!name.split(" ").every((word) => word[0].toUpperCase() === word[0]))
+      return "Each word in the name must be capitalized";
+  }
+
+  if (username) {
+    if (username.length < 4) return "Username must be at least 4 characters";
+    if (username.length > 16)
+      return "Username can be a maximum of 16 characters";
+    if (!/^[A-Za-z0-9_]+$/.test(username))
+      return "Username can only contain letters, numbers, and underscores";
+    if (username.includes(" ")) return "Username cannot contain spaces";
+  }
+
+  if (email) {
+    if (!email.includes("@")) return "Email must contain an @ symbol";
+    if (!REGEX.email.test(email)) return "Invalid email format";
+  }
+
+  if (password) {
+    if (password.length < 8) return "Password must be at least 8 characters";
+    if (password.length > 32)
+      return "Password can be a maximum of 32 characters";
+    if (!/[0-9]/.test(password))
+      return "Password must contain at least one number";
+    if (!/[!@#$%^&*()_\-+=]/.test(password))
+      return "Password must contain at least one special character";
+  }
+
+  return false;
+};
+
 export const validateRegister = ({
   name = "",
   username = "",
@@ -17,21 +61,100 @@ export const validateRegister = ({
   return "";
 };
 
+export const validateLoginInputFields = (input: { [key: string]: string }) => {
+  const email = input.email?.trim();
+  const password = input.password?.trim();
+
+  if (email) {
+    if (!email.includes("@")) return "Email must contain an @ symbol";
+    if (!REGEX.email.test(email)) return "Invalid email format";
+  }
+
+  if (password) {
+    if (password.length < 8) return "Password must be at least 8 characters";
+    if (password.length > 32)
+      return "Password can be a maximum of 32 characters";
+    if (!/[0-9]/.test(password))
+      return "Password must contain at least one number";
+    if (!/[!@#$%^&*()_\-+=]/.test(password))
+      return "Password must contain at least one special character";
+  }
+
+  return false;
+};
+
 export const validateLogin = ({ email = "", password = "" }) => {
   if (REGEX.email.test(email) === false || email === "")
     return ERRORS.enterEmail;
 
-  if (password === "") return ERRORS.enterPassword;
+  if (password) {
+    if (password.length < 8) return "Password must be at least 8 characters";
+    if (password.length > 32)
+      return "Password can be a maximum of 32 characters";
+    if (!/[0-9]/.test(password)) return ERRORS.enterPassword;
+    if (!/[!@#$%^&*()_\-+=]/.test(password)) return ERRORS.enterPassword;
+  }
 
   return "";
 };
 
+export const validateForgetPasswordInputFields = (input: {
+  [key: string]: string;
+}) => {
+  const email = input.email?.trim();
+
+  if (email) {
+    if (!email.includes("@")) return "Email must contain an @ symbol";
+    if (!REGEX.email.test(email)) return "Invalid email format";
+  }
+
+  return false;
+};
 export const validateForgetPassword = ({ email = "" }) => {
   if (email === "") return ERRORS.enterEmail;
+  if (email) {
+    if (!email.includes("@")) return "Email must contain an @ symbol";
+    if (!REGEX.email.test(email)) return "Invalid email format";
+  }
 
   return "";
 };
 
+export const validateResetPasswordInputFields = (input: {
+  [key: string]: string;
+}) => {
+  const password = input.password?.trim();
+  const confirmPassword = input.confirmPassword?.trim();
+
+  // Validate password
+  if (password) {
+    // Ensure password field is not empty
+    if (!password) return "Password is required";
+    if (password.length < 8) return "Password must be at least 8 characters";
+    if (password.length > 32)
+      return "Password can be a maximum of 32 characters";
+    if (!/[0-9]/.test(password))
+      return "Password must contain at least one number";
+    if (!/[!@#$%^&*()_\-+=]/.test(password))
+      return "Password must contain at least one special character";
+  }
+
+  // Validate confirmPassword
+  if (confirmPassword) {
+    // Ensure confirmPassword field is not empty
+    if (!confirmPassword) return "Confirm password is required";
+    if (confirmPassword.length < 8)
+      return "Confirm password must be at least 8 characters";
+    if (confirmPassword.length > 32)
+      return "Confirm password can be a maximum of 32 characters";
+    if (!/[0-9]/.test(confirmPassword))
+      return "Confirm password must contain at least one number";
+    if (!/[!@#$%^&*()_\-+=]/.test(confirmPassword))
+      return "Confirm password must contain at least one special character";
+  }
+
+  return false;
+};
 
 export const validateResetPassword = ({
   password = "",
@@ -41,14 +164,31 @@ export const validateResetPassword = ({
     return ERRORS.passwordValidation;
   }
 
-  // Check if password is empty
-  if (!password.trim()) {
-    return ERRORS.emptyPassword;
+  // Validate password
+  if (password) {
+    // Ensure password field is not empty
+    if (!password) return "Password is required";
+    if (password.length < 8) return "Password must be at least 8 characters";
+    if (password.length > 32)
+      return "Password can be a maximum of 32 characters";
+    if (!/[0-9]/.test(password))
+      return "Password must contain at least one number";
+    if (!/[!@#$%^&*()_\-+=]/.test(password))
+      return "Password must contain at least one special character";
   }
 
-  // Check if confirmPassword is empty
-  if (!confirmPassword.trim()) {
-    return ERRORS.emptyPassword;
+  // Validate confirmPassword
+  if (confirmPassword) {
+    // Ensure confirmPassword field is not empty
+    if (!confirmPassword) return "Confirm password is required";
+    if (confirmPassword.length < 8)
+      return "Confirm password must be at least 8 characters";
+    if (confirmPassword.length > 32)
+      return "Confirm password can be a maximum of 32 characters";
+    if (!/[0-9]/.test(confirmPassword))
+      return "Confirm password must contain at least one number";
+    if (!/[!@#$%^&*()_\-+=]/.test(confirmPassword))
+      return "Confirm password must contain at least one special character";
   }
 
   // Check if confirmPassword matches password
@@ -58,4 +198,3 @@ export const validateResetPassword = ({
 
   return "";
 };
-

@@ -112,7 +112,7 @@ function ViewStory() {
   };
 
   // 'stories' now contains an array of objects with 'content' functions
-  const stories = storyState?.stories.map((story: any) => ({
+  const stories = storyState?.stories?.map((story: any) => ({
     content: () => customStoryLayout(story),
   }));
 

@@ -47,7 +47,7 @@ function Followers({ handleCloseModal, followerData }: FollowerProps) {
   };
 
   // Filter the followerData based on the search query
-  const filteredFollowerData = followerData.filter((user: any) => {
+  const filteredFollowerData = followerData?.filter((user: any) => {
     const lowerCaseQuery = searchQuery.toLowerCase();
     const userName = user?.userID?.name.toLowerCase();
     const userUsername = user?.userID?.username.toLowerCase();

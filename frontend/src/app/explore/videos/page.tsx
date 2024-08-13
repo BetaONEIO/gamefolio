@@ -117,7 +117,7 @@ function Video() {
   };
 
   return (
-    <div className="m-4">
+    <div className="m-4 h-screen">
       <div className="flex items-center mx-2 mb-2">
         <p className="font-semibold sm:text-lg text-xs text-white">
           Video Recommended for you
@@ -125,14 +125,14 @@ function Video() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {postState.videos.length === 0 ? (
+        {postState.videos?.length === 0 ? (
           <>
-            {[...Array(4)].map((_, index) => (
+            {[...Array(4)]?.map((_, index) => (
               <SkeletonLoaderRecommendation key={index} />
             ))}
           </>
         ) : (
-          postState.videos.slice(0, 5).map((item: any) => {
+          postState.videos?.slice(0, 5)?.map((item: any) => {
             const hasLikeReacted = item.reactions.some(
               (reaction: any) =>
                 reaction.userID === authState._id &&
@@ -155,7 +155,7 @@ function Video() {
                 <div className="relative overflow-hidden rounded-t-xl aspect-w-16 aspect-h-9">
                   <video
                     src={item.video}
-                    className="object-cover w-full h-36 hover:opacity-80"
+                    className="object-cover w-full h-36 rounded-xl hover:opacity-80 hover:scale-105 transition-transform duration-300"
                     controls={false}
                     autoPlay={false}
                     width={50}
@@ -178,8 +178,10 @@ function Video() {
                       width={40}
                     />
                     <div>
-                      <p className="text-sm text-white">{item?.userID?.name}</p>
-                      <p className="text-xs text-gray-400">
+                      <p className="text-sm text-white font-semibold  hover:text-[#43DD4E]">
+                        {item?.userID?.name}
+                      </p>
+                      <p className="text-xs text-gray-400 hover:opacity-80">
                         {formatTimeAgo(item.date)}
                       </p>
                     </div>
@@ -188,7 +190,7 @@ function Video() {
                   <div className="flex justify-between mx-2">
                     <div className="flex items-center gap-2">
                       <Image
-                        className="cursor-pointer hover:opacity-80"
+                        className="cursor-pointe hover:opacity-80"
                         src={SVG.Like}
                         alt="Like"
                         width={20}
@@ -196,9 +198,9 @@ function Video() {
                       />
                       <p className="text-white">
                         {
-                          item.reactions.filter(
+                          item.reactions?.filter(
                             (reaction: any) => reaction.reactionType === "like"
-                          ).length
+                          )?.length
                         }
                       </p>
                     </div>
@@ -213,9 +215,9 @@ function Video() {
                       />
                       <p className="text-white">
                         {
-                          item.reactions.filter(
+                          item.reactions?.filter(
                             (reaction: any) => reaction.reactionType === "love"
-                          ).length
+                          )?.length
                         }
                       </p>
                     </div>
@@ -228,7 +230,7 @@ function Video() {
                         width={25}
                         height={25}
                       />
-                      <p className="text-white">{item.comments.length}</p>
+                      <p className="text-white">{item.comments?.length}</p>
                     </div>
                   </div>
                 </div>

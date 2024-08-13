@@ -105,3 +105,48 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .disable-blur {
   image-rendering: -webkit-optimize-contrast;
 }
+
+body,
+html {
+  background-color: #091619;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+
+#__next {
+  height: 100%;
+}
+
+/* Define the normal and lifted states */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover,
+.card.is-lifted {
+  transform: translateY(-5px); /* Adjust value for the lift effect */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adjust shadow for a lifting appearance */
+}
+
+/* INPUT ERRORS */
+.input-error {
+  border: 1px solid #f87171; /* Red border color */
+  color: #b91c1c; /* Red text color */
+}
+
+.input-error:focus {
+  border-color: #ef4444; /* Darker red border on focus */
+  outline: none; /* Remove default outline */
+}
+
+.input-error::placeholder {
+  color: #fca5a5; /* Light red placeholder text */
+}
+/* BASE INPUT MESSAGE */
+.base-input-message {
+  font-weight: 500;
+  transition: color 3s ease-in;
+  color: rgb(242, 112, 138);
+}

@@ -53,10 +53,10 @@ export const getCookieValue = (cookieName: any) => {
   if (typeof document !== "undefined") {
     const decodedCookie = document.cookie;
     const cookieArray = decodedCookie.split(";");
-    for (let i = 0; i < cookieArray.length; i++) {
+    for (let i = 0; i < cookieArray?.length; i++) {
       let cookie = cookieArray[i].trim();
       if (cookie.indexOf(name) === 0) {
-        return cookie.substring(name.length, cookie.length);
+        return cookie.substring(name?.length, cookie?.length);
       }
     }
   }
@@ -64,12 +64,20 @@ export const getCookieValue = (cookieName: any) => {
   return null;
 };
 
-export const removeCookie = (cookieName: any) => {
+export const removeCookie = (
+  cookieName: string,
+  domain?: string,
+  path: string = "/"
+): void => {
   if (typeof document !== "undefined") {
-    // Check if the cookie exists
-    if (getCookieValue(cookieName)) {
-      const expirationDate = new Date(0); // Set the expiration date to the past
-      document.cookie = `${cookieName}=; expires=${expirationDate.toUTCString()}`;
+    const cookieValue = getCookieValue(cookieName);
+    if (cookieValue !== null) {
+      const expirationDate = new Date(0).toUTCString(); // Set the expiration date to the past
+      let cookieString = `${cookieName}=; expires=${expirationDate}; path=${path}`;
+      if (domain) {
+        cookieString += `; domain=${domain}`;
+      }
+      document.cookie = cookieString;
     }
   }
 };

@@ -69,8 +69,8 @@ const userSchema = new mongoose.Schema({
 
   accountStatus: {
     type: String,
-    enum: ["active", "deactive"],
-    default: "active",
+    enum: ["active", "pending", "deactive"],
+    default: "pending",
   },
   deactivatedAt: {
     type: Date,
@@ -138,6 +138,10 @@ const userSchema = new mongoose.Schema({
       postID: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Posts",
+      },
+      isView: {
+        type: Boolean,
+        enum: [true, false],
       },
       date: {
         type: Date,

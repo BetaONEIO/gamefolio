@@ -3,7 +3,32 @@ const User = require("../models/Users.js");
 const jwt = require("jsonwebtoken");
 const generateToken = require("../utils/generateToken.js");
 const generateOTP = require("../utils/generateOtp.js");
-const { sendEmail, sendForgotOtpEmail } = require("../utils/sendEmail.js");
+const {
+  sendEmail,
+  sendForgotOtpEmail,
+  sendVerificationEmail,
+} = require("../utils/sendEmail.js");
+
+const signupVerifyUsername = asyncHandler(async (req, res) => {
+  let { username } = req.body;
+
+  // Convert the incoming username to lowercase
+  username = username.toLowerCase();
+
+  // Check if username exists (case-insensitive)
+  const user = await User.findOne({
+    username: { $regex: new RegExp(`^${username}$`, "i") },
+  });
+
+  if (user) {
+    return res.status(400).json({
+      message: "The given data was invalid.",
+      errors: "The username has already been taken",
+    });
+  }
+
+  res.status(200).json({ message: "Success" });
+});
 
 const registerUser = asyncHandler(async (req, res) => {
   const { name, username, email, password } = req.body;
@@ -14,8 +39,9 @@ const registerUser = asyncHandler(async (req, res) => {
   const usernameExists = await User.findOne({ username });
 
   if (userExists || usernameExists) {
-    return res.status(404).json({ message: "User already exist" });
-    // throw new Error("User already exists");
+    return res.status(404).json({
+      message: userExists ? "Email already exists" : "Username already exists",
+    });
   }
 
   // create new user document in db
@@ -25,13 +51,14 @@ const registerUser = asyncHandler(async (req, res) => {
     email,
     password,
     profilePicture:
-      "https://d2m0dxds81dlzy.cloudfront.net/0c3b16ab-236b-4cc6-9220-6636343aa8ee-default-profile-avatar.png",
+      "https://d2m0dxds81dlzy.cloudfront.net/bdbc549d-d3ae-44ac-8caf-d158aa9f3078-defaultProfileImage.png",
     coverPicture:
       "https://d2m0dxds81dlzy.cloudfront.net/66dfb5a5-b198-41c4-b087-c7c4ac0f480a-banner.jpg",
     signupMethod: "email",
   });
 
   if (user) {
+    sendVerificationEmail(user);
     sendEmail(user);
     res.status(201).json({
       _id: user._id,
@@ -43,7 +70,8 @@ const registerUser = asyncHandler(async (req, res) => {
       profilePicture: user.profilePicture,
       coverPicture: user.coverPicture,
       signupMethod: user.signupMethod,
-      message: "Successfully Sign Up",
+      message:
+        "Signup successful! You have been sent a verify link to your email, please click on this to get started",
     });
   } else {
     return res.status(400).json({
@@ -58,9 +86,19 @@ const loginUser = asyncHandler(async (req, res) => {
 
   // check if user email exists in db
   const user = await User.findOne({ email });
+  console.log("signupMethod: ", user.signupMethod);
+  if (["twitter", "google", "facebook"].includes(user.signupMethod)) {
+    return res.status(400).json({
+      message: "Sorry! We were unable to log you in, please try again later",
+    });
+  }
 
   // return user obj if their password matches
-  if (user && (await user.matchPassword(password))) {
+  if (
+    user &&
+    user.signupMethod === "email" &&
+    (await user.matchPassword(password))
+  ) {
     // if (user.AccountStatus === "pending") {
     //   res.status(402).send("Please verify your email first");
     //   throw new Error("Please verify your email first");
@@ -71,6 +109,11 @@ const loginUser = asyncHandler(async (req, res) => {
       user.accountStatus = "active";
       user.deactivatedAt = null;
       await user.save();
+    }
+    if (user.accountStatus === "pending") {
+      return res.status(400).json({
+        message: "Please verify your email first to login",
+      });
     }
 
     // verified token returns user id
@@ -106,6 +149,44 @@ const loginUser = asyncHandler(async (req, res) => {
       message: "Sorry! We were unable to log you in, please try again later",
     });
     // throw new Error("Login failed. Email or password is incorrect.");
+  }
+});
+
+const addUsername = asyncHandler(async (req, res) => {
+  const { username } = req.body;
+
+  // Check if username already exists in the database
+  const usernameExists = await User.findOne({ username });
+
+  if (usernameExists) {
+    return res.status(404).json({
+      message: "Username already exists",
+    });
+  }
+
+  // Find the user by ID
+  const user = await User.findById(req.decodeduid);
+
+  if (!user) {
+    return res.status(404).json({
+      message: "User not found",
+    });
+  }
+
+  // Update the username field
+  user.username = username;
+
+  // Save the updated user document
+  await user.save();
+
+  if (user) {
+    res.status(200).json({
+      message: "Username successfully added",
+    });
+  } else {
+    return res.status(404).json({
+      message: "User not found",
+    });
   }
 });
 
@@ -165,6 +246,37 @@ const verifyEmailOTP = asyncHandler(async (req, res) => {
   } else {
     return res.status(401).send("Something went wrong");
   }
+});
+
+const verifyEmailLink = asyncHandler(async (req, res) => {
+  const { token } = req.body;
+  console.log("token: ", token);
+
+  if (!token) {
+    return res.status(400).send("Invalid token");
+  }
+
+  let decoded;
+  try {
+    decoded = jwt.verify(token, process.env.JWT_SECRET);
+  } catch (error) {
+    return res.status(400).send("Invalid or expired token");
+  }
+
+  const user = await User.findById(decoded.id);
+
+  if (!user) {
+    return res.status(400).send("User not found");
+  }
+
+  if (user.accountStatus === "active") {
+    return res.status(402).json({ message: "Already verified" });
+  }
+
+  user.accountStatus = "active";
+  await user.save();
+
+  return res.json("Email verified successfully");
 });
 
 // Forgot password controllers
@@ -416,6 +528,8 @@ const getProfileInfo = asyncHandler(async (req, res) => {
       following: user.following,
       block: user.block,
       report: user.report,
+      coins: user.coins,
+      coin: user.coins,
     });
   } else {
     return res.status(404).json({
@@ -909,7 +1023,12 @@ const createNotification = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
     // Push the new notification to the user's notification array
-    user.notification.push({ notificationType, postID, oppositionID });
+    user.notification.push({
+      notificationType,
+      postID,
+      oppositionID,
+      isView: false,
+    });
     // Save the user with the updated notification
     await user.save();
     res.status(201).json({ message: "Notification created successfully" });
@@ -918,9 +1037,45 @@ const createNotification = async (req, res) => {
   }
 };
 
+// Controller to update an existing notification for a user
+const updateNotification = async (req, res) => {
+  const { userID, notificationID } = req.body;
+  console.log({ userID, notificationID });
+
+  try {
+    // Find the user by ID
+    const user = await User.findById(userID);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Find the notification by ID
+    const notification = user.notification.find((item) => {
+      return item._id.toString() === notificationID;
+    });
+
+    console.log({ notification });
+    if (!notification) {
+      return res.status(404).json({ message: "Notification not found" });
+    }
+
+    // Update the notification fields
+    notification.isView = true;
+
+    // Save the user with the updated notification
+    await user.save();
+
+    res.status(200).json({ message: "Notification updated successfully" });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
 module.exports = {
+  signupVerifyUsername,
   registerUser,
   loginUser,
+  addUsername,
   updateLoginUser,
   getUserProfile,
   getProfileInfo,
@@ -928,6 +1083,7 @@ module.exports = {
   getAllUsers,
   sendEmailOTP,
   verifyEmailOTP,
+  verifyEmailLink,
   sendForgotPasswordOTP,
   verifyForgetPasswordOTP,
   resetPassword,
@@ -944,4 +1100,5 @@ module.exports = {
   deactivateAccount,
   getAllNotifications,
   createNotification,
+  updateNotification,
 };

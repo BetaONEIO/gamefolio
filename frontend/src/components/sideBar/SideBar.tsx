@@ -65,7 +65,9 @@ function SideBar({ toggleSidebar, sidebarOpen }: SideBarProps) {
         <div className="flex flex-col justify-between h-full overflow-y-auto no-scrollbar py-4 px-3 border-r bg-[#050E10] border-[#050E10]">
           <div className="mb-16">
             <div className="flex flex-col items-center px-6 py-8 mb-6 lg:py-0">
-              <Image width={100} height={100} src={IMAGES.logo} alt="logo" />
+              <Link href="/main" className="cursor-pointer hover:opacity-80">
+                <Image width={100} height={100} src={IMAGES.logo} alt="logo" />
+              </Link>
             </div>
 
             <ul className="space-y-2">
@@ -243,7 +245,7 @@ function SideBar({ toggleSidebar, sidebarOpen }: SideBarProps) {
 
               <li>
                 <Link
-                  href="/portfolio-web"
+                  href={`/mygamefolio/${authState?.username}`}
                   className={`flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white  ${
                     isItemActive("/portfolio-web") ? "bg-[#162423]" : ""
                   } dark:hover:bg-[#162423] group`}
@@ -316,7 +318,7 @@ function SideBar({ toggleSidebar, sidebarOpen }: SideBarProps) {
                       <p className="mx-4">Messages</p>
                     </div>
                     <p className="px-2 rounded-xl bg-[#586769]">
-                      {messageState.messages.length}
+                      {messageState.messages?.length}
                     </p>
                   </div>
                 </button>
@@ -355,7 +357,7 @@ function SideBar({ toggleSidebar, sidebarOpen }: SideBarProps) {
               </dt>
               <dd className="text-gray-400">({authState.username})</dd>
               <button
-                className="cursor-pointer hover:opacity-80"
+                className="cursor-pointer hover:opacity-80 hover:scale-105 transition-transform duration-100"
                 onClick={toggleDropdown}
               >
                 <Image

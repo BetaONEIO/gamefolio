@@ -7,7 +7,7 @@ let io;
 function init(server) {
   io = socketIO(server, {
     cors: {
-      origin: "http://localhost:3000",
+      origin: process.env.WEB_URL,
       methods: ["GET", "POST"],
     },
   });
@@ -75,10 +75,10 @@ function init(server) {
   });
 
   // Socket server
-  const port = process.env.SOCKET_PORT;
-  console.log("S PORT: ", port);
-  server.listen(8000, () => {
-    console.log(`Socket Servers running on http://localhost:${8000}`);
+  const { BASE_URL, SOCKET_PORT } = process.env;
+
+  server.listen(SOCKET_PORT, () => {
+    console.log(`Socket Servers running on ${BASE_URL}:${SOCKET_PORT}`);
   });
 }
 

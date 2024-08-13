@@ -110,7 +110,7 @@ const getFollowingStories = async (req, res) => {
     }
 
     // Get the IDs of users that the current user is following
-    const followingIDs = currentUser.following.map((user) => user.userID);
+    const followingIDs = currentUser.following?.map((user) => user.userID);
 
     // Retrieve stories from users that the current user is following
     const stories = await Story.find({ userID: { $in: followingIDs } })
