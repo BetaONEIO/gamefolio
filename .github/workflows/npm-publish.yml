@@ -1,9 +1,9 @@
 name: Node.js CI update
 on:
   push:
-    branches: ['hamza']
-    paths: 
-      - 'backend/**'
+    branches: ["hamza"]
+    paths:
+      - "backend/**"
 jobs:
   build_backend:
     runs-on: self-hosted
@@ -14,23 +14,29 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'  # Specify the Node.js version you want to use
-          cache: 'npm'
+          node-version: "20" # Specify the Node.js version you want to use
+          cache: "npm"
 
       - name: Install dependencies
         run: |
+          cd backend
           npm install --package-lock-only
           npm ci
 
       - name: Create .env file
         run: |
+          cd backend
           echo "${{ secrets.PROD_ENV_FILE }}" > .env
 
       - name: Build backend
-        run: npm run build
+        run: |
+          cd backend
+          npm run build
 
       - name: Archive backend
-        run: tar -czf backend.tar.gz -C backend .
+        run: |
+          cd backend
+          tar -czf backend.tar.gz .
 
   deploy:
     runs-on: self-hosted
