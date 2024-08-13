@@ -1,0 +1,36 @@
+name: Node.js CI Update
+
+on:
+  push:
+    branches: ['hamza']
+    paths: ['backend/**']
+
+jobs:
+  build:
+    runs-on: self-hosted
+    defaults:
+      run:
+        working-directory: 'backend'  # This sets the default working directory for all run commands
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          path: 'backend'  # Specify the backend folder path here
+         
+      - name: Generate dependencies lock file
+        run: npm install --package-lock-only  # Generate package-lock.json
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'  # Specify the Node.js version here
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci  # Install dependencies with clean install
+
+      - name: Generate .env file
+        run: |
+          touch .env
+          echo "${{ secrets.PROD_ENV_FILE }}" > .env
