@@ -1,9 +1,9 @@
-name: Node.js CI/CD
+name: Node.js CI update
 on:
   push:
-    branches: ["hamza"]
-    paths:
-      - "backend/**"
+    branches: ['hamza']
+    paths: 
+      - 'backend/**'
 jobs:
   build_backend:
     runs-on: self-hosted
