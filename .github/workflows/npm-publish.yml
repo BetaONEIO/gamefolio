@@ -34,24 +34,18 @@ jobs:
         run: |
           echo "${{ secrets.PROD_ENV_FILE }}" > .env.production
 
-      - name: Build backend
-        working-directory: backend
-        run: |
-          npm run build
+    
 
-      - name: Archive backend
-        working-directory: backend
-        run: |
-          tar -czf backend.tar.gz .
 
   deploy:
     runs-on: self-hosted
     needs: build_backend
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
 
-      - name: Deploy backend
+    defaults:
+      run:
+        working-directory: ./backend/
+    steps:
+      - name: deploying backend
+        working-directory: backend
         run: |
-          scp backend/backend.tar.gz ec2-user@your-ec2-instance:/var/www/backend/backend.tar.gz
-          ssh ec2-user@your-ec2-instance 'cd /var/www/backend && tar -xzf backend.tar.gz && npm run prod'
+          npm run prod
