@@ -2,6 +2,7 @@ export const PATH = {
   auth: {
     register: "user/signup",
     login: "user/signin",
+    updateUsername: "user/username/update",
     loginTwitter: "success",
     sendForgotPasswordOTP: "user/forgot-password/otp",
     verifyForgotPasswordOTP: "user/forgot-password/otp/verify",
@@ -92,5 +93,8 @@ export const PATH = {
     create: "post/bookmark/create",
     get: "post/bookmark/get",
     remove: "post/bookmark/remove",
+  },
+  signupUsername: {
+    verify: "signup/verify/username",
   },
 };

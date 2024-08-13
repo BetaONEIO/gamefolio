@@ -445,6 +445,34 @@ export function resetPasswordRequest(params: ActionParams) {
   };
 }
 
+export function onVerifySignupUsername(params: ActionParams) {
+  return async () => {
+    const {
+      successCallback = () => {},
+      errorCallback = () => {},
+      payload,
+    } = params;
+
+    dispatch(slice.actions.startLoading());
+
+    const options: APIParams = {
+      method: "POST",
+      endpoint: PATH.signupUsername.verify,
+      payload: payload,
+      isToken: false,
+    };
+    try {
+      const [ok, response] = await API(options);
+      if (!ok || !response) return errorCallback(response.errors);
+
+      successCallback(response.message);
+    } catch (error) {
+      errorCallback();
+    } finally {
+      dispatch(slice.actions.stopLoading());
+    }
+  };
+}
 export function onVerifyLink(params: ActionParams) {
   return async () => {
     const {
@@ -593,6 +621,37 @@ export function getAllImagesByUser(params: ActionParams) {
       dispatch(slice.actions.getGallery(response.data.items));
     } catch (error) {
       console.log(error);
+    } finally {
+      dispatch(slice.actions.stopLoading());
+    }
+  };
+}
+
+// for google and twitter users
+export function updateUsername(params: ActionParams) {
+  return async () => {
+    const {
+      successCallback = () => {},
+      errorCallback = () => {},
+      payload,
+    } = params;
+
+    dispatch(slice.actions.startLoading());
+
+    const options: APIParams = {
+      method: "POST",
+      endpoint: PATH.auth.updateUsername,
+      payload: payload,
+      isToken: true,
+    };
+    try {
+      const [ok, response] = await API(options);
+
+      if (!ok || !response) return errorCallback(response.message);
+
+      successCallback(response.message);
+    } catch (error) {
+      errorCallback();
     } finally {
       dispatch(slice.actions.stopLoading());
     }

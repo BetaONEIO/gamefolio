@@ -5,6 +5,7 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
 dotenv.config({ path: __dirname + `/.env.${process.env.NODE_ENV}` });
+const signupVerifyUsernameRoutes = require("./routes/signupVerifyUsernameRoutes");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const postRoutes = require("./routes/postRoutes");
@@ -87,16 +88,15 @@ app.get("/api/store-token", (req, res) => {
   const twelveHours = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
   res.cookie("gfoliotoken", accessToken, {
     maxAge: twelveHours,
-    // secure: true,
+    secure: true,
     domain: process.env.DOMAIN,
   });
   // res.redirect("http://localhost:3000/main");
   res.redirect(`${process.env.WEB_URL}/main`);
 });
 
-// app.get("/main", (req, res) => {
-//   res.send("Successfully authenticated");
-// });
+// Signup verify API
+app.use("/api/signup", signupVerifyUsernameRoutes);
 
 // Auth API
 app.use("/api/auth", authRoutes);

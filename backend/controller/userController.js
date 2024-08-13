@@ -9,6 +9,27 @@ const {
   sendVerificationEmail,
 } = require("../utils/sendEmail.js");
 
+const signupVerifyUsername = asyncHandler(async (req, res) => {
+  let { username } = req.body;
+
+  // Convert the incoming username to lowercase
+  username = username.toLowerCase();
+
+  // Check if username exists (case-insensitive)
+  const user = await User.findOne({
+    username: { $regex: new RegExp(`^${username}$`, "i") },
+  });
+
+  if (user) {
+    return res.status(400).json({
+      message: "The given data was invalid.",
+      errors: "The username has already been taken",
+    });
+  }
+
+  res.status(200).json({ message: "Success" });
+});
+
 const registerUser = asyncHandler(async (req, res) => {
   const { name, username, email, password } = req.body;
 
@@ -18,8 +39,9 @@ const registerUser = asyncHandler(async (req, res) => {
   const usernameExists = await User.findOne({ username });
 
   if (userExists || usernameExists) {
-    return res.status(404).json({ message: "User already exist" });
-    // throw new Error("User already exists");
+    return res.status(404).json({
+      message: userExists ? "Email already exists" : "Username already exists",
+    });
   }
 
   // create new user document in db
@@ -64,9 +86,19 @@ const loginUser = asyncHandler(async (req, res) => {
 
   // check if user email exists in db
   const user = await User.findOne({ email });
+  console.log("signupMethod: ", user.signupMethod);
+  if (["twitter", "google", "facebook"].includes(user.signupMethod)) {
+    return res.status(400).json({
+      message: "Sorry! We were unable to log you in, please try again later",
+    });
+  }
 
   // return user obj if their password matches
-  if (user && (await user.matchPassword(password))) {
+  if (
+    user &&
+    user.signupMethod === "email" &&
+    (await user.matchPassword(password))
+  ) {
     // if (user.AccountStatus === "pending") {
     //   res.status(402).send("Please verify your email first");
     //   throw new Error("Please verify your email first");
@@ -117,6 +149,44 @@ const loginUser = asyncHandler(async (req, res) => {
       message: "Sorry! We were unable to log you in, please try again later",
     });
     // throw new Error("Login failed. Email or password is incorrect.");
+  }
+});
+
+const addUsername = asyncHandler(async (req, res) => {
+  const { username } = req.body;
+
+  // Check if username already exists in the database
+  const usernameExists = await User.findOne({ username });
+
+  if (usernameExists) {
+    return res.status(404).json({
+      message: "Username already exists",
+    });
+  }
+
+  // Find the user by ID
+  const user = await User.findById(req.decodeduid);
+
+  if (!user) {
+    return res.status(404).json({
+      message: "User not found",
+    });
+  }
+
+  // Update the username field
+  user.username = username;
+
+  // Save the updated user document
+  await user.save();
+
+  if (user) {
+    res.status(200).json({
+      message: "Username successfully added",
+    });
+  } else {
+    return res.status(404).json({
+      message: "User not found",
+    });
   }
 });
 
@@ -1002,8 +1072,10 @@ const updateNotification = async (req, res) => {
 };
 
 module.exports = {
+  signupVerifyUsername,
   registerUser,
   loginUser,
+  addUsername,
   updateLoginUser,
   getUserProfile,
   getProfileInfo,

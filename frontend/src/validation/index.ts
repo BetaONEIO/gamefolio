@@ -3,7 +3,7 @@ import { ERRORS } from "@/labels/error";
 
 export const validateRegisterInputFields = (input: {
   [key: string]: string;
-}) => {
+}): string | boolean => {
   const name = input.name?.trim();
   const username = input.username?.trim();
   const email = input.email?.trim();
@@ -87,7 +87,13 @@ export const validateLogin = ({ email = "", password = "" }) => {
   if (REGEX.email.test(email) === false || email === "")
     return ERRORS.enterEmail;
 
-  if (password === "") return ERRORS.enterPassword;
+  if (password) {
+    if (password.length < 8) return "Password must be at least 8 characters";
+    if (password.length > 32)
+      return "Password can be a maximum of 32 characters";
+    if (!/[0-9]/.test(password)) return ERRORS.enterPassword;
+    if (!/[!@#$%^&*()_\-+=]/.test(password)) return ERRORS.enterPassword;
+  }
 
   return "";
 };
@@ -106,6 +112,10 @@ export const validateForgetPasswordInputFields = (input: {
 };
 export const validateForgetPassword = ({ email = "" }) => {
   if (email === "") return ERRORS.enterEmail;
+  if (email) {
+    if (!email.includes("@")) return "Email must contain an @ symbol";
+    if (!REGEX.email.test(email)) return "Invalid email format";
+  }
 
   return "";
 };
@@ -154,14 +164,31 @@ export const validateResetPassword = ({
     return ERRORS.passwordValidation;
   }
 
-  // Check if password is empty
-  if (!password.trim()) {
-    return ERRORS.emptyPassword;
+  // Validate password
+  if (password) {
+    // Ensure password field is not empty
+    if (!password) return "Password is required";
+    if (password.length < 8) return "Password must be at least 8 characters";
+    if (password.length > 32)
+      return "Password can be a maximum of 32 characters";
+    if (!/[0-9]/.test(password))
+      return "Password must contain at least one number";
+    if (!/[!@#$%^&*()_\-+=]/.test(password))
+      return "Password must contain at least one special character";
   }
 
-  // Check if confirmPassword is empty
-  if (!confirmPassword.trim()) {
-    return ERRORS.emptyPassword;
+  // Validate confirmPassword
+  if (confirmPassword) {
+    // Ensure confirmPassword field is not empty
+    if (!confirmPassword) return "Confirm password is required";
+    if (confirmPassword.length < 8)
+      return "Confirm password must be at least 8 characters";
+    if (confirmPassword.length > 32)
+      return "Confirm password can be a maximum of 32 characters";
+    if (!/[0-9]/.test(confirmPassword))
+      return "Confirm password must contain at least one number";
+    if (!/[!@#$%^&*()_\-+=]/.test(confirmPassword))
+      return "Confirm password must contain at least one special character";
   }
 
   // Check if confirmPassword matches password
