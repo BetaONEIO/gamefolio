@@ -9,7 +9,13 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'  # Specify the Node.js version you want to use
+          cache: 'npm'
 
       - name: Install dependencies
         run: |
@@ -31,10 +37,7 @@ jobs:
     needs: build_backend
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Copy backend to EC2
-        run: scp backend/backend.tar.gz ec2-user@your-ec2-instance:/var/www/backend
+        uses: actions/checkout@v4
 
       - name: Deploy backend
         run: |
