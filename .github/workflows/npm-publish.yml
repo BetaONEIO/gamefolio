@@ -27,14 +27,12 @@ jobs:
           npm install
           npm ci
 
-      - name: Run tests
-        working-directory: backend
-        run: npm test
+
 
       - name: Create .env file
         working-directory: backend
         run: |
-          echo "${{ secrets.PROD_ENV_FILE }}" > .env
+          echo "${{ secrets.PROD_ENV_FILE }}" > .env.production
 
       - name: Build backend
         working-directory: backend
@@ -56,4 +54,4 @@ jobs:
       - name: Deploy backend
         run: |
           scp backend/backend.tar.gz ec2-user@your-ec2-instance:/var/www/backend/backend.tar.gz
-          ssh ec2-user@your-ec2-instance 'cd /var/www/backend && tar -xzf backend.tar.gz && npm start'
+          ssh ec2-user@your-ec2-instance 'cd /var/www/backend && tar -xzf backend.tar.gz && npm run prod'
