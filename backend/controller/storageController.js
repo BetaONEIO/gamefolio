@@ -48,7 +48,7 @@ const uploadVideo = async (req, res) => {
         (progress.loaded / progress.total) * 100
       );
       console.log(`Upload Progress : ${percentCompleted}%`);
-      // You can emit this progress to clients using WebSocket or other means
+      // You can emit this progress to clients using WebSocket or other mean
     });
 
     s3Upload.send(function (err, data) {
