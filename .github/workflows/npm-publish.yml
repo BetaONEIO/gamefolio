@@ -2,7 +2,7 @@ name: Node.js CI update
 
 on:
   push:
-    branches: ['main']
+    branches: ['hamza']
     paths: ['backend/**']
 
 jobs:
