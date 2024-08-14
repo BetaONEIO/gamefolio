@@ -1,4 +1,5 @@
 name: Node.js CI update
+
 on:
   push:
     branches: ["hamza"]
@@ -12,42 +13,33 @@ jobs:
       run:
         working-directory: ./backend/
     steps:
-      - name: Checkout code
+      - name: Checkout backend code
         uses: actions/checkout@v4
+        with:
+          path: 'backend'  # Checkout the backend directory only
 
       - name: Setup NodeJS
         uses: actions/setup-node@v4
         with:
-          node-version: "20" # Specify the Node.js version
+          node-version: "20"  # Specify the Node.js version
           cache-dependency-path: './backend/package-lock.json'
 
       - name: Install dependencies
-        working-directory: backend
         run: |
           npm install
           npm ci
 
-
-
       - name: Create .env file
-        working-directory: backend
         run: |
-          touch .env.production
-          echo PROD_ENV_FILE=${{ secrets.PROD_ENV_FILE }} >> .env.production
-
-
-    
-
+          echo PROD_ENV_FILE=${{ secrets.PROD_ENV_FILE }} > .env.production
 
   deploy:
     runs-on: self-hosted
     needs: build_backend
-
     defaults:
       run:
         working-directory: ./backend/
     steps:
-      - name: deploying backend
-        working-directory: backend
+      - name: Deploying backend
         run: |
           npm run prod
