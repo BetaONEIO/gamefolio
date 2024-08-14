@@ -14,8 +14,7 @@ jobs:
     steps:
       - name: Checkout backend code
         uses: actions/checkout@v4
-        with:
-          path: backend
+     
       - name: Setup NodeJS
         uses: actions/setup-node@v4
         with:
