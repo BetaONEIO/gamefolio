@@ -25,10 +25,7 @@ jobs:
         run: |
           npm install
           npm ci
-      - name: Create .env file
-        working-directory: backend
-        run: |
-          echo PROD_ENV_FILE=${{ secrets.PROD_ENV_FILE }} > .env.production
+  
   deploy:
     runs-on: self-hosted
     needs: build_backend
