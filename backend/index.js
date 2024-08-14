@@ -54,7 +54,6 @@ socket.init(server);
 // --------------
 
 // Now, set up your Google authentication routes and other middleware as needed.
-
 // Google authentication
 app.get(
   "/auth/google",
