@@ -36,4 +36,5 @@ jobs:
       - name: Deploying backend
         working-directory: backend
         run: |
-          npm run prod
+          pm2 start server
+          pm2 save
