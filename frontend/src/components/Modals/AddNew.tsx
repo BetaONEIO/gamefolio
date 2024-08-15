@@ -71,14 +71,14 @@ function AddNew({ handleCloseModal }: AddNewProps) {
                 />
                 <div>
                   <span className="text-base font-semibold text-white">
-                    Post Video
+                    Post to your Gamefolio
                   </span>
                   <p className="text-white"> Description dummy text here...</p>
                 </div>
               </div>
             </div>
 
-            <div className="p-2 mb-4 text-sm text-left rounded-lg sm:mb-5 bg-[#162423] hover:opacity-80 cursor-pointer">
+            {/* <div className="p-2 mb-4 text-sm text-left rounded-lg sm:mb-5 bg-[#162423] hover:opacity-80 cursor-pointer">
               <div
                 className="flex items-center"
                 onClick={() => handleModalToggle("isAddClipsOpen")}
@@ -97,7 +97,7 @@ function AddNew({ handleCloseModal }: AddNewProps) {
                   <p className="text-white">Description dummy text here...</p>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

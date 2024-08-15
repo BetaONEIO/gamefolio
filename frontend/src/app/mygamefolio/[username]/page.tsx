@@ -136,8 +136,8 @@ function MyGamefolio({ params }: any) {
                     borderWidth: "2px",
                     borderColor: "#43DD4E",
                     position: "absolute",
-                    top: "8.5%",
-                    left: "30%",
+                    top: window.innerWidth <= 768 ? "10%" : "8.5%",
+                    left: window.innerWidth <= 768 ? "90%" : "30%",
                     transform: "translateX(-50%)",
                     width: "120px",
                   }}
