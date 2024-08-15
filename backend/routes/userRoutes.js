@@ -9,7 +9,6 @@ router.put("/profile/update", userController.updateProfile);
 router.put("/cover/update", userController.updateCover);
 router.post("/preferences/create", userController.addPreferences);
 router.post("/favorite-games/create", userController.addFavoriteGames);
-router.post("/signup", userController.registerUser);
 
 // router.post("/signup/emailotp/sent", userController.sendEmailOTP);
 // router.post("/signup/emailotp/verify", userController.verifyEmailOTP);
@@ -17,11 +16,11 @@ router.post("/signup", userController.registerUser);
 router.post("/signin", userController.loginUser);
 router.put("/password/update", userController.updatePassword);
 router.get("/updatesignin", authMiddleware, userController.updateLoginUser);
-// router.route("/profile").get(protect, userController.getUserProfile);
 router.post("/getUser", userController.getUserProfile);
 router.post("/profile/get", userController.getProfileInfo);
 router.get("/getAllUsers", userController.getAllUsers);
 router.post("/deactivate", userController.deactivateAccount);
+router.post("/username/update", authMiddleware, userController.addUsername);
 
 //followers
 router.post("/follower/create", userController.addFollowers);

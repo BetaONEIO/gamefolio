@@ -1,6 +1,6 @@
 import { ERRORS } from "@/labels/error";
 import { APIOption, APIParams } from "@/types/Api";
-import { getFromLocal } from "@/utils/localStorage";
+import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import io from "socket.io-client";
 require("dotenv").config();
 
@@ -53,7 +53,7 @@ export const API = (() => {
     }
 
     if (isToken) {
-      const token = getFromLocal("@token");
+      const token = getFromLocal("@token") || getCookieValue("gfoliotoken");
       headers = { ...headers, Authorization: `Bearer ${token}` };
     }
 
