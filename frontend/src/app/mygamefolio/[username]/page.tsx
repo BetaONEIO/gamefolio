@@ -17,6 +17,7 @@ import { Suspense, useEffect, useState } from "react";
 import Loading from "./loading";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Report from "@/components/Modals/Report";
 
 function MyGamefolio({ params }: any) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
@@ -29,6 +30,7 @@ function MyGamefolio({ params }: any) {
     isShareModalOpen: false,
     isFollowerModalOpen: false,
     isFollowingModalOpen: false,
+    isReportModalOpen: false,
     isVideoDetailOpen: false,
     isStoryModalOpen: false,
   });
@@ -160,9 +162,12 @@ function MyGamefolio({ params }: any) {
                       </span>
                     </li>
                     <li>
-                      <span className="font-normal cursor-pointer hover:opacity-80">
+                      <div
+                        onClick={() => handleModalToggle("isReportModalOpen")}
+                        className="font-normal cursor-pointer hover:opacity-80"
+                      >
                         Report
-                      </span>
+                      </div>
                     </li>
                   </ul>
                 </div>
@@ -403,6 +408,15 @@ function MyGamefolio({ params }: any) {
           handleCloseModal={() => handleModalToggle("isVideoDetailOpen")}
           handlePageRefresh={() => handlePageRefresh()}
         />
+
+        <Modal
+          isOpen={modalState.isReportModalOpen}
+          handleClose={() => handleModalToggle("isReportModalOpen")}
+        >
+          <Report
+            handleCloseModal={() => handleModalToggle("isReportModalOpen")}
+          />
+        </Modal>
       </Modal>
     </Layout>
   );
