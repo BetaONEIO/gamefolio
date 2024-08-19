@@ -1,0 +1,40 @@
+name: Node.js CI update
+'on':
+  pull_request:
+    branches:
+      - main
+    paths:
+      - backend/**
+jobs:
+  build_backend:
+    runs-on: self-hosted
+    defaults:
+      run:
+        working-directory: ./backend/
+    steps:
+      - name: Checkout backend code
+        uses: actions/checkout@v4
+     
+      - name: Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache-dependency-path: ./backend/package-lock.json
+      - name: Install dependencies
+        working-directory: backend
+        run: |
+          npm install
+          npm ci
+  
+  deploy:
+    runs-on: self-hosted
+    needs: build_backend
+    defaults:
+      run:
+        working-directory: ./backend/
+    steps:
+      - name: Deploying backend
+        working-directory: backend
+        run: |
+          pm2 start server
+          pm2 save

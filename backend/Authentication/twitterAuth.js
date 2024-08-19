@@ -44,8 +44,6 @@ passport.use(
       includeEmail: true,
     },
     (request, accessToken, refreshToken, profile, done) => {
-      // console.log("REQUEST :", request);
-      console.log("PROFILE: ", profile);
       findOrCreate(profile, done); // Call the custom findOrCreate function
     }
   )
