@@ -5,6 +5,7 @@ import Followers from "@/components/Modals/Followers";
 import Following from "@/components/Modals/Following";
 import Modal from "@/components/Modals/Modal";
 import MoreOptions from "@/components/Modals/MoreOptions";
+import Report from "@/components/Modals/Report";
 import VideoDetails from "@/components/Modals/VideoDetails";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
@@ -13,11 +14,9 @@ import { getAllUsers, getProfileInfo } from "@/store/slices/userSlice";
 import { copyToClipboard } from "@/utils/helpers";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import Loading from "./loading";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import Report from "@/components/Modals/Report";
 
 function MyGamefolio({ params }: any) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
