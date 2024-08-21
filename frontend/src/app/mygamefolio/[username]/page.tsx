@@ -20,9 +20,9 @@ import Loading from "./loading";
 
 function MyGamefolio({ params }: any) {
   const authState = useSelector((state: any) => state.auth.userData) || [];
+  const authStateRefresh = useSelector((state: any) => state.auth.refresh);
   const profileInfoState = useSelector((state: any) => state.user) || [];
   const postState = useSelector((state: any) => state.post) || [];
-  const [isPrivateAccount, setIsPrivateAccount] = useState(false);
   const [postID, setPostID] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [modalState, setModalState] = useState({
@@ -44,18 +44,13 @@ function MyGamefolio({ params }: any) {
   const myparams = {
     payload,
   };
+
   useEffect(() => {
     dispatch(userSession(myparams));
     dispatch(getProfileInfo({ payload: params }));
     dispatch(getAllPostVideos());
     dispatch(getAllUsers());
-  }, [postState.refresh]);
-
-  useEffect(() => {
-    setIsPrivateAccount(
-      profileInfoState?.profileUserInfo?.accountType === "private"
-    );
-  }, [profileInfoState]);
+  }, [postState.refresh, authStateRefresh]);
 
   const handleModalToggle = (modalName: keyof typeof modalState) => {
     setModalState((prevState) => ({
@@ -137,8 +132,8 @@ function MyGamefolio({ params }: any) {
                     borderWidth: "2px",
                     borderColor: "#43DD4E",
                     position: "absolute",
-                    top: window.innerWidth <= 768 ? "10%" : "8.5%",
-                    left: window.innerWidth <= 768 ? "90%" : "30%",
+                    top: window.innerWidth <= 768 ? "11%" : "15%",
+                    left: window.innerWidth <= 768 ? "91%" : "30%",
                     transform: "translateX(-50%)",
                     width: "120px",
                   }}
@@ -162,7 +157,7 @@ function MyGamefolio({ params }: any) {
                     </li>
                     <li>
                       <div
-                        onClick={() => handleModalToggle("isReportModalOpen")}
+                        onClick={() => handleModalToggle("isShareModalOpen")}
                         className="font-normal cursor-pointer hover:opacity-80"
                       >
                         Report
@@ -235,7 +230,7 @@ function MyGamefolio({ params }: any) {
                 </div>
               </div>
               <div className="flex flex-col justify-center ">
-                <div className="flex flex-row w-56 gap-2 lg:flex-col  lg:w-full">
+                {/* <div className="flex flex-row w-56 gap-2 lg:flex-col  lg:w-full">
                   <div className="flex  items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
                     <Image
                       className="rounded-xl w-10 h-10 object-cover"
@@ -291,7 +286,7 @@ function MyGamefolio({ params }: any) {
                       Connect with Steam
                     </p>
                   </div>
-                </div>
+                </div> */}
                 <div className="flex flex-col">
                   <h1 className="text-white font-bold my-2">About Me:</h1>
                   <p className="font-light text-xs text-[#7C7F80]">

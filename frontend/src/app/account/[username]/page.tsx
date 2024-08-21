@@ -281,6 +281,8 @@ function Page({ params }: any) {
     );
   }, [profileInfoState]);
 
+  console.log("helo", profileInfoState);
+
   const totalCoinAmount = authState?.coins?.reduce(
     (total: any, user: any) => total + user.coinAmount,
     0
