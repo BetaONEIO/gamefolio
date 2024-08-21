@@ -13,6 +13,7 @@ import Modal from "./Modal";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import Report from "./Report";
+import { debounce } from "@/utils/helpers";
 
 interface VideoDetailProps {
   handleCloseModal: () => void;
@@ -30,7 +31,7 @@ function VideoDetails({ handleCloseModal, postID }: VideoDetailProps) {
     isReportModalOpen: false,
   });
 
-  const handleCreateComment = async (postID: any, comment: any) => {
+  const handleCreateComment = debounce(async (postID: any, comment: any) => {
     const payload = {
       userID: authState._id,
       postID: postID,
@@ -60,7 +61,7 @@ function VideoDetails({ handleCloseModal, postID }: VideoDetailProps) {
       errorCallback,
     };
     dispatch(createComment(params));
-  };
+  }, 300);
 
   const handleChange = (e: any) => {
     setComments(e.target.value);

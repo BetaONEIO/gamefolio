@@ -113,6 +113,11 @@ const Page = () => {
               style={{ width: "100px", height: "100px" }}
             />
           </div>
+          <h2
+            className={`${leagueGothic.className} text-2xl text-center text-white tracking-wider`}
+          >
+            PLAY, CREATE, SHARE
+          </h2>
 
           <h1 className={`${leagueGothic.className} text-4xl text-white`}>
             LOGIN
