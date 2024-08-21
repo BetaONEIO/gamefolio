@@ -415,7 +415,7 @@ function Main() {
                             Trending Now
                           </span>
                           <span className="text-md font-semibold text-white hover:text-[#43DD4E]">
-                            {item.name}
+                            {item.name.substring(0, 13)}
                           </span>
                           <span className="text-xs text-gray-500 hover:opacity-80">
                             New addition Arrived

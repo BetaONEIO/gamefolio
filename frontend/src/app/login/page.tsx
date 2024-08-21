@@ -102,7 +102,7 @@ const Page = () => {
   return (
     <CustomBackground>
       <div className="flex flex-col items-center justify-center px-6 py-8 ">
-        <div className="p-6 space-y-4 sm:p-8 md:w-96 bg-[#091619] rounded-xl border border-[#1C2C2E] h-screen overflow-scroll no-scrollbar">
+        <div className="p-6 space-y-4 sm:p-8 md:w-96 bg-[#091619] rounded-xl border border-[#1C2C2E] h-screen overflow-y-scroll no-scroll no-scrollbarbar">
           <div className="flex justify-center items-center">
             <Image
               src={IMAGES.logo}
@@ -113,6 +113,11 @@ const Page = () => {
               style={{ width: "100px", height: "100px" }}
             />
           </div>
+          <h2
+            className={`${leagueGothic.className} text-2xl text-center text-white tracking-wider`}
+          >
+            PLAY, CREATE, SHARE
+          </h2>
 
           <h1 className={`${leagueGothic.className} text-4xl text-white`}>
             LOGIN

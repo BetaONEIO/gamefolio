@@ -72,7 +72,7 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
       return option?.name?.toLowerCase().includes(inputValue);
     });
     setFilteredOptions(filtered);
-  }, 1000);
+  }, 3000);
 
   const handleSearch = (e: any) => {
     const inputValue = e.target.value.toLowerCase();

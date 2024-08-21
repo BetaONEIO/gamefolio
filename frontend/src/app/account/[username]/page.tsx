@@ -464,6 +464,9 @@ function Page({ params }: any) {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
   };
 
+  const isCurrentUserProfile =
+    authState.username === profileInfoState.profileUserInfo.username;
+
   return (
     <Layout>
       <Suspense>
@@ -472,7 +475,7 @@ function Page({ params }: any) {
 
         <div style={sectionStyle} className="pt-4">
           <div
-            className="disable-blur flex flex-col items-center lg:flex-row lg:justify-center gap-4 h-60 pl-8 mx-4 my-4"
+            className="disable-blur flex flex-col items-center lg:flex-row gap-4 h-60 lg:pl-28 mx-4 my-4"
             style={{
               background: `linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.9) 99%), ${backgroundImage} no-repeat center / cover`,
             }}
@@ -555,36 +558,40 @@ function Page({ params }: any) {
                 </div>
               </div>
 
-              <div className="flex h-8 sm:gap-6 mt-3">
-                {profileInfoState?.profileUserInfo?.follower?.some(
-                  (user: any) => user?.userID?._id === authState._id
-                ) ? (
-                  <button
-                    className="font-bold w-40 h-10 bg-[#292D32] text-white text-center py-[10px] px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
-                    onClick={() =>
-                      handleUnFollowUser(profileInfoState?.profileUserInfo?._id)
-                    }
-                  >
-                    Unfollow
-                  </button>
-                ) : (
-                  <button
-                    className="font-bold w-40 h-10 bg-[#292D32] text-white text-center py-[10px] px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
-                    onClick={() =>
-                      handleFollowUser(profileInfoState?.profileUserInfo?._id)
-                    }
-                  >
-                    Follow
-                  </button>
-                )}
+              {!isCurrentUserProfile && (
+                <div className="flex h-8 sm:gap-6 mt-3">
+                  {profileInfoState?.profileUserInfo?.follower?.some(
+                    (user: any) => user?.userID?._id === authState._id
+                  ) ? (
+                    <button
+                      className="font-bold w-40 h-10 bg-[#292D32] text-white text-center py-[10px] px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
+                      onClick={() =>
+                        handleUnFollowUser(
+                          profileInfoState?.profileUserInfo?._id
+                        )
+                      }
+                    >
+                      Unfollow
+                    </button>
+                  ) : (
+                    <button
+                      className="font-bold w-40 h-10 bg-[#292D32] text-white text-center py-[10px] px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
+                      onClick={() =>
+                        handleFollowUser(profileInfoState?.profileUserInfo?._id)
+                      }
+                    >
+                      Follow
+                    </button>
+                  )}
 
-                <button
-                  className="font-bold w-40 h-10 bg-[#37C535] text-white text-center py-[10px] px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
-                  onClick={handleMessage}
-                >
-                  Message
-                </button>
-              </div>
+                  <button
+                    className="font-bold w-40 h-10 bg-[#37C535] text-white text-center py-[10px] px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
+                    onClick={handleMessage}
+                  >
+                    Message
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -804,42 +811,30 @@ function Page({ params }: any) {
               {/* green line */}
 
               {/* Content Section */}
-              {authState?.following?.some(
-                (user: any) =>
-                  user?.userID?._id ===
-                    profileInfoState?.profileUserInfo?._id || !isPrivateAccount
-              ) ? (
-                // User is following, show videos
-                <div>
-                  {selectedSection === "videos" ? (
-                    <MyVideosSection
-                      authState={authState}
-                      postState={postState}
-                      profileInfoState={profileInfoState}
-                      handleVideoDetailOpen={handleVideoDetailOpen}
-                    />
-                  ) : selectedSection === "bookmarked" ? (
-                    <MyBookmarkSection
-                      data={postState.bookmarks}
-                      handleVideoDetailOpen={handleVideoDetailOpen}
-                    />
-                  ) : selectedSection === "clips" ? (
-                    <ClipsSection
-                      authState={authState}
-                      clipState={clipState}
-                      profileInfoState={profileInfoState}
-                      handleVideoDetailOpen={handleVideoDetailOpen}
-                    />
-                  ) : (
-                    <StorySection data={storyState.currentUserStories} />
-                  )}
-                </div>
-              ) : (
-                // User is not following, show private account message
-                <div className="flex justify-center">
-                  <p>This is a private account.</p>
-                </div>
-              )}
+              <div>
+                {selectedSection === "videos" ? (
+                  <MyVideosSection
+                    authState={authState}
+                    postState={postState}
+                    profileInfoState={profileInfoState}
+                    handleVideoDetailOpen={handleVideoDetailOpen}
+                  />
+                ) : selectedSection === "bookmarked" ? (
+                  <MyBookmarkSection
+                    data={postState.bookmarks}
+                    handleVideoDetailOpen={handleVideoDetailOpen}
+                  />
+                ) : selectedSection === "clips" ? (
+                  <ClipsSection
+                    authState={authState}
+                    clipState={clipState}
+                    profileInfoState={profileInfoState}
+                    handleVideoDetailOpen={handleVideoDetailOpen}
+                  />
+                ) : (
+                  <StorySection data={storyState.currentUserStories} />
+                )}
+              </div>
             </div>
           </div>
           {/* </div> */}

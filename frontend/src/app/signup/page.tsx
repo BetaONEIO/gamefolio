@@ -162,7 +162,7 @@ const Signup = () => {
   return (
     <CustomBackground>
       <div className="flex flex-col items-center justify-center px-6 py-8 ">
-        <div className="p-6 space-y-4 sm:p-8 md:w-96 bg-[#091619] rounded-xl border border-[#1C2C2E] h-screen overflow-scroll no-scrollbar">
+        <div className="p-6 space-y-4 sm:p-8 md:w-96 bg-[#091619] rounded-xl border border-[#1C2C2E] h-screen overflow-y-scroll no-scroll no-scrollbarbar">
           <div className="flex justify-center items-center">
             <Image
               src={IMAGES.logo}
