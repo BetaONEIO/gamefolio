@@ -13,7 +13,7 @@ import { PATH } from "@/constants/endpoints";
 export type InitialState = {
   error: null;
   loading: boolean;
-  userData: UserData | null;
+  userData: UserData | {};
   token: string;
   userCredits: Credit | null;
   gallery: ImageResponse[] | null;
@@ -24,7 +24,7 @@ export type InitialState = {
 const initialState: InitialState = {
   error: null,
   loading: false,
-  userData: null,
+  userData: {},
   token: "",
   userCredits: null,
   gallery: null,

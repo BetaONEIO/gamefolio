@@ -24,7 +24,7 @@ const SkeletonLoaderGames = () => (
       {[...Array(5)]?.map((_, index) => (
         <div
           key={index}
-          className="w-28 h-40 bg-gray-300 rounded-xl animate-pulse"
+          className="w-28 h-40 bg-gray-700 rounded-xl animate-pulse"
         ></div>
       ))}
     </div>

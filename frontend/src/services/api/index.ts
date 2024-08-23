@@ -183,7 +183,7 @@ async function fetchGames(
     Authorization: `Bearer ${access_token}`,
   };
   const params: { [key: string]: any } = {
-    first: 100, // Number of games to fetch per request
+    first: 10, // Number of games to fetch per request
   };
 
   if (cursor) {
