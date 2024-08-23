@@ -1,13 +1,11 @@
 "use client";
-import { Suspense, useEffect, useState } from "react";
-import Image from "next/image";
-import { IMAGES } from "@/assets/images";
 import { SVG } from "@/assets/SVG";
 import CustomHeader from "@/components/CustomHeader/CustomHeader";
 import Layout from "@/components/CustomLayout/layout";
 import DeletePost from "@/components/Modals/DeletePost";
 import Modal from "@/components/Modals/Modal";
 import VideoDetails from "@/components/Modals/VideoDetails";
+import { fetchGameList } from "@/services/api";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import {
@@ -16,7 +14,8 @@ import {
   updateDetailedPost,
 } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
-import { fetchGameList } from "@/services/api";
+import Image from "next/image";
+import { Suspense, useEffect, useState } from "react";
 import Loading from "./loading";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -63,11 +62,16 @@ const SkeletonLoaderVideo = () => {
   );
 };
 
-const trendingLoader = () => {
+const SkeletonTrendingLoader = () => {
   return (
-    <div className="relative w-[800px] h-[400px] rounded-lg overflow-hidden bg-gray-200 animate-pulse">
-      <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-skeleton"></div>
-    </div>
+    <SwiperSlide>
+      <div className="animate-pulse w-full h-80 rounded-xl bg-gray-700" />
+
+      <div
+        className="absolute inset-0 bg-gradient-to-t from-[#091619] via-transparent to-transparent"
+        style={{ opacity: 1 }}
+      ></div>
+    </SwiperSlide>
   );
 };
 
@@ -200,6 +204,8 @@ function Trending() {
     dispatch(refreshPage());
   };
 
+  const isTrendingDataFetching = filteredGames.length === 0;
+
   return (
     <Layout>
       <Suspense fallback={<Loading />}>
@@ -231,39 +237,43 @@ function Trending() {
 
             <div className="flex gap-4 h-80 w-full relative">
               <div className="relative w-[70%]">
-                <Swiper
-                  effect={"fade"}
-                  navigation={true}
-                  pagination={{ clickable: true }}
-                  modules={[EffectFade, Navigation, Pagination]}
-                  className="mySwiper h-80 sm:w-full rounded-lg"
-                >
-                  {/* {filteredOptions?.length === 0 ? (
+                {isTrendingDataFetching ? (
+                  <SkeletonTrendingLoader />
+                ) : (
+                  <Swiper
+                    effect={"fade"}
+                    navigation={true}
+                    pagination={{ clickable: true }}
+                    modules={[EffectFade, Navigation, Pagination]}
+                    className="mySwiper h-80 sm:w-full rounded-lg"
+                  >
+                    {/* {filteredOptions?.length === 0 ? (
                     <>
                       {[...Array(2)]?.map((_, index) => (
                         <trendingLoader key={index} />
                       ))}
                     </>
                   ) : ( */}
-                  {filteredGames?.slice(0, 3)?.map((item: any) => (
-                    <SwiperSlide key={item.id}>
-                      <Image
-                        width={800}
-                        height={400}
-                        className="w-full h-full rounded-xl bg-cover bg-no-repeat bg-center hover:scale-105 transition-transform duration-100"
-                        src={item.box_art_url.replace(
-                          "{width}x{height}",
-                          "800x400"
-                        )}
-                        alt={item.name}
-                        style={styles.swiperImage}
-                        sizes="100vw"
-                      />
-                      <div style={styles.overlay}></div>
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
 
+                    {filteredGames?.slice(0, 3)?.map((item: any) => (
+                      <SwiperSlide key={item.id}>
+                        <Image
+                          width={800}
+                          height={400}
+                          className="w-full h-full rounded-xl bg-cover bg-no-repeat bg-center hover:scale-105 transition-transform duration-100"
+                          src={item.box_art_url.replace(
+                            "{width}x{height}",
+                            "800x400"
+                          )}
+                          alt={item.name}
+                          style={styles.swiperImage}
+                          sizes="100vw"
+                        />
+                        <div style={styles.overlay}></div>
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
+                )}
                 <div className="absolute top-4 left-4 flex gap-4 z-10">
                   <button
                     className="font-semibold rounded-2xl px-4 py-2 text-white cursor-pointer hover:text-[#43DD4E]"
