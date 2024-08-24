@@ -1,19 +1,17 @@
 "use client";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { SVG } from "@/assets/SVG";
 import { leagueGothic } from "@/font/font";
+import { ROUTES } from "@/labels/routes";
 import { dispatch } from "@/store";
 import {
   onVerifySignupUsername,
   updateUsername,
-  verifyForgotPasswordOTP,
 } from "@/store/slices/authSlice";
+import { validateRegisterInputFields } from "@/validation";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
-import { toastError, toastSuccess } from "../Toast/Toast";
-import { validateRegister, validateRegisterInputFields } from "@/validation";
+import { toastError } from "../Toast/Toast";
 
 interface UsernameProps {
   handleCloseModal: (error?: string) => void;
@@ -125,6 +123,7 @@ function Username({ handleCloseModal }: UsernameProps) {
 
     const successCallback = async (message: string) => {
       handleCloseModal();
+      router.replace(ROUTES.main);
     };
     const errorCallback = (message: string) => {
       toastError(message);
