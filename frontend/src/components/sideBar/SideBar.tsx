@@ -33,10 +33,8 @@ function SideBar({ toggleSidebar, sidebarOpen }: SideBarProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  console.log("authState>: ", authState);
-  console.log("msgState: ", messageState);
   const isDataFetching =
-    Object.keys(authState.userData).length === 0 || authState.loading;
+    Object.keys(authState?.userData || {}).length === 0 || authState?.loading;
 
   {
     /* Get the current route */

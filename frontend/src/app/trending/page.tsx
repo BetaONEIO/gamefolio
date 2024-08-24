@@ -208,46 +208,45 @@ function Trending() {
 
   return (
     <Layout>
-      <Suspense fallback={<Loading />}>
-        {/* Header */}
-        <CustomHeader>TRENDING</CustomHeader>
+      {/* Header */}
+      <CustomHeader>TRENDING</CustomHeader>
 
-        <section
-          style={sectionStyle}
-          className="flex flex-col items-center bg-[#091619] min-h-screen relative"
-        >
-          <div className="p-4 flex flex-col w-full h-full gap-2">
-            <div className="flex items-center gap-3">
-              <p className="font-semibold text-base sm:text-lg lg:text-lg text-white">
-                Trending Games
+      <section
+        style={sectionStyle}
+        className="flex flex-col items-center bg-[#091619] min-h-screen relative"
+      >
+        <div className="p-4 flex flex-col w-full h-full gap-2">
+          <div className="flex items-center gap-3">
+            <p className="font-semibold text-base sm:text-lg lg:text-lg text-white">
+              Trending Games
+            </p>
+            <div className="flex items-center bg-[#49DE4D] px-1 rounded-md">
+              <Image
+                className="mr-2 cursor-pointer hover:opacity-80"
+                src={SVG.Trending}
+                alt="Trending"
+                width={20}
+                height={20}
+              />
+              <p className="font-semibold text-base sm:text-md lg:text-md text-white">
+                Trending
               </p>
-              <div className="flex items-center bg-[#49DE4D] px-1 rounded-md">
-                <Image
-                  className="mr-2 cursor-pointer hover:opacity-80"
-                  src={SVG.Trending}
-                  alt="Trending"
-                  width={20}
-                  height={20}
-                />
-                <p className="font-semibold text-base sm:text-md lg:text-md text-white">
-                  Trending
-                </p>
-              </div>
             </div>
+          </div>
 
-            <div className="flex gap-4 h-80 w-full relative">
-              <div className="relative w-[70%]">
-                {isTrendingDataFetching ? (
-                  <SkeletonTrendingLoader />
-                ) : (
-                  <Swiper
-                    effect={"fade"}
-                    navigation={true}
-                    pagination={{ clickable: true }}
-                    modules={[EffectFade, Navigation, Pagination]}
-                    className="mySwiper h-80 sm:w-full rounded-lg"
-                  >
-                    {/* {filteredOptions?.length === 0 ? (
+          <div className="flex gap-4 h-80 w-full relative">
+            <div className="relative w-[70%]">
+              {isTrendingDataFetching ? (
+                <SkeletonTrendingLoader />
+              ) : (
+                <Swiper
+                  effect={"fade"}
+                  navigation={true}
+                  pagination={{ clickable: true }}
+                  modules={[EffectFade, Navigation, Pagination]}
+                  className="mySwiper h-80 sm:w-full rounded-lg"
+                >
+                  {/* {filteredOptions?.length === 0 ? (
                     <>
                       {[...Array(2)]?.map((_, index) => (
                         <trendingLoader key={index} />
@@ -255,250 +254,244 @@ function Trending() {
                     </>
                   ) : ( */}
 
-                    {filteredGames?.slice(0, 3)?.map((item: any) => (
-                      <SwiperSlide key={item.id}>
+                  {filteredGames?.slice(0, 3)?.map((item: any) => (
+                    <SwiperSlide key={item.id}>
+                      <Image
+                        width={800}
+                        height={400}
+                        className="w-full h-full rounded-xl bg-cover bg-no-repeat bg-center hover:scale-105 transition-transform duration-100"
+                        src={item.box_art_url.replace(
+                          "{width}x{height}",
+                          "800x400"
+                        )}
+                        alt={item.name}
+                        style={styles.swiperImage}
+                        sizes="100vw"
+                      />
+                      <div style={styles.overlay}></div>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              )}
+              <div className="absolute top-4 left-4 flex gap-4 z-10">
+                <button
+                  className="font-semibold rounded-2xl px-4 py-2 text-white cursor-pointer hover:text-[#43DD4E]"
+                  style={{ backgroundColor: "rgba(41, 45, 50, 0.8)" }}
+                >
+                  Action
+                </button>
+                <button
+                  className="font-semibold rounded-2xl px-4 py-2 text-white cursor-pointer hover:text-[#43DD4E]"
+                  style={{ backgroundColor: "rgba(41, 45, 50, 0.8)" }}
+                >
+                  Fighting
+                </button>
+                <button
+                  className="font-semibold rounded-2xl px-4 py-2 text-white cursor-pointer hover:text-[#43DD4E]"
+                  style={{ backgroundColor: "rgba(41, 45, 50, 0.8)" }}
+                >
+                  Thrilling
+                </button>
+              </div>
+            </div>
+
+            <div
+              className="hidden w-[30%] h-[22.5rem] md:flex flex-col gap-6 rounded-lg bg-[#091619] border border-[#1C2C2E] px-4 py-6 overflow-y-auto"
+              style={styles.scroller}
+            >
+              <div className="flex justify-start items-center">
+                <span className="text-white font-bold">Upcoming Updates</span>
+              </div>
+
+              <div className="flex flex-col gap-4">
+                {filteredGames?.length === 0 ? (
+                  <>
+                    {[...Array(10)]?.map((_, index) => (
+                      <SkeletonLoader key={index} />
+                    ))}
+                  </>
+                ) : (
+                  filteredGames?.slice(0, 20)?.map((item: any) => (
+                    <div
+                      key={item.id}
+                      className="flex justify-between items-center"
+                    >
+                      <div className="flex gap-2 overflow-hidden rounded-xl">
                         <Image
-                          width={800}
-                          height={400}
-                          className="w-full h-full rounded-xl bg-cover bg-no-repeat bg-center hover:scale-105 transition-transform duration-100"
+                          width={64}
+                          height={64}
+                          className="w-16 h-16 rounded-xl hover:scale-105 transition-transform duration-100"
                           src={item.box_art_url.replace(
                             "{width}x{height}",
-                            "800x400"
+                            "64x64"
                           )}
                           alt={item.name}
-                          style={styles.swiperImage}
-                          sizes="100vw"
                         />
-                        <div style={styles.overlay}></div>
-                      </SwiperSlide>
-                    ))}
-                  </Swiper>
+                        <div className="flex flex-col">
+                          <span className="text-sm font-bold text-[#43DD4E]">
+                            Trending Now
+                          </span>
+                          <span className="text-md font-semibold hover:text-[#43DD4E]">
+                            {item.name}
+                          </span>
+                          <span className="text-xs text-[#A1A1A1] hover:opacity-80">
+                            New addition Arrived
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))
                 )}
-                <div className="absolute top-4 left-4 flex gap-4 z-10">
-                  <button
-                    className="font-semibold rounded-2xl px-4 py-2 text-white cursor-pointer hover:text-[#43DD4E]"
-                    style={{ backgroundColor: "rgba(41, 45, 50, 0.8)" }}
-                  >
-                    Action
-                  </button>
-                  <button
-                    className="font-semibold rounded-2xl px-4 py-2 text-white cursor-pointer hover:text-[#43DD4E]"
-                    style={{ backgroundColor: "rgba(41, 45, 50, 0.8)" }}
-                  >
-                    Fighting
-                  </button>
-                  <button
-                    className="font-semibold rounded-2xl px-4 py-2 text-white cursor-pointer hover:text-[#43DD4E]"
-                    style={{ backgroundColor: "rgba(41, 45, 50, 0.8)" }}
-                  >
-                    Thrilling
-                  </button>
-                </div>
               </div>
-
-              <div
-                className="hidden w-[30%] h-[22.5rem] md:flex flex-col gap-6 rounded-lg bg-[#091619] border border-[#1C2C2E] px-4 py-6 overflow-y-auto"
-                style={styles.scroller}
-              >
-                <div className="flex justify-start items-center">
-                  <span className="text-white font-bold">Upcoming Updates</span>
-                </div>
-
-                <div className="flex flex-col gap-4">
-                  {filteredGames?.length === 0 ? (
-                    <>
-                      {[...Array(10)]?.map((_, index) => (
-                        <SkeletonLoader key={index} />
-                      ))}
-                    </>
-                  ) : (
-                    filteredGames?.slice(0, 20)?.map((item: any) => (
-                      <div
-                        key={item.id}
-                        className="flex justify-between items-center"
-                      >
-                        <div className="flex gap-2 overflow-hidden rounded-xl">
-                          <Image
-                            width={64}
-                            height={64}
-                            className="w-16 h-16 rounded-xl hover:scale-105 transition-transform duration-100"
-                            src={item.box_art_url.replace(
-                              "{width}x{height}",
-                              "64x64"
-                            )}
-                            alt={item.name}
-                          />
-                          <div className="flex flex-col">
-                            <span className="text-sm font-bold text-[#43DD4E]">
-                              Trending Now
-                            </span>
-                            <span className="text-md font-semibold hover:text-[#43DD4E]">
-                              {item.name}
-                            </span>
-                            <span className="text-xs text-[#A1A1A1] hover:opacity-80">
-                              New addition Arrived
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    ))
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 mt-4">
-              <p className="font-semibold text-base sm:text-lg lg:text-lg text-white">
-                Trending Games
-              </p>
-              <div className="flex items-center bg-[#49DE4D] px-1 rounded-md">
-                <Image
-                  className="mr-2 cursor-pointer hover:opacity-80"
-                  src={SVG.Trending}
-                  alt="Trending"
-                  width={20}
-                  height={20}
-                />
-                <p className="font-semibold text-base sm:text-md lg:text-md text-white">
-                  Trending
-                </p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {postState?.trendingVideos?.length === 0 ? (
-                <>
-                  {[...Array(4)]?.map((_, index) => (
-                    <SkeletonLoaderVideo key={index} />
-                  ))}
-                </>
-              ) : (
-                postState?.trendingVideos?.map((item: any) => (
-                  <div
-                    key={item?.userID}
-                    className="flex flex-col w-68 h-60 border-2 border-[#1C2C2E] rounded-xl my-2 cursor-pointer hover:opacity-80"
-                    onClick={() =>
-                      handleModalToggle("isVideoDetailOpen", item._id, item)
-                    }
-                  >
-                    <div className="relative overflow-hidden rounded-t-xl aspect-w-16 aspect-h-9">
-                      <video
-                        src={item.video}
-                        className="object-cover w-full h-36 rounded-xl hover:scale-105 transition-transform duration-100"
-                        controls={false}
-                        autoPlay={false}
-                        width={50}
-                        height={50}
-                        onLoadedMetadata={(e) =>
-                          handleVideoMetadata(e, item._id)
-                        }
-                      />
-
-                      <span className="absolute bottom-2 right-3 text-white">
-                        {formatTime(videoDurations[item._id])}
-                      </span>
-                    </div>
-
-                    <div className="p-2">
-                      <div className="flex items-center gap-2 mb-4">
-                        <Image
-                          className="rounded-xl w-10 h-10 object-cover "
-                          src={item?.userID?.profilePicture}
-                          alt="Account Profile"
-                          height={40}
-                          width={40}
-                        />
-                        <div>
-                          <p className="font-semibold text-sm text-white hover:text-[#43DD4E]">
-                            {item?.userID?.name
-                              .split(" ")
-                              .slice(0, 2)
-                              .join(" ")}
-                          </p>
-                          <p className="text-xs text-gray-400 hover:opacity-80">
-                            {formatTimeAgo(item.date)}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex justify-between mx-1">
-                        <div className="flex items-center gap-2">
-                          <Image
-                            className="cursor-pointer hover:opacity-80"
-                            src={SVG.Like}
-                            alt="Like"
-                            width={20}
-                            height={20}
-                          />
-                          <p className="text-white">
-                            {
-                              item.reactions?.filter(
-                                (reaction: any) =>
-                                  reaction.reactionType === "like"
-                              )?.length
-                            }
-                          </p>
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                          <Image
-                            className="cursor-pointer hover:opacity-80"
-                            src={SVG.Love}
-                            alt="Love"
-                            width={20}
-                            height={20}
-                          />
-                          <p className="text-white">
-                            {
-                              item.reactions?.filter(
-                                (reaction: any) =>
-                                  reaction.reactionType === "love"
-                              )?.length
-                            }
-                          </p>
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                          <Image
-                            className="cursor-pointer hover:opacity-80"
-                            src={SVG.Comment}
-                            alt="Comment"
-                            width={25}
-                            height={25}
-                          />
-                          <p className="text-white">{item.comments?.length}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))
-              )}
             </div>
           </div>
 
-          <Modal
-            isOpen={modalState.isVideoDetailOpen}
-            handleClose={() => handleModalToggle("isVideoDetailOpen")}
-          >
-            <VideoDetails
-              postID={postID}
-              handleCloseModal={() => handleModalToggle("isVideoDetailOpen")}
-              handlePageRefresh={() => handlePageRefresh()}
-            />
-          </Modal>
+          <div className="flex items-center gap-3 mt-4">
+            <p className="font-semibold text-base sm:text-lg lg:text-lg text-white">
+              Trending Games
+            </p>
+            <div className="flex items-center bg-[#49DE4D] px-1 rounded-md">
+              <Image
+                className="mr-2 cursor-pointer hover:opacity-80"
+                src={SVG.Trending}
+                alt="Trending"
+                width={20}
+                height={20}
+              />
+              <p className="font-semibold text-base sm:text-md lg:text-md text-white">
+                Trending
+              </p>
+            </div>
+          </div>
 
-          <Modal
-            isOpen={modalState.isPostDeleteOpen}
-            handleClose={() => handleModalToggle("isPostDeleteOpen")}
-          >
-            <DeletePost
-              postID={postID}
-              handleCloseModal={() => handleModalToggle("isPostDeleteOpen")}
-              handlePageRefresh={() => handlePageRefresh()}
-            />
-          </Modal>
-        </section>
-      </Suspense>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {postState?.trendingVideos?.length === 0 ? (
+              <>
+                {[...Array(4)]?.map((_, index) => (
+                  <SkeletonLoaderVideo key={index} />
+                ))}
+              </>
+            ) : (
+              postState?.trendingVideos?.map((item: any) => (
+                <div
+                  key={item?.userID}
+                  className="flex flex-col w-68 h-60 border-2 border-[#1C2C2E] rounded-xl my-2 cursor-pointer hover:opacity-80"
+                  onClick={() =>
+                    handleModalToggle("isVideoDetailOpen", item._id, item)
+                  }
+                >
+                  <div className="relative overflow-hidden rounded-t-xl aspect-w-16 aspect-h-9">
+                    <video
+                      src={item.video}
+                      className="object-cover w-full h-36 rounded-xl hover:scale-105 transition-transform duration-100"
+                      controls={false}
+                      autoPlay={false}
+                      width={50}
+                      height={50}
+                      onLoadedMetadata={(e) => handleVideoMetadata(e, item._id)}
+                    />
+
+                    <span className="absolute bottom-2 right-3 text-white">
+                      {formatTime(videoDurations[item._id])}
+                    </span>
+                  </div>
+
+                  <div className="p-2">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Image
+                        className="rounded-xl w-10 h-10 object-cover "
+                        src={item?.userID?.profilePicture}
+                        alt="Account Profile"
+                        height={40}
+                        width={40}
+                      />
+                      <div>
+                        <p className="font-semibold text-sm text-white hover:text-[#43DD4E]">
+                          {item?.userID?.name.split(" ").slice(0, 2).join(" ")}
+                        </p>
+                        <p className="text-xs text-gray-400 hover:opacity-80">
+                          {formatTimeAgo(item.date)}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex justify-between mx-1">
+                      <div className="flex items-center gap-2">
+                        <Image
+                          className="cursor-pointer hover:opacity-80"
+                          src={SVG.Like}
+                          alt="Like"
+                          width={20}
+                          height={20}
+                        />
+                        <p className="text-white">
+                          {
+                            item.reactions?.filter(
+                              (reaction: any) =>
+                                reaction.reactionType === "like"
+                            )?.length
+                          }
+                        </p>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <Image
+                          className="cursor-pointer hover:opacity-80"
+                          src={SVG.Love}
+                          alt="Love"
+                          width={20}
+                          height={20}
+                        />
+                        <p className="text-white">
+                          {
+                            item.reactions?.filter(
+                              (reaction: any) =>
+                                reaction.reactionType === "love"
+                            )?.length
+                          }
+                        </p>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <Image
+                          className="cursor-pointer hover:opacity-80"
+                          src={SVG.Comment}
+                          alt="Comment"
+                          width={25}
+                          height={25}
+                        />
+                        <p className="text-white">{item.comments?.length}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+
+        <Modal
+          isOpen={modalState.isVideoDetailOpen}
+          handleClose={() => handleModalToggle("isVideoDetailOpen")}
+        >
+          <VideoDetails
+            postID={postID}
+            handleCloseModal={() => handleModalToggle("isVideoDetailOpen")}
+            handlePageRefresh={() => handlePageRefresh()}
+          />
+        </Modal>
+
+        <Modal
+          isOpen={modalState.isPostDeleteOpen}
+          handleClose={() => handleModalToggle("isPostDeleteOpen")}
+        >
+          <DeletePost
+            postID={postID}
+            handleCloseModal={() => handleModalToggle("isPostDeleteOpen")}
+            handlePageRefresh={() => handlePageRefresh()}
+          />
+        </Modal>
+      </section>
     </Layout>
   );
 }
