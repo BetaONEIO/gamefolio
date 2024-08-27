@@ -53,35 +53,54 @@ const SkeletonLoader = () => (
 
 const PostLoader = () => {
   return (
-    <div className="border border-[#1C2C2E] rounded-2xl bg-[#091619] min-w-fit md:min-w-min animate-pulse">
+    <div className="border border-[#1C2C2E] rounded-2xl bg-[#091619] min-w-fit md:min-w-min px-2 animate-pulse">
       <div className="flex items-center justify-between m-3">
         <div className="flex items-center sm:gap-4 gap-2">
+          {/* Profile Picture Skeleton */}
           <div className="w-12 h-12 rounded-xl bg-gray-700"></div>
           <div>
-            <div className="w-[230px] sm:w-[350px] h-6 bg-gray-700 mb-2"></div>
-            <div className="w-40 h-4 bg-gray-700"></div>
+            {/* Name Skeleton */}
+            <div className="w-[200px] sm:w-[200px] h-5 bg-gray-700 mb-2"></div>
+            {/* Date Skeleton */}
+            <div className="w-28 h-4 bg-gray-700"></div>
           </div>
         </div>
         <div className="flex items-center gap-3 w-10">
-          <div className="w-5 h-5 bg-gray-700"></div>
-          <div className="w-5 h-5 bg-gray-700"></div>
+          {/* Bookmark and Threedots Skeleton */}
+          <div className="w-5 h-5 bg-gray-700 rounded-full"></div>
+          <div className="w-5 h-5 bg-gray-700 rounded-full"></div>
         </div>
       </div>
+
+      {/* Description Skeleton */}
       <div className="mx-3">
-        <div className="w-full h-4 bg-gray-700 mb-2"></div>
-        <div className="w-full h-4 bg-gray-700"></div>
+        <div className="h-4 bg-gray-700 mb-2"></div>
+        <div className="h-4 bg-gray-700 mb-2"></div>
+        <div className="h-4 bg-gray-700 w-3/4"></div>
       </div>
-      <div className="w-[0px] h-[185px] sm:h-[300px] my-2 sm:my-2 bg-gray-700"></div>
+
+      {/* Video Skeleton */}
+      <div className="w-full h-[185px] sm:h-[300px] bg-gray-700 my-2"></div>
+
+      {/* Reaction Buttons Skeleton */}
       <div className="flex items-center my-3 mx-2">
-        <div className="flex items-center p-2 mr-2 rounded-lg bg-gray-700 w-16 h-10"></div>
-        <div className="flex items-center p-2 mr-2 rounded-lg bg-gray-700 w-16 h-10"></div>
-        <div className="p-2 mr-2 rounded-lg bg-gray-700 w-10 h-10"></div>
-        <div className="p-2 mr-2 rounded-lg bg-gray-700 w-10 h-10"></div>
-        <div className="w-12 h-12 bg-gray-700"></div>
+        <div className="flex items-center p-2 mr-2 rounded-lg bg-[#162423] w-20 h-8">
+          <div className="w-6 h-6 bg-gray-700 rounded-full mr-2"></div>
+          <div className="w-6 h-4 bg-gray-700"></div>
+        </div>
+        <div className="flex items-center p-2 mr-2 rounded-lg bg-[#162423] w-20 h-8">
+          <div className="w-6 h-6 bg-gray-700 rounded-full mr-2"></div>
+          <div className="w-6 h-4 bg-gray-700"></div>
+        </div>
+        <div className="w-10 h-10 bg-gray-700 rounded-lg mr-2"></div>
+        <div className="w-10 h-10 bg-gray-700 rounded-lg mr-2"></div>
+        <div className="w-10 h-10 bg-gray-700 rounded-full"></div>
       </div>
+
+      {/* Comments and Share Skeleton */}
       <div className="flex items-center justify-between w-full p-4">
-        <div className="w-24 h-4 bg-gray-700"></div>
-        <div className="w-6 h-6 bg-gray-700"></div>
+        <div className="w-32 h-4 bg-gray-700"></div>
+        <div className="w-6 h-6 bg-gray-700 rounded-full"></div>
       </div>
     </div>
   );
@@ -119,7 +138,6 @@ function Main() {
 
   // const [videoUrl, setVideoUrl] = useState(window.location.href);
   const [refreshPage, setRefreshPage] = useState(false);
-  const [myLoading, setLoading] = useState(true);
 
   const { loading, isScroll } = postState;
   const [page, setPage] = useState(1);
@@ -148,8 +166,6 @@ function Main() {
     window.addEventListener("scroll", handleInfiniteScroll);
     return () => window.removeEventListener("scroll", handleInfiniteScroll);
   }, []);
-
-  console.log("loading: ", myLoading);
 
   const handleInfiniteScroll = async () => {
     try {
@@ -484,7 +500,7 @@ function Main() {
                 </div>
               </div>
 
-              {loading && myLoading ? (
+              {loading ? (
                 <>
                   {[...Array(1)]?.map((_, index) => (
                     <PostLoader key={index} />

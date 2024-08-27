@@ -28,12 +28,25 @@ const SkeletonLoaderGames = () => (
       {[...Array(5)]?.map((_, index) => (
         <div
           key={index}
-          className="w-28 h-40 bg-gray-300 rounded-xl animate-pulse"
+          className="w-28 h-40 bg-gray-700 rounded-xl animate-pulse"
         ></div>
       ))}
     </div>
   </div>
 );
+
+const SkeletonTrendingLoader = () => {
+  return (
+    <SwiperSlide>
+      <div className="w-full h-80 rounded-xl bg-gray-700 animate-pulse"></div>
+
+      <div
+        className="absolute inset-0 rounded-xl bg-gradient-to-t from-[#091619] via-transparent to-transparent"
+        style={{ opacity: 1 }}
+      ></div>
+    </SwiperSlide>
+  );
+};
 
 function Games() {
   const postState = useSelector((state: any) => state.post) || [];
@@ -103,8 +116,10 @@ function Games() {
   // Call removeGame function to filter out the game
   const filteredGames = removeGame(gameToRemove);
 
+  const isTrendingDataFetching = filteredGames.length === 0;
+
   return (
-    <div className="m-2 h-screen">
+    <div className="m-2 h-fit">
       <div className="mx-2">
         <p className="font-semibold text-base sm:text-lg lg:text-lg text-white m-2">
           Trending Games Now
@@ -112,22 +127,18 @@ function Games() {
       </div>
 
       <div className="flex flex-col md:flex-row gap-4 relative mx-4">
-        <div className="relative w-full md:w-[1150px]">
-          <Swiper
-            effect={"fade"}
-            navigation={true}
-            pagination={{ clickable: true }}
-            modules={[EffectFade, Navigation, Pagination]}
-            className="mySwiper h-80 rounded-lg"
-          >
-            {filteredGames?.length === 0 ? (
-              <>
-                {[...Array(2)]?.map((_, index) => (
-                  <SkeletonLoaderGames key={index} />
-                ))}
-              </>
-            ) : (
-              filteredGames?.slice(0, 3)?.map((item: any) => (
+        <div className="relative w-full ">
+          {isTrendingDataFetching ? (
+            <SkeletonTrendingLoader />
+          ) : (
+            <Swiper
+              effect={"fade"}
+              navigation={true}
+              pagination={{ clickable: true }}
+              modules={[EffectFade, Navigation, Pagination]}
+              className="mySwiper h-80 rounded-lg"
+            >
+              {filteredGames?.slice(0, 3)?.map((item: any) => (
                 <SwiperSlide key={item.id}>
                   <Image
                     width={1920}
@@ -143,10 +154,9 @@ function Games() {
                   />
                   <div style={styles.overlay}></div>
                 </SwiperSlide>
-              ))
-            )}
-          </Swiper>
-
+              ))}
+            </Swiper>
+          )}
           <div className="absolute top-4 left-4 flex flex-wrap gap-4 z-10">
             <button
               className="font-semibold rounded-2xl px-4 py-2 text-white cursor-pointer hover:opacity-80 hover:text-[#43DD4E]"

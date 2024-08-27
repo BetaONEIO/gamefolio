@@ -21,6 +21,8 @@ const findOrCreate = async (profile, done) => {
         email: profile.emails[0].value,
         profilePicture: profile.photos[0].value.replace("s96", "s240"),
         signupMethod: "google",
+        coverPicture:
+          "https://d2m0dxds81dlzy.cloudfront.net/66dfb5a5-b198-41c4-b087-c7c4ac0f480a-banner.jpg",
         // Add other user properties here
       });
 

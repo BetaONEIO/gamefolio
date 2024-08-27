@@ -35,6 +35,8 @@ function CustomHeader({ children }: { children?: String }) {
     isBadgeOpen: false,
   });
 
+  const isBrowser = typeof window !== "undefined";
+
   const { loading, isScroll } = postState;
 
   const handleModalToggle = (modalName: keyof typeof modalState) => {
@@ -157,8 +159,8 @@ function CustomHeader({ children }: { children?: String }) {
               borderWidth: "2px",
               borderColor: "#43DD4E",
               position: "absolute",
-              top: window.innerWidth <= 768 ? "92%" : "80%",
-              right: window.innerWidth <= 768 ? "-10%" : "5.5%",
+              top: isBrowser && window.innerWidth <= 768 ? "92%" : "80%",
+              right: isBrowser && window.innerWidth <= 768 ? "-10%" : "5.5%",
               transform: "translateX(-50%)",
               height: "400px",
               width: "310px",
@@ -168,7 +170,7 @@ function CustomHeader({ children }: { children?: String }) {
               style={{
                 position: "absolute",
                 top: "-10px",
-                left: window.innerWidth <= 768 ? "21%" : "50%",
+                left: isBrowser && window.innerWidth <= 768 ? "21%" : "50%",
                 transform: "translateX(-50%)",
                 borderLeft: "5px solid transparent",
                 borderRight: "5px solid transparent",

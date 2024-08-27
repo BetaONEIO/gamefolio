@@ -17,10 +17,13 @@ const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
     isUsernameModalOpen: false,
   });
 
-  const handleModalToggle = (modalName: keyof typeof modalState) => {
+  const handleModalToggle = (
+    modalName: keyof typeof modalState,
+    value: boolean
+  ) => {
     setModalState((prevState) => ({
       ...prevState,
-      [modalName]: !prevState[modalName],
+      [modalName]: value,
     }));
   };
 
@@ -44,7 +47,7 @@ const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
     };
 
     fetchUserSession();
-  }, []); // Only run this on mount
+  }, [modalState.isUsernameModalOpen]); // Only run this on mount
 
   useEffect(() => {
     if (authState) {
@@ -53,15 +56,14 @@ const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
   }, [authState]); // Run this when authState changes
 
   const checkUsername = () => {
-    console.log("myAuth: ", authState);
-    if (authState.length !== 0) {
-      console.log("ss: ", authState.hasOwnProperty("username"));
+    if (Object.keys(authState).length !== 0) {
       if (
-        !authState.hasOwnProperty("username") ||
+        authState.hasOwnProperty("username") === false ||
         authState?.username?.trim() === ""
       ) {
-        console.log("eee");
-        handleModalToggle("isUsernameModalOpen");
+        handleModalToggle("isUsernameModalOpen", true);
+      } else {
+        handleModalToggle("isUsernameModalOpen", false);
       }
     }
   };
@@ -69,6 +71,8 @@ const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
+
+  console.log("modelState: ", modalState.isUsernameModalOpen);
 
   return (
     <div className="antialiased bg-[#091619]">
@@ -79,16 +83,18 @@ const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
         className="md:ml-64 h-auto  "
         onClick={sidebarOpen ? toggleSidebar : undefined}
       >
-        <div className="rounded-lg border-gray-600 h-full overflow-y-scroll no-scrollbar">
+        <div className="rounded-lg border-gray-600 h-full overflow-y-scroll no-scrollbar ">
           {children}
         </div>
       </main>
       <Modal
         isOpen={modalState.isUsernameModalOpen}
-        handleClose={() => handleModalToggle("isUsernameModalOpen")}
+        handleClose={() => handleModalToggle("isUsernameModalOpen", false)}
       >
         <Username
-          handleCloseModal={() => handleModalToggle("isUsernameModalOpen")}
+          handleCloseModal={() =>
+            handleModalToggle("isUsernameModalOpen", false)
+          }
         />
       </Modal>
     </div>

@@ -45,6 +45,8 @@ function Video() {
     isVideoDetailOpen: false,
   });
 
+  const { loading } = postState;
+
   const handleModalToggle = (
     modalName: keyof typeof modalState,
     postID?: any,
@@ -125,12 +127,16 @@ function Video() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {postState.videos?.length === 0 ? (
+        {loading ? (
           <>
             {[...Array(4)]?.map((_, index) => (
               <SkeletonLoaderRecommendation key={index} />
             ))}
           </>
+        ) : postState.videos?.length === 0 ? (
+          <div className="flex h-full justify-center items-center py-4 text-gray-500">
+            No data available
+          </div>
         ) : (
           postState.videos?.slice(0, 5)?.map((item: any) => {
             const hasLikeReacted = item.reactions.some(

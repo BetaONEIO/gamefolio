@@ -8,18 +8,33 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import AddNew from "../Modals/AddNew";
 
+const SkeletonSideBarAccountInfoLoader = () => {
+  return (
+    <div className="flex flex-col relative items-center justify-center p-3 rounded-lg border bg-[#1C2C2E] border-gray-600">
+      <div className="animate-pulse mb-4 w-20 h-20 rounded-full bg-gray-700" />
+
+      <div className="animate-pulse text-xs sm:text-sm mb-2 font-semibold leading-none bg-gray-700 h-4 w-24 rounded-lg" />
+
+      <div className="animate-pulse text-gray-400 bg-gray-700 h-3 w-20 rounded-lg mt-1" />
+
+      <div className="cursor-pointer animate-pulse w-9 h-8 rounded-full bg-gray-700 mt-4" />
+    </div>
+  );
+};
+
 // Define types for props
 interface SideBarProps {
   toggleSidebar: () => void;
   sidebarOpen: boolean;
 }
 function SideBar({ toggleSidebar, sidebarOpen }: SideBarProps) {
-  const authState = useSelector((state: any) => state.auth.userData) || [];
+  const authState = useSelector((state: any) => state.auth) || [];
   const messageState = useSelector((state: any) => state.chat) || [];
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  console.log("msgState: ", messageState);
+  const isDataFetching =
+    Object.keys(authState?.userData || {}).length === 0 || authState?.loading;
 
   {
     /* Get the current route */
@@ -245,7 +260,7 @@ function SideBar({ toggleSidebar, sidebarOpen }: SideBarProps) {
 
               <li>
                 <Link
-                  href={`/mygamefolio/${authState?.username}`}
+                  href={`/mygamefolio/${authState?.userData?.username}`}
                   className={`flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white  ${
                     isItemActive("/portfolio-web") ? "bg-[#162423]" : ""
                   } dark:hover:bg-[#162423] group`}
@@ -338,74 +353,79 @@ function SideBar({ toggleSidebar, sidebarOpen }: SideBarProps) {
                 <p className="font-bold">Add New</p>
               </button>
             </div>
-
-            <div
-              key={authState?.userID}
-              className="flex flex-col relative items-center justify-center p-3 rounded-lg border bg-[#1C2C2E] border-gray-600"
-            >
-              <Image
-                src={authState?.profilePicture}
-                sizes="100vw"
-                width={20}
-                height={20}
-                className="mb-4 w-20 h-20 rounded-full"
-                alt="account"
-              />
-
-              <dt className="text-xs sm:text-sm mb-2 font-semibold leading-none text-white">
-                {authState?.name}
-              </dt>
-              <dd className="text-gray-400">({authState.username})</dd>
-              <button
-                className="cursor-pointer hover:opacity-80 hover:scale-105 transition-transform duration-100"
-                onClick={toggleDropdown}
+            {isDataFetching ? (
+              <SkeletonSideBarAccountInfoLoader />
+            ) : (
+              <div
+                key={authState?.userData?.userID}
+                className="flex flex-col relative items-center justify-center p-3 rounded-lg border bg-[#1C2C2E] border-gray-600"
               >
                 <Image
-                  src={SVG.Threedot}
+                  src={authState?.userData?.profilePicture}
+                  sizes="100vw"
                   width={20}
                   height={20}
-                  className="w-9 h-8 rounded-full"
+                  className="mb-4 w-20 h-20 rounded-full"
                   alt="account"
                 />
-              </button>
 
-              <div
-                id="dropdown"
-                className={`${
-                  isDropdownOpen ? "block" : "hidden"
-                } flex absolute top-48 justify-center border-2 border-[#43DD4E] rounded-lg mt--2`}
-                style={{
-                  borderWidth: "2px",
-                  borderColor: "#43DD4E",
-                  position: "absolute",
-                  top: "100%",
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                  width: "133px",
-                }}
-              >
+                <dt className="text-xs sm:text-sm text-center mb-2 font-semibold leading-none text-white">
+                  {authState?.userData?.name}
+                </dt>
+                <dd className="text-gray-400">
+                  ({authState?.userData.username})
+                </dd>
+                <button
+                  className="cursor-pointer hover:opacity-80 hover:scale-105 transition-transform duration-100"
+                  onClick={toggleDropdown}
+                >
+                  <Image
+                    src={SVG.Threedot}
+                    width={20}
+                    height={20}
+                    className="w-9 h-8 rounded-full"
+                    alt="account"
+                  />
+                </button>
+
                 <div
+                  id="dropdown"
+                  className={`${
+                    isDropdownOpen ? "block" : "hidden"
+                  } flex absolute top-48 justify-center border-2 border-[#43DD4E] rounded-lg mt--2`}
                   style={{
+                    borderWidth: "2px",
+                    borderColor: "#43DD4E",
                     position: "absolute",
-                    top: "-20px",
+                    top: "100%",
                     left: "50%",
                     transform: "translateX(-50%)",
-                    borderLeft: "10px solid transparent",
-                    borderRight: "10px solid transparent",
-                    borderBottom: `20px solid #43DD4E`,
+                    width: "133px",
                   }}
-                />
-
-                <Link
-                  href="/account"
-                  className={`flex items-center p-2 text-base font-normal rounded-lg text-white transition duration-300 ${
-                    isItemActive("/account") ? "bg-[#162423]" : ""
-                  } hover:bg-[#162423] group`}
                 >
-                  <span className="font-normal underline">My Account</span>
-                </Link>
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "-20px",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      borderLeft: "10px solid transparent",
+                      borderRight: "10px solid transparent",
+                      borderBottom: `20px solid #43DD4E`,
+                    }}
+                  />
+
+                  <Link
+                    href="/account"
+                    className={`flex items-center p-2 text-base font-normal rounded-lg text-white transition duration-300 ${
+                      isItemActive("/account") ? "bg-[#162423]" : ""
+                    } hover:bg-[#162423] group`}
+                  >
+                    <span className="font-normal underline">My Account</span>
+                  </Link>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </aside>

@@ -10,17 +10,83 @@ import VideoDetails from "@/components/Modals/VideoDetails";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import { getAllPostVideos, updateDetailedPost } from "@/store/slices/postSlice";
-import { getAllUsers, getProfileInfo } from "@/store/slices/userSlice";
+import { getProfileInfo } from "@/store/slices/userSlice";
 import { copyToClipboard } from "@/utils/helpers";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
-import Loading from "./loading";
+import { useEffect, useState } from "react";
+
+const CoverPhotoLoader = () => {
+  return (
+    <div className="relative w-full h-80">
+      <div className="animate-pulse w-full h-80 bg-gray-700" />
+
+      <div
+        className="absolute inset-0 bg-gradient-to-t from-[#091619] via-transparent to-transparent"
+        style={{ opacity: 1 }}
+      ></div>
+    </div>
+  );
+};
+
+const SkeletonProfileLoader = () => {
+  return (
+    <div className="border-2 border-[#1C2C2E] rounded-lg p-2 pt-6 bg-[#091619] w-auto overflow-x-auto lg:w-72 h-fit lg:h-fit flex flex-col lg:flex-col gap-8 justify-center lg:gap-1 animate-pulse">
+      <div className="flex justify-end">
+        <div className="px-3 py-2 w-9 h-8 bg-gray-700 rounded-full"></div>
+      </div>
+
+      <div className="flex flex-col justify-center">
+        <div className="flex justify-center">
+          <div className="rounded-xl w-32 h-32 bg-gray-700"></div>
+        </div>
+        <div className="flex justify-center font-semibold text-transparent bg-gray-700 w-full h-6 mt-2"></div>
+        <div className="flex items-center gap-6 justify-center mt-2">
+          <div className="flex items-center">
+            <div className="text-transparent bg-gray-700 w-28 h-4"></div>
+            <div className="ml-2 w-4 h-4 bg-gray-700 rounded-full"></div>
+          </div>
+        </div>
+        <div className="flex justify-center h-8 gap-2 my-6">
+          <div className="font-bold w-40 h-10 bg-gray-700 rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"></div>
+          <div className="font-bold w-40 h-10 bg-gray-700 rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"></div>
+        </div>
+        <div className="flex items-center justify-between text-transparent bg-gray-700 w-24 h-6 mt-2"></div>
+        <hr className="h-px border-0 bg-[#586769] my-2 " />
+        <div className="flex items-center justify-between text-transparent bg-gray-700 w-24 h-6 mt-2"></div>
+        <hr className="h-px border-0 bg-[#586769] my-2 " />
+        <div className="flex items-center justify-between text-transparent bg-gray-700 w-24 h-6 mt-2"></div>
+      </div>
+      <div className="flex flex-col justify-center">
+        <div className="flex flex-row w-56 gap-2 lg:flex-col lg:w-full">
+          <div className="flex items-center gap-2 rounded-lg bg-gray-700 p-2 mt-2 w-full h-10"></div>
+          <div className="flex items-center gap-2 rounded-lg bg-gray-700 p-2 mt-2 w-full h-10"></div>
+          <div className="flex items-center gap-2 rounded-lg bg-gray-700 p-2 mt-2 w-full h-10"></div>
+          <div className="flex items-center gap-2 rounded-lg bg-gray-700 p-2 mt-2 w-full h-10"></div>
+        </div>
+        <div className="flex flex-col mt-4">
+          <div className="text-transparent bg-gray-700 w-20 h-6 mb-2"></div>
+          <div className="text-transparent bg-gray-700 w-full h-12"></div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const VideoSkeletonLoader = () => {
+  return (
+    <div className="relative">
+      <div className="max-w-full w-96 sm:w-96 h-52 md:h-40 bg-gray-700 rounded-xl animate-pulse"></div>
+      <div className="absolute bottom-1 right-2">
+        <div className="w-10 h-10 md:w-8 md:h-8 bg-gray-700 rounded-full animate-pulse"></div>
+      </div>
+    </div>
+  );
+};
 
 function MyGamefolio({ params }: any) {
-  const authState = useSelector((state: any) => state.auth.userData) || [];
-  const authStateRefresh = useSelector((state: any) => state.auth.refresh);
+  const authState = useSelector((state: any) => state.auth) || [];
   const profileInfoState = useSelector((state: any) => state.user) || [];
   const postState = useSelector((state: any) => state.post) || [];
   const [postID, setPostID] = useState("");
@@ -34,9 +100,15 @@ function MyGamefolio({ params }: any) {
     isStoryModalOpen: false,
   });
 
-  const userVideosLength = postState.videos?.filter(
-    (post: any) => post?.userID?._id === authState._id
-  );
+  const isBrowser = typeof window !== "undefined";
+
+  const isDataFetching =
+    Object.keys(profileInfoState.profileUserInfo).length === 0 ||
+    profileInfoState.loading;
+
+  // const userVideosLength = postState.videos?.filter(
+  //   (post: any) => post?.userID?._id === authState.userData._id
+  // );
 
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
@@ -49,8 +121,13 @@ function MyGamefolio({ params }: any) {
     dispatch(userSession(myparams));
     dispatch(getProfileInfo({ payload: params }));
     dispatch(getAllPostVideos());
-    dispatch(getAllUsers());
-  }, [postState.refresh, authStateRefresh]);
+  }, [postState.refresh]);
+
+  useEffect(() => {
+    setIsPrivateAccount(
+      profileInfoState?.profileUserInfo?.accountType === "private"
+    );
+  }, [profileInfoState]);
 
   const handleModalToggle = (modalName: keyof typeof modalState) => {
     setModalState((prevState) => ({
@@ -87,16 +164,18 @@ function MyGamefolio({ params }: any) {
   );
 
   const isCurrentUserProfile =
-    authState.username === profileInfoState.profileUserInfo.username;
+    authState?.userData?.username === profileInfoState.profileUserInfo.username;
 
   return (
     <Layout>
-      <Suspense fallback={<Loading />}>
-        <div className="flex justify-center">
+      <div className="flex justify-center">
+        {isDataFetching ? (
+          <CoverPhotoLoader />
+        ) : (
           <div className="relative w-full h-80">
             <Image
               className="w-full h-80 object-cover"
-              src={authState.coverPicture}
+              src={authState.userData.coverPicture}
               layout="fill"
               alt="cover photo"
             />
@@ -105,9 +184,12 @@ function MyGamefolio({ params }: any) {
               style={{ opacity: 1 }}
             ></div>
           </div>
-
-          {/* Top Bar */}
-          <div className="flex flex-col lg:flex-row w-screen lg:justify-end absolute top-80 lg:top-40 lg:w-4/5">
+        )}
+        {/* Top Bar */}
+        <div className="flex flex-col lg:flex-row w-screen lg:justify-end absolute top-80 lg:top-40 lg:w-4/5">
+          {isDataFetching ? (
+            <SkeletonProfileLoader />
+          ) : (
             <div className="border-2 border-[#1C2C2E] rounded-lg p-2 pt-6 bg-[#091619] w-auto overflow-x-auto lg:w-72 h-fit lg:h-fit flex flex-col lg:flex-col gap-8 justify-center lg:gap-1">
               <div className="flex justify-end">
                 <button
@@ -132,8 +214,8 @@ function MyGamefolio({ params }: any) {
                     borderWidth: "2px",
                     borderColor: "#43DD4E",
                     position: "absolute",
-                    top: window.innerWidth <= 768 ? "11%" : "15%",
-                    left: window.innerWidth <= 768 ? "91%" : "30%",
+                    top: isBrowser && window.innerWidth <= 768 ? "10%" : "8.5%",
+                    left: isBrowser && window.innerWidth <= 768 ? "90%" : "30%",
                     transform: "translateX(-50%)",
                     width: "120px",
                   }}
@@ -184,7 +266,9 @@ function MyGamefolio({ params }: any) {
                 <div className="flex items-center gap-6 justify-center">
                   <div
                     className="flex items-center"
-                    onClick={() => copyToClipboard(authState?.username)}
+                    onClick={() =>
+                      copyToClipboard(authState.userData?.username)
+                    }
                   >
                     <p className="text-white">
                       ({profileInfoState?.profileUserInfo?.username})
@@ -295,45 +379,53 @@ function MyGamefolio({ params }: any) {
                 </div>
               </div>
             </div>
+          )}
 
-            <div className="w-full lg:w-8/12 justify-center lg:justify-between items-center h-10 mt-10 lg:mt-24">
-              {/* header */}
-              <div className="flex items-center">
-                <div className="flex justify-between items-center w-full sm:mx-2 lg:mx-4 relative">
-                  <div>
-                    <p className="font-semibold text-base sm:text-lg lg:text-lg text-white">
-                      My Gamefolio
-                    </p>
-                  </div>
+          <div className="w-full lg:w-8/12 justify-center lg:justify-between items-center h-10 mt-10 lg:mt-24">
+            {/* header */}
+            <div className="flex items-center">
+              <div className="flex justify-between items-center w-full sm:mx-2 lg:mx-4 relative">
+                <div>
+                  <p className="font-semibold text-base sm:text-lg lg:text-lg text-white">
+                    My Gamefolio
+                  </p>
+                </div>
 
-                  <div className="flex items-center bg-[#1C2C2E] flex gap-2 p-1 items-center rounded-lg overflow-hidden absolute right-10">
-                    <Image
-                      src={SVG.Search}
-                      alt="Search"
-                      width={20}
-                      height={20}
-                      className="absolute left-2"
-                    />
-                    <input
-                      className="bg-[#1C2C2E] outline-none text-white flex-grow pl-8 text-sm sm:text-base"
-                      placeholder="Search"
-                    />
-                  </div>
+                <div className=" bg-[#1C2C2E] flex gap-2 p-1 items-center rounded-lg overflow-hidden absolute right-10">
                   <Image
-                    src={SVG.Filter}
-                    alt="Filter"
-                    width={25}
-                    height={25}
-                    className="absolute right-2"
+                    src={SVG.Search}
+                    alt="Search"
+                    width={20}
+                    height={20}
+                    className="absolute left-2"
+                  />
+                  <input
+                    className="bg-[#1C2C2E] outline-none text-white flex-grow pl-8 text-sm sm:text-base"
+                    placeholder="Search"
                   />
                 </div>
+                <Image
+                  src={SVG.Filter}
+                  alt="Filter"
+                  width={25}
+                  height={25}
+                  className="absolute right-2"
+                />
               </div>
+            </div>
 
-              {/* line */}
-              <hr className="h-px border-0 bg-[#586769] my-2 mx-4" />
-              {/* Profile */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4 h-full">
-                {userVideos?.map((item: any) => {
+            {/* line */}
+            <hr className="h-px border-0 bg-[#586769] my-2 mx-4" />
+            {/* Profile */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4 h-full ">
+              {isDataFetching ? (
+                <>
+                  {[...Array(6)]?.map((_, index) => (
+                    <VideoSkeletonLoader key={index} />
+                  ))}
+                </>
+              ) : (
+                userVideos.map((item: any) => {
                   return (
                     <div key={item.id} className="relative">
                       <video
@@ -356,12 +448,12 @@ function MyGamefolio({ params }: any) {
                       </div>
                     </div>
                   );
-                })}
-              </div>
+                })
+              )}
             </div>
           </div>
         </div>
-      </Suspense>
+      </div>
 
       <Modal
         isOpen={modalState.isShareModalOpen}
@@ -369,7 +461,7 @@ function MyGamefolio({ params }: any) {
       >
         <MoreOptions
           handleCloseModal={() => handleModalToggle("isShareModalOpen")}
-          data={authState?.userID}
+          data={authState.userData?.userID}
         />
       </Modal>
 
@@ -379,7 +471,7 @@ function MyGamefolio({ params }: any) {
       >
         <Followers
           handleCloseModal={() => handleModalToggle("isFollowerModalOpen")}
-          followerData={authState?.follower}
+          followerData={authState.userData?.follower}
         />
       </Modal>
 
@@ -389,7 +481,7 @@ function MyGamefolio({ params }: any) {
       >
         <Following
           handleCloseModal={() => handleModalToggle("isFollowingModalOpen")}
-          followingData={authState?.following}
+          followingData={authState.userData?.following}
         />
       </Modal>
 

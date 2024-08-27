@@ -15,7 +15,7 @@ export type InitialState = {
 
 const initialState: InitialState = {
   error: null,
-  loading: false,
+  loading: true,
   profileUserInfo: {},
   userList: [],
   profile: null,
@@ -121,7 +121,6 @@ export function getProfileInfo(params: ActionParams) {
     try {
       const [ok, response] = await API(options);
       if (!ok || !response) return;
-      console.log("gello", response);
       dispatch(slice.actions.setSearchUserInfo(response));
     } catch (error) {
     } finally {

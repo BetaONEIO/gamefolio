@@ -14,6 +14,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ReCAPTCHA from "react-google-recaptcha";
 import Link from "next/link";
+import { SVG } from "@/assets/SVG";
 
 const Signup = () => {
   const { loading } = useSelector((state: any) => state.auth) || [];
@@ -27,6 +28,8 @@ const Signup = () => {
     email: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
+
   const recaptchaRef = useRef<any>();
   const inputRefs = {
     name: useRef<HTMLInputElement>(null),
@@ -109,6 +112,10 @@ const Signup = () => {
     setIsChecked(e.target.checked);
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
+
   const onRegister = () => {
     const payload = {
       name: form.name.trim(),
@@ -161,8 +168,8 @@ const Signup = () => {
 
   return (
     <CustomBackground>
-      <div className="flex flex-col items-center justify-center px-6 py-8 ">
-        <div className="p-6 space-y-4 sm:p-8 md:w-96 bg-[#091619] rounded-xl border border-[#1C2C2E] h-screen overflow-y-scroll no-scroll no-scrollbarbar">
+      <div className="flex flex-col items-center justify-center px-4 py-8 ">
+        <div className="p-6 space-y-4 sm:p-8 w-[455px] bg-[#091619] rounded-xl border border-[#1C2C2E] h-screen overflow-y-scroll no-scroll no-scrollbar">
           <div className="flex justify-center items-center">
             <Image
               src={IMAGES.logo}
@@ -224,7 +231,7 @@ const Signup = () => {
                   onChange={handleChange}
                 />
                 {loading && (
-                  <div className="px-2" role="status">
+                  <div className="mr-2" role="status">
                     <svg
                       aria-hidden="true"
                       className="inline w-5 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-gray-600 dark:fill-gray-300"
@@ -280,15 +287,33 @@ const Signup = () => {
               >
                 Password
               </label>
-              <input
+              <div
                 ref={inputRefs.password}
-                type="password"
-                name="password"
-                className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-2.5 text-white"
-                placeholder="Password"
-                value={form.password}
-                onChange={handleChange}
-              />
+                className="flex items-center justify-center bg-[#162423] sm:text-sm outline-none rounded-lg  w-full  text-white  "
+              >
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-2.5 text-white"
+                  placeholder="Password"
+                  value={form.password}
+                  onChange={handleChange}
+                />
+                <button
+                  className="mr-2 cursor-pointer hover:opacity-80"
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                >
+                  <Image
+                    src={
+                      showPassword ? SVG.eyeVisiblityOn : SVG.eyeVisiblityOff
+                    }
+                    alt="Visible"
+                    width={18}
+                    height={18}
+                  />
+                </button>
+              </div>
               <p
                 ref={errorRefs.password}
                 className="mt-2 text-xs  font-normal text-gray-600 base-input-message"

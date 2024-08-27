@@ -24,7 +24,7 @@ const SkeletonLoaderGames = () => (
       {[...Array(5)]?.map((_, index) => (
         <div
           key={index}
-          className="w-28 h-40 bg-gray-300 rounded-xl animate-pulse"
+          className="w-28 h-40 bg-gray-700 rounded-xl animate-pulse"
         ></div>
       ))}
     </div>
@@ -97,6 +97,8 @@ function Explore() {
   const [modalState, setModalState] = useState({
     isVideoDetailOpen: false,
   });
+
+  const { loading } = postState;
 
   useEffect(() => {
     const payload = {
@@ -374,13 +376,17 @@ function Explore() {
         </div>
       </div>
 
-      <div className="flex items-center grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-2 overflow-x-auto no-scrollbar">
-        {postState.videos?.length === 0 ? (
+      <div className=" items-center grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-2 overflow-x-auto no-scrollbar">
+        {loading ? (
           <>
             {[...Array(4)]?.map((_, index) => (
               <SkeletonLoaderVideo key={index} />
             ))}
           </>
+        ) : postState.videos?.length === 0 ? (
+          <div className="flex w-full h-20  justify-center items-center text-gray-500">
+            No data available
+          </div>
         ) : (
           postState.videos?.slice(0, 4)?.map((item: any) => (
             <div
