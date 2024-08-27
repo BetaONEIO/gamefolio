@@ -119,7 +119,7 @@ function Games() {
   const isTrendingDataFetching = filteredGames.length === 0;
 
   return (
-    <div className="m-2 h-screen">
+    <div className="m-2 h-fit">
       <div className="mx-2">
         <p className="font-semibold text-base sm:text-lg lg:text-lg text-white m-2">
           Trending Games Now
@@ -127,7 +127,7 @@ function Games() {
       </div>
 
       <div className="flex flex-col md:flex-row gap-4 relative mx-4">
-        <div className="relative w-full md:w-[1150px]">
+        <div className="relative w-full ">
           {isTrendingDataFetching ? (
             <SkeletonTrendingLoader />
           ) : (

@@ -86,6 +86,8 @@ function Trending() {
   const [searchText, setSearchText] = useState("");
   const [filteredOptions, setFilteredOptions] = useState(optionsForGame);
 
+  const { loading } = postState;
+
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
   };
@@ -365,12 +367,16 @@ function Trending() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {postState?.trendingVideos?.length === 0 ? (
+            {loading ? (
               <>
                 {[...Array(4)]?.map((_, index) => (
                   <SkeletonLoaderVideo key={index} />
                 ))}
               </>
+            ) : postState.trendingVideos?.length === 0 ? (
+              <div className="flex h-full justify-center items-center py-4 text-gray-500">
+                No data available
+              </div>
             ) : (
               postState?.trendingVideos?.map((item: any) => (
                 <div

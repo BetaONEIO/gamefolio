@@ -138,7 +138,6 @@ function Main() {
 
   // const [videoUrl, setVideoUrl] = useState(window.location.href);
   const [refreshPage, setRefreshPage] = useState(false);
-  const [myLoading, setLoading] = useState(true);
 
   const { loading, isScroll } = postState;
   const [page, setPage] = useState(1);
@@ -167,8 +166,6 @@ function Main() {
     window.addEventListener("scroll", handleInfiniteScroll);
     return () => window.removeEventListener("scroll", handleInfiniteScroll);
   }, []);
-
-  console.log("loading: ", myLoading);
 
   const handleInfiniteScroll = async () => {
     try {
@@ -503,8 +500,7 @@ function Main() {
                 </div>
               </div>
 
-              {postState?.followingVideos?.length === 0 ||
-              (loading && myLoading) ? (
+              {loading ? (
                 <>
                   {[...Array(1)]?.map((_, index) => (
                     <PostLoader key={index} />

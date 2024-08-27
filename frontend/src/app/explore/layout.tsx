@@ -1,6 +1,7 @@
 import CustomHeader from "@/components/CustomHeader/CustomHeader";
 import Layout from "@/components/CustomLayout/layout";
 import TopBar from "@/components/Topbar/TopBar";
+import { ReactComponentElement, ReactHTMLElement } from "react";
 
 function layout({ children }: any) {
   const sectionStyle = {

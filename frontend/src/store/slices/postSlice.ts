@@ -32,7 +32,7 @@ export type InitialState = {
 
 const initialState: InitialState = {
   error: null,
-  loading: false,
+  loading: true,
   userData: null,
   token: "",
   userCredits: null,
