@@ -1,4 +1,5 @@
 "use client";
+import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
 import CustomBackground from "@/components/CustomBackground/custombackground";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
@@ -20,6 +21,7 @@ const Page = () => {
     email: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const { email, password } = formData;
 
@@ -58,6 +60,9 @@ const Page = () => {
       setFormData((prevForm) => ({ ...prevForm, [name]: value }));
       validateFields(name, value);
     }
+  };
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
   const onLogin = async () => {
@@ -157,16 +162,34 @@ const Page = () => {
               >
                 Password
               </label>
-              <input
+              <div
                 ref={inputRefs.password}
-                type="password"
-                name="password"
-                id="password"
-                className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-3 text-white"
-                placeholder="Password"
-                value={password}
-                onChange={handleChange}
-              />
+                className="flex items-center justify-center bg-[#162423] sm:text-sm outline-none rounded-lg  w-full  text-white  "
+              >
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  id="password"
+                  className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-3 text-white"
+                  placeholder="Password"
+                  value={password}
+                  onChange={handleChange}
+                />
+                <button
+                  className="mr-2 cursor-pointer hover:opacity-80"
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                >
+                  <Image
+                    src={
+                      showPassword ? SVG.eyeVisiblityOn : SVG.eyeVisiblityOff
+                    }
+                    alt="Visible"
+                    width={18}
+                    height={18}
+                  />
+                </button>
+              </div>
               <p
                 ref={errorRefs.password}
                 className="mt-2 text-xs  font-normal text-gray-600 base-input-message"

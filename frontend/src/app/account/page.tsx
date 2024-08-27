@@ -495,7 +495,7 @@ function Account() {
           {/* Top Bar */}
 
           <div className="flex mx-3">
-            <div className="hidden w-2/5 h-fit md:flex flex-col sm:w-60 md:w-60 lg:w-96 h-80 border-2 border-[#1C2C2E] rounded-lg p-1">
+            <div className="hidden w-2/5  md:flex flex-col sm:w-60 md:w-60 lg:w-96 h-80 border-2 border-[#1C2C2E] rounded-lg p-1">
               <h1 className="text-white font-bold my-2">Connect</h1>
               <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
                 <Image
@@ -676,7 +676,7 @@ function Account() {
               </div>
             </div>
 
-            <div className="hidden w-2/5 h-fit md:flex flex-col  sm:w-72 md:w-72 lg:w-96 h-screen border-2 border-[#1C2C2E] rounded-lg p-1 overflow-hidden overflow-y-auto">
+            <div className="hidden w-2/5 md:flex flex-col  sm:w-72 md:w-72 lg:w-96 h-screen border-2 border-[#1C2C2E] rounded-lg p-1 overflow-hidden overflow-y-auto">
               <h1 className="text-white font-bold m-2">Current Badge</h1>
               <div className="flex flex-row mt-2 overflow-x-scroll no-scrollbar mx-2">
                 {achievedBadges?.map((badge, index) => (

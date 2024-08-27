@@ -52,7 +52,7 @@ function User() {
           userState?.userList?.map((user: any) => (
             <div
               key={user?.userID}
-              className="flex flex-col w-68 h-44 gap-2 border-2 border-[#1C2C2E] rounded-xl mx-1 my-2"
+              className="flex flex-col w-full md:w-80 h-44 gap-2 border-2 border-[#1C2C2E] rounded-xl mx-1 my-2"
             >
               <Link href={`/account/${user?.username}`} key={user._id}>
                 <div className="flex items-center gap-4 mb-2 mx-2">

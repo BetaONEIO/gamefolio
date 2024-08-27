@@ -102,4 +102,6 @@ export const SVG = {
   Badge7: "/badge7.svg",
   Badge8: "/badge8.svg",
   Badge9: "/badge9.svg",
+  eyeVisiblityOn: "/eye-visible.svg",
+  eyeVisiblityOff: "/eye-notvisible.svg",
 };
