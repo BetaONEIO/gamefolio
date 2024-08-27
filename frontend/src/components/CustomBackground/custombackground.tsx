@@ -9,10 +9,10 @@ const CustomBackground = ({ children }: { children: ReactNode }) => {
       style={{
         background: `linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.9) 60%), ${backgroundImage}`,
         backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
+        backgroundSize: "contain",
+        backgroundAttachment: "fixed", // Makes the background fixed
       }}
-      className="bg-no-repeat bg-cover bg-center bg-gray-700 bg-blend-multiply bg-opacity-60 min-h-screen flex flex-col justify-center"
+      className="bg-no-repeat bg-contain  bg-gray-700 bg-blend-multiply bg-opacity-60 min-h-screen flex flex-col justify-center"
     >
       {children}
     </section>

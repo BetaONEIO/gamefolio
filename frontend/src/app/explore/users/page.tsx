@@ -44,7 +44,7 @@ function User() {
       <div className="flex flex-wrap justify-start items-start h-64">
         {userState?.userList?.length === 0 ? (
           <>
-            {[...Array(8)]?.map((_, index) => (
+            {[...Array(6)]?.map((_, index) => (
               <SkeletonLoaderUser key={index} />
             ))}
           </>
