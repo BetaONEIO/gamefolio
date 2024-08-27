@@ -107,7 +107,7 @@ const Page = () => {
   return (
     <CustomBackground>
       <div className="flex flex-col items-center justify-center px-6 py-8 ">
-        <div className="p-6 space-y-4 sm:p-8 md:w-96 bg-[#091619] rounded-xl border border-[#1C2C2E] h-3/5 overflow-y-scroll no-scroll no-scrollbar">
+        <div className="p-6 space-y-4 sm:p-8 w-[455px] bg-[#091619] rounded-xl border border-[#1C2C2E] h-3/5 overflow-y-scroll no-scroll no-scrollbar">
           <div className="flex justify-center items-center">
             <Image
               src={IMAGES.logo}
