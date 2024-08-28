@@ -130,7 +130,7 @@ function SideBar({ toggleSidebar, sidebarOpen }: SideBarProps) {
                 </Link>
               </li>
 
-              <li>
+              {/* <li>
                 <Link
                   href="/clips"
                   className={`flex items-center p-2 text-base font-normal rounded-lg text-white ${
@@ -166,7 +166,7 @@ function SideBar({ toggleSidebar, sidebarOpen }: SideBarProps) {
                     )}
                   </div>
                 </Link>
-              </li>
+              </li> */}
 
               <li>
                 <Link
@@ -223,7 +223,7 @@ function SideBar({ toggleSidebar, sidebarOpen }: SideBarProps) {
                 </Link>
               </li>
 
-              <li>
+              {/* <li>
                 <Link
                   href="/trending"
                   className={`flex items-center p-2 text-base font-normal rounded-lg text-white ${
@@ -256,7 +256,7 @@ function SideBar({ toggleSidebar, sidebarOpen }: SideBarProps) {
                     )}
                   </div>
                 </Link>
-              </li>
+              </li> */}
 
               <li>
                 <Link
