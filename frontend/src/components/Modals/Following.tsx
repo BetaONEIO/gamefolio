@@ -127,7 +127,7 @@ function Following({ handleCloseModal, followingData }: FollowingProps) {
                               handleRemoveFollowing(user?.userID?._id)
                             }
                             className={
-                              "w-[150px] h-[50] font-bold bg-[#37C535] text-white text-center py-[5px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
+                              "w-[150px] h-[50] font-bold bg-gradient-to-b from-[#62C860] to-[#37C535] text-white text-center py-[5px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
                             }
                           >
                             {"Following"}

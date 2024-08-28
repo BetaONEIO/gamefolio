@@ -180,7 +180,7 @@ function SharePost({ postID, handleCloseModal }: SharePostProps) {
                           className={`${"w-[100px] h-[50] font-bold bg-[#162423] text-white text-center py-[5px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] "}`}
                           // className={`${
                           //   user.isSend
-                          //     ? "w-[100px] h-[50] font-bold bg-[#37C535] text-white text-center py-[5px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] "
+                          //     ? "w-[100px] h-[50] font-bold bg-gradient-to-b from-[#62C860] to-[#37C535] text-white text-center py-[5px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] "
                           //     : "w-[100px] h-[50] font-bold bg-[#162423] text-white text-center py-[5px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] "
                           // } rounded-lg p-2`}
                           onClick={() => handleMessage(user.userID._id)}

@@ -107,7 +107,7 @@ const Page = () => {
   return (
     <CustomBackground>
       <div className="flex flex-col items-center justify-center px-6 py-8 ">
-        <div className="p-6 space-y-4 sm:p-8 w-92 md:w-[455px] bg-[#091619] rounded-xl border border-[#1C2C2E] h-3/5 overflow-y-scroll no-scroll no-scrollbar">
+        <div className="p-12 space-y-4  w-92 md:w-[455px] bg-[#091619] rounded-xl border border-[#1C2C2E] h-3/5 overflow-y-scroll no-scroll no-scrollbar">
           <div className="flex justify-center items-center">
             <Image
               src={IMAGES.logo}
@@ -130,7 +130,7 @@ const Page = () => {
           <hr className="w-7 border-t-4 border-[#43DD4E] rounded-lg" />
 
           <form
-            className="space-y-4 md:space-y-6"
+            className="flex flex-col gap-4"
             onSubmit={(e) => e.preventDefault()}
           >
             <div>
@@ -197,13 +197,14 @@ const Page = () => {
             </div>
 
             <button
-              className="w-full h-[50] bg-[#37C535] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3"
+              className="w-full h-[50] bg-gradient-to-b from-[#62C860] to-[#37C535]
+              text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3"
               onClick={onLogin}
             >
               Login
             </button>
 
-            <p className="text-sm font-light text-center text-gray-300">
+            <p className="text-sm font-light text-center text-gray-300  underline">
               <a href="./forgot-password">Forget Password?</a>
             </p>
 
@@ -211,9 +212,9 @@ const Page = () => {
               A new user?{" "}
               <a
                 href="./signup"
-                className="font-medium text-primary-600 hover:underline  text-green-400"
+                className="font-medium text-[#43DD4D] hover:underline  "
               >
-                Sign up
+                SignUp
               </a>
             </p>
             <ToastContainer

@@ -109,7 +109,7 @@ const Preference = () => {
                   <button
                     className={`inline-block px-2 font-normal rounded-full bg-[#162423] ${
                       activeTabs.includes(tab.label)
-                        ? "border-2 border-[#37C535] bg-[#37C535] text-white"
+                        ? "border-2 border-[#37C535] bg-gradient-to-b from-[#62C860] to-[#37C535] text-white"
                         : " bg-[#162423]  border-green-700 text-gray-500 "
                     }`}
                     onClick={() => handleTabClick(tab.label)}
@@ -125,7 +125,7 @@ const Preference = () => {
           </div>
 
           <button
-            className="w-full h-[50] bg-[#37C535] text-white text-center py-[10px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3"
+            className="w-full h-[50] bg-gradient-to-b from-[#62C860] to-[#37C535] text-white text-center py-[10px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3"
             onClick={handleNext}
           >
             Next

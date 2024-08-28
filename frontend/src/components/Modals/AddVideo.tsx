@@ -271,7 +271,7 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
                           }}
                         </CountdownCircleTimer>
                       )}
-                      {/* <div className="w-full bg-[#37C535] h-3 rounded-lg mt-2">
+                      {/* <div className="w-full bg-gradient-to-b from-[#62C860] to-[#37C535] h-3 rounded-lg mt-2">
                         <div
                           style={{ width: `${uploadProgress}%` }}
                           className="h-full bg-green-500 rounded-lg"
@@ -455,7 +455,7 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
 
                 <div className="flex justify-between items-center my-3 sm:mt-10 sm:ml-7 w-full md:w-72 sm:w-96 ml-2">
                   <button
-                    className="font-bold w-full sm:w-40 py-2 lg:py-2.5 px-2 sm:px-1 bg-[#37C535] text-white text-center rounded-tl-[20px] sm:rounded-tl-[20px] rounded-br-[20px] sm:rounded-br-[20px] rounded-tr-[5px] sm:rounded-tr-[5px] rounded-bl-[5px] sm:rounded-bl-[5px] cursor-pointer hover:bg-[#2FB530]"
+                    className="font-bold w-full sm:w-40 py-2 lg:py-2.5 px-2 sm:px-1 bg-gradient-to-b from-[#62C860] to-[#37C535] text-white text-center rounded-tl-[20px] sm:rounded-tl-[20px] rounded-br-[20px] sm:rounded-br-[20px] rounded-tr-[5px] sm:rounded-tr-[5px] rounded-bl-[5px] sm:rounded-bl-[5px] cursor-pointer hover:bg-[#2FB530]"
                     onClick={handleSubmitVideo}
                   >
                     Submit
