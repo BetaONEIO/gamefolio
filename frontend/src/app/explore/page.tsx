@@ -32,7 +32,7 @@ const SkeletonLoaderGames = () => (
 );
 
 const SkeletonLoaderUserProfile = () => (
-  <div className="flex flex-col border-2 border-[#1C2C2E] rounded-xl animate-pulse">
+  <div className="flex flex-col border-2 border-[#1C2C2E] rounded-xl animate-pulse  pt-1 pb-4 px-2 gap-1">
     <div className="flex items-center gap-4 mb-2 p-2">
       <div className="rounded-xl w-12 h-12 bg-gray-700"></div>
       <div className="flex flex-col space-y-2">
@@ -199,7 +199,7 @@ function Explore() {
   const filteredGames = removeGame(gameToRemove);
 
   return (
-    <div className="flex flex-col py-2 overflow-y-scroll no-scrollbar mx-4">
+    <div className="flex flex-col gap-4 py-2 overflow-y-scroll no-scrollbar mx-4">
       <div className="flex items-center">
         <div className="flex justify-between items-center w-full">
           <div>
@@ -266,7 +266,7 @@ function Explore() {
         </div>
       </div>
 
-      <div className="flex items-center h-36 my-2 overflow-scroll no-scrollbar gap-2">
+      <div className="flex items-center h-48 my-2 overflow-scroll no-scrollbar gap-4">
         {userState?.userList?.length === 0 ? (
           <>
             {[...Array(6)]?.map((_, index) => (
@@ -277,7 +277,7 @@ function Explore() {
           userState?.userList?.slice(0, 10)?.map((user: any) => (
             <div
               key={user?.userID}
-              className="flex flex-col border-2 border-[#1C2C2E] rounded-xl"
+              className="flex flex-col border-2 border-[#1C2C2E] rounded-xl pt-1 pb-4 px-2 gap-1"
             >
               <div className="flex items-center gap-4 mb-2">
                 <Image
@@ -326,7 +326,7 @@ function Explore() {
                         (video: any) => video.username === user.username
                       )?.videoCount || 0}
                     </span>
-                    <span className="md:text-lg text-gray-400">Posts</span>
+                    <span className="md:text-base text-gray-400">Posts</span>
                   </div>
 
                   {/* Vertical divider */}
@@ -338,7 +338,9 @@ function Explore() {
                     >
                       {user?.followers?.length || 0}
                     </span>
-                    <span className="md:text-lg text-gray-400">Followers</span>
+                    <span className="md:text-base text-gray-400">
+                      Followers
+                    </span>
                   </div>
                   {/* Vertical divider */}
                   <div className="border-r border-[#1C2C2E] h-12 rounded-full"></div>
@@ -349,7 +351,9 @@ function Explore() {
                     >
                       {user?.following?.length || 0}
                     </span>
-                    <span className="md:text-lg text-gray-400">Following</span>
+                    <span className="md:text-base text-gray-400">
+                      Following
+                    </span>
                   </div>
                 </div>
               </div>
