@@ -166,27 +166,34 @@ function MyGamefolio({ params }: any) {
   const isCurrentUserProfile =
     authState?.userData?.username === profileInfoState.profileUserInfo.username;
 
+  const backgroundImage = `url(${authState.userData.coverPicture})`;
+
   return (
     <Layout>
       <div className="flex justify-center">
         {isDataFetching ? (
           <CoverPhotoLoader />
         ) : (
-          <div className="relative w-full h-80">
-            <Image
-              className="w-full h-80 object-cover"
-              src={authState.userData.coverPicture}
-              layout="fill"
-              alt="cover photo"
-            />
+          <div className="relative w-full h-screen">
             <div
+              className=" w-full h-80"
+              style={{
+                background: `linear-gradient(to bottom, transparent 40%, rgba(9, 22, 25, 1) 99%), ${backgroundImage} no-repeat center / cover`,
+                backgroundSize: "cover",
+                backfaceVisibility: "visible",
+              }}
+            ></div>
+            <div className="w-full h-full bg-[#091619]"></div>
+
+            {/* <div
               className="absolute inset-0 bg-gradient-to-t from-[#091619] via-transparent to-transparent"
               style={{ opacity: 1 }}
-            ></div>
+            ></div> */}
           </div>
         )}
+
         {/* Top Bar */}
-        <div className="flex flex-col lg:flex-row w-screen lg:justify-end absolute top-80 lg:top-40 lg:w-4/5">
+        <div className="flex flex-col lg:flex-row w-screen lg:justify-end absolute top-80 lg:top-40 lg:w-4/5 ">
           {isDataFetching ? (
             <SkeletonProfileLoader />
           ) : (
@@ -214,8 +221,9 @@ function MyGamefolio({ params }: any) {
                     borderWidth: "2px",
                     borderColor: "#43DD4E",
                     position: "absolute",
-                    top: isBrowser && window.innerWidth <= 768 ? "10%" : "8.5%",
-                    left: isBrowser && window.innerWidth <= 768 ? "90%" : "30%",
+                    top: isBrowser && window.innerWidth <= 768 ? "11%" : "9%",
+                    left:
+                      isBrowser && window.innerWidth <= 768 ? "90.8%" : "29.9%",
                     transform: "translateX(-50%)",
                     width: "120px",
                   }}
