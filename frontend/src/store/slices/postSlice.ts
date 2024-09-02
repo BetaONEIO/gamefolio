@@ -219,6 +219,7 @@ export function getAllPostVideos() {
     }
   };
 }
+
 export function getUpdatedDetailedPost(params: ActionParams) {
   return async () => {
     const { payload } = params;

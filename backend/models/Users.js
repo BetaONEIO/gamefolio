@@ -95,6 +95,23 @@ const userSchema = new mongoose.Schema({
     },
   ],
 
+  socialUsernames: [
+    {
+      playstation: {
+        type: String,
+      },
+      twitch: {
+        type: String,
+      },
+      xbox: {
+        type: String,
+      },
+      steam: {
+        type: String,
+      },
+    },
+  ],
+
   report: [
     {
       userID: {

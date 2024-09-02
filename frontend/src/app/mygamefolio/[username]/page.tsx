@@ -7,15 +7,17 @@ import Modal from "@/components/Modals/Modal";
 import MoreOptions from "@/components/Modals/MoreOptions";
 import Report from "@/components/Modals/Report";
 import VideoDetails from "@/components/Modals/VideoDetails";
+import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import { getAllPostVideos, updateDetailedPost } from "@/store/slices/postSlice";
-import { getProfileInfo } from "@/store/slices/userSlice";
+import { getProfileInfo, postUsernames } from "@/store/slices/userSlice";
 import { copyToClipboard } from "@/utils/helpers";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 
 const CoverPhotoLoader = () => {
   return (
@@ -85,6 +87,13 @@ const VideoSkeletonLoader = () => {
   );
 };
 
+interface Usernames {
+  playstation?: string;
+  twitch?: string;
+  xbox?: string;
+  steam?: string;
+}
+
 function MyGamefolio({ params }: any) {
   const authState = useSelector((state: any) => state.auth) || [];
   const profileInfoState = useSelector((state: any) => state.user) || [];
@@ -92,6 +101,10 @@ function MyGamefolio({ params }: any) {
   const [isPrivateAccount, setIsPrivateAccount] = useState(false);
   const [postID, setPostID] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [playstation, setPlaystation] = useState("");
+  const [twitch, setTwitch] = useState("");
+  const [xbox, setXbox] = useState("");
+  const [steam, setSteam] = useState("");
   const [modalState, setModalState] = useState({
     isShareModalOpen: false,
     isFollowerModalOpen: false,
@@ -136,6 +149,39 @@ function MyGamefolio({ params }: any) {
     }));
   };
 
+  const handleSubmitUsernames = async ({
+    playstation,
+    twitch,
+    xbox,
+    steam,
+  }: Usernames) => {
+    const payload = {
+      userID: authState.userData._id,
+      playstation: playstation,
+      twitch: twitch,
+      xbox: xbox,
+      steam: steam,
+    };
+
+    const successCallback = (response: any) => {
+      handlePageRefresh();
+      // handleCloseModal();
+      toastSuccess(response);
+    };
+
+    const errorCallback = (error: string) => {
+      toastError(error);
+    };
+
+    const params = {
+      payload,
+      successCallback,
+      errorCallback,
+    };
+
+    dispatch(postUsernames(params));
+  };
+
   const handleVideoDetailOpen = (postID: string, detailedPost: any) => {
     setPostID(postID);
     dispatch(updateDetailedPost(detailedPost));
@@ -167,6 +213,13 @@ function MyGamefolio({ params }: any) {
     authState?.userData?.username === profileInfoState.profileUserInfo.username;
 
   const backgroundImage = `url(${authState.userData.coverPicture})`;
+
+  function handleSave(platform: any, value: any) {
+    // Save the value to server or local storage
+    // For example, saving to local storage
+    localStorage.setItem(platform, value);
+    // Optionally display a success message or tick icon
+  }
 
   return (
     <Layout>
@@ -323,60 +376,104 @@ function MyGamefolio({ params }: any) {
               </div>
               <div className="flex flex-col justify-center ">
                 <div className="flex flex-row w-56 gap-2 lg:flex-col  lg:w-full">
-                  <div className="flex  items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
+                  <div className="relative flex items-center space-x-2 rounded-lg bg-[#162423] p-2 mt-2">
                     <Image
-                      className="rounded-xl w-10 h-10 object-cover"
                       src={SVG.PlayStation}
+                      alt="Connect with Playstation"
                       width={10}
                       height={10}
-                      sizes="100vw"
-                      alt="Account Profile"
+                      className="rounded-xl w-10 h-10 object-cover"
                     />
-                    <p className="hidden lg:block text-white font-light text-xs ">
-                      Connect with Playstation
-                    </p>
+                    <input
+                      className="hidden lg:block text-white font-normal text-xs bg-[#162423] outline-none py-3"
+                      placeholder="Connect with Playstation"
+                      value={playstation}
+                      onChange={(e) => setPlaystation(e.target.value)}
+                    />
+                    <div onClick={() => handleSubmitUsernames({ playstation })}>
+                      <Image
+                        className="hidden lg:block w-4 h-4 text-green-500 lg:absolute lg:right-3 lg:top-2/4 lg:transform lg:-translate-y-2/4"
+                        src={SVG.Tick}
+                        alt="tick"
+                        width={30}
+                        height={30}
+                      />
+                    </div>
                   </div>
 
-                  <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
+                  <div className="relative flex items-center space-x-2 rounded-lg bg-[#162423] p-2 mt-2">
                     <Image
-                      className="rounded-xl w-10 h-10 object-cover"
                       src={SVG.Twitch}
+                      alt="Connect with Twitch"
                       width={10}
                       height={10}
-                      sizes="100vw"
-                      alt="Account Profile"
+                      className="rounded-xl w-10 h-10 object-cover"
                     />
-                    <p className="hidden lg:block text-white font-normal text-xs ">
-                      Connect with Twitch
-                    </p>
+                    <input
+                      className="hidden lg:block text-white font-normal text-xs bg-[#162423] outline-none py-3"
+                      placeholder="Connect with Twitch"
+                      value={twitch}
+                      onChange={(e) => setTwitch(e.target.value)}
+                    />
+                    <div onClick={() => handleSubmitUsernames({ twitch })}>
+                      <Image
+                        className="hidden lg:block w-4 h-4 text-green-500 lg:absolute lg:right-3 lg:top-2/4 lg:transform lg:-translate-y-2/4"
+                        src={SVG.Tick}
+                        alt="tick"
+                        width={30}
+                        height={30}
+                      />
+                    </div>
                   </div>
 
-                  <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
+                  <div className="relative flex items-center space-x-2 rounded-lg bg-[#162423] p-2 mt-2">
                     <Image
-                      className="rounded-xl w-10 h-10 object-cover"
                       src={SVG.Xbox}
+                      alt="Connect with Xbox"
                       width={10}
                       height={10}
-                      sizes="100vw"
-                      alt="Account Profile"
+                      className="rounded-xl w-10 h-10 object-cover"
                     />
-                    <p className="hidden lg:block text-white font-normal text-xs ">
-                      Connect with Xbox
-                    </p>
+                    <input
+                      className="hidden lg:block text-white font-normal text-xs bg-[#162423] outline-none py-3"
+                      placeholder="Connect with Xbox"
+                      value={xbox}
+                      onChange={(e) => setXbox(e.target.value)}
+                    />
+                    <div onClick={() => handleSubmitUsernames({ xbox })}>
+                      <Image
+                        className="hidden lg:block w-4 h-4 text-green-500 lg:absolute lg:right-3 lg:top-2/4 lg:transform lg:-translate-y-2/4"
+                        src={SVG.Tick}
+                        alt="tick"
+                        width={30}
+                        height={30}
+                      />
+                    </div>
                   </div>
 
-                  <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
+                  <div className="relative flex items-center space-x-2 rounded-lg bg-[#162423] p-2 mt-2">
                     <Image
-                      className="rounded-xl w-10 h-10 object-cover"
                       src={SVG.Steam}
+                      alt="Connect with Steam"
                       width={10}
                       height={10}
-                      sizes="100vw"
-                      alt="Account Profile"
+                      className="rounded-xl w-10 h-10 object-cover"
                     />
-                    <p className="hidden lg:block text-white font-normal text-xs ">
-                      Connect with Steam
-                    </p>
+                    <input
+                      className="hidden lg:block text-white font-normal text-xs bg-[#162423] outline-none py-3"
+                      placeholder="Connect with Steam"
+                      value={steam}
+                      onChange={(e) => setSteam(e.target.value)}
+                    />
+                    <div onClick={() => handleSubmitUsernames({ steam })}>
+                      <Image
+                        className="hidden lg:block w-4 h-4 text-green-500 lg:absolute lg:right-3 lg:top-2/4 lg:transform lg:-translate-y-2/4"
+                        src={SVG.Tick}
+                        alt="tick"
+                        width={30}
+                        height={30}
+                      />
+                    </div>
                   </div>
                 </div>
                 <div className="flex flex-col">
@@ -399,7 +496,7 @@ function MyGamefolio({ params }: any) {
                   </p>
                 </div>
 
-                <div className=" bg-[#1C2C2E] flex gap-2 p-1 items-center rounded-lg overflow-hidden absolute right-10">
+                <div className="bg-[#1C2C2E] flex gap-2 p-1 items-center rounded-lg overflow-hidden absolute right-10">
                   <Image
                     src={SVG.Search}
                     alt="Search"

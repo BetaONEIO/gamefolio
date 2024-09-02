@@ -538,6 +538,35 @@ const getProfileInfo = asyncHandler(async (req, res) => {
   }
 });
 
+// Create or Add Social Usernames
+const addSocialUsernames = async (req, res) => {
+  try {
+    const { userID, playstation, twitch, xbox, steam } = req.body;
+
+    let user = await User.findById(userID);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const newSocialUsernames = {
+      playstation,
+      twitch,
+      xbox,
+      steam,
+    };
+
+    user.socialUsernames.push(newSocialUsernames);
+    await user.save();
+
+    res
+      .status(201)
+      .json({ message: "Social usernames added successfully", user });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+};
+
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.find();
@@ -1101,4 +1130,5 @@ module.exports = {
   getAllNotifications,
   createNotification,
   updateNotification,
+  addSocialUsernames,
 };

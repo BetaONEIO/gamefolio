@@ -315,7 +315,7 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
                         <div className="bg-[#1C2C2E] flex gap-2 p-2 sm:p-3 items-center border border-[#162423]">
                           <Image
                             src={SVG.Search}
-                            alt="logo"
+                            alt="Search"
                             width={25}
                             height={25}
                           />
