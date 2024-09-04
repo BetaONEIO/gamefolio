@@ -281,6 +281,8 @@ function Page({ params }: any) {
     );
   }, [profileInfoState]);
 
+  console.log("helo", profileInfoState);
+
   const totalCoinAmount = authState?.coins?.reduce(
     (total: any, user: any) => total + user.coinAmount,
     0
@@ -585,7 +587,7 @@ function Page({ params }: any) {
                   )}
 
                   <button
-                    className="font-bold w-40 h-10 bg-[#37C535] text-white text-center py-[10px] px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
+                    className="font-bold w-40 h-10 bg-gradient-to-b from-[#62C860] to-[#37C535] text-white text-center py-[10px] px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
                     onClick={handleMessage}
                   >
                     Message

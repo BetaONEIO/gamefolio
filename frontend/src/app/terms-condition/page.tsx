@@ -53,7 +53,7 @@ const TermsCondition = () => {
           </div>
 
           <div className="flex justify-center">
-            <button className="w-full sm:w-96 h-[50] bg-[#37C535] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3">
+            <button className="w-full sm:w-96 h-[50] bg-gradient-to-b from-[#62C860] to-[#37C535] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3">
               Confirm
             </button>
           </div>

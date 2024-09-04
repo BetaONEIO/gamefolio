@@ -1,8 +1,4 @@
 "use client";
-import { useEffect, useState } from "react";
-import Image from "next/image";
-import { useForm } from "react-hook-form";
-import { ToastContainer } from "react-toastify";
 import { SVG } from "@/assets/SVG";
 import DeleteAccount from "@/components/Modals/DeleteAccount";
 import Modal from "@/components/Modals/Modal";
@@ -10,7 +6,12 @@ import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import { BASE_URL } from "@/services/api";
 import { dispatch, useSelector } from "@/store";
 import { updateProfile } from "@/store/slices/authSlice";
+import { validateEditProfileFields } from "@/validation";
 import axios from "axios";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { ToastContainer } from "react-toastify";
 import Setting from "../page";
 
 const EditProfile = () => {
@@ -29,10 +30,11 @@ const EditProfile = () => {
       username: "",
       bio: "",
       dateOfBirth: "",
-      accountType: "public",
+      accountType: "",
       profilePicture: "",
     },
   });
+  console.log("error: onEDITPROFILE ", errors);
 
   const [modalState, setModalState] = useState({
     isDeleteModalOpen: false,
@@ -166,8 +168,8 @@ const EditProfile = () => {
 
         <div className="flex w-full ">
           <form
-            className="flex w-full flex-wrap gap-4 justify-start"
             onSubmit={handleSubmit(handleUpdateProfile)}
+            className="flex w-full flex-wrap gap-4 justify-start"
           >
             <div className="flex-1 basis-full lg:basis-5/12 ">
               <label
@@ -181,14 +183,16 @@ const EditProfile = () => {
                 id="name"
                 className="bg-[#162423] sm:text-sm outline-none rounded-lg block w-full p-2.5 text-white"
                 placeholder="Name"
-                required
                 {...register("name", {
-                  required: true,
-                  max: 12,
-                  min: 4,
-                  maxLength: 12,
+                  validate: (value) =>
+                    validateEditProfileFields({ name: value }),
                 })}
               />
+              {errors.name && (
+                <span className="text-red-600 text-xs">
+                  {errors.name.message}
+                </span>
+              )}
             </div>
             <div className="flex-1 basis-full lg:basis-5/12 ">
               <label
@@ -204,12 +208,15 @@ const EditProfile = () => {
                 placeholder="Username"
                 required
                 {...register("username", {
-                  required: true,
-                  max: 16,
-                  min: 4,
-                  maxLength: 16,
+                  validate: (value) =>
+                    validateEditProfileFields({ username: value }),
                 })}
               />
+              {errors.username && (
+                <span className="text-red-600 text-xs">
+                  {errors.username.message}
+                </span>
+              )}
             </div>
 
             <div className="flex-1 basis-full lg:basis-5/12 ">
@@ -223,8 +230,16 @@ const EditProfile = () => {
                 type="Date"
                 className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-2.5 text-white hover:opacity-80 cursor-pointer"
                 placeholder="Date of Birth"
-                {...register("dateOfBirth")}
+                {...register("dateOfBirth", {
+                  validate: (value) =>
+                    validateEditProfileFields({ dateOfBirth: value }),
+                })}
               />
+              {errors.dateOfBirth && (
+                <span className="text-red-600 text-xs">
+                  {errors.dateOfBirth.message}
+                </span>
+              )}
             </div>
             <div className="flex-1 basis-full lg:basis-5/12 ">
               <p className="mb-2 text-sm font-bold text-gray-50">
@@ -265,18 +280,25 @@ const EditProfile = () => {
                 className="bg-[#162423] sm:text-sm rounded-lg outline-none block w-full p-2.5 text-white"
                 placeholder="Lorem ipsum dolor sit amet consectetur. Ante duis tellus tincidunt nibh"
                 {...register("bio", {
-                  required: true,
-                  min: 10,
-                  maxLength: 100,
+                  validate: (value) =>
+                    validateEditProfileFields({ bio: value }),
                 })}
               ></textarea>
+              {errors.bio && (
+                <span className="text-red-600 text-xs">
+                  {errors.bio.message}
+                </span>
+              )}
             </div>
 
             <div className="w-full flex justify-center lg:justify-end gap-4">
               <span className="w-6/12 lg:w-4/12 font-bold h-12 bg-[#586769] text-white text-center rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3 flex justify-center items-center cursor-pointer">
                 Cancel
               </span>
-              <button className="w-6/12 lg:w-4/12 font-bold h-12 bg-[#37C535] text-white text-center rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3">
+              <button
+                type="submit"
+                className="w-6/12 lg:w-4/12 font-bold h-12 bg-gradient-to-b from-[#62C860] to-[#37C535] text-white text-center rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3"
+              >
                 Update
               </button>
             </div>

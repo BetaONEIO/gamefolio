@@ -136,7 +136,7 @@ const SelectGame = () => {
             <span className="text-white">{selectedGames?.length} Selected</span>
             <button
               onClick={handleNext}
-              className="w-6/12 h-6/12 text-xs md:text-base bg-[#37C535]  text-white text-center py-[7px]  rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3"
+              className="w-6/12 h-6/12 text-xs md:text-base bg-gradient-to-b from-[#62C860] to-[#37C535]  text-white text-center py-[7px]  rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3"
             >
               Save & Next
             </button>
