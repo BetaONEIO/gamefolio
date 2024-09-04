@@ -74,9 +74,15 @@ const getAllPostVideos = async (req, res) => {
       .populate("userID")
       .populate({ path: "comments.userID" });
 
-    res
-      .status(201)
-      .json({ data: posts, message: "Successfully Retrieve Post Videos" });
+    // Filter posts based on user accountType
+    const filteredPosts = posts.filter(
+      (post) => post.userID.accountType === "public"
+    );
+
+    res.status(201).json({
+      data: filteredPosts,
+      message: "Successfully Retrieve Post Videos",
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -94,8 +100,13 @@ const getTrendingPosts = async (req, res) => {
       .populate("userID")
       .populate({ path: "comments.userID" });
 
+    // Filter posts based on user accountType
+    const filteredPosts = posts.filter(
+      (post) => post.userID.accountType === "public"
+    );
+
     // Sort posts by counts and date
-    const sortedPosts = posts.sort((a, b) => {
+    const sortedPosts = filteredPosts.sort((a, b) => {
       const getLength = (array) => (array ? array?.length : 0);
       const likesDiff = getLength(b.reactions) - getLength(a.reactions);
       const commentsDiff = getLength(b.comments) - getLength(a.comments);
