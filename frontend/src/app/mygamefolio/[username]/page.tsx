@@ -182,6 +182,8 @@ function MyGamefolio({ params }: any) {
     dispatch(postUsernames(params));
   };
 
+  console.log("hel", profileInfoState?.profileUserInfo);
+
   const handleVideoDetailOpen = (postID: string, detailedPost: any) => {
     setPostID(postID);
     dispatch(updateDetailedPost(detailedPost));
@@ -556,6 +558,24 @@ function MyGamefolio({ params }: any) {
                 })
               )}
             </div>
+
+            {/* <div className="flex justify-center items-center w-full h-[32rem] bg-[#162423] rounded-lg m-4">
+              <div className="flex flex-col items-center gap-4">
+                <p className="text-white font-semibold text-lg">
+                  Upload to your Gamefolio
+                </p>
+                <div className="flex items-center gap-4 bg-[#1C2C2E] p-4 rounded-md cursor-pointer">
+                  <Image
+                    className="cursor-pointer w-fit"
+                    src={SVG.Video}
+                    alt="Video"
+                    width={24}
+                    height={24}
+                  />
+                  <p className="text-white font-bold">Video</p>
+                </div>
+              </div>
+            </div> */}
           </div>
         </div>
       </div>
