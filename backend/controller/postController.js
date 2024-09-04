@@ -73,6 +73,7 @@ const getAllPostVideos = async (req, res) => {
       .sort({ date: -1 }) // Sort posts by their date field in descending order
       .populate("userID")
       .populate({ path: "comments.userID" });
+
     res
       .status(201)
       .json({ data: posts, message: "Successfully Retrieve Post Videos" });
@@ -151,7 +152,6 @@ const getFollowingPosts = async (req, res) => {
       .populate("userID")
       .populate({ path: "comments.userID" });
 
-    console.log("post: getfollwoing ", posts);
     res.status(200).json({
       data: posts,
       message: "Successfully retrieved posts from users you are following",
