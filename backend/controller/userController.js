@@ -530,6 +530,7 @@ const getProfileInfo = asyncHandler(async (req, res) => {
       report: user.report,
       coins: user.coins,
       coin: user.coins,
+      socialUsernames: user.socialUsernames,
     });
   } else {
     return res.status(404).json({
@@ -615,8 +616,6 @@ const updatePassword = asyncHandler(async (req, res) => {
 
 const addPreferences = asyncHandler(async (req, res) => {
   const { userID, preference } = req.body;
-
-  console.log("req.body: ", req.body);
 
   try {
     const user = await User.findById(userID);

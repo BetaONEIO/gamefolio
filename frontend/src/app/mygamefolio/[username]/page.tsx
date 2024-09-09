@@ -120,10 +120,6 @@ function MyGamefolio({ params }: any) {
     Object.keys(profileInfoState.profileUserInfo).length === 0 ||
     profileInfoState.loading;
 
-  // const userVideosLength = postState.videos?.filter(
-  //   (post: any) => post?.userID?._id === authState.userData._id
-  // );
-
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
   };
@@ -182,7 +178,8 @@ function MyGamefolio({ params }: any) {
     dispatch(postUsernames(params));
   };
 
-  console.log("hel", profileInfoState?.profileUserInfo);
+  console.log("hel$$", postState);
+  console.log("hel$$2", profileInfoState);
 
   const handleVideoDetailOpen = (postID: string, detailedPost: any) => {
     setPostID(postID);
@@ -388,7 +385,11 @@ function MyGamefolio({ params }: any) {
                     />
                     <input
                       className="hidden lg:block text-white font-normal text-xs bg-[#162423] outline-none py-3"
-                      placeholder="Connect with Playstation"
+                      placeholder={
+                        profileInfoState?.profileUserInfo?.socialUsernames?.find(
+                          (social: any) => social.playstation
+                        )?.playstation || "Connect with Playstation"
+                      }
                       value={playstation}
                       onChange={(e) => setPlaystation(e.target.value)}
                     />
@@ -413,7 +414,11 @@ function MyGamefolio({ params }: any) {
                     />
                     <input
                       className="hidden lg:block text-white font-normal text-xs bg-[#162423] outline-none py-3"
-                      placeholder="Connect with Twitch"
+                      placeholder={
+                        profileInfoState?.profileUserInfo?.socialUsernames?.find(
+                          (social: any) => social.twitch
+                        )?.twitch || "Connect with Twitch"
+                      }
                       value={twitch}
                       onChange={(e) => setTwitch(e.target.value)}
                     />
@@ -438,7 +443,11 @@ function MyGamefolio({ params }: any) {
                     />
                     <input
                       className="hidden lg:block text-white font-normal text-xs bg-[#162423] outline-none py-3"
-                      placeholder="Connect with Xbox"
+                      placeholder={
+                        profileInfoState?.profileUserInfo?.socialUsernames?.find(
+                          (social: any) => social.xbox
+                        )?.xbox || "Connect with xbox"
+                      }
                       value={xbox}
                       onChange={(e) => setXbox(e.target.value)}
                     />
@@ -463,7 +472,11 @@ function MyGamefolio({ params }: any) {
                     />
                     <input
                       className="hidden lg:block text-white font-normal text-xs bg-[#162423] outline-none py-3"
-                      placeholder="Connect with Steam"
+                      placeholder={
+                        profileInfoState?.profileUserInfo?.socialUsernames?.find(
+                          (social: any) => social.steam
+                        )?.steam || "Connect with steam"
+                      }
                       value={steam}
                       onChange={(e) => setSteam(e.target.value)}
                     />
