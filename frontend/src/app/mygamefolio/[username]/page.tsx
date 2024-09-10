@@ -310,7 +310,7 @@ function MyGamefolio({ params }: any) {
               </div>
 
               <div className="flex flex-col justify-center">
-                <div className="flex justify-center">
+                <div className="flex justify-center mb-1">
                   <Image
                     className="rounded-xl w-32 h-32 object-cover border-2 border-[#43DD4E]"
                     src={profileInfoState?.profileUserInfo?.profilePicture}
@@ -320,10 +320,10 @@ function MyGamefolio({ params }: any) {
                     alt="Account Profile"
                   />
                 </div>
-                <span className="flex justify-center font-semibold text-white">
+                <span className="flex justify-center font-semibold text-white mb-1">
                   {profileInfoState?.profileUserInfo?.name}
                 </span>
-                <div className="flex items-center gap-6 justify-center">
+                <div className="flex items-center gap-6 justify-center mb-4">
                   <div
                     className="flex items-center"
                     onClick={() =>
@@ -353,7 +353,7 @@ function MyGamefolio({ params }: any) {
                     </button>
                   </div>
                 )}
-                <div className="flex items-center justify-between text-white">
+                <div className="flex items-center justify-between text-white mt-4">
                   <p>Posts</p>
                   <p>{userVideos?.length || 0}</p>
                 </div>
