@@ -490,11 +490,11 @@ function Account() {
           </div>
 
           {/* Stories */}
-          <CurrentUserStories />
+          {/* <CurrentUserStories /> */}
 
           {/* Top Bar */}
 
-          <div className="flex mx-3">
+          <div className="flex mx-3 my-8">
             <div className="hidden w-2/5  md:flex flex-col sm:w-60 md:w-60 lg:w-96 h-80 border-2 border-[#1C2C2E] rounded-lg p-1">
               <h1 className="text-white font-bold my-2">Connect</h1>
               <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">

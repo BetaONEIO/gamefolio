@@ -128,7 +128,7 @@ function CustomHeader({ children }: { children?: String }) {
           </button>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-28">
           {/* <Link href="/main"> */}
           <div className="relative">
             <div
@@ -159,11 +159,11 @@ function CustomHeader({ children }: { children?: String }) {
               borderWidth: "2px",
               borderColor: "#43DD4E",
               position: "absolute",
-              top: isBrowser && window.innerWidth <= 768 ? "92%" : "80%",
-              right: isBrowser && window.innerWidth <= 768 ? "-10%" : "5.5%",
+              top: isBrowser && window.innerWidth <= 768 ? "95%" : "80%",
+              right: isBrowser && window.innerWidth <= 768 ? "-22%" : "-10%",
               transform: "translateX(-50%)",
               height: "400px",
-              width: "310px",
+              width: "300px",
             }}
           >
             <div
@@ -178,7 +178,7 @@ function CustomHeader({ children }: { children?: String }) {
               }}
             />
             <div
-              className="md:flex flex-col gap-4 rounded-lg bg-[#091619] border border-[#1C2C2E] px-2 py-6 overflow-hidden overflow-y-auto"
+              className="w-full md:flex flex-col gap-4 rounded-lg bg-[#091619] border border-[#1C2C2E] px-2 py-6 overflow-hidden overflow-y-auto"
               style={styles.scroller}
             >
               <div className="flex justify-between items-center">
