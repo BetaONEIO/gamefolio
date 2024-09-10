@@ -456,10 +456,10 @@ function Main() {
 
             {/* Story , Posts */}
             <div className="w-11/12 sm:w-10/12 flex  flex-col gap-3 rounded-lg ">
-              <div>
+              {/* <div>
                 <FollowingStories />
-              </div>
-              <div className="bg-[#091619] border border-dashed border-green-800 rounded-lg flex flex-col px-4 py-6 justify-center items-start gap-4">
+              </div> */}
+              <div className="bg-[#091619] border border-dashed border-green-800 rounded-lg flex flex-col px-4 py-6 justify-center items-start gap-4 mt-6">
                 <span className="text-white font-bold text-sm md:text-lg">
                   Add New
                 </span>
