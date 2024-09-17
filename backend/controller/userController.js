@@ -530,6 +530,7 @@ const getProfileInfo = asyncHandler(async (req, res) => {
       report: user.report,
       coins: user.coins,
       coin: user.coins,
+      socialUsernames: user.socialUsernames,
     });
   } else {
     return res.status(404).json({
@@ -537,6 +538,35 @@ const getProfileInfo = asyncHandler(async (req, res) => {
     });
   }
 });
+
+// Create or Add Social Usernames
+const addSocialUsernames = async (req, res) => {
+  try {
+    const { userID, playstation, twitch, xbox, steam } = req.body;
+
+    let user = await User.findById(userID);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const newSocialUsernames = {
+      playstation,
+      twitch,
+      xbox,
+      steam,
+    };
+
+    user.socialUsernames.push(newSocialUsernames);
+    await user.save();
+
+    res
+      .status(201)
+      .json({ message: "Social usernames added successfully", user });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+};
 
 const getAllUsers = async (req, res) => {
   try {
@@ -586,8 +616,6 @@ const updatePassword = asyncHandler(async (req, res) => {
 
 const addPreferences = asyncHandler(async (req, res) => {
   const { userID, preference } = req.body;
-
-  console.log("req.body: ", req.body);
 
   try {
     const user = await User.findById(userID);
@@ -1101,4 +1129,5 @@ module.exports = {
   getAllNotifications,
   createNotification,
   updateNotification,
+  addSocialUsernames,
 };

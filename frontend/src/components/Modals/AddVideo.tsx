@@ -188,7 +188,7 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
         style={myBGStyleModal}
         className="fixed inset-0 flex items-center justify-center z-50"
       >
-        <div className="modal-container w-11/12 sm:w-11/12 lg:w-9/12 h-[40rem] lg:h-[calc(100vh - 2rem)] z-50 overflow-y-auto bg-[#091619] rounded-lg">
+        <div className="modal-container w-11/12 sm:w-11/12 lg:w-9/12 h-[40rem] lg:h-[calc(100vh - 2rem)] z-50 overflow-y-auto bg-[#091619] rounded-lg ">
           {/* Modal content */}
           <div className="relative rounded-lg bg-[#091619] py-5 sm:py-4 border border-[#586769]">
             <button
@@ -315,7 +315,7 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
                         <div className="bg-[#1C2C2E] flex gap-2 p-2 sm:p-3 items-center border border-[#162423]">
                           <Image
                             src={SVG.Search}
-                            alt="logo"
+                            alt="Search"
                             width={25}
                             height={25}
                           />
@@ -379,7 +379,7 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
                   ></textarea>
                 </div>
 
-                <div className="mb-0 sm:mb-4">
+                {/* <div className="mb-0 sm:mb-4">
                   <label className="block mb-2  text-gray-200">Add Music</label>
                   <div className="relative inline-block text-left w-full">
                     <div className="relative">
@@ -451,7 +451,7 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
                       </div>
                     )}
                   </div>
-                </div>
+                </div> */}
 
                 <div className="flex justify-between items-center my-3 sm:mt-10 sm:ml-7 w-full md:w-72 sm:w-96 ml-2">
                   <button

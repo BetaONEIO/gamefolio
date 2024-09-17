@@ -456,15 +456,15 @@ function Main() {
 
             {/* Story , Posts */}
             <div className="w-11/12 sm:w-10/12 flex  flex-col gap-3 rounded-lg ">
-              <div>
+              {/* <div>
                 <FollowingStories />
-              </div>
-              <div className="bg-[#091619] border border-dashed border-green-800 rounded-lg flex flex-col px-4 py-6 justify-center items-start gap-4">
+              </div> */}
+              <div className="bg-[#091619] border border-dashed border-green-800 rounded-lg flex flex-col px-4 py-6 justify-center items-start gap-4 mt-6">
                 <span className="text-white font-bold text-sm md:text-lg">
                   Add New
                 </span>
-                <div className="flex justify-between gap-2 w-full ">
-                  <div
+                <div className="flex w-full ">
+                  {/* <div
                     className="bg-[#162423] rounded-lg flex justify-center items-center w-6/12 h-24 gap-4 cursor-pointer hover:opacity-80"
                     onClick={() => handleModalToggle("isAddClipsOpen")}
                   >
@@ -478,10 +478,10 @@ function Main() {
                       />
                     </div>
                     <p className="text-white font-bold">Post Clips</p>
-                  </div>
+                  </div> */}
 
                   <div
-                    className="bg-[#162423] rounded-lg flex justify-center items-center w-6/12 h-24 gap-4 cursor-pointer hover:opacity-80"
+                    className="bg-[#162423] rounded-lg flex w-full justify-center items-center h-24 gap-4 cursor-pointer hover:opacity-80"
                     onClick={() => {
                       handleModalToggle("isAddVideoOpen");
                     }}
@@ -495,7 +495,9 @@ function Main() {
                         height={24}
                       />
                     </div>
-                    <p className="text-white font-bold">Post Videos</p>
+                    <p className="text-white font-bold">
+                      Post to your Gamefolio
+                    </p>
                   </div>
                 </div>
               </div>

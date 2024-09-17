@@ -31,6 +31,7 @@ export const PATH = {
     notification: "user/notification/create",
     updateNotification: "user/notification/update",
     getNotification: "user/notification/get",
+    createUsernames: "user/usernames/create",
   },
 
   theNextLeg: {
