@@ -493,8 +493,6 @@ function Account() {
         </div>
 
         {/* Stories */}
-        <CurrentUserStories />
-        {/* Stories */}
         {/* <CurrentUserStories /> */}
 
         {/* Top Bar */}
@@ -559,81 +557,24 @@ function Account() {
             </div>
           </div>
 
-          {/* Stories */}
-          {/* <CurrentUserStories /> */}
-
-          {/* Top Bar */}
-
-          <div className="flex mx-3 my-8">
-            <div className="hidden w-2/5  md:flex flex-col sm:w-60 md:w-60 lg:w-96 h-80 border-2 border-[#1C2C2E] rounded-lg p-1">
-              <h1 className="text-white font-bold my-2">Connect</h1>
-              <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
-                <Image
-                  className="rounded-xl w-10 h-10 object-cover"
-                  src={SVG.PlayStation}
-                  width={10}
-                  height={10}
-                  sizes="100vw"
-                  alt="Account Profile"
-                />
-                <p className="text-white font-light text-xs ">
-                  Connect with Playstation
-                </p>
-              </div>
-
-              <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
-                <Image
-                  className="rounded-xl w-10 h-10 object-cover"
-                  src={SVG.Twitch}
-                  width={10}
-                  height={10}
-                  sizes="100vw"
-                  alt="Account Profile"
-                />
-                <p className="text-white font-normal text-xs ">
-                  Connect with Twitch
-                </p>
-              </div>
-
-              <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
-                <Image
-                  className="rounded-xl w-10 h-10 object-cover"
-                  src={SVG.Xbox}
-                  width={10}
-                  height={10}
-                  sizes="100vw"
-                  alt="Account Profile"
-                />
-                <p className="text-white font-normal text-xs ">
-                  Connect with Xbox
-                </p>
-              </div>
-
-              <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
-                <Image
-                  className="rounded-xl w-10 h-10 object-cover"
-                  src={SVG.Steam}
-                  width={10}
-                  height={10}
-                  sizes="100vw"
-                  alt="Account Profile"
-                />
-                <p className="text-white font-normal text-xs ">
-                  Connect with Steam
-                </p>
-              </div>
-            </div>
-
-            <div className="sm:w-[500px] md:w-[600px] lg:w-[800px]  justify-around items-center h-10">
-              {/* Profile */}
-              <div key={authState?.userID} className="flex flex-col gap-4 mx-4">
-                <div className="h-10 w-full flex justify-around items-center">
-                  <div>
-                    <div
-                      className={`flex gap-2 my-6 items-center cursor-pointer ${
-                        selectedSection === "videos"
-                          ? "text-white"
-                          : "text-gray-500"
+          <div className="sm:w-[500px] md:w-[600px] lg:w-[800px]  justify-around items-center h-10">
+            {/* Profile */}
+            <div key={authState?.userID} className="flex flex-col gap-4 mx-4">
+              <div className="h-10 w-full flex justify-around items-center">
+                <div>
+                  <div
+                    className={`flex gap-2 my-6 items-center cursor-pointer ${
+                      selectedSection === "videos"
+                        ? "text-white"
+                        : "text-gray-500"
+                    }`}
+                    onClick={() => setSelectedSection("videos")}
+                  >
+                    <Image
+                      className={`${
+                        selectedSection !== "videos"
+                          ? "opacity-40"
+                          : "opacity-100"
                       }`}
                       src={SVG.AccountMyVideos}
                       alt="My Videos"
