@@ -55,7 +55,7 @@ function LogOut({ handleCloseModal }: LogOutProps) {
                 Yes
               </button>
               <button
-                className="w-1/2 h-[50] font-bold bg-[#37C535] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
+                className="w-1/2 h-[50] font-bold bg-gradient-to-b from-[#62C860] to-[#37C535] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
                 onClick={handleCloseModal}
               >
                 No

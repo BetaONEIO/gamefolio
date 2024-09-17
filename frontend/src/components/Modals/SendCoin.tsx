@@ -103,7 +103,7 @@ function SendCoin() {
 
               <hr className="border-t border-gray-700 my-4" />
 
-              <button className="w-40 h-10 bg-[#37C535] text-white text-center rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3">
+              <button className="w-40 h-10 bg-gradient-to-b from-[#62C860] to-[#37C535] text-white text-center rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3">
                 Send
               </button>
             </div>

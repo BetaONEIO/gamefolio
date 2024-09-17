@@ -120,7 +120,7 @@ function Gallery({ receiverID, galleryVideo, handleCloseModal }: GalleryProps) {
           </div>
           <div className="flex justify-center w-full mt-3 ">
             <button
-              className="sm:w-1/2 sm:h-6/12 sm:text-base bg-[#37C535] text-white text-center py-[7px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3"
+              className="sm:w-1/2 sm:h-6/12 sm:text-base bg-gradient-to-b from-[#62C860] to-[#37C535] text-white text-center py-[7px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3"
               onClick={() => handleMessage(galleryVideo, receiverID)}
             >
               Send

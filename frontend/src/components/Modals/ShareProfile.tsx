@@ -111,7 +111,7 @@ function ShareProfile({ handleCloseModal }: ShareProfileProps) {
 
             <div className="flex items-center  justify-between w-full my-3">
               <span className="text-white"> 3 Selected</span>
-              <button className="font-bold w-40 sm:w-1/3 h-10 sm:h-6/12 text-base sm:text-base bg-[#37C535] text-white text-center  sm:py-[7px] rounded-tl-[20px] sm:rounded-tl-[20px] rounded-br-[20px] sm:rounded-br-[20px] rounded-tr-[5px] sm:rounded-tr-[5px] rounded-bl-[5px] sm:rounded-bl-[5px] hover:opacity-80">
+              <button className="font-bold w-40 sm:w-1/3 h-10 sm:h-6/12 text-base sm:text-base bg-gradient-to-b from-[#62C860] to-[#37C535] text-white text-center  sm:py-[7px] rounded-tl-[20px] sm:rounded-tl-[20px] rounded-br-[20px] sm:rounded-br-[20px] rounded-tr-[5px] sm:rounded-tr-[5px] rounded-bl-[5px] sm:rounded-bl-[5px] hover:opacity-80">
                 Share Profile
               </button>
             </div>

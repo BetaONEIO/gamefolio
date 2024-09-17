@@ -113,7 +113,7 @@ function DeleteAccount({ handleCloseModal }: DeleteAccountProps) {
               </button>
               <button
                 onClick={handleDeactivateAccount}
-                className="w-2/5 h-[50] font-bold bg-[#37C535] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] hover:opacity-80 cursor-pointer"
+                className="w-2/5 h-[50] font-bold bg-gradient-to-b from-[#62C860] to-[#37C535] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] hover:opacity-80 cursor-pointer"
               >
                 Confirm
               </button>

@@ -340,7 +340,7 @@ function SideBar({ toggleSidebar, sidebarOpen }: SideBarProps) {
               {/* </Link> */}
 
               <button
-                className="flex items-center w-full sm:w-52 bg-[#37C535] text-white py-[10px] px-[20px] rounded-full mb-3 gap-4"
+                className="flex items-center w-full sm:w-52 bg-gradient-to-b from-[#62C860] to-[#37C535] text-white py-[10px] px-[20px] rounded-full mb-3 gap-4"
                 onClick={handleUpdateButtonClick}
               >
                 <Image

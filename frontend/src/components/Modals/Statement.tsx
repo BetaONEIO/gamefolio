@@ -92,7 +92,7 @@ function Statement({ handleCloseModal }: StatementProps) {
 
         <button
           onClick={() => handleModalToggle("isTransactionModalOpen")}
-          className="w-full h-[50] bg-[#37C535] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3 tracking-tighter font-bold"
+          className="w-full h-[50] bg-gradient-to-b from-[#62C860] to-[#37C535] text-white text-center py-[10px] px-[30px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px] mb-3 tracking-tighter font-bold"
         >
           Generate
         </button>
