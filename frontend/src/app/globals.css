@@ -39,6 +39,19 @@ body {
   }
 }
 
+.captcha {
+  width: 100%;
+}
+
+.captcha > div > div > div {
+  width: 100% !important;
+}
+@media screen and (max-width: 400px) {
+  .captcha > div > div > div > div > iframe {
+    width: 100% !important;
+  }
+}
+
 /* Add the following custom styles for the loader */
 @keyframes spinner {
   to {

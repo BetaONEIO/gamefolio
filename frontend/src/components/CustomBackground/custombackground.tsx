@@ -12,7 +12,7 @@ const CustomBackground = ({ children }: { children: ReactNode }) => {
         backgroundSize: "contain",
         backgroundAttachment: "fixed", // Makes the background fixed
       }}
-      className="bg-no-repeat bg-contain  bg-gray-700 bg-blend-multiply bg-opacity-60 min-h-screen flex flex-col justify-center"
+      className="bg-no-repeat bg-contain  bg-gray-700 bg-blend-multiply bg-opacity-60 min-h-screen flex flex-col justify-center overflow-hidden"
     >
       {children}
     </section>

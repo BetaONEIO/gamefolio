@@ -76,9 +76,9 @@ const SkeletonProfileLoader = () => {
 
 const VideoSkeletonLoader = () => {
   return (
-    <div className="relative">
+    <div className="relative ">
       <div className="max-w-full w-96 sm:w-96 h-52 md:h-40 bg-gray-700 rounded-xl animate-pulse"></div>
-      <div className="absolute bottom-1 right-2">
+      <div className="absolute bottom-6 right-3">
         <div className="w-10 h-10 md:w-8 md:h-8 bg-gray-700 rounded-full animate-pulse"></div>
       </div>
     </div>
@@ -100,6 +100,8 @@ function MyGamefolio({ params }: any) {
     isVideoDetailOpen: false,
     isStoryModalOpen: false,
   });
+
+  console.log("hh: ", profileInfoState);
 
   const isBrowser = typeof window !== "undefined";
 
@@ -163,6 +165,8 @@ function MyGamefolio({ params }: any) {
       post?.userID?.username === profileInfoState.profileUserInfo.username
   );
 
+  console.log("user videos: ", postState);
+
   const isCurrentUserProfile =
     authState?.userData?.username === profileInfoState.profileUserInfo.username;
 
@@ -170,13 +174,13 @@ function MyGamefolio({ params }: any) {
 
   return (
     <Layout>
-      <div className="flex justify-center">
+      <div className="flex justify-center h-screen">
         {isDataFetching ? (
           <CoverPhotoLoader />
         ) : (
           <div className="relative w-full h-screen">
             <div
-              className=" w-full h-80"
+              className=" w-full  h-40 md:h-80 "
               style={{
                 background: `linear-gradient(to bottom, transparent 40%, rgba(9, 22, 25, 1) 99%), ${backgroundImage} no-repeat center / cover`,
                 backgroundSize: "cover",
@@ -193,203 +197,208 @@ function MyGamefolio({ params }: any) {
         )}
 
         {/* Top Bar */}
-        <div className="flex flex-col lg:flex-row w-screen lg:justify-end absolute top-80 lg:top-40 lg:w-4/5 ">
+        <div className="flex flex-col lg:flex-row w-screen lg:justify-end absolute top-48 lg:top-40 lg:w-4/5 h-3/4  overflow-y-auto lg:overflow-y-visible    ">
           {isDataFetching ? (
             <SkeletonProfileLoader />
           ) : (
-            <div className="border-2 border-[#1C2C2E] rounded-lg p-2 pt-6 bg-[#091619] w-auto overflow-x-auto lg:w-72 h-fit lg:h-fit flex flex-col lg:flex-col gap-8 justify-center lg:gap-1">
-              <div className="flex justify-end">
-                <button
-                  className="px-3 py-2 cursor-pointer hover:opacity-80"
-                  onClick={toggleDropdown}
-                >
-                  <Image
-                    src={SVG.Threedot}
-                    width={20}
-                    height={20}
-                    className="w-9 h-8 rounded-full"
-                    alt="account"
-                  />
-                </button>
-
-                <div
-                  id="dropdown"
-                  className={`${
-                    isDropdownOpen ? "block" : "hidden"
-                  } flex justify-center border-2 border-[#43DD4E] rounded-lg mt--2 bg-[#162423]`}
-                  style={{
-                    borderWidth: "2px",
-                    borderColor: "#43DD4E",
-                    position: "absolute",
-                    top: isBrowser && window.innerWidth <= 768 ? "11%" : "9%",
-                    left:
-                      isBrowser && window.innerWidth <= 768 ? "90.8%" : "29.9%",
-                    transform: "translateX(-50%)",
-                    width: "120px",
-                  }}
-                >
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: "-10px",
-                      left: "50%",
-                      transform: "translateX(-50%)",
-                      borderLeft: "5px solid transparent",
-                      borderRight: "5px solid transparent",
-                      borderBottom: `10px solid #43DD4E`,
-                    }}
-                  />
-                  <ul>
-                    <li>
-                      <span className="font-normal cursor-pointer hover:opacity-80">
-                        Share
-                      </span>
-                    </li>
-                    <li>
-                      <div
-                        onClick={() => handleModalToggle("isReportModalOpen")}
-                        className="font-normal cursor-pointer hover:opacity-80"
-                      >
-                        Report
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              <div className="flex flex-col justify-center">
-                <div className="flex justify-center">
-                  <Image
-                    className="rounded-xl w-32 h-32 object-cover border-2 border-[#43DD4E]"
-                    src={profileInfoState?.profileUserInfo?.profilePicture}
-                    width={10}
-                    height={10}
-                    sizes="100vw"
-                    alt="Account Profile"
-                  />
-                </div>
-                <span className="flex justify-center font-semibold text-white">
-                  {profileInfoState?.profileUserInfo?.name}
-                </span>
-                <div className="flex items-center gap-6 justify-center">
-                  <div
-                    className="flex items-center"
-                    onClick={() =>
-                      copyToClipboard(authState.userData?.username)
-                    }
+            <div className="border-2 border-[#1C2C2E] rounded-lg p-2 pt-6 bg-[#091619] w-auto lg:w-72 h-full md:overflow-y-scroll no-scrollbar  ">
+              <div className="flex flex-col gap-8 justify-center">
+                <div className="flex justify-end">
+                  <button
+                    className="px-3 py-2 cursor-pointer hover:opacity-80"
+                    onClick={toggleDropdown}
                   >
-                    <p className="text-white">
-                      ({profileInfoState?.profileUserInfo?.username})
-                    </p>
                     <Image
-                      className="cursor-pointer hover:opacity-80"
-                      src={SVG.AccountCopyUsername}
-                      width={16}
-                      height={16}
-                      alt="Copy Username"
+                      src={SVG.Threedot}
+                      width={20}
+                      height={20}
+                      className="w-9 h-8 rounded-full"
+                      alt="account"
                     />
+                  </button>
+
+                  <div
+                    id="dropdown"
+                    className={`${
+                      isDropdownOpen ? "block" : "hidden"
+                    } flex justify-center border-2 border-[#43DD4E] rounded-lg mt--2 bg-[#162423]`}
+                    style={{
+                      borderWidth: "2px",
+                      borderColor: "#43DD4E",
+                      position: "absolute",
+                      top: isBrowser && window.innerWidth <= 768 ? "11%" : "9%",
+                      left:
+                        isBrowser && window.innerWidth <= 768
+                          ? "90.8%"
+                          : "29.9%",
+                      transform: "translateX(-50%)",
+                      width: "120px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "-10px",
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        borderLeft: "5px solid transparent",
+                        borderRight: "5px solid transparent",
+                        borderBottom: `10px solid #43DD4E`,
+                      }}
+                    />
+                    <ul>
+                      <li>
+                        <span className="font-normal cursor-pointer hover:opacity-80">
+                          Share
+                        </span>
+                      </li>
+                      <li>
+                        <div
+                          onClick={() => handleModalToggle("isReportModalOpen")}
+                          className="font-normal cursor-pointer hover:opacity-80"
+                        >
+                          Report
+                        </div>
+                      </li>
+                    </ul>
                   </div>
                 </div>
 
-                {!isCurrentUserProfile && (
-                  <div className="flex justify-center h-8 gap-2 my-6">
-                    <button className="font-bold w-40 h-10 bg-[#292D32] text-white text-center py-[10px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]">
-                      follow
-                    </button>
-                    <button className="font-bold w-40 h-10 bg-gradient-to-b from-[#62C860] to-[#37C535] text-white text-center py-[10px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]">
-                      Message
-                    </button>
-                  </div>
-                )}
-                <div className="flex items-center justify-between text-white">
-                  <p>Posts</p>
-                  <p>{userVideos?.length || 0}</p>
-                </div>
-                <hr className="h-px border-0 bg-[#586769] my-2 " />
-                <div className="flex items-center justify-between text-white">
-                  <p>Followers</p>
-                  <p>
-                    {profileInfoState?.profileUserInfo?.follower?.length || 0}
-                  </p>
-                </div>
-                <hr className="h-px border-0 bg-[#586769] my-2 " />
-                <div className="flex items-center justify-between text-white">
-                  <p>Following</p>
-                  <p>
-                    {" "}
-                    {profileInfoState?.profileUserInfo?.following?.length || 0}
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-col justify-center ">
-                <div className="flex flex-row w-56 gap-2 lg:flex-col  lg:w-full">
-                  <div className="flex  items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
+                <div className="flex flex-col justify-center">
+                  <div className="flex justify-center">
                     <Image
-                      className="rounded-xl w-10 h-10 object-cover"
-                      src={SVG.PlayStation}
+                      className="rounded-xl w-32 h-32 object-cover border-2 border-[#43DD4E]"
+                      src={profileInfoState?.profileUserInfo?.profilePicture}
                       width={10}
                       height={10}
                       sizes="100vw"
                       alt="Account Profile"
                     />
-                    <p className="hidden lg:block text-white font-light text-xs ">
-                      Connect with Playstation
-                    </p>
+                  </div>
+                  <span className="flex justify-center font-semibold text-white">
+                    {profileInfoState?.profileUserInfo?.name}
+                  </span>
+                  <div className="flex items-center gap-6 justify-center">
+                    <div
+                      className="flex items-center"
+                      onClick={() =>
+                        copyToClipboard(authState.userData?.username)
+                      }
+                    >
+                      <p className="text-white">
+                        ({profileInfoState?.profileUserInfo?.username})
+                      </p>
+                      <Image
+                        className="cursor-pointer hover:opacity-80"
+                        src={SVG.AccountCopyUsername}
+                        width={16}
+                        height={16}
+                        alt="Copy Username"
+                      />
+                    </div>
                   </div>
 
-                  <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
-                    <Image
-                      className="rounded-xl w-10 h-10 object-cover"
-                      src={SVG.Twitch}
-                      width={10}
-                      height={10}
-                      sizes="100vw"
-                      alt="Account Profile"
-                    />
-                    <p className="hidden lg:block text-white font-normal text-xs ">
-                      Connect with Twitch
+                  {!isCurrentUserProfile && (
+                    <div className="flex justify-center h-8 gap-2 my-6">
+                      <button className="font-bold w-40 h-10 bg-[#292D32] text-white text-center py-[10px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]">
+                        follow
+                      </button>
+                      <button className="font-bold w-40 h-10 bg-gradient-to-b from-[#62C860] to-[#37C535] text-white text-center py-[10px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]">
+                        Message
+                      </button>
+                    </div>
+                  )}
+                  <div className="flex items-center justify-between text-white">
+                    <p>Posts</p>
+                    <p>{userVideos?.length || 0}</p>
+                  </div>
+                  <hr className="h-px border-0 bg-[#586769] my-2 " />
+                  <div className="flex items-center justify-between text-white">
+                    <p>Followers</p>
+                    <p>
+                      {profileInfoState?.profileUserInfo?.follower?.length || 0}
                     </p>
                   </div>
-
-                  <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
-                    <Image
-                      className="rounded-xl w-10 h-10 object-cover"
-                      src={SVG.Xbox}
-                      width={10}
-                      height={10}
-                      sizes="100vw"
-                      alt="Account Profile"
-                    />
-                    <p className="hidden lg:block text-white font-normal text-xs ">
-                      Connect with Xbox
-                    </p>
-                  </div>
-
-                  <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
-                    <Image
-                      className="rounded-xl w-10 h-10 object-cover"
-                      src={SVG.Steam}
-                      width={10}
-                      height={10}
-                      sizes="100vw"
-                      alt="Account Profile"
-                    />
-                    <p className="hidden lg:block text-white font-normal text-xs ">
-                      Connect with Steam
+                  <hr className="h-px border-0 bg-[#586769] my-2 " />
+                  <div className="flex items-center justify-between text-white">
+                    <p>Following</p>
+                    <p>
+                      {" "}
+                      {profileInfoState?.profileUserInfo?.following?.length ||
+                        0}
                     </p>
                   </div>
                 </div>
-                <div className="flex flex-col">
-                  <h1 className="text-white font-bold my-2">About Me:</h1>
-                  <p className="font-light text-xs text-[#7C7F80]">
-                    {profileInfoState?.profileUserInfo?.bio}
-                  </p>
+                <div className="flex flex-col justify-center ">
+                  <div className="flex flex-row w-56 gap-2 lg:flex-col  lg:w-full">
+                    <div className="flex  items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
+                      <Image
+                        className="rounded-xl w-10 h-10 object-cover"
+                        src={SVG.PlayStation}
+                        width={10}
+                        height={10}
+                        sizes="100vw"
+                        alt="Account Profile"
+                      />
+                      <p className="hidden lg:block text-white font-light text-xs ">
+                        Connect with Playstation
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
+                      <Image
+                        className="rounded-xl w-10 h-10 object-cover"
+                        src={SVG.Twitch}
+                        width={10}
+                        height={10}
+                        sizes="100vw"
+                        alt="Account Profile"
+                      />
+                      <p className="hidden lg:block text-white font-normal text-xs ">
+                        Connect with Twitch
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
+                      <Image
+                        className="rounded-xl w-10 h-10 object-cover"
+                        src={SVG.Xbox}
+                        width={10}
+                        height={10}
+                        sizes="100vw"
+                        alt="Account Profile"
+                      />
+                      <p className="hidden lg:block text-white font-normal text-xs ">
+                        Connect with Xbox
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
+                      <Image
+                        className="rounded-xl w-10 h-10 object-cover"
+                        src={SVG.Steam}
+                        width={10}
+                        height={10}
+                        sizes="100vw"
+                        alt="Account Profile"
+                      />
+                      <p className="hidden lg:block text-white font-normal text-xs ">
+                        Connect with Steam
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex flex-col">
+                    <h1 className="text-white font-bold my-2">About Me:</h1>
+                    <p className="font-light text-xs text-[#7C7F80]">
+                      {profileInfoState?.profileUserInfo?.bio}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           )}
 
-          <div className="w-full lg:w-8/12 justify-center lg:justify-between items-center h-10 mt-10 lg:mt-24">
+          <div className="w-full lg:w-8/12 justify-center lg:justify-between items-center h-full  mt-10 lg:mt-24">
             {/* header */}
             <div className="flex items-center">
               <div className="flex justify-between items-center w-full sm:mx-2 lg:mx-4 relative">
@@ -425,7 +434,7 @@ function MyGamefolio({ params }: any) {
             {/* line */}
             <hr className="h-px border-0 bg-[#586769] my-2 mx-4" />
             {/* Profile */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4 h-full ">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4 h-3/4 md:overflow-y-scroll  pb-40 md:pb-0 ">
               {isDataFetching ? (
                 <>
                   {[...Array(6)]?.map((_, index) => (
@@ -433,9 +442,9 @@ function MyGamefolio({ params }: any) {
                   ))}
                 </>
               ) : (
-                userVideos.map((item: any) => {
+                userVideos?.map((item: any) => {
                   return (
-                    <div key={item.id} className="relative">
+                    <div key={item.id} className="relative w-fit h-fit">
                       <video
                         src={item.video}
                         className="w-96 sm:w-96 h-52 md:h-40 rounded-xl object-cover hover:opacity-80"

@@ -83,7 +83,7 @@ const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
         className="md:ml-64 h-auto"
         onClick={sidebarOpen ? toggleSidebar : undefined}
       >
-        <div className="rounded-lg border-gray-600 h-full  no-scrollbar">
+        <div className="rounded-lg border-gray-600 h-fit overflow-y-auto  no-scrollbar">
           {children}
         </div>
       </main>
