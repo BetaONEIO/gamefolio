@@ -3,6 +3,7 @@ import { SVG } from "@/assets/SVG";
 import Modal from "@/components/Modals/Modal";
 import VideoDetails from "@/components/Modals/VideoDetails";
 import { leagueGothic } from "@/font/font";
+import { fetchGameList } from "@/services/api";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import {
@@ -16,7 +17,6 @@ import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { fetchGameList } from "@/services/api";
 
 const SkeletonLoaderGames = () => (
   <div className="flex items-center">
@@ -380,7 +380,7 @@ function Explore() {
         </div>
       </div>
 
-      <div className=" items-center grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-2 overflow-x-auto no-scrollbar">
+      <div className="flex items-center  my-2 overflow-scroll no-scrollbar gap-4">
         {loading ? (
           <>
             {[...Array(4)]?.map((_, index) => (
@@ -403,7 +403,7 @@ function Explore() {
               <div className="relative overflow-hidden rounded-xl">
                 <video
                   src={item.video}
-                  className="w-96 h-36 rounded-xl hover:opacity-80 hover:scale-105 transition-transform duration-300"
+                  className="w-full h-36 rounded-xl hover:opacity-80 hover:scale-105 transition-transform duration-300"
                   controls={false}
                   autoPlay={false}
                   width={50}
