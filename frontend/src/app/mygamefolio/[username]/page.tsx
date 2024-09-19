@@ -7,10 +7,11 @@ import Modal from "@/components/Modals/Modal";
 import MoreOptions from "@/components/Modals/MoreOptions";
 import Report from "@/components/Modals/Report";
 import VideoDetails from "@/components/Modals/VideoDetails";
+import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import { getAllPostVideos, updateDetailedPost } from "@/store/slices/postSlice";
-import { getProfileInfo } from "@/store/slices/userSlice";
+import { getProfileInfo, postUsernames } from "@/store/slices/userSlice";
 import { copyToClipboard } from "@/utils/helpers";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
@@ -85,12 +86,23 @@ const VideoSkeletonLoader = () => {
   );
 };
 
+interface Usernames {
+  playstation?: string;
+  twitch?: string;
+  xbox?: string;
+  steam?: string;
+}
+
 function MyGamefolio({ params }: any) {
   const authState = useSelector((state: any) => state.auth) || [];
   const profileInfoState = useSelector((state: any) => state.user) || [];
   const postState = useSelector((state: any) => state.post) || [];
   const [isPrivateAccount, setIsPrivateAccount] = useState(false);
   const [postID, setPostID] = useState("");
+  const [playstation, setPlaystation] = useState("");
+  const [twitch, setTwitch] = useState("");
+  const [xbox, setXbox] = useState("");
+  const [steam, setSteam] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [modalState, setModalState] = useState({
     isShareModalOpen: false,
@@ -172,6 +184,38 @@ function MyGamefolio({ params }: any) {
 
   const backgroundImage = `url(${authState.userData.coverPicture})`;
 
+  const handleSubmitUsernames = async ({
+    playstation,
+    twitch,
+    xbox,
+    steam,
+  }: Usernames) => {
+    const payload = {
+      userID: authState.userData._id,
+      playstation: playstation,
+      twitch: twitch,
+      xbox: xbox,
+      steam: steam,
+    };
+
+    const successCallback = (response: any) => {
+      handlePageRefresh();
+      toastSuccess(response);
+    };
+
+    const errorCallback = (error: string) => {
+      toastError(error);
+    };
+
+    const params = {
+      payload,
+      successCallback,
+      errorCallback,
+    };
+
+    dispatch(postUsernames(params));
+  };
+
   return (
     <Layout>
       <div className="flex justify-center h-screen">
@@ -180,7 +224,7 @@ function MyGamefolio({ params }: any) {
         ) : (
           <div className="relative w-full h-screen">
             <div
-              className=" w-full  h-40 md:h-80 "
+              className="fixed md:relative w-full  h-40 md:h-80 "
               style={{
                 background: `linear-gradient(to bottom, transparent 40%, rgba(9, 22, 25, 1) 99%), ${backgroundImage} no-repeat center / cover`,
                 backgroundSize: "cover",
@@ -188,11 +232,6 @@ function MyGamefolio({ params }: any) {
               }}
             ></div>
             <div className="w-full h-full bg-[#091619]"></div>
-
-            {/* <div
-              className="absolute inset-0 bg-gradient-to-t from-[#091619] via-transparent to-transparent"
-              style={{ opacity: 1 }}
-            ></div> */}
           </div>
         )}
 
@@ -263,136 +302,195 @@ function MyGamefolio({ params }: any) {
                     </ul>
                   </div>
                 </div>
+              </div>
 
-                <div className="flex flex-col justify-center">
-                  <div className="flex justify-center">
+              <div className="flex flex-col justify-center">
+                <div className="flex justify-center mb-1">
+                  <Image
+                    className="rounded-xl w-32 h-32 object-cover border-2 border-[#43DD4E]"
+                    src={profileInfoState?.profileUserInfo?.profilePicture}
+                    width={10}
+                    height={10}
+                    sizes="100vw"
+                    alt="Account Profile"
+                  />
+                </div>
+                <span className="flex justify-center font-semibold text-white mb-1">
+                  {profileInfoState?.profileUserInfo?.name}
+                </span>
+                <div className="flex items-center gap-6 justify-center mb-4">
+                  <div
+                    className="flex items-center"
+                    onClick={() =>
+                      copyToClipboard(authState.userData?.username)
+                    }
+                  >
+                    <p className="text-white">
+                      ({profileInfoState?.profileUserInfo?.username})
+                    </p>
                     <Image
-                      className="rounded-xl w-32 h-32 object-cover border-2 border-[#43DD4E]"
-                      src={profileInfoState?.profileUserInfo?.profilePicture}
-                      width={10}
-                      height={10}
-                      sizes="100vw"
-                      alt="Account Profile"
+                      className="cursor-pointer hover:opacity-80"
+                      src={SVG.AccountCopyUsername}
+                      width={16}
+                      height={16}
+                      alt="Copy Username"
                     />
                   </div>
-                  <span className="flex justify-center font-semibold text-white">
-                    {profileInfoState?.profileUserInfo?.name}
-                  </span>
-                  <div className="flex items-center gap-6 justify-center">
-                    <div
-                      className="flex items-center"
-                      onClick={() =>
-                        copyToClipboard(authState.userData?.username)
+                </div>
+
+                {!isCurrentUserProfile && (
+                  <div className="flex justify-center h-8 gap-2 my-6">
+                    <button className="font-bold w-40 h-10 bg-[#292D32] text-white text-center py-[10px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]">
+                      follow
+                    </button>
+                    <button className="font-bold w-40 h-10 bg-gradient-to-b from-[#62C860] to-[#37C535] text-white text-center py-[10px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]">
+                      Message
+                    </button>
+                  </div>
+                )}
+                <div className="flex items-center justify-between text-white mt-4">
+                  <p>Posts</p>
+                  <p>{userVideos?.length || 0}</p>
+                </div>
+                <hr className="h-px border-0 bg-[#586769] my-2 " />
+                <div className="flex items-center justify-between text-white">
+                  <p>Followers</p>
+                  <p>
+                    {profileInfoState?.profileUserInfo?.follower?.length || 0}
+                  </p>
+                </div>
+                <hr className="h-px border-0 bg-[#586769] my-2 " />
+                <div className="flex items-center justify-between text-white">
+                  <p>Following</p>
+                  <p>
+                    {" "}
+                    {profileInfoState?.profileUserInfo?.following?.length || 0}
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-col justify-center ">
+                <div className="flex flex-row w-56 gap-2 lg:flex-col  lg:w-full">
+                  <div className="relative flex items-center space-x-2 rounded-lg bg-[#162423] p-2 mt-2">
+                    <Image
+                      src={SVG.PlayStation}
+                      alt="Connect with Playstation"
+                      width={10}
+                      height={10}
+                      className="rounded-xl w-10 h-10 object-cover"
+                    />
+                    <input
+                      className="hidden lg:block text-white font-normal text-xs bg-[#162423] outline-none py-3"
+                      placeholder={
+                        profileInfoState?.profileUserInfo?.socialUsernames?.find(
+                          (social: any) => social.playstation
+                        )?.playstation || "Connect with Playstation"
                       }
-                    >
-                      <p className="text-white">
-                        ({profileInfoState?.profileUserInfo?.username})
-                      </p>
+                      value={playstation}
+                      onChange={(e) => setPlaystation(e.target.value)}
+                    />
+                    <div onClick={() => handleSubmitUsernames({ playstation })}>
                       <Image
-                        className="cursor-pointer hover:opacity-80"
-                        src={SVG.AccountCopyUsername}
-                        width={16}
-                        height={16}
-                        alt="Copy Username"
+                        className="hidden lg:block w-4 h-4 text-green-500 lg:absolute lg:right-3 lg:top-2/4 lg:transform lg:-translate-y-2/4"
+                        src={SVG.Tick}
+                        alt="tick"
+                        width={30}
+                        height={30}
                       />
                     </div>
                   </div>
 
-                  {!isCurrentUserProfile && (
-                    <div className="flex justify-center h-8 gap-2 my-6">
-                      <button className="font-bold w-40 h-10 bg-[#292D32] text-white text-center py-[10px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]">
-                        follow
-                      </button>
-                      <button className="font-bold w-40 h-10 bg-gradient-to-b from-[#62C860] to-[#37C535] text-white text-center py-[10px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]">
-                        Message
-                      </button>
+                  <div className="relative flex items-center space-x-2 rounded-lg bg-[#162423] p-2 mt-2">
+                    <Image
+                      src={SVG.Twitch}
+                      alt="Connect with Twitch"
+                      width={10}
+                      height={10}
+                      className="rounded-xl w-10 h-10 object-cover"
+                    />
+                    <input
+                      className="hidden lg:block text-white font-normal text-xs bg-[#162423] outline-none py-3"
+                      placeholder={
+                        profileInfoState?.profileUserInfo?.socialUsernames?.find(
+                          (social: any) => social.twitch
+                        )?.twitch || "Connect with Twitch"
+                      }
+                      value={twitch}
+                      onChange={(e) => setTwitch(e.target.value)}
+                    />
+                    <div onClick={() => handleSubmitUsernames({ twitch })}>
+                      <Image
+                        className="hidden lg:block w-4 h-4 text-green-500 lg:absolute lg:right-3 lg:top-2/4 lg:transform lg:-translate-y-2/4"
+                        src={SVG.Tick}
+                        alt="tick"
+                        width={30}
+                        height={30}
+                      />
                     </div>
-                  )}
-                  <div className="flex items-center justify-between text-white">
-                    <p>Posts</p>
-                    <p>{userVideos?.length || 0}</p>
                   </div>
-                  <hr className="h-px border-0 bg-[#586769] my-2 " />
-                  <div className="flex items-center justify-between text-white">
-                    <p>Followers</p>
-                    <p>
-                      {profileInfoState?.profileUserInfo?.follower?.length || 0}
-                    </p>
+
+                  <div className="relative flex items-center space-x-2 rounded-lg bg-[#162423] p-2 mt-2">
+                    <Image
+                      src={SVG.Xbox}
+                      alt="Connect with Xbox"
+                      width={10}
+                      height={10}
+                      className="rounded-xl w-10 h-10 object-cover"
+                    />
+                    <input
+                      className="hidden lg:block text-white font-normal text-xs bg-[#162423] outline-none py-3"
+                      placeholder={
+                        profileInfoState?.profileUserInfo?.socialUsernames?.find(
+                          (social: any) => social.xbox
+                        )?.xbox || "Connect with xbox"
+                      }
+                      value={xbox}
+                      onChange={(e) => setXbox(e.target.value)}
+                    />
+                    <div onClick={() => handleSubmitUsernames({ xbox })}>
+                      <Image
+                        className="hidden lg:block w-4 h-4 text-green-500 lg:absolute lg:right-3 lg:top-2/4 lg:transform lg:-translate-y-2/4"
+                        src={SVG.Tick}
+                        alt="tick"
+                        width={30}
+                        height={30}
+                      />
+                    </div>
                   </div>
-                  <hr className="h-px border-0 bg-[#586769] my-2 " />
-                  <div className="flex items-center justify-between text-white">
-                    <p>Following</p>
-                    <p>
-                      {" "}
-                      {profileInfoState?.profileUserInfo?.following?.length ||
-                        0}
-                    </p>
+
+                  <div className="relative flex items-center space-x-2 rounded-lg bg-[#162423] p-2 mt-2">
+                    <Image
+                      src={SVG.Steam}
+                      alt="Connect with Steam"
+                      width={10}
+                      height={10}
+                      className="rounded-xl w-10 h-10 object-cover"
+                    />
+                    <input
+                      className="hidden lg:block text-white font-normal text-xs bg-[#162423] outline-none py-3"
+                      placeholder={
+                        profileInfoState?.profileUserInfo?.socialUsernames?.find(
+                          (social: any) => social.steam
+                        )?.steam || "Connect with steam"
+                      }
+                      value={steam}
+                      onChange={(e) => setSteam(e.target.value)}
+                    />
+                    <div onClick={() => handleSubmitUsernames({ steam })}>
+                      <Image
+                        className="hidden lg:block w-4 h-4 text-green-500 lg:absolute lg:right-3 lg:top-2/4 lg:transform lg:-translate-y-2/4"
+                        src={SVG.Tick}
+                        alt="tick"
+                        width={30}
+                        height={30}
+                      />
+                    </div>
                   </div>
                 </div>
-                <div className="flex flex-col justify-center ">
-                  <div className="flex flex-row w-56 gap-2 lg:flex-col  lg:w-full">
-                    <div className="flex  items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
-                      <Image
-                        className="rounded-xl w-10 h-10 object-cover"
-                        src={SVG.PlayStation}
-                        width={10}
-                        height={10}
-                        sizes="100vw"
-                        alt="Account Profile"
-                      />
-                      <p className="hidden lg:block text-white font-light text-xs ">
-                        Connect with Playstation
-                      </p>
-                    </div>
-
-                    <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
-                      <Image
-                        className="rounded-xl w-10 h-10 object-cover"
-                        src={SVG.Twitch}
-                        width={10}
-                        height={10}
-                        sizes="100vw"
-                        alt="Account Profile"
-                      />
-                      <p className="hidden lg:block text-white font-normal text-xs ">
-                        Connect with Twitch
-                      </p>
-                    </div>
-
-                    <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
-                      <Image
-                        className="rounded-xl w-10 h-10 object-cover"
-                        src={SVG.Xbox}
-                        width={10}
-                        height={10}
-                        sizes="100vw"
-                        alt="Account Profile"
-                      />
-                      <p className="hidden lg:block text-white font-normal text-xs ">
-                        Connect with Xbox
-                      </p>
-                    </div>
-
-                    <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
-                      <Image
-                        className="rounded-xl w-10 h-10 object-cover"
-                        src={SVG.Steam}
-                        width={10}
-                        height={10}
-                        sizes="100vw"
-                        alt="Account Profile"
-                      />
-                      <p className="hidden lg:block text-white font-normal text-xs ">
-                        Connect with Steam
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex flex-col">
-                    <h1 className="text-white font-bold my-2">About Me:</h1>
-                    <p className="font-light text-xs text-[#7C7F80]">
-                      {profileInfoState?.profileUserInfo?.bio}
-                    </p>
-                  </div>
+                <div className="flex flex-col">
+                  <h1 className="text-white font-bold my-2">About Me:</h1>
+                  <p className="font-light text-xs text-[#7C7F80]">
+                    {profileInfoState?.profileUserInfo?.bio}
+                  </p>
                 </div>
               </div>
             </div>

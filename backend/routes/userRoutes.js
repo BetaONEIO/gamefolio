@@ -21,6 +21,7 @@ router.post("/profile/get", userController.getProfileInfo);
 router.get("/getAllUsers", userController.getAllUsers);
 router.post("/deactivate", userController.deactivateAccount);
 router.post("/username/update", authMiddleware, userController.addUsername);
+router.post("/usernames/create", userController.addSocialUsernames);
 
 //followers
 router.post("/follower/create", userController.addFollowers);

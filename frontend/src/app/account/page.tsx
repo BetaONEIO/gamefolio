@@ -496,7 +496,7 @@ function Account() {
         </div>
 
         {/* Stories */}
-        <CurrentUserStories />
+        {/* <CurrentUserStories /> */}
 
         {/* Top Bar */}
 

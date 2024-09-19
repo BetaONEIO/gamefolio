@@ -319,25 +319,25 @@ function SideBar({ toggleSidebar, sidebarOpen }: SideBarProps) {
 
           <div>
             <div className="flex flex-col items-center justify-center gap-3">
-              <Link href="/chat">
-                <button className="flex w-full sm:w-52 bg-[#1C2C2E] text-white py-[10px] px-[20px] rounded-full ">
-                  <div className="flex self-center justify-between ">
-                    <Image
-                      width={20}
-                      height={20}
-                      src={SVG.Message}
-                      alt="Message"
-                      className=""
-                    />
-                    <div>
-                      <p className="mx-4">Messages</p>
-                    </div>
-                    <p className="px-2 rounded-xl bg-[#586769]">
-                      {messageState.messages?.length}
-                    </p>
+              {/* <Link href="/chat"> */}
+              <button className="flex w-full sm:w-52 bg-[#1C2C2E] text-white py-[10px] px-[20px] rounded-full ">
+                <div className="flex self-center justify-between ">
+                  <Image
+                    width={20}
+                    height={20}
+                    src={SVG.Message}
+                    alt="Message"
+                    className=""
+                  />
+                  <div>
+                    <p className="mx-4">Messages</p>
                   </div>
-                </button>
-              </Link>
+                  <p className="px-2 rounded-xl bg-[#586769]">
+                    {messageState.messages?.length}
+                  </p>
+                </div>
+              </button>
+              {/* </Link> */}
 
               <button
                 className="flex items-center w-full sm:w-52 bg-gradient-to-b from-[#62C860] to-[#37C535] text-white py-[10px] px-[20px] rounded-full mb-3 gap-4"

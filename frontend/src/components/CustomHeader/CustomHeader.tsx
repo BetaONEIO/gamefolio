@@ -128,7 +128,7 @@ function CustomHeader({ children }: { children?: String }) {
           </button>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-28">
           {/* <Link href="/main"> */}
           <div className="relative">
             <div
@@ -159,11 +159,11 @@ function CustomHeader({ children }: { children?: String }) {
               borderWidth: "2px",
               borderColor: "#43DD4E",
               position: "absolute",
-              top: isBrowser && window.innerWidth <= 768 ? "92%" : "80%",
-              right: isBrowser && window.innerWidth <= 768 ? "-10%" : "5.5%",
+              top: isBrowser && window.innerWidth <= 768 ? "95%" : "80%",
+              right: isBrowser && window.innerWidth <= 768 ? "-22%" : "-10%",
               transform: "translateX(-50%)",
               height: "400px",
-              width: "310px",
+              width: "300px",
             }}
           >
             <div
@@ -178,7 +178,7 @@ function CustomHeader({ children }: { children?: String }) {
               }}
             />
             <div
-              className="md:flex flex-col gap-4 rounded-lg bg-[#091619] border border-[#1C2C2E] px-2 py-6 overflow-hidden overflow-y-auto"
+              className="w-full md:flex flex-col gap-4 rounded-lg bg-[#091619] border border-[#1C2C2E] px-2 py-6 overflow-hidden overflow-y-auto"
               style={styles.scroller}
             >
               <div className="flex justify-between items-center">
@@ -286,22 +286,21 @@ function CustomHeader({ children }: { children?: String }) {
             </div>
           </div>
           {/* </Link> */}
-          {/* <Link href="/account/my-folio"> */}
-          <div className="flex items-center p-1 rounded-full border-2 border-[#162423] cursor-pointer hover:opacity-60">
-            <Image
-              className="mr-2"
-              src={SVG.GGcoin}
-              alt="GGcoin"
-              width={30}
-              height={30}
-            />
-            <p className="font-semibold text-white text-xs sm:text-sm md:text-base lg:text-lg">
-              GG Coins
-            </p>
-          </div>
-          {/* </Link> */}
 
-          <div
+          {/* <div className="flex items-center p-1 rounded-full border-2 border-[#162423] cursor-pointer hover:opacity-60">
+              <Image
+                className="mr-2"
+                src={SVG.GGcoin}
+                alt="GGcoin"
+                width={30}
+                height={30}
+              />
+              <p className="font-semibold text-white text-xs sm:text-sm md:text-base lg:text-lg">
+                GG Coins
+              </p>
+            </div> */}
+
+          {/* <div
             className="flex items-center gap-2 p-1 rounded-full border-2 border-[#162423] cursor-pointer hover:opacity-60"
             onClick={() => handleModalToggle("isBadgeOpen")}
           >
@@ -316,7 +315,7 @@ function CustomHeader({ children }: { children?: String }) {
             <p className="font-semibold text-white text-xs sm:text-sm md:text-base lg:text-lg">
               Badges
             </p>
-          </div>
+          </div> */}
 
           <Link href="/account/settings/edit-profile">
             <div className="rounded-3xl p-1.5 border-2 border-[#162423]">
