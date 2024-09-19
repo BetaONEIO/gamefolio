@@ -119,7 +119,7 @@ function Video() {
   };
 
   return (
-    <div className="m-4 h-screen">
+    <div className="m-4 h-fit pb-40 md:pb-0">
       <div className="flex items-center mx-2 mb-2">
         <p className="font-semibold sm:text-lg text-xs text-white">
           Video Recommended for you

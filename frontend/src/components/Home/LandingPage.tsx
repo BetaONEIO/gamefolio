@@ -24,7 +24,7 @@ const LandingPage = () => {
 
   return (
     <CustomBackground>
-      <div className="flex flex-col items-center justify-center px-6 py-8 ">
+      <div className="flex flex-col items-center justify-center px-6 py-8  ">
         <div className="p-6 space-y-4 sm:p-8 w-96 bg-[#091619] rounded-xl border border-[#1C2C2E]">
           <div className="flex justify-center items-center">
             <Image

@@ -390,7 +390,7 @@ function Main() {
           style={sectionStyle}
           className="flex bg-[#091619] h-screen justify-center py-4 overflow-y-scroll no-scrollbar"
         >
-          <div className="flex w-full justify-center md:justify-between gap-4 px-4">
+          <div className="flex w-full justify-center md:justify-between gap-4 px-4 h-3/4 md:h-full">
             {/* Trending */}
             <div
               className="hidden w-[30.9rem] h-1/2 md:flex flex-col gap-6 rounded-lg bg-[#091619] border border-[#1C2C2E] px-4 py-6 overflow-y-auto"
@@ -455,10 +455,10 @@ function Main() {
             </div>
 
             {/* Story , Posts */}
-            <div className="w-11/12 sm:w-10/12 flex  flex-col gap-3 rounded-lg ">
-              {/* <div>
+            <div className="w-11/12 sm:w-10/12 flex  flex-col gap-3 rounded-lg overflow-y-scroll no-scrollbar  ">
+              <div>
                 <FollowingStories />
-              </div> */}
+              </div>
               <div className="bg-[#091619] border border-dashed border-green-800 rounded-lg flex flex-col px-4 py-6 justify-center items-start gap-4 mt-6">
                 <span className="text-white font-bold text-sm md:text-lg">
                   Post Now
@@ -794,7 +794,7 @@ function Main() {
                             return (
                               <div
                                 key={post.url}
-                                className="border border-[#1C2C2E] rounded-2xl bg-[#091619] min-w-fit md:min-w-min px-2"
+                                className="border border-[#1C2C2E] rounded-2xl bg-[#091619] min-w-fit md:min-w-min px-2 "
                               >
                                 <div className="flex items-center justify-between m-3">
                                   <div className="flex items-center sm:gap-4 gap-2">

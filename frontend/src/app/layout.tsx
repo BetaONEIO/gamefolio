@@ -27,7 +27,10 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" />
       </head>
       <ReduxProvider>
-        <body suppressHydrationWarning={true} className={lexendExa.className}>
+        <body
+          suppressHydrationWarning={true}
+          className={`${lexendExa.className} overflow-hidden h-full `}
+        >
           {children}
         </body>
       </ReduxProvider>

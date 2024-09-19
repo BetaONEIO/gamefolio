@@ -13,10 +13,10 @@ function layout({ children }: any) {
 
       <div
         style={sectionStyle}
-        className="flex flex-col bg-[#091619]  h-full py-4 overflow-y-scroll"
+        className="flex flex-col bg-[#091619] h-screen overflow-y-auto no-scrollbar  py-4"
       >
         <TopBar />
-        <div className="mt-4">{children}</div>
+        <div className="mt-4 mb-20 h-fit">{children}</div>
       </div>
     </Layout>
   );
