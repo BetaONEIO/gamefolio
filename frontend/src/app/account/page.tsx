@@ -1,9 +1,17 @@
 "use client";
-import { Suspense, useEffect, useState } from "react";
-import Image from "next/image";
 import { SVG } from "@/assets/SVG";
-import { IMAGES } from "@/assets/images";
+import CustomHeader from "@/components/CustomHeader/CustomHeader";
+import Layout from "@/components/CustomLayout/layout";
+import AddClips from "@/components/Modals/AddClips";
+import AddVideo from "@/components/Modals/AddVideo";
+import Followers from "@/components/Modals/Followers";
+import Following from "@/components/Modals/Following";
+import Modal from "@/components/Modals/Modal";
+import MoreOptions from "@/components/Modals/MoreOptions";
+import VideoDetails from "@/components/Modals/VideoDetails";
+import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import { leagueGothic } from "@/font/font";
+import { BASE_URL } from "@/services/api";
 import { dispatch, useSelector } from "@/store";
 import { updateCover, userSession } from "@/store/slices/authSlice";
 import {
@@ -13,25 +21,15 @@ import {
   removeUserBookmark,
   updateDetailedPost,
 } from "@/store/slices/postSlice";
-import { getCookieValue, getFromLocal } from "@/utils/localStorage";
+import { getProfileInfo } from "@/store/slices/userSlice";
 import { copyToClipboard } from "@/utils/helpers";
-import { ToastContainer } from "react-toastify";
-import Layout from "@/components/CustomLayout/layout";
-import Followers from "@/components/Modals/Followers";
-import Following from "@/components/Modals/Following";
-import Modal from "@/components/Modals/Modal";
-import MoreOptions from "@/components/Modals/MoreOptions";
-import CurrentUserStories from "@/components/story/CurrentUserStories";
-import VideoDetails from "@/components/Modals/VideoDetails";
-import { toastError, toastSuccess } from "@/components/Toast/Toast";
-import CustomHeader from "@/components/CustomHeader/CustomHeader";
-import AddClips from "@/components/Modals/AddClips";
-import AddVideo from "@/components/Modals/AddVideo";
-import Link from "next/link";
-import { updateProfile } from "@/store/slices/authSlice";
+import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import axios from "axios";
-import { BASE_URL } from "@/services/api";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { ToastContainer } from "react-toastify";
 
 interface MyVideosSectionProps {
   authState: any;
@@ -151,6 +149,11 @@ const MyBookmarkSection: React.FC<MyBookmarkSectionProps> = ({
 function Account() {
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const postState = useSelector((state: any) => state.post) || [];
+  const profileInfoState = useSelector((state: any) => state.user) || [];
+  const [playstation, setPlaystation] = useState("");
+  const [twitch, setTwitch] = useState("");
+  const [xbox, setXbox] = useState("");
+  const [steam, setSteam] = useState("");
   const [update, setUpdate] = useState<Boolean>(false);
   const [image, setImage] = useState<File | null>(null);
   const [selectedSection, setSelectedSection] = useState("videos");
@@ -265,6 +268,7 @@ function Account() {
   useEffect(() => {
     dispatch(userSession(params));
     dispatch(getUserBookmark(params));
+    dispatch(getProfileInfo({ payload: params }));
     dispatch(getTrendingPosts());
     dispatch(getAllPostVideos());
   }, [postState.refresh]);
@@ -464,8 +468,11 @@ function Account() {
                   <span className="md:text-lg text-gray-400">Following</span>
                 </div>
               </div>
-              <h1 className="text-white font-bold">About Me!</h1>
-              <p className="text-gray-400">{authState?.bio}</p>
+
+              <div className="hidden sm:block">
+                <h1 className="text-white text-md font-semibold">About Me!</h1>
+                <p className="text-gray-400">{authState?.bio}</p>
+              </div>
             </div>
 
             <label htmlFor="dropzone-file">
@@ -500,18 +507,24 @@ function Account() {
         <div className="flex mx-3">
           <div className="hidden w-2/5  md:flex flex-col sm:w-60 md:w-60 lg:w-96 h-80 border-2 border-[#1C2C2E] rounded-lg p-1">
             <h1 className="text-white font-bold my-2">Connect</h1>
-            <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
+            <div className="relative flex items-center space-x-2 rounded-lg bg-[#162423] p-2 mt-2">
               <Image
-                className="rounded-xl w-10 h-10 object-cover"
                 src={SVG.PlayStation}
+                alt="Connect with Playstation"
                 width={10}
                 height={10}
-                sizes="100vw"
-                alt="Account Profile"
+                className="rounded-xl w-10 h-10 object-cover"
               />
-              <p className="text-white font-light text-xs ">
-                Connect with Playstation
-              </p>
+              <input
+                className="hidden lg:block text-white font-normal text-xs bg-[#162423] outline-none py-3"
+                placeholder={
+                  profileInfoState?.profileUserInfo?.socialUsernames?.find(
+                    (social: any) => social.playstation
+                  )?.playstation || "Connect with Playstation"
+                }
+                value={playstation}
+                onChange={(e) => setPlaystation(e.target.value)}
+              />
             </div>
 
             <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
@@ -523,9 +536,16 @@ function Account() {
                 sizes="100vw"
                 alt="Account Profile"
               />
-              <p className="text-white font-normal text-xs ">
-                Connect with Twitch
-              </p>
+              <input
+                className="hidden lg:block text-white font-normal text-xs bg-[#162423] outline-none py-3"
+                placeholder={
+                  profileInfoState?.profileUserInfo?.socialUsernames?.find(
+                    (social: any) => social.twitch
+                  )?.twitch || "Connect with Twitch"
+                }
+                value={twitch}
+                onChange={(e) => setTwitch(e.target.value)}
+              />
             </div>
 
             <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
@@ -537,9 +557,16 @@ function Account() {
                 sizes="100vw"
                 alt="Account Profile"
               />
-              <p className="text-white font-normal text-xs ">
-                Connect with Xbox
-              </p>
+              <input
+                className="hidden lg:block text-white font-normal text-xs bg-[#162423] outline-none py-3"
+                placeholder={
+                  profileInfoState?.profileUserInfo?.socialUsernames?.find(
+                    (social: any) => social.xbox
+                  )?.xbox || "Connect with xbox"
+                }
+                value={xbox}
+                onChange={(e) => setXbox(e.target.value)}
+              />
             </div>
 
             <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
@@ -551,9 +578,16 @@ function Account() {
                 sizes="100vw"
                 alt="Account Profile"
               />
-              <p className="text-white font-normal text-xs ">
-                Connect with Steam
-              </p>
+              <input
+                className="hidden lg:block text-white font-normal text-xs bg-[#162423] outline-none py-3"
+                placeholder={
+                  profileInfoState?.profileUserInfo?.socialUsernames?.find(
+                    (social: any) => social.steam
+                  )?.steam || "Connect with steam"
+                }
+                value={steam}
+                onChange={(e) => setSteam(e.target.value)}
+              />
             </div>
           </div>
 
@@ -563,7 +597,7 @@ function Account() {
               <div className="h-10 w-full flex justify-around items-center">
                 <div>
                   <div
-                    className={`flex gap-2 my-6 items-center cursor-pointer ${
+                    className={`flex w-48 gap-2 my-6 items-center cursor-pointer ${
                       selectedSection === "videos"
                         ? "text-white"
                         : "text-gray-500"
@@ -592,7 +626,7 @@ function Account() {
 
                 <div className="">
                   <div
-                    className={`flex my-6 gap-2 items-center cursor-pointer ${
+                    className={`flex w-52 my-6 gap-2 items-center cursor-pointer ${
                       selectedSection === "bookmarked"
                         ? "text-white"
                         : "text-gray-500"
@@ -623,27 +657,11 @@ function Account() {
 
               <div className="flex flex-col border border-dashed border-green-800 rounded-lg px-4 py-4 justify-center items-start gap-4">
                 <span className="text-white font-bold text-sm md:text-lg">
-                  Add New
+                  Post Now
                 </span>
-                <div className="flex justify-between gap-2 w-full">
+                <div className="flex w-full ">
                   <div
-                    className="bg-[#162423] rounded-lg flex justify-center items-center w-6/12 h-24 gap-2 cursor-pointer hover:opacity-80"
-                    onClick={() => handleModalToggle("isAddClipsOpen")}
-                  >
-                    <div>
-                      <Image
-                        className="cursor-pointer w-fit"
-                        src={SVG.Clip}
-                        alt="Threedots"
-                        width={24}
-                        height={24}
-                      />
-                    </div>
-                    <p className="text-white font-bold">Post Clips</p>
-                  </div>
-
-                  <div
-                    className="bg-[#162423] rounded-lg flex justify-center items-center w-6/12 h-24 gap-2 cursor-pointer hover:opacity-80"
+                    className="bg-[#162423] rounded-lg flex w-full justify-center items-center h-24 gap-4 cursor-pointer hover:opacity-80"
                     onClick={() => {
                       handleModalToggle("isAddVideoOpen");
                     }}
@@ -657,7 +675,9 @@ function Account() {
                         height={24}
                       />
                     </div>
-                    <p className="text-white font-bold">Post Videos</p>
+                    <p className="text-white font-bold">
+                      Post to your Gamefolio
+                    </p>
                   </div>
                 </div>
               </div>
@@ -740,7 +760,7 @@ function Account() {
                           />
                           <div className="flex flex-col">
                             <h1 className="w-[180px] sm:w-[220px] text-xs md:text-xs sm:text-xs font-semibold text-white hover:opacity-80">
-                              {item?.userID?.name}
+                              {item?.userID?.name.substring(0, 11)}
                             </h1>
                             <p className="text-xs font-light text-gray-400">
                               {formatTimeAgo(item.date)}

@@ -185,7 +185,7 @@ function Video() {
                     />
                     <div>
                       <p className="text-sm text-white font-semibold  hover:text-[#43DD4E]">
-                        {item?.userID?.name}
+                        {item?.userID?.name.substring(0, 15)}
                       </p>
                       <p className="text-xs text-gray-400 hover:opacity-80">
                         {formatTimeAgo(item.date)}

@@ -17,7 +17,6 @@ import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 
 const CoverPhotoLoader = () => {
   return (
@@ -178,9 +177,6 @@ function MyGamefolio({ params }: any) {
     dispatch(postUsernames(params));
   };
 
-  console.log("hel$$", postState);
-  console.log("hel$$2", profileInfoState);
-
   const handleVideoDetailOpen = (postID: string, detailedPost: any) => {
     setPostID(postID);
     dispatch(updateDetailedPost(detailedPost));
@@ -202,6 +198,16 @@ function MyGamefolio({ params }: any) {
   function handlePageRefresh(): void {
     throw new Error("Function not implemented.");
   }
+
+  const copyGamefolio = async (textToCopy: string) => {
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+      toastSuccess("Copied your Gamefolio");
+    } catch (err) {
+      console.error("Failed to copy:", err);
+      toastError("Failed to copy");
+    }
+  };
 
   const userVideos = postState.videos?.filter(
     (post: any) =>
@@ -236,11 +242,6 @@ function MyGamefolio({ params }: any) {
               }}
             ></div>
             <div className="w-full h-full bg-[#091619]"></div>
-
-            {/* <div
-              className="absolute inset-0 bg-gradient-to-t from-[#091619] via-transparent to-transparent"
-              style={{ opacity: 1 }}
-            ></div> */}
           </div>
         )}
 
@@ -293,10 +294,16 @@ function MyGamefolio({ params }: any) {
                   />
                   <ul>
                     <li>
-                      <span className="font-normal cursor-pointer hover:opacity-80">
+                      <div
+                        className="font-normal cursor-pointer hover:opacity-80"
+                        onClick={() => {
+                          copyGamefolio(window.location.href);
+                        }}
+                      >
                         Share
-                      </span>
+                      </div>
                     </li>
+
                     <li>
                       <div
                         onClick={() => handleModalToggle("isReportModalOpen")}

@@ -292,7 +292,7 @@ function Explore() {
                   <div>
                     <div className="mt-2">
                       <span className="font-semibold text-white hover:text-[#43DD4E]">
-                        {user?.name?.split(" ").slice(0, 2).join(" ")}
+                        {user?.name?.substring(0, 13)}
                       </span>
                     </div>
                     <div
