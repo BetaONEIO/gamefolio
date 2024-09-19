@@ -35,13 +35,13 @@ function User() {
   });
 
   return (
-    <div className="m-2 h-screen">
+    <div className="m-2 h-fit pb-40 md:pb-0 ">
       <div>
         <p className="font-semibold text-base sm:text-lg lg:text-lg text-white mx-2">
           User Profiles
         </p>
       </div>
-      <div className="flex flex-wrap justify-start items-start h-64">
+      <div className="flex flex-wrap justify-start items-start h-full">
         {userState?.userList?.length === 0 ? (
           <>
             {[...Array(6)]?.map((_, index) => (

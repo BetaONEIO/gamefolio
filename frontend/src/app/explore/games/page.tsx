@@ -119,7 +119,7 @@ function Games() {
   const isTrendingDataFetching = filteredGames.length === 0;
 
   return (
-    <div className="m-2 h-fit">
+    <div className="m-2 h-fit pb-40 md:pb-0">
       <div className="mx-2">
         <p className="font-semibold text-base sm:text-lg lg:text-lg text-white m-2">
           Trending Games Now

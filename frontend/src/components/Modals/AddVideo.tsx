@@ -274,7 +274,7 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
                       {/* <div className="w-full bg-gradient-to-b from-[#62C860] to-[#37C535] h-3 rounded-lg mt-2">
                         <div
                           style={{ width: `${uploadProgress}%` }}
-                          className="h-full bg-green-500 rounded-lg"
+                          className="h-full bg-primary rounded-lg"
                         ></div>
                       </div>*/}
                     </div>

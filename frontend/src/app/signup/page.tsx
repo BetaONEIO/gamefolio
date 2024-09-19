@@ -168,8 +168,8 @@ const Signup = () => {
 
   return (
     <CustomBackground>
-      <div className="flex flex-col items-center justify-center px-4 py-8 ">
-        <div className="p-12 space-y-4  w-92 md:w-[455px] bg-[#091619] rounded-xl border border-[#1C2C2E] h-screen overflow-y-scroll no-scroll no-scrollbar">
+      <div className="flex flex-col items-center justify-center px-4 py-8 h-screen ">
+        <div className="p-12 space-y-4  w-92 md:w-[455px] bg-[#091619] rounded-xl border border-[#1C2C2E]  overflow-y-scroll no-scroll no-scrollbar">
           <div className="flex justify-center items-center">
             <Image
               src={IMAGES.logo}
@@ -319,12 +319,13 @@ const Signup = () => {
                 className="mt-2 text-xs  font-normal text-gray-600 base-input-message"
               ></p>
             </div>
-
-            <ReCAPTCHA
-              ref={recaptchaRef}
-              sitekey={process.env["NEXT_PUBLIC_RECAPTCHA_KEY"] as string}
-              onChange={handleCaptchaChange}
-            />
+            <div className="captcha">
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                sitekey={process.env["NEXT_PUBLIC_RECAPTCHA_KEY"] as string}
+                onChange={handleCaptchaChange}
+              />
+            </div>
 
             <div className="flex ">
               <div>
