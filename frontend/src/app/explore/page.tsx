@@ -291,7 +291,7 @@ function Explore() {
                 <Link href={`/account/${user?.username}`} key={user._id}>
                   <div>
                     <div className="mt-2">
-                      <span className="font-semibold text-white hover:text-[#43DD4E]">
+                      <span className="font-semibold text-white hover:text-[#43DD4E] truncate">
                         {user?.name?.split(" ").slice(0, 2).join(" ")}
                       </span>
                     </div>
@@ -425,7 +425,7 @@ function Explore() {
                 />
                 <div>
                   <div>
-                    <span className="font-semibold text-xs sm:text-sm text-white hover:text-[#43DD4E]">
+                    <span className="font-semibold text-xs sm:text-sm text-white hover:text-[#43DD4E] truncate">
                       {item?.userID?.name.split(" ").slice(0, 2).join(" ")}
                     </span>
                   </div>

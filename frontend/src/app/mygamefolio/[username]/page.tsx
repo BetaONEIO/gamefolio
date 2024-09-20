@@ -77,9 +77,9 @@ const SkeletonProfileLoader = () => {
 
 const VideoSkeletonLoader = () => {
   return (
-    <div className="relative ">
-      <div className="max-w-full w-96 sm:w-96 h-52 md:h-40 bg-gray-700 rounded-xl animate-pulse"></div>
-      <div className="absolute bottom-6 right-3">
+    <div className="relative h-fit ">
+      <div className="max-w-full    h-52 md:h-40 bg-gray-700 rounded-xl animate-pulse"></div>
+      <div className="absolute bottom-1 right-2">
         <div className="w-10 h-10 md:w-8 md:h-8 bg-gray-700 rounded-full animate-pulse"></div>
       </div>
     </div>
@@ -533,7 +533,7 @@ function MyGamefolio({ params }: any) {
             <hr className="h-px border-0 bg-[#586769] my-2 mx-4" />
             {/* Profile */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4 h-3/4 md:overflow-y-scroll  pb-40 md:pb-0 ">
-              {isDataFetching ? (
+              {!isDataFetching ? (
                 <>
                   {[...Array(6)]?.map((_, index) => (
                     <VideoSkeletonLoader key={index} />
@@ -542,10 +542,13 @@ function MyGamefolio({ params }: any) {
               ) : (
                 userVideos?.map((item: any) => {
                   return (
-                    <div key={item.id} className="relative w-fit h-fit">
+                    <div
+                      key={item.id}
+                      className="relative w-full md:w-fit h-fit"
+                    >
                       <video
                         src={item.video}
-                        className="w-96 sm:w-96 h-52 md:h-40 rounded-xl object-cover hover:opacity-80"
+                        className="w-full md:w-96 h-52 md:h-40 rounded-xl object-cover hover:opacity-80"
                         width={20}
                         height={20}
                         controls={false}
