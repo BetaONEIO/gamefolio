@@ -144,7 +144,7 @@ function CustomHeader({ children }: { children?: String }) {
               />
             </div>
             {notificationIndex > 0 && (
-              <span className="absolute top-0.5 right-1 bg-red-800 text-white text-xs font-bold rounded-full px-1">
+              <span className="absolute top-0.5 right-1  text-white text-xs font-bold rounded-full px-1">
                 {notificationIndex}
               </span>
             )}
@@ -154,14 +154,15 @@ function CustomHeader({ children }: { children?: String }) {
             id="dropdown"
             className={`${
               isDropdownOpen ? "block" : "hidden"
-            } w-[20rem] flex justify-center border-2 border-[#43DD4E] rounded-lg mt--2 bg-[#162423]`}
+            } absolute top-full right-2/4 left-2/4 md:top-3/4 md:right-6 md:left-auto w-[20rem] flex justify-center border-2 border-[#43DD4E] rounded-lg mt--2 bg-[#162423]`}
             style={{
               borderWidth: "2px",
               borderColor: "#43DD4E",
-              position: "absolute",
-              top: isBrowser && window.innerWidth <= 768 ? "95%" : "80%",
-              right: isBrowser && window.innerWidth <= 768 ? "-22%" : "-10%",
-              transform: "translateX(-50%)",
+              // position: "absolute",
+              // top: isBrowser && window.innerWidth <= 768 ? "95%" : "80%",
+              // right: isBrowser && window.innerWidth <= 768 ? "50%" : "",
+              // left: isBrowser && window.innerWidth <= 768 ? "50%" : "",
+              // transform: "translateX(-50%)",
               height: "400px",
               width: "300px",
             }}
