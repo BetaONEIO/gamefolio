@@ -533,7 +533,7 @@ function MyGamefolio({ params }: any) {
             <hr className="h-px border-0 bg-[#586769] my-2 mx-4" />
             {/* Profile */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4 h-3/4 md:overflow-y-scroll  pb-40 md:pb-0 ">
-              {!isDataFetching ? (
+              {isDataFetching ? (
                 <>
                   {[...Array(6)]?.map((_, index) => (
                     <VideoSkeletonLoader key={index} />
