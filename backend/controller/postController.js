@@ -155,16 +155,28 @@ const getFollowingPosts = async (req, res) => {
     // Calculate skip value based on pagination
     const skip = limit * (page - 1);
 
+    // Query 1: Count total posts from users the current user is following
+    const totalPosts = await Posts.countDocuments({
+      userID: { $in: followingIDs },
+    });
+
     // Retrieve posts from users that the current user is following
     const posts = await Posts.find({ userID: { $in: followingIDs } })
       .sort({ date: -1 })
+
       .skip(skip)
       .limit(limit)
       .populate("userID")
       .populate({ path: "comments.userID" });
 
+    // Calculate hasNextPage by checking if more posts are available
+    const hasNextPage = skip + limit < totalPosts;
+
+    console.log({ length: posts.length, skip, hasNextPage, totalPosts });
+
     res.status(200).json({
       data: posts,
+      hasNextPage,
       message: "Successfully retrieved posts from users you are following",
     });
   } catch (error) {

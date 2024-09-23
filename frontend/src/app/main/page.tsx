@@ -27,7 +27,6 @@ import {
   getFollowingPostOnly,
   getVideoLink,
   setCustomVideoURL,
-  setIsScroll,
   updateDetailedPost,
 } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
@@ -35,6 +34,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
 
 const SkeletonLoader = () => (
   <div className="flex flex-col gap-6">
@@ -138,43 +138,42 @@ function Main() {
 
   // const [videoUrl, setVideoUrl] = useState(window.location.href);
   const [refreshPage, setRefreshPage] = useState(false);
+  const { ref, inView } = useInView();
 
-  const { loading, isScroll } = postState;
+  const { loading, hasNextPage, initialLoading } = postState;
   const [page, setPage] = useState(1);
 
   const router = useRouter();
 
   const videoUrl = typeof window !== "undefined" ? window.location.href : "";
 
+  const payload = {
+    userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
+    limit: 2,
+    page: page,
+  };
+
+  const params = {
+    payload,
+  };
   useEffect(() => {
-    const payload = {
-      userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
-      limit: 2,
-      page: page,
-    };
-
-    const params = {
-      payload,
-    };
-
     dispatch(userSession(params));
-    dispatch(getFollowingPostOnly(params));
+
     handleGameList();
-  }, [isScroll === true, postState.refresh]);
+  }, [postState.refresh]);
+
+  // Trigger the API call whenever `page` changes
+  useEffect(() => {
+    dispatch(getFollowingPostOnly(params));
+  }, [page]);
 
   useEffect(() => {
-    window.addEventListener("scroll", handleInfiniteScroll);
-    return () => window.removeEventListener("scroll", handleInfiniteScroll);
-  }, []);
+    handleInfiniteScroll();
+  }, [inView]);
 
   const handleInfiniteScroll = async () => {
     try {
-      if (
-        isScroll === false &&
-        window.innerHeight + document.documentElement.scrollTop + 1 >=
-          document.documentElement.scrollHeight
-      ) {
-        dispatch(setIsScroll(true));
+      if (hasNextPage && inView) {
         setPage((prev) => prev + 1);
       }
     } catch (error) {
@@ -381,6 +380,9 @@ function Main() {
   // Call removeGame function to filter out the game
   const filteredGames = removeGame(gameToRemove);
 
+  console.log("laoding: ", loading);
+  console.log("laoding: ", postState.followingVideos.length);
+
   return (
     <Layout>
       <CustomHeader>GAMEFOLIO FEED</CustomHeader>
@@ -455,7 +457,7 @@ function Main() {
             </div>
 
             {/* Story , Posts */}
-            <div className="w-11/12 sm:w-10/12 flex  flex-col gap-3 rounded-lg overflow-y-scroll no-scrollbar  ">
+            <div className="w-11/12 sm:w-10/12 flex  flex-col gap-3 rounded-lg overflow-y-scroll no-scrollbar pb-28  ">
               <div>
                 <FollowingStories />
               </div>
@@ -502,529 +504,519 @@ function Main() {
                 </div>
               </div>
 
-              {loading ? (
+              {loading && initialLoading ? (
                 <>
-                  {[...Array(1)]?.map((_, index) => (
-                    <PostLoader key={index} />
-                  ))}
+                  {[...Array(postState?.followingVideos?.length || 2)]?.map(
+                    (_, index) => (
+                      <PostLoader key={index} />
+                    )
+                  )}
                 </>
               ) : (
                 <>
-                  {postState?.followingVideos?.length === 0 &&
-                  postState.customVideo.length === 0 ? (
+                  {postState.customVideo.length > 0 ? (
+                    postState?.customVideo?.map((post: any) => {
+                      // Check if the current user has reacted with "like" or "love"
+                      const hasLikeReacted = post.reactions.some(
+                        (reaction: any) =>
+                          reaction.userID === authState._id &&
+                          reaction.reactionType === "like"
+                      );
+
+                      const hasLoveReacted = post.reactions.some(
+                        (reaction: any) =>
+                          reaction.userID === authState._id &&
+                          reaction.reactionType === "love"
+                      );
+
+                      // Find the reaction ID for the current user
+                      const reactionID = post.reactions.find(
+                        (reaction: any) => reaction.userID === authState._id
+                      );
+
+                      const postUserID = post.userID._id;
+
+                      return (
+                        <div
+                          key={post.url}
+                          className="border border-[#1C2C2E] rounded-2xl bg-[#091619] min-w-fit md:min-w-min px-2"
+                        >
+                          <div className="flex items-center justify-between m-3">
+                            <div className="flex items-center sm:gap-4 gap-2">
+                              <Image
+                                className="w-12 h-12 rounded-xl"
+                                src={post?.userID?.profilePicture}
+                                alt="Profile"
+                                width={50}
+                                height={50}
+                                sizes="100vw"
+                                quality={80}
+                                loading="lazy"
+                              />
+                              <div>
+                                <Link
+                                  href={`/account/${post?.userID?.username}`}
+                                  key={post._id}
+                                >
+                                  <h1 className="w-[230px] sm:w-[350px] text-lg font-bold text-white hover:opacity-80">
+                                    {post?.userID?.name}
+                                  </h1>
+                                </Link>
+                                <p className="text-sm md:text-sm sm:text-base font-light text-gray-400">
+                                  {post?.date &&
+                                    new Date(post.date).toLocaleString(
+                                      "en-US",
+                                      {
+                                        hour: "numeric",
+                                        minute: "numeric",
+                                        day: "numeric",
+                                        month: "short",
+                                        year: "numeric",
+                                      }
+                                    )}
+                                </p>
+                              </div>
+                            </div>
+
+                            <div className="flex items-center gap-3 w-10">
+                              <div
+                                onClick={() => handleCreateBookmark(post._id)}
+                              >
+                                <Image
+                                  className="cursor-pointer hover:opacity-80"
+                                  src={SVG.Bookmark}
+                                  alt="Bookmark"
+                                  width={20}
+                                  height={20}
+                                />
+                              </div>
+                              <div>
+                                <Image
+                                  className="cursor-pointer hover:opacity-80"
+                                  src={SVG.Threedots}
+                                  alt="Threedots"
+                                  width={5}
+                                  height={5}
+                                  onClick={() =>
+                                    handleModalToggle(
+                                      "isReportModalOpen",
+                                      post._id
+                                    )
+                                  }
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="mx-3">
+                            <p className="text-neutral-300">
+                              {post?.description}
+                            </p>
+                          </div>
+
+                          <video
+                            className="w-full h-[185px] sm:h-[300px] my-2 sm:my-2"
+                            src={`${post.video}#t=0.1`}
+                            style={{ aspectRatio: "16:9" }}
+                            width={50}
+                            height={50}
+                            controls
+                            controlsList="nodownload noremoteplayback noplaybackrate"
+                            disablePictureInPicture
+                            autoPlay={false}
+                            playsInline
+                            preload="metadata"
+                          />
+
+                          <div className="flex items-center my-3 mx-2">
+                            <div
+                              className="flex items-center p-2 mr-2 rounded-lg bg-[#162423]"
+                              onClick={
+                                hasLikeReacted
+                                  ? () =>
+                                      handleDeleteReaction(
+                                        post._id,
+                                        reactionID._id
+                                      )
+                                  : () =>
+                                      handleCreateReaction(
+                                        post._id,
+                                        "like",
+                                        postUserID
+                                      )
+                              }
+                            >
+                              <Image
+                                className="mr-2 cursor-pointer hover:opacity-80"
+                                src={SVG.Like}
+                                alt="Like"
+                                width={30}
+                                height={30}
+                              />
+                              <p className="text-white">
+                                {
+                                  post.reactions?.filter(
+                                    (reaction: any) =>
+                                      reaction.reactionType === "like"
+                                  )?.length
+                                }
+                              </p>
+                            </div>
+
+                            <div
+                              className="flex items-center p-2 mr-2 rounded-lg bg-[#162423]"
+                              onClick={
+                                hasLoveReacted
+                                  ? () =>
+                                      handleDeleteReaction(
+                                        post._id,
+                                        reactionID._id
+                                      )
+                                  : () =>
+                                      handleCreateReaction(
+                                        post._id,
+                                        "love",
+                                        postUserID
+                                      )
+                              }
+                            >
+                              <Image
+                                className="mr-2 cursor-pointer hover:opacity-80"
+                                src={SVG.Love}
+                                alt="Love"
+                                width={30}
+                                height={30}
+                              />
+                              <p className="text-white">
+                                {
+                                  post.reactions?.filter(
+                                    (reaction: any) =>
+                                      reaction.reactionType === "love"
+                                  )?.length
+                                }
+                              </p>
+                            </div>
+
+                            <div className="p-2 mr-2 rounded-lg bg-[#162423]">
+                              <Image
+                                className="cursor-pointer hover:opacity-80"
+                                src={SVG.Chat}
+                                alt="Comment"
+                                width={30}
+                                height={30}
+                              />
+                            </div>
+
+                            <div className="p-2 mr-2 rounded-lg bg-[#162423]">
+                              <Image
+                                className="cursor-pointer hover:opacity-80"
+                                src={SVG.Trending}
+                                alt="Trending1"
+                                width={30}
+                                height={30}
+                              />
+                            </div>
+
+                            <Image
+                              className="cursor-pointer hover:opacity-80"
+                              src={SVG.GGGCoin}
+                              alt="Gcoin"
+                              width={45}
+                              height={45}
+                            />
+                          </div>
+
+                          <div className="flex items-center justify-between w-full p-4">
+                            <div>
+                              <p
+                                className="cursor-pointer hover:opacity-80 text-white"
+                                onClick={() =>
+                                  handleModalToggle(
+                                    "isVideoDetailOpen",
+                                    post._id,
+                                    post
+                                  )
+                                }
+                              >
+                                {post?.comment} Comments
+                              </p>
+                            </div>
+                            <div>
+                              <div
+                                onClick={() =>
+                                  handleModalToggle("isPostShareOpen", post._id)
+                                }
+                              >
+                                <Image
+                                  className="hover:opacity-80 cursor-pointer"
+                                  src={SVG.Share}
+                                  alt="share"
+                                  width={25}
+                                  height={25}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })
+                  ) : postState?.followingVideos?.length > 0 ? (
+                    postState?.followingVideos?.map((post: any) => {
+                      // Check if the current user has reacted with "like" or "love"
+                      const hasLikeReacted = post.reactions.some(
+                        (reaction: any) =>
+                          reaction.userID === authState._id &&
+                          reaction.reactionType === "like"
+                      );
+
+                      const hasLoveReacted = post.reactions.some(
+                        (reaction: any) =>
+                          reaction.userID === authState._id &&
+                          reaction.reactionType === "love"
+                      );
+
+                      // Find the reaction ID for the current user
+                      const reactionID = post.reactions.find(
+                        (reaction: any) => reaction.userID === authState._id
+                      );
+
+                      const postUserID = post.userID._id;
+
+                      return (
+                        <div
+                          key={post.url}
+                          className="border border-[#1C2C2E] rounded-2xl bg-[#091619] px-2 "
+                        >
+                          <div className="flex items-center justify-between m-3">
+                            <div className="flex items-center sm:gap-4 gap-2">
+                              <Image
+                                className="w-12 h-12 rounded-xl"
+                                src={post?.userID?.profilePicture}
+                                alt="Profile"
+                                width={50}
+                                height={50}
+                                sizes="100vw"
+                                quality={80}
+                                loading="lazy"
+                              />
+                              <div>
+                                <Link
+                                  href={`/account/${post?.userID?.username}`}
+                                  key={post._id}
+                                >
+                                  <h1 className="w-[230px] sm:w-[350px] text-lg font-bold text-white hover:opacity-80">
+                                    {post?.userID?.name}
+                                  </h1>
+                                </Link>
+                                <p className="text-sm md:text-sm sm:text-base font-light text-gray-400">
+                                  {post?.date &&
+                                    new Date(post.date).toLocaleString(
+                                      "en-US",
+                                      {
+                                        hour: "numeric",
+                                        minute: "numeric",
+                                        day: "numeric",
+                                        month: "short",
+                                        year: "numeric",
+                                      }
+                                    )}
+                                </p>
+                              </div>
+                            </div>
+
+                            <div className="flex items-center gap-3 w-10">
+                              <div
+                                onClick={() => handleCreateBookmark(post._id)}
+                              >
+                                <Image
+                                  className="cursor-pointer hover:opacity-80"
+                                  src={SVG.Bookmark}
+                                  alt="Bookmark"
+                                  width={20}
+                                  height={20}
+                                />
+                              </div>
+                              <div>
+                                <Image
+                                  className="cursor-pointer hover:opacity-80"
+                                  src={SVG.Threedots}
+                                  alt="Threedots"
+                                  width={5}
+                                  height={5}
+                                  onClick={() =>
+                                    handleModalToggle(
+                                      "isReportModalOpen",
+                                      post._id
+                                    )
+                                  }
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="mx-3">
+                            <p className="text-neutral-300">
+                              {post?.description}
+                            </p>
+                          </div>
+
+                          <video
+                            className="w-full "
+                            src={`${post.video}#t=0.1`}
+                            style={{ aspectRatio: "16:9" }}
+                            width={50}
+                            height={50}
+                            controls
+                            controlsList="nodownload noremoteplayback noplaybackrate"
+                            disablePictureInPicture
+                            autoPlay={false}
+                            playsInline
+                            preload="metadata"
+                          />
+
+                          <div className="flex items-center my-3 mx-2">
+                            <div
+                              className="flex items-center p-2 mr-2 rounded-lg bg-[#162423]"
+                              onClick={
+                                hasLikeReacted
+                                  ? () =>
+                                      handleDeleteReaction(
+                                        post._id,
+                                        reactionID._id
+                                      )
+                                  : () =>
+                                      handleCreateReaction(
+                                        post._id,
+                                        "like",
+                                        postUserID
+                                      )
+                              }
+                            >
+                              <Image
+                                className="mr-2 cursor-pointer hover:opacity-80"
+                                src={SVG.Like}
+                                alt="Like"
+                                width={30}
+                                height={30}
+                              />
+                              <p className="text-white">
+                                {
+                                  post.reactions?.filter(
+                                    (reaction: any) =>
+                                      reaction.reactionType === "like"
+                                  )?.length
+                                }
+                              </p>
+                            </div>
+
+                            <div
+                              className="flex items-center p-2 mr-2 rounded-lg bg-[#162423]"
+                              onClick={
+                                hasLoveReacted
+                                  ? () =>
+                                      handleDeleteReaction(
+                                        post._id,
+                                        reactionID._id
+                                      )
+                                  : () =>
+                                      handleCreateReaction(
+                                        post._id,
+                                        "love",
+                                        postUserID
+                                      )
+                              }
+                            >
+                              <Image
+                                className="mr-2 cursor-pointer hover:opacity-80"
+                                src={SVG.Love}
+                                alt="Love"
+                                width={30}
+                                height={30}
+                              />
+                              <p className="text-white">
+                                {
+                                  post.reactions?.filter(
+                                    (reaction: any) =>
+                                      reaction.reactionType === "love"
+                                  )?.length
+                                }
+                              </p>
+                            </div>
+
+                            <div className="p-2 mr-2 rounded-lg bg-[#162423]">
+                              <Image
+                                className="cursor-pointer hover:opacity-80"
+                                src={SVG.Chat}
+                                alt="Comment"
+                                width={30}
+                                height={30}
+                              />
+                            </div>
+
+                            <div className="p-2 mr-2 rounded-lg bg-[#162423]">
+                              <Image
+                                className="cursor-pointer hover:opacity-80"
+                                src={SVG.Trending}
+                                alt="Trending1"
+                                width={30}
+                                height={30}
+                              />
+                            </div>
+
+                            <Image
+                              className="cursor-pointer hover:opacity-80"
+                              src={SVG.GGGCoin}
+                              alt="Gcoin"
+                              width={45}
+                              height={45}
+                            />
+                          </div>
+
+                          <div className="flex items-center justify-between w-full p-4">
+                            <div>
+                              <p
+                                className="cursor-pointer hover:opacity-80 text-white"
+                                onClick={() =>
+                                  handleModalToggle(
+                                    "isVideoDetailOpen",
+                                    post._id,
+                                    post
+                                  )
+                                }
+                              >
+                                {post?.comment} Comments
+                              </p>
+                            </div>
+                            <div>
+                              <div
+                                onClick={() =>
+                                  handleModalToggle("isPostShareOpen", post._id)
+                                }
+                              >
+                                <Image
+                                  className="hover:opacity-80 cursor-pointer"
+                                  src={SVG.Share}
+                                  alt="share"
+                                  width={25}
+                                  height={25}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })
+                  ) : (
                     <div className="flex h-full justify-center items-center text-gray-500">
                       No data available
                     </div>
-                  ) : (
-                    <>
-                      {postState.customVideo.length > 0
-                        ? postState?.customVideo?.map((post: any) => {
-                            // Check if the current user has reacted with "like" or "love"
-                            const hasLikeReacted = post.reactions.some(
-                              (reaction: any) =>
-                                reaction.userID === authState._id &&
-                                reaction.reactionType === "like"
-                            );
-
-                            const hasLoveReacted = post.reactions.some(
-                              (reaction: any) =>
-                                reaction.userID === authState._id &&
-                                reaction.reactionType === "love"
-                            );
-
-                            // Find the reaction ID for the current user
-                            const reactionID = post.reactions.find(
-                              (reaction: any) =>
-                                reaction.userID === authState._id
-                            );
-
-                            const postUserID = post.userID._id;
-
-                            return (
-                              <div
-                                key={post.url}
-                                className="border border-[#1C2C2E] rounded-2xl bg-[#091619] min-w-fit md:min-w-min px-2"
-                              >
-                                <div className="flex items-center justify-between m-3">
-                                  <div className="flex items-center sm:gap-4 gap-2">
-                                    <Image
-                                      className="w-12 h-12 rounded-xl"
-                                      src={post?.userID?.profilePicture}
-                                      alt="Profile"
-                                      width={50}
-                                      height={50}
-                                      sizes="100vw"
-                                      quality={80}
-                                      loading="lazy"
-                                    />
-                                    <div>
-                                      <Link
-                                        href={`/account/${post?.userID?.username}`}
-                                        key={post._id}
-                                      >
-                                        <h1 className="w-[230px] sm:w-[350px] text-lg font-bold text-white hover:opacity-80">
-                                          {post?.userID?.name}
-                                        </h1>
-                                      </Link>
-                                      <p className="text-sm md:text-sm sm:text-base font-light text-gray-400">
-                                        {post?.date &&
-                                          new Date(post.date).toLocaleString(
-                                            "en-US",
-                                            {
-                                              hour: "numeric",
-                                              minute: "numeric",
-                                              day: "numeric",
-                                              month: "short",
-                                              year: "numeric",
-                                            }
-                                          )}
-                                      </p>
-                                    </div>
-                                  </div>
-
-                                  <div className="flex items-center gap-3 w-10">
-                                    <div
-                                      onClick={() =>
-                                        handleCreateBookmark(post._id)
-                                      }
-                                    >
-                                      <Image
-                                        className="cursor-pointer hover:opacity-80"
-                                        src={SVG.Bookmark}
-                                        alt="Bookmark"
-                                        width={20}
-                                        height={20}
-                                      />
-                                    </div>
-                                    <div>
-                                      <Image
-                                        className="cursor-pointer hover:opacity-80"
-                                        src={SVG.Threedots}
-                                        alt="Threedots"
-                                        width={5}
-                                        height={5}
-                                        onClick={() =>
-                                          handleModalToggle(
-                                            "isReportModalOpen",
-                                            post._id
-                                          )
-                                        }
-                                      />
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div className="mx-3">
-                                  <p className="text-neutral-300">
-                                    {post?.description}
-                                  </p>
-                                </div>
-
-                                <video
-                                  className="w-full h-[185px] sm:h-[300px] my-2 sm:my-2"
-                                  src={`${post.video}#t=0.1`}
-                                  style={{ aspectRatio: "16:9" }}
-                                  width={50}
-                                  height={50}
-                                  controls
-                                  controlsList="nodownload noremoteplayback noplaybackrate"
-                                  disablePictureInPicture
-                                  autoPlay={false}
-                                  playsInline
-                                  preload="metadata"
-                                />
-
-                                <div className="flex items-center my-3 mx-2">
-                                  <div
-                                    className="flex items-center p-2 mr-2 rounded-lg bg-[#162423]"
-                                    onClick={
-                                      hasLikeReacted
-                                        ? () =>
-                                            handleDeleteReaction(
-                                              post._id,
-                                              reactionID._id
-                                            )
-                                        : () =>
-                                            handleCreateReaction(
-                                              post._id,
-                                              "like",
-                                              postUserID
-                                            )
-                                    }
-                                  >
-                                    <Image
-                                      className="mr-2 cursor-pointer hover:opacity-80"
-                                      src={SVG.Like}
-                                      alt="Like"
-                                      width={30}
-                                      height={30}
-                                    />
-                                    <p className="text-white">
-                                      {
-                                        post.reactions?.filter(
-                                          (reaction: any) =>
-                                            reaction.reactionType === "like"
-                                        )?.length
-                                      }
-                                    </p>
-                                  </div>
-
-                                  <div
-                                    className="flex items-center p-2 mr-2 rounded-lg bg-[#162423]"
-                                    onClick={
-                                      hasLoveReacted
-                                        ? () =>
-                                            handleDeleteReaction(
-                                              post._id,
-                                              reactionID._id
-                                            )
-                                        : () =>
-                                            handleCreateReaction(
-                                              post._id,
-                                              "love",
-                                              postUserID
-                                            )
-                                    }
-                                  >
-                                    <Image
-                                      className="mr-2 cursor-pointer hover:opacity-80"
-                                      src={SVG.Love}
-                                      alt="Love"
-                                      width={30}
-                                      height={30}
-                                    />
-                                    <p className="text-white">
-                                      {
-                                        post.reactions?.filter(
-                                          (reaction: any) =>
-                                            reaction.reactionType === "love"
-                                        )?.length
-                                      }
-                                    </p>
-                                  </div>
-
-                                  <div className="p-2 mr-2 rounded-lg bg-[#162423]">
-                                    <Image
-                                      className="cursor-pointer hover:opacity-80"
-                                      src={SVG.Chat}
-                                      alt="Comment"
-                                      width={30}
-                                      height={30}
-                                    />
-                                  </div>
-
-                                  <div className="p-2 mr-2 rounded-lg bg-[#162423]">
-                                    <Image
-                                      className="cursor-pointer hover:opacity-80"
-                                      src={SVG.Trending}
-                                      alt="Trending1"
-                                      width={30}
-                                      height={30}
-                                    />
-                                  </div>
-
-                                  <Image
-                                    className="cursor-pointer hover:opacity-80"
-                                    src={SVG.GGGCoin}
-                                    alt="Gcoin"
-                                    width={45}
-                                    height={45}
-                                  />
-                                </div>
-
-                                <div className="flex items-center justify-between w-full p-4">
-                                  <div>
-                                    <p
-                                      className="cursor-pointer hover:opacity-80 text-white"
-                                      onClick={() =>
-                                        handleModalToggle(
-                                          "isVideoDetailOpen",
-                                          post._id,
-                                          post
-                                        )
-                                      }
-                                    >
-                                      {post?.comment} Comments
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <div
-                                      onClick={() =>
-                                        handleModalToggle(
-                                          "isPostShareOpen",
-                                          post._id
-                                        )
-                                      }
-                                    >
-                                      <Image
-                                        className="hover:opacity-80 cursor-pointer"
-                                        src={SVG.Share}
-                                        alt="share"
-                                        width={25}
-                                        height={25}
-                                      />
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          })
-                        : postState?.followingVideos?.map((post: any) => {
-                            // Check if the current user has reacted with "like" or "love"
-                            const hasLikeReacted = post.reactions.some(
-                              (reaction: any) =>
-                                reaction.userID === authState._id &&
-                                reaction.reactionType === "like"
-                            );
-
-                            const hasLoveReacted = post.reactions.some(
-                              (reaction: any) =>
-                                reaction.userID === authState._id &&
-                                reaction.reactionType === "love"
-                            );
-
-                            // Find the reaction ID for the current user
-                            const reactionID = post.reactions.find(
-                              (reaction: any) =>
-                                reaction.userID === authState._id
-                            );
-
-                            const postUserID = post.userID._id;
-
-                            return (
-                              <div
-                                key={post.url}
-                                className="border border-[#1C2C2E] rounded-2xl bg-[#091619] min-w-fit md:min-w-min px-2 "
-                              >
-                                <div className="flex items-center justify-between m-3">
-                                  <div className="flex items-center sm:gap-4 gap-2">
-                                    <Image
-                                      className="w-12 h-12 rounded-xl"
-                                      src={post?.userID?.profilePicture}
-                                      alt="Profile"
-                                      width={50}
-                                      height={50}
-                                      sizes="100vw"
-                                      quality={80}
-                                      loading="lazy"
-                                    />
-                                    <div>
-                                      <Link
-                                        href={`/account/${post?.userID?.username}`}
-                                        key={post._id}
-                                      >
-                                        <h1 className="w-[230px] sm:w-[350px] text-lg font-bold text-white hover:opacity-80">
-                                          {post?.userID?.name}
-                                        </h1>
-                                      </Link>
-                                      <p className="text-sm md:text-sm sm:text-base font-light text-gray-400">
-                                        {post?.date &&
-                                          new Date(post.date).toLocaleString(
-                                            "en-US",
-                                            {
-                                              hour: "numeric",
-                                              minute: "numeric",
-                                              day: "numeric",
-                                              month: "short",
-                                              year: "numeric",
-                                            }
-                                          )}
-                                      </p>
-                                    </div>
-                                  </div>
-
-                                  <div className="flex items-center gap-3 w-10">
-                                    <div
-                                      onClick={() =>
-                                        handleCreateBookmark(post._id)
-                                      }
-                                    >
-                                      <Image
-                                        className="cursor-pointer hover:opacity-80"
-                                        src={SVG.Bookmark}
-                                        alt="Bookmark"
-                                        width={20}
-                                        height={20}
-                                      />
-                                    </div>
-                                    <div>
-                                      <Image
-                                        className="cursor-pointer hover:opacity-80"
-                                        src={SVG.Threedots}
-                                        alt="Threedots"
-                                        width={5}
-                                        height={5}
-                                        onClick={() =>
-                                          handleModalToggle(
-                                            "isReportModalOpen",
-                                            post._id
-                                          )
-                                        }
-                                      />
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div className="mx-3">
-                                  <p className="text-neutral-300">
-                                    {post?.description}
-                                  </p>
-                                </div>
-
-                                <video
-                                  className="w-full h-[185px] sm:h-[300px] my-2 sm:my-2"
-                                  src={`${post.video}#t=0.1`}
-                                  style={{ aspectRatio: "16:9" }}
-                                  width={50}
-                                  height={50}
-                                  controls
-                                  controlsList="nodownload noremoteplayback noplaybackrate"
-                                  disablePictureInPicture
-                                  autoPlay={false}
-                                  playsInline
-                                  preload="metadata"
-                                />
-
-                                <div className="flex items-center my-3 mx-2">
-                                  <div
-                                    className="flex items-center p-2 mr-2 rounded-lg bg-[#162423]"
-                                    onClick={
-                                      hasLikeReacted
-                                        ? () =>
-                                            handleDeleteReaction(
-                                              post._id,
-                                              reactionID._id
-                                            )
-                                        : () =>
-                                            handleCreateReaction(
-                                              post._id,
-                                              "like",
-                                              postUserID
-                                            )
-                                    }
-                                  >
-                                    <Image
-                                      className="mr-2 cursor-pointer hover:opacity-80"
-                                      src={SVG.Like}
-                                      alt="Like"
-                                      width={30}
-                                      height={30}
-                                    />
-                                    <p className="text-white">
-                                      {
-                                        post.reactions?.filter(
-                                          (reaction: any) =>
-                                            reaction.reactionType === "like"
-                                        )?.length
-                                      }
-                                    </p>
-                                  </div>
-
-                                  <div
-                                    className="flex items-center p-2 mr-2 rounded-lg bg-[#162423]"
-                                    onClick={
-                                      hasLoveReacted
-                                        ? () =>
-                                            handleDeleteReaction(
-                                              post._id,
-                                              reactionID._id
-                                            )
-                                        : () =>
-                                            handleCreateReaction(
-                                              post._id,
-                                              "love",
-                                              postUserID
-                                            )
-                                    }
-                                  >
-                                    <Image
-                                      className="mr-2 cursor-pointer hover:opacity-80"
-                                      src={SVG.Love}
-                                      alt="Love"
-                                      width={30}
-                                      height={30}
-                                    />
-                                    <p className="text-white">
-                                      {
-                                        post.reactions?.filter(
-                                          (reaction: any) =>
-                                            reaction.reactionType === "love"
-                                        )?.length
-                                      }
-                                    </p>
-                                  </div>
-
-                                  <div className="p-2 mr-2 rounded-lg bg-[#162423]">
-                                    <Image
-                                      className="cursor-pointer hover:opacity-80"
-                                      src={SVG.Chat}
-                                      alt="Comment"
-                                      width={30}
-                                      height={30}
-                                    />
-                                  </div>
-
-                                  <div className="p-2 mr-2 rounded-lg bg-[#162423]">
-                                    <Image
-                                      className="cursor-pointer hover:opacity-80"
-                                      src={SVG.Trending}
-                                      alt="Trending1"
-                                      width={30}
-                                      height={30}
-                                    />
-                                  </div>
-
-                                  <Image
-                                    className="cursor-pointer hover:opacity-80"
-                                    src={SVG.GGGCoin}
-                                    alt="Gcoin"
-                                    width={45}
-                                    height={45}
-                                  />
-                                </div>
-
-                                <div className="flex items-center justify-between w-full p-4">
-                                  <div>
-                                    <p
-                                      className="cursor-pointer hover:opacity-80 text-white"
-                                      onClick={() =>
-                                        handleModalToggle(
-                                          "isVideoDetailOpen",
-                                          post._id,
-                                          post
-                                        )
-                                      }
-                                    >
-                                      {post?.comment} Comments
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <div
-                                      onClick={() =>
-                                        handleModalToggle(
-                                          "isPostShareOpen",
-                                          post._id
-                                        )
-                                      }
-                                    >
-                                      <Image
-                                        className="hover:opacity-80 cursor-pointer"
-                                        src={SVG.Share}
-                                        alt="share"
-                                        width={25}
-                                        height={25}
-                                      />
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          })}
-                    </>
                   )}
                 </>
               )}
-              {loading && <MoreLoader />}
+              {/* This div will act as the target for the Intersection Observer */}
+              <div ref={ref} className="flex justify-center h-80">
+                {hasNextPage ? <MoreLoader /> : "No more videos"}
+              </div>
             </div>
 
             {/* Notification */}
