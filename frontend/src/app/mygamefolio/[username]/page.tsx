@@ -236,7 +236,7 @@ function MyGamefolio({ params }: any) {
         )}
 
         {/* Top Bar */}
-        <div className="flex flex-col lg:flex-row w-screen lg:justify-end absolute top-48 lg:top-40 lg:w-4/5 h-3/4  overflow-y-auto lg:overflow-y-visible    ">
+        <div className="flex flex-col lg:flex-row w-screen lg:justify-center absolute top-48 lg:top-40 lg:w-4/5 h-3/4  overflow-y-auto lg:overflow-y-visible    ">
           {isDataFetching ? (
             <SkeletonProfileLoader />
           ) : (
@@ -532,7 +532,7 @@ function MyGamefolio({ params }: any) {
             {/* line */}
             <hr className="h-px border-0 bg-[#586769] my-2 mx-4" />
             {/* Profile */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full p-4 h-3/4 md:overflow-y-scroll  pb-40 md:pb-0 ">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 h-3/4 w-full p-4  md:overflow-y-scroll  pb-40 md:pb-0 ">
               {isDataFetching ? (
                 <>
                   {[...Array(6)]?.map((_, index) => (

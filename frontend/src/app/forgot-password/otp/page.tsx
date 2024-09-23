@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { IMAGES } from "@/assets/images";
 import { leagueGothic } from "@/font/font";
+import Link from "next/link";
 
 const OtpVerification = () => {
   return (
@@ -45,12 +46,12 @@ const OtpVerification = () => {
 
           <p className="text-sm font-light text-center text-gray-50">
             Go back to{" "}
-            <a
+            <Link
               href="/forget-password"
               className="font-medium text-primary-600 hover:underline text-[#43DD4E]"
             >
               Forget Password
-            </a>
+            </Link>
           </p>
         </div>
       </div>

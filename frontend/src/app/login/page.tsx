@@ -10,6 +10,7 @@ import { login } from "@/store/slices/authSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import { validateLogin, validateLoginInputFields } from "@/validation";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { ToastContainer } from "react-toastify";
@@ -205,17 +206,17 @@ const Page = () => {
             </button>
 
             <p className="text-sm font-light text-center text-gray-300  underline">
-              <a href="./forgot-password">Forget Password?</a>
+              <Link href="./forgot-password">Forget Password?</Link>
             </p>
 
             <p className="text-sm font-light text-center text-gray-50">
               A new user?{" "}
-              <a
-                href="./signup"
+              <Link
+                href="/signup"
                 className="font-medium text-[#43DD4D] hover:underline  "
               >
                 SignUp
-              </a>
+              </Link>
             </p>
             <ToastContainer
               position="top-center"
