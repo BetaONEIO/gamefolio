@@ -434,7 +434,7 @@ function Account() {
               </div>
 
               <div className="flex h-8 items-center justify-start md:gap-8">
-                <div className="flex items-center gap-2 ">
+                <div className="flex items-center gap-2">
                   <span
                     className={`${leagueGothic.className} text-lg md:text-2xl font-normal text-white`}
                   >

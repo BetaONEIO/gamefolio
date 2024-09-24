@@ -159,19 +159,19 @@ function Games() {
           )}
           <div className="absolute top-4 left-4 flex flex-wrap gap-4 z-10">
             <button
-              className="font-semibold rounded-2xl px-4 py-2 text-white cursor-pointer hover:opacity-80 hover:text-[#43DD4E]"
+              className="font-semibold rounded-2xl px-4 py-2 text-white cursor-pointer hover:opacity-80 hover:text-[#43DD4E] sm:px-2 sm:py-1 text-xs sm:text-lg"
               style={{ backgroundColor: "rgba(41, 45, 50, 0.8)" }}
             >
               Action
             </button>
             <button
-              className="font-semibold rounded-2xl px-4 py-2 text-white cursor-pointer hover:opacity-80 hover:text-[#43DD4E]"
+              className="font-semibold rounded-2xl px-4 py-2 text-white cursor-pointer hover:opacity-80 hover:text-[#43DD4E] sm:px-2 sm:py-1 text-xs sm:text-lg"
               style={{ backgroundColor: "rgba(41, 45, 50, 0.8)" }}
             >
               Fighting
             </button>
             <button
-              className="font-semibold rounded-2xl px-4 py-2 text-white cursor-pointer hover:opacity-80 hover:text-[#43DD4E]"
+              className="font-semibold rounded-2xl px-4 py-2 text-white cursor-pointer hover:opacity-80 hover:text-[#43DD4E] sm:px-2 sm:py-1 text-xs sm:text-lg"
               style={{ backgroundColor: "rgba(41, 45, 50, 0.8)" }}
             >
               Thrilling

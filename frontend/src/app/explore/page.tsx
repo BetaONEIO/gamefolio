@@ -380,7 +380,7 @@ function Explore() {
         </div>
       </div>
 
-      <div className=" items-center grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-2 overflow-x-auto no-scrollbar">
+      <div className="flex items-center  my-2 overflow-scroll no-scrollbar gap-4">
         {loading ? (
           <>
             {[...Array(4)]?.map((_, index) => (
@@ -403,7 +403,7 @@ function Explore() {
               <div className="relative overflow-hidden rounded-xl">
                 <video
                   src={item.video}
-                  className="w-96 h-36 rounded-xl hover:opacity-80 hover:scale-105 transition-transform duration-300"
+                  className="w-full h-36 rounded-xl hover:opacity-80 hover:scale-105 transition-transform duration-300"
                   controls={false}
                   autoPlay={false}
                   width={50}
@@ -425,7 +425,7 @@ function Explore() {
                 />
                 <div>
                   <div>
-                    <span className="font-semibold text-xs sm:text-sm text-white hover:text-[#43DD4E]">
+                    <span className="font-semibold text-xs sm:text-sm text-white hover:text-[#43DD4E] truncate">
                       {item?.userID?.name.split(" ").slice(0, 2).join(" ")}
                     </span>
                   </div>

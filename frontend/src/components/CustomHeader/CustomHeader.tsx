@@ -46,9 +46,16 @@ function CustomHeader({ children }: { children?: String }) {
     }));
   };
 
+  // const handleSearch = () => {
+  //   if (searchQuery.trim() !== "") {
+  //     router.push(`/${searchQuery}`);
+  //   }
+  // };
+
   const handleSearch = () => {
-    if (searchQuery.trim() !== "") {
-      router.push(`/${searchQuery}`);
+    if (searchQuery) {
+      // Navigate to the desired URL using the username entered
+      router.push(`/mygamefolio/${searchQuery}`);
     }
   };
 
@@ -119,6 +126,11 @@ function CustomHeader({ children }: { children?: String }) {
             placeholder="Search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSearch(); // Allow search on pressing "Enter"
+              }
+            }}
           />
           <button
             className="text-white cursor-pointer hover:opacity-60 ml-2"
@@ -154,13 +166,13 @@ function CustomHeader({ children }: { children?: String }) {
             id="dropdown"
             className={`${
               isDropdownOpen ? "block" : "hidden"
-            } w-[20rem] flex justify-center border-2 border-[#43DD4E] rounded-lg mt--2 bg-[#162423]`}
+            } flex absolute top-full justify-center border-2 border-[#43DD4E] rounded-lg mt-2`}
             style={{
               borderWidth: "2px",
               borderColor: "#43DD4E",
               position: "absolute",
-              top: isBrowser && window.innerWidth <= 768 ? "95%" : "80%",
-              right: isBrowser && window.innerWidth <= 768 ? "-22%" : "-10%",
+              top: isBrowser && window.innerWidth <= 768 ? "90%" : "75%",
+              left: isBrowser && window.innerWidth <= 768 ? "52.4%" : "84.5%",
               transform: "translateX(-50%)",
               height: "400px",
               width: "300px",
