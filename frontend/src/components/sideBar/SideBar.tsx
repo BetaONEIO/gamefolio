@@ -73,7 +73,7 @@ function SideBar({ toggleSidebar, sidebarOpen }: SideBarProps) {
 
       <aside
         id="sidebar-notification"
-        className={`fixed top-0 left-0  w-64 h-screen transition-transform  z-50 ${
+        className={`fixed top-0 left-0  w-64 h-screen overflow-y-auto no-scrollbar transition-transform  z-50 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } sm:translate-x-0 bg-[#091619]`}
       >

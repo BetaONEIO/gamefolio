@@ -65,12 +65,12 @@ const LandingPage = () => {
 
           <p className="text-sm font-light text-center text-gray-300">
             Already have an account?{" "}
-            <a
+            <Link
               href="/login"
               className="font-medium text-primary-600 hover:underline text-primary-500 text-green-400"
             >
               Login
-            </a>
+            </Link>
           </p>
         </div>
       </div>

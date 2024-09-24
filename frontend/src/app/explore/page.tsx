@@ -3,6 +3,7 @@ import { SVG } from "@/assets/SVG";
 import Modal from "@/components/Modals/Modal";
 import VideoDetails from "@/components/Modals/VideoDetails";
 import { leagueGothic } from "@/font/font";
+import { fetchGameList } from "@/services/api";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import {
@@ -16,7 +17,6 @@ import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { fetchGameList } from "@/services/api";
 
 const SkeletonLoaderGames = () => (
   <div className="flex items-center">
@@ -291,8 +291,8 @@ function Explore() {
                 <Link href={`/account/${user?.username}`} key={user._id}>
                   <div>
                     <div className="mt-2">
-                      <span className="font-semibold text-white hover:text-[#43DD4E]">
-                        {user?.name?.substring(0, 13)}
+                      <span className="font-semibold text-white hover:text-[#43DD4E] truncate">
+                        {user?.name?.split(" ").slice(0, 2).join(" ")}
                       </span>
                     </div>
                     <div

@@ -9,6 +9,7 @@ import { dispatch, useSelector } from "@/store";
 import { forgotPasswordOTP } from "@/store/slices/authSlice";
 import { validateForgetPasswordInputFields } from "@/validation";
 import Image from "next/image";
+import Link from "next/link";
 import { ChangeEvent, useRef, useState } from "react";
 import { ToastContainer } from "react-toastify";
 
@@ -150,12 +151,12 @@ const ForgotPassword = () => {
 
           <p className="text-sm font-light text-center text-gray-50">
             Go back to{" "}
-            <a
+            <Link
               href="/login"
               className="font-medium text-primary-600 hover:underline text-[#43DD4E]"
             >
               Login
-            </a>
+            </Link>
           </p>
         </div>
       </div>

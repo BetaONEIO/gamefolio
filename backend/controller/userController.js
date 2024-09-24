@@ -153,7 +153,7 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const addUsername = asyncHandler(async (req, res) => {
-  const { username } = req.body;
+  const { name, username } = req.body;
 
   // Check if username already exists in the database
   const usernameExists = await User.findOne({ username });
@@ -174,6 +174,7 @@ const addUsername = asyncHandler(async (req, res) => {
   }
 
   // Update the username field
+  user.name = name;
   user.username = username;
 
   // Save the updated user document
@@ -181,7 +182,7 @@ const addUsername = asyncHandler(async (req, res) => {
 
   if (user) {
     res.status(200).json({
-      message: "Username successfully added",
+      message: "Updated successfully",
     });
   } else {
     return res.status(404).json({

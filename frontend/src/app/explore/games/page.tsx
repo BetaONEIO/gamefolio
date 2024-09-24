@@ -1,5 +1,4 @@
 "use client";
-import React, { useEffect, useState } from "react";
 import Modal from "@/components/Modals/Modal";
 import VideoDetails from "@/components/Modals/VideoDetails";
 import { dispatch, useSelector } from "@/store";
@@ -11,6 +10,7 @@ import {
 } from "@/store/slices/postSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
 import "swiper/css";
@@ -18,9 +18,9 @@ import "swiper/css/effect-fade";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 // import required modules
-import { EffectFade, Navigation, Pagination } from "swiper/modules";
 import { fetchGameList } from "@/services/api";
 import Image from "next/image";
+import { EffectFade, Navigation, Pagination } from "swiper/modules";
 
 const SkeletonLoaderGames = () => (
   <div className="flex items-center">
@@ -38,7 +38,7 @@ const SkeletonLoaderGames = () => (
 const SkeletonTrendingLoader = () => {
   return (
     <SwiperSlide>
-      <div className="w-full h-80 rounded-xl bg-gray-700 animate-pulse"></div>
+      <div className="w-full    h-72 md:h-80 lg:h-96  rounded-xl bg-gray-700 animate-pulse"></div>
 
       <div
         className="absolute inset-0 rounded-xl bg-gradient-to-t from-[#091619] via-transparent to-transparent"
@@ -136,7 +136,7 @@ function Games() {
               navigation={true}
               pagination={{ clickable: true }}
               modules={[EffectFade, Navigation, Pagination]}
-              className="mySwiper h-80 rounded-lg"
+              className="mySwiper  h-72 md:h-80 lg:h-96 rounded-lg"
             >
               {filteredGames?.slice(0, 3)?.map((item: any) => (
                 <SwiperSlide key={item.id}>

@@ -363,12 +363,12 @@ const Signup = () => {
             </button>
             <p className="text-sm font-light text-center text-gray-50">
               Already have an account?{" "}
-              <a
+              <Link
                 href="/login"
                 className="font-medium text-primary-600 hover:underline text-[#43DD4E]"
               >
                 Login
-              </a>
+              </Link>
             </p>
             <ToastContainer
               position="top-center"

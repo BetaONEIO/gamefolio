@@ -1,3 +1,4 @@
+import { PATH } from "@/constants/endpoints";
 import { API } from "@/services/api";
 import { APIParams, ActionParams } from "@/types/Api";
 import { Credit, ImageResponse, UserData } from "@/types/ApiResponse";
@@ -8,7 +9,6 @@ import {
 } from "@/utils/localStorage";
 import { createSlice } from "@reduxjs/toolkit";
 import { dispatch } from "..";
-import { PATH } from "@/constants/endpoints";
 
 export type InitialState = {
   error: null;
@@ -26,8 +26,10 @@ export type InitialState = {
   bookmarks: Array<any>;
   allMusic: Array<any>;
   refresh: boolean;
+  initialLoading: boolean;
   customVideo: Array<any>;
-  isScroll: boolean;
+
+  hasNextPage: boolean;
 };
 
 const initialState: InitialState = {
@@ -42,12 +44,13 @@ const initialState: InitialState = {
   detailedPost: {},
   comments: [],
   trendingVideos: [],
-  followingVideos: [],
   bookmarks: [],
   allMusic: [],
   refresh: false,
+  followingVideos: [],
   customVideo: [],
-  isScroll: false,
+  initialLoading: true,
+  hasNextPage: false,
 };
 
 export const slice = createSlice({
@@ -66,8 +69,9 @@ export const slice = createSlice({
     stopLoading(state) {
       state.loading = false;
     },
-    setIsScroll(state, action) {
-      state.isScroll = action.payload;
+
+    setNextPage(state, action) {
+      state.hasNextPage = action.payload;
     },
     getUser(state, action) {
       state.userData = action.payload;
@@ -110,6 +114,7 @@ export const slice = createSlice({
       );
 
       state.followingVideos = [...state.followingVideos, ...uniqueVideos];
+      state.initialLoading = false;
     },
 
     getUserBookmarks(state, action) {
@@ -135,7 +140,6 @@ export const {
   updatePostID,
   updateDetailedPost,
   setCustomVideoURL,
-  setIsScroll,
 } = slice.actions;
 
 export function postVideo(params: ActionParams) {
@@ -282,13 +286,11 @@ export function getFollowingPostOnly(params: ActionParams) {
       const [ok, response] = await API(options);
 
       dispatch(slice.actions.getFollowingPost(response.data));
-      dispatch(slice.actions.setIsScroll(false));
+
+      dispatch(slice.actions.setNextPage(response.hasNextPage));
       dispatch(slice.actions.stopLoading());
     } catch (error) {
-      console.log("error", error);
-      dispatch(slice.actions.stopLoading());
-    } finally {
-      dispatch(slice.actions.stopLoading());
+      console.log("error: ", error);
     }
   };
 }

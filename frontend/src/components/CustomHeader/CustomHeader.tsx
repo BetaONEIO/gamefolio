@@ -156,7 +156,7 @@ function CustomHeader({ children }: { children?: String }) {
               />
             </div>
             {notificationIndex > 0 && (
-              <span className="absolute top-0.5 right-1 bg-red-800 text-white text-xs font-bold rounded-full px-1">
+              <span className="absolute top-0.5 right-1  text-white text-xs font-bold rounded-full px-1">
                 {notificationIndex}
               </span>
             )}
