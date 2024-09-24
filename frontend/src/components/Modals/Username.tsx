@@ -28,12 +28,15 @@ function Username({ handleCloseModal }: UsernameProps) {
   const { loading } = useSelector((state: any) => state.auth) || [];
   const [isVerifiedUsername, setIsVerifiedUsername] = useState(false);
   const [form, setForm] = useState({
+    name: "",
     username: "",
   });
   const inputRefs = {
+    name: useRef<HTMLInputElement>(null),
     username: useRef<HTMLInputElement>(null),
   };
   const errorRefs = {
+    name: useRef<HTMLParagraphElement>(null),
     username: useRef<HTMLParagraphElement>(null),
   };
 
@@ -107,12 +110,11 @@ function Username({ handleCloseModal }: UsernameProps) {
 
   const onSubmitUsername = () => {
     const payload = {
+      name: form.name.trim(),
       username: form.username.trim(),
     };
 
-    const errorMsg = validateRegisterInputFields({
-      ["username"]: payload.username,
-    });
+    const errorMsg = validateRegisterInputFields(payload);
     if (errorMsg) return toastError(errorMsg);
 
     // validating username
@@ -151,7 +153,7 @@ function Username({ handleCloseModal }: UsernameProps) {
             <h1
               className={`${leagueGothic.className} text-3xl mb-7 text-center  text-white`}
             >
-              Enter your Username
+              Required
             </h1>
 
             <div className="space-y-4 md:space-y-6">
@@ -160,7 +162,32 @@ function Username({ handleCloseModal }: UsernameProps) {
                   htmlFor="username"
                   className="block mb-2 text-sm font-medium text-white"
                 >
-                  Enter Username to proceed
+                  Enter Full Name
+                </label>
+                <div
+                  ref={inputRefs.name}
+                  className="flex items-center justify-center bg-[#162423] sm:text-sm outline-none rounded-lg  w-full  text-white "
+                >
+                  <input
+                    type="text"
+                    name="name"
+                    className="bg-[#162423] sm:text-sm outline-none rounded-lg  w-full h-full p-2.5 text-white "
+                    placeholder="e.g John"
+                    value={form.name}
+                    onChange={handleChange}
+                  />
+                </div>
+                <p
+                  ref={errorRefs.name}
+                  className="mt-2 text-xs  font-normal text-gray-600 base-input-message"
+                ></p>
+              </div>
+              <div>
+                <label
+                  htmlFor="username"
+                  className="block mb-2 text-sm font-medium text-white"
+                >
+                  Enter Username
                 </label>
                 <div
                   ref={inputRefs.username}

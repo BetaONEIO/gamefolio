@@ -59,7 +59,9 @@ const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
     if (Object.keys(authState).length !== 0) {
       if (
         authState.hasOwnProperty("username") === false ||
-        authState?.username?.trim() === ""
+        authState?.username?.trim() === "" ||
+        authState?.name?.trim() === "" ||
+        authState.hasOwnProperty("name") === false
       ) {
         handleModalToggle("isUsernameModalOpen", true);
       } else {

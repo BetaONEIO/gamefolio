@@ -17,7 +17,6 @@ const findOrCreate = async (profile, done) => {
   } else {
     try {
       const newUser = new User({
-        name: profile.displayName,
         email: profile.emails[0].value,
         profilePicture: profile.photos[0].value.replace("s96", "s240"),
         signupMethod: "google",
