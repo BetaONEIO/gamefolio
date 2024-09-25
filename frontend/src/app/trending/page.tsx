@@ -528,3 +528,7 @@
 // };
 
 // export default Trending;
+
+export default function Trending() {
+  return <div>NOT FOUND</div>;
+}

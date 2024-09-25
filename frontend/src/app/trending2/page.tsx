@@ -471,3 +471,7 @@
 // }
 
 // export default Page;
+
+export default function Trending2() {
+  return <div>NOT FOUND</div>;
+}
