@@ -9,7 +9,7 @@ import Report from "@/components/Modals/Report";
 import VideoDetails from "@/components/Modals/VideoDetails";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import { dispatch, useSelector } from "@/store";
-import { userSession } from "@/store/slices/authSlice";
+import { refreshPage, userSession } from "@/store/slices/authSlice";
 import { getAllPostVideos, updateDetailedPost } from "@/store/slices/postSlice";
 import { getProfileInfo, postUsernames } from "@/store/slices/userSlice";
 import { copyToClipboard } from "@/utils/helpers";
@@ -17,6 +17,7 @@ import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ToastContainer } from "react-toastify";
 
 const CoverPhotoLoader = () => {
   return (
@@ -91,6 +92,7 @@ interface Usernames {
   twitch?: string;
   xbox?: string;
   steam?: string;
+  kick?: string;
 }
 
 function MyGamefolio({ params }: any) {
@@ -103,6 +105,7 @@ function MyGamefolio({ params }: any) {
   const [twitch, setTwitch] = useState("");
   const [xbox, setXbox] = useState("");
   const [steam, setSteam] = useState("");
+  const [kick, setKick] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [modalState, setModalState] = useState({
     isShareModalOpen: false,
@@ -168,14 +171,11 @@ function MyGamefolio({ params }: any) {
     return currentRoute === path ? true : false;
   };
 
-  function handlePageRefresh(): void {
-    throw new Error("Function not implemented.");
-  }
-
   const copyGamefolio = async (textToCopy: string) => {
     try {
       await navigator.clipboard.writeText(textToCopy);
       toastSuccess("Copied your Gamefolio");
+      handlePageRefresh();
     } catch (err) {
       console.error("Failed to copy:", err);
       toastError("Failed to copy");
@@ -199,6 +199,7 @@ function MyGamefolio({ params }: any) {
     twitch,
     xbox,
     steam,
+    kick,
   }: Usernames) => {
     const payload = {
       userID: authState.userData._id,
@@ -206,6 +207,7 @@ function MyGamefolio({ params }: any) {
       twitch: twitch,
       xbox: xbox,
       steam: steam,
+      kick: kick,
     };
 
     const successCallback = (response: any) => {
@@ -226,6 +228,9 @@ function MyGamefolio({ params }: any) {
     dispatch(postUsernames(params));
   };
 
+  const handlePageRefresh = () => {
+    dispatch(refreshPage());
+  };
   return (
     <Layout>
       <div className="flex justify-center h-screen">
@@ -234,7 +239,7 @@ function MyGamefolio({ params }: any) {
         ) : (
           <div className="relative w-full h-screen">
             <div
-              className="fixed md:relative w-full  h-40 md:h-80 "
+              className="fixed md:relative w-full h-40 md:h-80"
               style={{
                 background: `linear-gradient(to bottom, transparent 40%, rgba(9, 22, 25, 1) 99%), ${backgroundImage} no-repeat center / cover`,
                 backgroundSize: "cover",
@@ -246,13 +251,13 @@ function MyGamefolio({ params }: any) {
         )}
 
         {/* Top Bar */}
-        <div className="flex flex-col lg:flex-row w-screen lg:justify-center absolute top-48 lg:top-40 lg:w-4/5 h-3/4  overflow-y-auto lg:overflow-y-visible    ">
+        <div className="flex flex-col lg:flex-row w-screen lg:justify-center absolute top-48 lg:top-40 lg:w-4/5 h-3/4  overflow-y-auto lg:overflow-y-visible">
           {isDataFetching ? (
             <SkeletonProfileLoader />
           ) : (
-            <div className="border-2 border-[#1C2C2E] rounded-lg p-2 pt-6 bg-[#091619] w-auto lg:w-72 h-full md:overflow-y-scroll no-scrollbar  ">
-              <div className="flex flex-col gap-8 justify-center">
-                <div className="flex justify-end">
+            <div className="border-2 border-[#1C2C2E] rounded-lg p-2 pt-6 bg-[#091619] w-auto lg:w-72 h-full md:overflow-y-scroll no-scrollbar">
+              <div className="flex flex-col gap-8 justify-center relative">
+                <div className="flex justify-end relative">
                   <button
                     className="px-3 py-2 cursor-pointer hover:opacity-80"
                     onClick={toggleDropdown}
@@ -266,31 +271,18 @@ function MyGamefolio({ params }: any) {
                     />
                   </button>
 
+                  {/* Dropdown */}
                   <div
                     id="dropdown"
                     className={`${
                       isDropdownOpen ? "block" : "hidden"
-                    } flex justify-center border-2 border-[#43DD4E] rounded-lg mt--2 bg-[#162423]`}
-                    style={{
-                      borderWidth: "2px",
-                      borderColor: "#43DD4E",
-                      position: "absolute",
-                      top:
-                        isBrowser && window.innerWidth <= 768 ? "9%" : "10.5%",
-                      left:
-                        isBrowser && window.innerWidth <= 768
-                          ? "90.8%"
-                          : "29.9%",
-                      transform: "translateX(-50%)",
-                      width: "120px",
-                    }}
+                    } absolute z-10 top-full right-3 border-2 border-[#43DD4E] rounded-lg -mt-1 bg-[#091619] px-4`}
+                    style={{ width: "100px" }}
                   >
+                    {/* Dropdown arrow */}
                     <div
+                      className="absolute top-[-10px] right-[10px]"
                       style={{
-                        position: "absolute",
-                        top: "-10px",
-                        left: "50%",
-                        transform: "translateX(-50%)",
                         borderLeft: "5px solid transparent",
                         borderRight: "5px solid transparent",
                         borderBottom: `10px solid #43DD4E`,
@@ -385,8 +377,8 @@ function MyGamefolio({ params }: any) {
                   </p>
                 </div>
               </div>
-              <div className="flex flex-col justify-center ">
-                <div className="flex flex-row w-56 gap-2 lg:flex-col  lg:w-full">
+              <div className="flex flex-col justify-center">
+                <div className="flex flex-row w-72 gap-2 lg:flex-col lg:w-full my-4">
                   <div className="relative flex items-center space-x-2 rounded-lg bg-[#162423] p-2 mt-2">
                     <Image
                       src={SVG.PlayStation}
@@ -502,8 +494,38 @@ function MyGamefolio({ params }: any) {
                       />
                     </div>
                   </div>
+
+                  <div className="relative flex items-center space-x-2 rounded-lg bg-[#162423] p-2 mt-2">
+                    <Image
+                      src={SVG.kick}
+                      alt="Connect with kick"
+                      width={10}
+                      height={10}
+                      className="rounded-xl w-10 h-10 object-cover"
+                    />
+                    <input
+                      className="hidden lg:block text-white font-normal text-xs bg-[#162423] outline-none py-3"
+                      placeholder={
+                        profileInfoState?.profileUserInfo?.socialUsernames?.find(
+                          (social: any) => social.kick
+                        )?.kick || "Connect with kick"
+                      }
+                      value={kick}
+                      onChange={(e) => setKick(e.target.value)}
+                    />
+                    <div onClick={() => handleSubmitUsernames({ kick })}>
+                      <Image
+                        className="hidden lg:block w-4 h-4 text-green-500 lg:absolute lg:right-3 lg:top-2/4 lg:transform lg:-translate-y-2/4"
+                        src={SVG.Tick}
+                        alt="tick"
+                        width={30}
+                        height={30}
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div className="flex flex-col">
+
+                <div className="flex flex-col mb-2">
                   <h1 className="text-white font-bold my-2">About Me:</h1>
                   <p className="font-light text-xs text-[#7C7F80]">
                     {profileInfoState?.profileUserInfo?.bio}
@@ -513,17 +535,17 @@ function MyGamefolio({ params }: any) {
             </div>
           )}
 
-          <div className="w-full lg:w-8/12 justify-center lg:justify-between items-center h-full  mt-10 lg:mt-24">
+          <div className="w-full lg:w-8/12 justify-center lg:justify-between items-center h-full mt-10 lg:mt-24">
             {/* header */}
             <div className="flex items-center">
               <div className="flex justify-between items-center w-full sm:mx-2 lg:mx-4 relative">
                 <div>
-                  <p className="font-semibold text-base sm:text-lg lg:text-lg text-white pl-2">
+                  <p className="font-semibold text-base sm:text-xs lg:text-lg text-white pl-2">
                     My Gamefolio
                   </p>
                 </div>
 
-                <div className="bg-[#1C2C2E] flex gap-2 p-1 items-center rounded-lg overflow-hidden absolute right-10 w-full sm:w-auto max-w-[220px]">
+                <div className="bg-[#1C2C2E] flex gap-2 p-1 items-center rounded-lg overflow-hidden absolute right-10 w-[180px] sm:w-[250px]">
                   <Image
                     src={SVG.Search}
                     alt="Search"
@@ -622,6 +644,15 @@ function MyGamefolio({ params }: any) {
       </Modal>
 
       <Modal
+        isOpen={modalState.isReportModalOpen}
+        handleClose={() => handleModalToggle("isReportModalOpen")}
+      >
+        <Report
+          handleCloseModal={() => handleModalToggle("isReportModalOpen")}
+        />
+      </Modal>
+
+      <Modal
         isOpen={modalState.isVideoDetailOpen}
         handleClose={() => handleModalToggle("isVideoDetailOpen")}
       >
@@ -630,16 +661,20 @@ function MyGamefolio({ params }: any) {
           handleCloseModal={() => handleModalToggle("isVideoDetailOpen")}
           handlePageRefresh={() => handlePageRefresh()}
         />
-
-        <Modal
-          isOpen={modalState.isReportModalOpen}
-          handleClose={() => handleModalToggle("isReportModalOpen")}
-        >
-          <Report
-            handleCloseModal={() => handleModalToggle("isReportModalOpen")}
-          />
-        </Modal>
       </Modal>
+
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </Layout>
   );
 }

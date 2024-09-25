@@ -179,8 +179,8 @@ function TopBar() {
             )}
           </li>
         </ul>
+        <hr className="h-px border-0 bg-gray-700 mx-4" />
       </div>
-      <hr className="h-px border-0 bg-gray-700 mx-4" />
     </>
   );
 }

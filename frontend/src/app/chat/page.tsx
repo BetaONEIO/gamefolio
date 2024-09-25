@@ -13,7 +13,8 @@ function ChatLayout() {
     backgroundImage: `linear-gradient(to bottom, rgba(4, 50, 12, 1), rgba(4, 50, 12, 0) 10%)`,
   };
   return (
-    <Layout children={undefined}>
+    <Layout>
+      <div>NOT FOUND</div>
       {/* Header */}
       {/* <CustomHeader>Messages</CustomHeader>
 

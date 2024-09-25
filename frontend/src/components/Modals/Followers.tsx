@@ -65,7 +65,7 @@ function Followers({ handleCloseModal, followerData }: FollowerProps) {
       >
         <div className="modal-container sm:w-96 lg:w-2/5 mx-auto z-50 overflow-y-auto">
           {/* Modal content */}
-          <div className="relative text-center rounded-lg bg-[#091619] py-3 px-3 sm:py-4 sm:px-8 border border-[#586769]">
+          <div className="relative text-center rounded-lg bg-[#091619] h-96 sm:h-full py-3 px-3 sm:py-4 sm:px-8 border border-[#586769]">
             <button
               type="button"
               className="text-white-400 absolute top-2.5 right-2.5 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white"
@@ -129,7 +129,7 @@ function Followers({ handleCloseModal, followerData }: FollowerProps) {
                               handleRemoveFollow(user?.userID?._id)
                             }
                             className={
-                              "w-[150px] h-[50] font-bold bg-[#162423] text-white text-center py-[5px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
+                              "w-[115px] sm:w-[150px] h-[30px] sm:h-[35px] font-bold bg-[#162423] text-white text-center py-[5px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
                             }
                           >
                             {"Remove"}

@@ -63,7 +63,7 @@ function Following({ handleCloseModal, followingData }: FollowingProps) {
       >
         <div className="modal-container sm:w-96 mx-auto lg:w-2/5 z-50 overflow-y-auto">
           {/* Modal content */}
-          <div className="relative text-center rounded-lg bg-[#091619] py-3 px-3 sm:py-6 sm:px-8 border border-[#586769]">
+          <div className="relative text-center rounded-lg bg-[#091619] h-96 sm:h-full py-3 px-3 sm:py-6 sm:px-8 border border-[#586769]">
             <button
               type="button"
               className="text-white-400 absolute top-2.5 right-2.5 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white"
@@ -127,10 +127,10 @@ function Following({ handleCloseModal, followingData }: FollowingProps) {
                               handleRemoveFollowing(user?.userID?._id)
                             }
                             className={
-                              "w-[150px] h-[50] font-bold bg-gradient-to-b from-[#62C860] to-[#37C535] text-white text-center py-[5px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
+                              "w-[115px] sm:w-[150px] h-[30px] sm:h-[35px]  font-bold bg-gradient-to-b from-[#62C860] to-[#37C535] text-white text-center rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
                             }
                           >
-                            {"Following"}
+                            Following
                           </button>
                         </div>
                       </div>
