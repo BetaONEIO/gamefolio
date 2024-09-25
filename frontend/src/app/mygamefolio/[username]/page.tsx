@@ -8,14 +8,20 @@ import MoreOptions from "@/components/Modals/MoreOptions";
 import Report from "@/components/Modals/Report";
 import VideoDetails from "@/components/Modals/VideoDetails";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
+import { ROUTES } from "@/labels/routes";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import { getAllPostVideos, updateDetailedPost } from "@/store/slices/postSlice";
-import { getProfileInfo, postUsernames } from "@/store/slices/userSlice";
+import {
+  followUser,
+  getProfileInfo,
+  postUsernames,
+  removeFollow,
+} from "@/store/slices/userSlice";
 import { copyToClipboard } from "@/utils/helpers";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const CoverPhotoLoader = () => {
@@ -114,6 +120,7 @@ function MyGamefolio({ params }: any) {
   });
 
   const isBrowser = typeof window !== "undefined";
+  const router = useRouter();
 
   const isDataFetching =
     Object.keys(profileInfoState.profileUserInfo).length === 0 ||
@@ -222,6 +229,61 @@ function MyGamefolio({ params }: any) {
     };
 
     dispatch(postUsernames(params));
+  };
+
+  const handleUnfollow = async (userId: any) => {
+    const payload = {
+      userId: userId,
+      followerID: authState.userData._id,
+    };
+
+    const successCallback = (response: any) => {
+      handlePageRefresh();
+      toastSuccess(response.message);
+    };
+
+    const errorCallback = (error: string) => {
+      toastError(error);
+    };
+
+    const params = {
+      payload,
+      successCallback,
+      errorCallback,
+    };
+
+    dispatch(removeFollow(params));
+  };
+
+  const follow = async (userId: any) => {
+    const payload = {
+      userId: userId,
+      followerID: authState.userData._id,
+    };
+
+    const successCallback = (response: any) => {
+      handlePageRefresh();
+      toastSuccess(response.message);
+    };
+
+    const errorCallback = (error: string) => {
+      toastError(error);
+    };
+
+    const params = {
+      payload,
+      successCallback,
+      errorCallback,
+    };
+
+    dispatch(followUser(params));
+  };
+
+  const handleFollow = () => {
+    if (authState.userData === null) {
+      return router.push(ROUTES.login);
+    }
+    follow(profileInfoState?.profileUserInfo?._id);
   };
 
   return (
@@ -353,16 +415,31 @@ function MyGamefolio({ params }: any) {
                   </div>
                 </div>
 
-                {!isCurrentUserProfile && (
-                  <div className="flex justify-center h-8 gap-2 my-6">
-                    <button className="font-bold w-40 h-10 bg-[#292D32] text-white text-center py-[10px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]">
-                      follow
-                    </button>
-                    <button className="font-bold w-40 h-10 bg-gradient-to-b from-[#62C860] to-[#37C535] text-white text-center py-[10px] px-[10px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]">
-                      Message
-                    </button>
-                  </div>
-                )}
+                {!isCurrentUserProfile &&
+                  (profileInfoState?.profileUserInfo?.follower?.some(
+                    (user: any) =>
+                      user?.userID?._id === authState?.userData?._id
+                  ) ? (
+                    <div className="flex justify-center h-8 gap-2 my-6">
+                      <button
+                        className="font-bold w-30  h-10  bg-gradient-to-b from-[#62C860] to-[#37C535] text-white text-center py-[3px] sm:py-[10px] px-[5px] sm:px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
+                        onClick={() =>
+                          handleUnfollow(profileInfoState?.profileUserInfo?._id)
+                        }
+                      >
+                        UnFollow
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex justify-center h-8 gap-2 my-6">
+                      <button
+                        className="font-bold w-40 md:w-30  h-10  bg-gradient-to-b from-[#62C860] to-[#37C535] text-white text-center py-[3px] sm:py-[10px] px-[5px] sm:px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
+                        onClick={handleFollow}
+                      >
+                        Follow
+                      </button>
+                    </div>
+                  ))}
                 <div className="flex items-center justify-between text-white mt-4">
                   <p>Posts</p>
                   <p>{userVideos?.length || 0}</p>
