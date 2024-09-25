@@ -113,8 +113,6 @@ function MyGamefolio({ params }: any) {
     isStoryModalOpen: false,
   });
 
-  console.log("hh: ", profileInfoState);
-
   const isBrowser = typeof window !== "undefined";
 
   const isDataFetching =
@@ -172,6 +170,16 @@ function MyGamefolio({ params }: any) {
     throw new Error("Function not implemented.");
   }
 
+  const copyGamefolio = async (textToCopy: string) => {
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+      toastSuccess("Copied your Gamefolio");
+    } catch (err) {
+      console.error("Failed to copy:", err);
+      toastError("Failed to copy");
+    }
+  };
+
   const userVideos = postState.videos?.filter(
     (post: any) =>
       post?.userID?.username === profileInfoState.profileUserInfo.username
@@ -182,7 +190,7 @@ function MyGamefolio({ params }: any) {
   const isCurrentUserProfile =
     authState?.userData?.username === profileInfoState.profileUserInfo.username;
 
-  const backgroundImage = `url(${authState.userData.coverPicture})`;
+  const backgroundImage = `url(${profileInfoState.profileUserInfo.coverPicture})`;
 
   const handleSubmitUsernames = async ({
     playstation,
@@ -265,7 +273,8 @@ function MyGamefolio({ params }: any) {
                       borderWidth: "2px",
                       borderColor: "#43DD4E",
                       position: "absolute",
-                      top: isBrowser && window.innerWidth <= 768 ? "11%" : "9%",
+                      top:
+                        isBrowser && window.innerWidth <= 768 ? "9%" : "10.5%",
                       left:
                         isBrowser && window.innerWidth <= 768
                           ? "90.8%"
@@ -287,10 +296,16 @@ function MyGamefolio({ params }: any) {
                     />
                     <ul>
                       <li>
-                        <span className="font-normal cursor-pointer hover:opacity-80">
+                        <div
+                          className="font-normal cursor-pointer hover:opacity-80"
+                          onClick={() => {
+                            copyGamefolio(window.location.href);
+                          }}
+                        >
                           Share
-                        </span>
+                        </div>
                       </li>
+
                       <li>
                         <div
                           onClick={() => handleModalToggle("isReportModalOpen")}
@@ -501,12 +516,12 @@ function MyGamefolio({ params }: any) {
             <div className="flex items-center">
               <div className="flex justify-between items-center w-full sm:mx-2 lg:mx-4 relative">
                 <div>
-                  <p className="font-semibold text-base sm:text-lg lg:text-lg text-white">
+                  <p className="font-semibold text-base sm:text-lg lg:text-lg text-white pl-2">
                     My Gamefolio
                   </p>
                 </div>
 
-                <div className=" bg-[#1C2C2E] flex gap-2 p-1 items-center rounded-lg overflow-hidden absolute right-10">
+                <div className="bg-[#1C2C2E] flex gap-2 p-1 items-center rounded-lg overflow-hidden absolute right-10 w-full sm:w-auto max-w-[220px]">
                   <Image
                     src={SVG.Search}
                     alt="Search"
@@ -519,6 +534,7 @@ function MyGamefolio({ params }: any) {
                     placeholder="Search"
                   />
                 </div>
+
                 <Image
                   src={SVG.Filter}
                   alt="Filter"

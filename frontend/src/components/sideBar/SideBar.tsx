@@ -350,7 +350,7 @@ function SideBar({ toggleSidebar, sidebarOpen }: SideBarProps) {
                   src={SVG.Addnew}
                   alt="Addnew"
                 />
-                <p className="font-bold">Add New</p>
+                <p className="font-bold">Post now</p>
               </button>
             </div>
             {isDataFetching ? (

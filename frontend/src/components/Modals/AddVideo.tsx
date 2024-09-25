@@ -36,25 +36,27 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
     percentCompleted: 0,
   });
 
+  // State to store all fetched game options
+  const [optionsForGame, setOptionsForGame] = useState<any[]>([]);
+  const [searchText, setSearchText] = useState("");
+  const [filteredOptions, setFilteredOptions] = useState<any[]>([]);
+
   useEffect(() => {
     dispatch(getAllMusic());
+    handleGameList();
   }, []);
 
-  // Game list
-  const optionsForGame: any = [];
-
   const handleGameList = async () => {
-    const gettingGameList = await fetchGameList();
-    return gettingGameList;
+    try {
+      const gettingGameList = await fetchGameList();
+      setOptionsForGame(gettingGameList);
+      setFilteredOptions(gettingGameList); // Set the initial options for games
+    } catch (error) {
+      console.error("Error fetching game list:", error);
+    }
   };
-  handleGameList().then((res) => {
-    optionsForGame.push(...res);
-  });
 
-  console.log("hello", optionsForGame);
-
-  const [searchText, setSearchText] = useState("");
-  const [filteredOptions, setFilteredOptions] = useState(optionsForGame);
+  console.log("hhh", optionsForGame);
 
   // Debounce function for delaying search
   const debounce = (func: any, delay: any) => {
@@ -67,12 +69,16 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
     };
   };
 
-  const delayedSearch = debounce((inputValue: any) => {
-    const filtered = optionsForGame?.filter((option: any) => {
-      return option?.name?.toLowerCase().includes(inputValue);
-    });
-    setFilteredOptions(filtered);
-  }, 3000);
+  const delayedSearch = debounce((inputValue: string) => {
+    if (!inputValue) {
+      setFilteredOptions(optionsForGame); // Reset to all games when search is cleared
+    } else {
+      const filtered = optionsForGame?.filter((option: any) =>
+        option?.name?.toLowerCase().includes(inputValue)
+      );
+      setFilteredOptions(filtered);
+    }
+  }, 300);
 
   const handleSearch = (e: any) => {
     const inputValue = e.target.value.toLowerCase();
@@ -211,7 +217,7 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
               {/* Left Column - Story Block */}
               <div className="w-full sm:w-1/2 sm:mr-2 sm:ml-6 px-8 sm:px-0">
                 {/* Add your story block content here */}
-                <div className="lg:h-[33.9rem] md:h-[33.9rem] h-[8rem] w-full md:w-[22rem] lg:w-full flex flex-col sm:justify-center justify-center items-center rounded-lg bg-[#091619] border-2 border-[#1C2C2E] md:mr-20">
+                <div className="lg:h-[33.9rem] md:h-[33.9rem] h-[12.4rem] w-full md:w-[22rem] lg:w-full flex flex-col sm:justify-center justify-center items-center rounded-lg bg-[#091619] border-2 border-[#1C2C2E] md:mr-20">
                   {!selectedVideo || error ? (
                     <label htmlFor="dropzone-file">
                       <div className="flex flex-col items-center">
@@ -235,11 +241,6 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
                     </label>
                   ) : (
                     <div className="w-full h-full flex items-center justify-center ">
-                      {/*           <p className="text-white">{fileUpload.fileName}</p> */}
-                      {/* <ProgressBar 
-                        completed={fileUpload.percentCompleted}
-                        bgColor="#0766ea"
-                      /> */}
                       {video ? (
                         <video
                           className="w-full h-full"
@@ -271,12 +272,6 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
                           }}
                         </CountdownCircleTimer>
                       )}
-                      {/* <div className="w-full bg-gradient-to-b from-[#62C860] to-[#37C535] h-3 rounded-lg mt-2">
-                        <div
-                          style={{ width: `${uploadProgress}%` }}
-                          className="h-full bg-primary rounded-lg"
-                        ></div>
-                      </div>*/}
                     </div>
                   )}
                 </div>
@@ -286,7 +281,7 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
               <div className="w-full md:w-full lg:w-2/5 px-8 sm:px-0">
                 {/* Game Selection */}
                 <div className="mb-2 sm:mb-4">
-                  <label className="block mb-2 text-gray-200">
+                  <label className="block my-2 text-gray-200">
                     Select Game
                   </label>
                   <div className="relative inline-block text-left w-full">
@@ -366,7 +361,7 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
                 </div>
 
                 <div className="mb-0 sm:mb-4">
-                  <label className="block mb-2 text-gray-200">
+                  <label className="block my-2 text-gray-200">
                     Write Description
                   </label>
                   <textarea
@@ -378,80 +373,6 @@ function AddVideo({ handleCloseModal }: AddVideoProps) {
                     onChange={(e) => setDescription(e.target.value)}
                   ></textarea>
                 </div>
-
-                {/* <div className="mb-0 sm:mb-4">
-                  <label className="block mb-2  text-gray-200">Add Music</label>
-                  <div className="relative inline-block text-left w-full">
-                    <div className="relative">
-                      <span className="rounded-md shadow-sm">
-                        <button
-                          onClick={toggleDropdownMusic}
-                          type="button"
-                          className="w-full md:w-80 sm:w-96 inline-flex justify-between px-4 py-3 rounded-t-lg bg-[#1C2C2E] text-white "
-                          aria-selected={true}
-                        >
-                          {selectedOptionMusic || "Music"}
-                          <Image
-                            className={"w-6 h-6 ml-2"}
-                            src={SVG.Dropdown}
-                            alt="dropdown"
-                            width={30}
-                            height={30}
-                          />
-                        </button>
-                      </span>
-                    </div>
-
-                    {isDropdownOpenMusic && (
-                      <div className="absolute overflow-y-auto h-40 z-50 mt-2w-full md:w-80 sm:w-96 shadow-lg">
-                        <div className="bg-[#1C2C2E] flex gap-2 p-2 sm:p-3 items-center border border-[#162423]">
-                          <Image
-                            src={SVG.Search}
-                            alt="logo"
-                            width={25}
-                            height={25}
-                          />
-                          <input
-                            className="w-full md:w-80 sm:w-96 bg-[#1C2C2E] outline-none text-white flex-grow text-sm sm:text-base"
-                            placeholder="Search"
-                            value={searchTextMusic}
-                            onChange={handleSearchMusic}
-                          />
-                        </div>
-                        <ul className="py-1 bg-[#1C2C2E] text-white divide-y divide-[#162423] rounded-b-lg">
-                          {filteredOptionsMusic?.map((option: any) => (
-                            <li
-                              key={option.value}
-                              onClick={() => handleSelectMusic(option)}
-                              className="cursor-pointer select-none outline-none relative px-4 py-3 text-gray-200"
-                              role="option"
-                              aria-selected={false}
-                            >
-                              <span
-                                className={`${
-                                  option === selectedOptionMusic
-                                    ? "font-semibold"
-                                    : ""
-                                } block truncate`}
-                              >
-                                {option}
-                              </span>
-                              {option === selectedOptionMusic && (
-                                <Image
-                                  className="absolute w-5 h-5 text-green-500 right-3 top-2/4 transform -translate-y-2/4"
-                                  src={SVG.Tick}
-                                  alt="tick"
-                                  width={30}
-                                  height={30}
-                                />
-                              )}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-                </div> */}
 
                 <div className="flex justify-between items-center my-3 sm:mt-10 sm:ml-7 w-full md:w-72 sm:w-96 ml-2">
                   <button

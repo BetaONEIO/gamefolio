@@ -150,6 +150,7 @@ export function getProfileInfo(params: ActionParams) {
     try {
       const [ok, response] = await API(options);
       if (!ok || !response) return;
+
       dispatch(slice.actions.setSearchUserInfo(response));
     } catch (error) {
     } finally {

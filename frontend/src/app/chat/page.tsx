@@ -14,20 +14,21 @@ function ChatLayout() {
   };
   return (
     <Layout>
+      <div>NOT FOUND</div>
       {/* Header */}
-      <CustomHeader>Messages</CustomHeader>
+      {/* <CustomHeader>Messages</CustomHeader>
 
       <section style={sectionStyle} className="flex w-full bg-[#091619]">
         <div className="flex h-screen flex-grow rounded-lg bg-[#091619] font-poppins shadow-sm bg-navy-800 mt-4">
-          {/* First column  */}
+
 
           <Messages />
 
-          {/* Second Column */}
+
 
           <Chat />
         </div>
-      </section>
+      </section> */}
     </Layout>
   );
 }

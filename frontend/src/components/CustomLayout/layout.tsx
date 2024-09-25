@@ -4,14 +4,17 @@ import { ROUTES } from "@/labels/routes";
 import { dispatch, useSelector } from "@/store";
 import { userSession } from "@/store/slices/authSlice";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { ReactNode, useEffect, useState } from "react";
 import Modal from "../Modals/Modal";
 import Username from "../Modals/Username";
 
 const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const router = useRouter();
+  const pathname = usePathname();
+
   const authState = useSelector((state: any) => state.auth.userData) || [];
+  const [showSidebar, setShowSidebar] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [modalState, setModalState] = useState({
     isUsernameModalOpen: false,
@@ -39,9 +42,17 @@ const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
   };
   useEffect(() => {
     const fetchUserSession = async () => {
+      console.log("pathName: ", pathname, " route: ", ROUTES.mygamefolio);
+
       if (getFromLocal("@token") || cookies) {
         await dispatch(userSession(params));
       } else {
+        const excludedRoute = ROUTES.mygamefolio; // Replace with the actual route you want to exclude
+        if (pathname.includes(excludedRoute)) {
+          // Skip session check for this route
+          setShowSidebar(false);
+          return;
+        }
         router.replace(ROUTES.login);
       }
     };
@@ -79,10 +90,13 @@ const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <div className="antialiased bg-[#091619]">
       {/* <!-- Sidebar --> */}
-      <SideBar toggleSidebar={toggleSidebar} sidebarOpen={sidebarOpen} />
+
+      {showSidebar && (
+        <SideBar toggleSidebar={toggleSidebar} sidebarOpen={sidebarOpen} />
+      )}
       {/* Main Page */}
       <main
-        className="md:ml-64 h-auto"
+        className={`${showSidebar && "md:ml-64"} h-auto`}
         onClick={sidebarOpen ? toggleSidebar : undefined}
       >
         <div className="rounded-lg border-gray-600 h-fit overflow-y-auto  no-scrollbar">
