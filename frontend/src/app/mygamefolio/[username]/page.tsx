@@ -609,6 +609,35 @@ function MyGamefolio({ params }: any) {
                 })
               )}
             </div>
+
+            {/* upload to gamefolio */}
+
+            {/* <div className="flex w-full">
+              <div className="bg-[#1C2C2E] rounded-lg flex flex-col w-full h-[600px] justify-center items-center h-24 gap-1.5 sm:gap-4 mx-4">
+                <div>
+                  <p className="text-white font-normal text-sm sm:text-lg">
+                    Post to your Gamefolio
+                  </p>
+                </div>
+
+                <div className="flex item-center bg-[#162423] px-6 py-4 gap-4 rounded-lg">
+                  <div>
+                    <Image
+                      className="cursor-pointer w-fit"
+                      src={SVG.Video}
+                      alt="Threedots"
+                      width={24}
+                      height={24}
+                    />
+                  </div>
+                  <div className="flex items-center">
+                    <p className="text-center text-white font-semibold text-sm sm:text-lg">
+                      video
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div> */}
           </div>
         </div>
       </div>
