@@ -52,7 +52,7 @@ function AddNew({ handleCloseModal }: AddNewProps) {
             <h1
               className={`${leagueGothic.className} text-3xl mb-7  text-white`}
             >
-              ADD NEW
+              POST NOW
             </h1>
 
             <div className="p-2 mb-4 text-sm text-left rounded-lg sm:mb-5 bg-[#162423] hover:opacity-80 cursor-pointer">

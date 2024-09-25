@@ -109,6 +109,9 @@ const userSchema = new mongoose.Schema({
       steam: {
         type: String,
       },
+      kick: {
+        type: String,
+      },
     },
   ],
 

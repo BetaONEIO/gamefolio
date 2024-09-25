@@ -543,7 +543,7 @@ const getProfileInfo = asyncHandler(async (req, res) => {
 // Create or Add Social Usernames
 const addSocialUsernames = async (req, res) => {
   try {
-    const { userID, playstation, twitch, xbox, steam } = req.body;
+    const { userID, playstation, twitch, xbox, steam, kick } = req.body;
 
     let user = await User.findById(userID);
 
@@ -556,6 +556,7 @@ const addSocialUsernames = async (req, res) => {
       twitch,
       xbox,
       steam,
+      kick,
     };
 
     user.socialUsernames.push(newSocialUsernames);

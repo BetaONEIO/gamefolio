@@ -479,7 +479,7 @@ function Page({ params }: any) {
           <div
             className="disable-blur flex flex-col relative items-center lg:flex-row lg:justify-center gap-4 h-60 mx-4 my-4"
             style={{
-              background: `linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.6) 40%, rgba(9, 22, 25, 0.7) 99%), ${backgroundImage} no-repeat center / cover`,
+              background: `linear-gradient(to bottom, transparent 1%, rgba(9, 22, 25, 1) 99%), ${backgroundImage} no-repeat center / cover`,
               backgroundSize: "cover",
               backfaceVisibility: "visible",
             }}
@@ -499,7 +499,7 @@ function Page({ params }: any) {
               />
             </div>
 
-            <div className="flex justify-between w-9/12">
+            <div className="flex justify-between w-9/12 relative">
               <div className="flex flex-1 flex-col gap-2 flex-wrap justify-center text-center lg:justify-start lg:text-start p-2">
                 <span className="font-semibold text-white">
                   {profileInfoState?.profileUserInfo?.name}
@@ -564,43 +564,82 @@ function Page({ params }: any) {
               </div>
 
               {!isCurrentUserProfile && (
-                <div className="flex flex-col gap-2 sm:gap-4 w-full mt-3 sm:flex-row sm:justify-center justify-start">
-                  {profileInfoState?.profileUserInfo?.follower?.some(
-                    (user: any) => user?.userID?._id === authState._id
-                  ) ? (
-                    <button
-                      className="font-bold w-24 sm:w-40 h-8 sm:h-10 bg-[#292D32] text-white text-center py-[3px] sm:py-[10px] px-[5px] sm:px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
-                      onClick={() =>
-                        handleUnFollowUser(
-                          profileInfoState?.profileUserInfo?._id
-                        )
-                      }
-                    >
-                      Unfollow
-                    </button>
-                  ) : (
-                    <button
-                      className="font-bold w-24 sm:w-40 h-8 sm:h-10 bg-[#292D32] text-white text-center py-[3px] sm:py-[10px] px-[5px] sm:px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
-                      onClick={() =>
-                        handleFollowUser(profileInfoState?.profileUserInfo?._id)
-                      }
-                    >
-                      Follow
-                    </button>
-                  )}
+                <>
+                  <div className="hidden sm:flex flex-col gap-2 sm:gap-4 w-full mt-3 sm:flex-row sm:justify-center justify-start">
+                    {profileInfoState?.profileUserInfo?.follower?.some(
+                      (user: any) => user?.userID?._id === authState._id
+                    ) ? (
+                      <button
+                        className="font-bold w-24 sm:w-40 h-8 sm:h-10 bg-[#292D32] text-white text-center py-[3px] sm:py-[10px] px-[5px] sm:px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
+                        onClick={() =>
+                          handleUnFollowUser(
+                            profileInfoState?.profileUserInfo?._id
+                          )
+                        }
+                      >
+                        Unfollow
+                      </button>
+                    ) : (
+                      <button
+                        className="font-bold w-24 sm:w-40 h-8 sm:h-10 bg-[#292D32] text-white text-center py-[3px] sm:py-[10px] px-[5px] sm:px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
+                        onClick={() =>
+                          handleFollowUser(
+                            profileInfoState?.profileUserInfo?._id
+                          )
+                        }
+                      >
+                        Follow
+                      </button>
+                    )}
 
-                  <button
-                    className="font-bold w-24 sm:w-40 h-8 sm:h-10 bg-gradient-to-b from-[#62C860] to-[#37C535] text-white text-center py-[3px] sm:py-[10px] px-[5px] sm:px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
-                    onClick={handleMessage}
-                  >
-                    Message
-                  </button>
-                </div>
+                    <button
+                      className="font-bold w-24 sm:w-40 h-8 sm:h-10 bg-gradient-to-b from-[#62C860] to-[#37C535] text-white text-center py-[3px] sm:py-[10px] px-[5px] sm:px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
+                      onClick={handleMessage}
+                    >
+                      Message
+                    </button>
+                  </div>
+                  {/* for mobile screen */}
+                  <div className="flex flex-row absolute inset-x-0 -bottom-10 gap-2 justify-center sm:hidden">
+                    {profileInfoState?.profileUserInfo?.follower?.some(
+                      (user: any) => user?.userID?._id === authState._id
+                    ) ? (
+                      <button
+                        className="font-bold w-28 h-8 bg-[#292D32] text-white text-center py-[3px] px-[5px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
+                        onClick={() =>
+                          handleUnFollowUser(
+                            profileInfoState?.profileUserInfo?._id
+                          )
+                        }
+                      >
+                        Unfollow
+                      </button>
+                    ) : (
+                      <button
+                        className="font-bold w-28 h-8 bg-[#292D32] text-white text-center py-[3px] px-[5px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
+                        onClick={() =>
+                          handleFollowUser(
+                            profileInfoState?.profileUserInfo?._id
+                          )
+                        }
+                      >
+                        Follow
+                      </button>
+                    )}
+
+                    <button
+                      className="font-bold w-28 h-8 bg-gradient-to-b from-[#62C860] to-[#37C535] text-white text-center py-[3px] px-[5px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
+                      onClick={handleMessage}
+                    >
+                      Message
+                    </button>
+                  </div>
+                </>
               )}
             </div>
           </div>
 
-          <div className="flex justify-between w-10/12 my-6 mx-10">
+          <div className="flex justify-between w-10/12 mt-16 mx-10">
             <div>
               <p className="font-bold">Current Badge:</p>
               <div className="flex items-center gap-4 mt-2">
