@@ -54,7 +54,7 @@ function BlockUser({ handleCloseModal }: BlockUserProps) {
         <div className="modal-container w-80 sm:w-1/3 lg-rounded z-50">
           {/* Modal content */}
 
-          <div className="relative text-center rounded-lg bg-[#091619] py-3 px-3 sm:py-4 sm:px-8 border border-[#586769]">
+          <div className="relative text-center rounded-lg bg-[#091619] h-80 sm:h-full py-3 px-3 sm:py-4 sm:px-8 border border-[#586769]">
             <button
               type="button"
               className="text-white-400 absolute top-2.5 right-2.5 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white"
@@ -83,7 +83,7 @@ function BlockUser({ handleCloseModal }: BlockUserProps) {
             <div className="flex flex-col w-full sm:min-h-[350px] lg:min-h-[500px] max-h-[400px] sm:max-h-[350px] lg:max-h-[500px] overflow-y-auto no-scrollbar">
               {authState?.block?.length === 0 ? (
                 <div className="flex justify-center items-center sm:min-h-[350px] lg:min-h-[500px] max-h-[400px] sm:max-h-[350px] lg:max-h-[500px]">
-                  <p className="text-slate-300 text-sm">
+                  <p className="flex justify-center items-center text-slate-300 text-sm h-40">
                     Once you block people, you&apos;ll see here
                   </p>
                 </div>

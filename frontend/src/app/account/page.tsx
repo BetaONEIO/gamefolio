@@ -154,6 +154,7 @@ function Account() {
   const [twitch, setTwitch] = useState("");
   const [xbox, setXbox] = useState("");
   const [steam, setSteam] = useState("");
+  const [kick, setKick] = useState("");
   const [update, setUpdate] = useState<Boolean>(false);
   const [image, setImage] = useState<File | null>(null);
   const [selectedSection, setSelectedSection] = useState("videos");
@@ -388,8 +389,13 @@ function Account() {
       >
         <div
           className=" disable-blur flex flex-col relative items-center lg:flex-row lg:justify-center gap-4 h-60 mx-4 my-4"
+          // style={{
+          //   background: `linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.6) 40%, rgba(9, 22, 25, 0.7) 99%), ${backgroundImage} no-repeat center / cover`,
+          //   backgroundSize: "cover",
+          //   backfaceVisibility: "visible",
+          // }}
           style={{
-            background: `linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.6) 40%, rgba(9, 22, 25, 0.7) 99%), ${backgroundImage} no-repeat center / cover`,
+            background: `linear-gradient(to bottom, transparent 1%, rgba(9, 22, 25, 1) 99%), ${backgroundImage} no-repeat center / cover`,
             backgroundSize: "cover",
             backfaceVisibility: "visible",
           }}
@@ -508,7 +514,7 @@ function Account() {
         {/* Top Bar */}
 
         <div className="flex mx-3">
-          <div className="hidden w-2/5  md:flex flex-col sm:w-60 md:w-60 lg:w-96 h-80 border-2 border-[#1C2C2E] rounded-lg p-1">
+          <div className="hidden w-2/5  md:flex flex-col sm:w-60 md:w-60 lg:w-96 h-96 border-2 border-[#1C2C2E] rounded-lg p-1">
             <h1 className="text-white font-bold my-2">Connect</h1>
             <div className="relative flex items-center space-x-2 rounded-lg bg-[#162423] p-2 mt-2">
               <Image
@@ -590,6 +596,27 @@ function Account() {
                 }
                 value={steam}
                 onChange={(e) => setSteam(e.target.value)}
+              />
+            </div>
+
+            <div className="flex items-center gap-2 rounded-lg bg-[#162423] p-2 mt-2">
+              <Image
+                className="rounded-xl w-10 h-10 object-cover"
+                src={SVG.kick}
+                width={10}
+                height={10}
+                sizes="100vw"
+                alt="kick"
+              />
+              <input
+                className="hidden lg:block text-white font-normal text-xs bg-[#162423] outline-none py-3"
+                placeholder={
+                  profileInfoState?.profileUserInfo?.socialUsernames?.find(
+                    (social: any) => social.kick
+                  )?.kick || "Connect with kick"
+                }
+                value={kick}
+                onChange={(e) => setKick(e.target.value)}
               />
             </div>
           </div>

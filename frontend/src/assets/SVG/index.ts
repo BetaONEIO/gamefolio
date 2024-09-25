@@ -104,4 +104,5 @@ export const SVG = {
   Badge9: "/badge9.svg",
   eyeVisiblityOn: "/eye-visible.svg",
   eyeVisiblityOff: "/eye-notvisible.svg",
+  kick: "/kick.svg",
 };
