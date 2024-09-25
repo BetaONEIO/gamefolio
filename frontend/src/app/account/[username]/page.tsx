@@ -477,9 +477,11 @@ function Page({ params }: any) {
 
         <div style={sectionStyle} className="pt-4">
           <div
-            className="disable-blur flex flex-col items-center lg:flex-row gap-4 h-60 lg:pl-28 mx-4 my-4"
+            className="disable-blur flex flex-col relative items-center lg:flex-row lg:justify-center gap-4 h-60 mx-4 my-4"
             style={{
-              background: `linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.9) 99%), ${backgroundImage} no-repeat center / cover`,
+              background: `linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.6) 40%, rgba(9, 22, 25, 0.7) 99%), ${backgroundImage} no-repeat center / cover`,
+              backgroundSize: "cover",
+              backfaceVisibility: "visible",
             }}
             key={profileInfoState?.profileUserInfo?._id}
           >
@@ -496,8 +498,9 @@ function Page({ params }: any) {
                 alt="Account Profile"
               />
             </div>
-            <div className="flex justify-between">
-              <div className="flex flex-1 flex-col gap-4 flex-wrap justify-center text-center lg:justify-start lg:text-start p-2 pt-4">
+
+            <div className="flex justify-between w-9/12">
+              <div className="flex flex-1 flex-col gap-2 flex-wrap justify-center text-center lg:justify-start lg:text-start p-2">
                 <span className="font-semibold text-white">
                   {profileInfoState?.profileUserInfo?.name}
                 </span>
@@ -526,7 +529,7 @@ function Page({ params }: any) {
                     >
                       {userVideos?.length || 0}
                     </span>
-                    <span className="md:text-lg text-gray-400"> Posts</span>
+                    <span className="md:text-lg text-gray-400">Posts</span>
                   </div>
 
                   {/* Vertical divider */}
@@ -561,12 +564,12 @@ function Page({ params }: any) {
               </div>
 
               {!isCurrentUserProfile && (
-                <div className="flex h-8 sm:gap-6 mt-3">
+                <div className="flex flex-col gap-2 sm:gap-4 w-full mt-3 sm:flex-row sm:justify-center justify-start">
                   {profileInfoState?.profileUserInfo?.follower?.some(
                     (user: any) => user?.userID?._id === authState._id
                   ) ? (
                     <button
-                      className="font-bold w-40 h-10 bg-[#292D32] text-white text-center py-[10px] px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
+                      className="font-bold w-24 sm:w-40 h-8 sm:h-10 bg-[#292D32] text-white text-center py-[3px] sm:py-[10px] px-[5px] sm:px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
                       onClick={() =>
                         handleUnFollowUser(
                           profileInfoState?.profileUserInfo?._id
@@ -577,7 +580,7 @@ function Page({ params }: any) {
                     </button>
                   ) : (
                     <button
-                      className="font-bold w-40 h-10 bg-[#292D32] text-white text-center py-[10px] px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
+                      className="font-bold w-24 sm:w-40 h-8 sm:h-10 bg-[#292D32] text-white text-center py-[3px] sm:py-[10px] px-[5px] sm:px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
                       onClick={() =>
                         handleFollowUser(profileInfoState?.profileUserInfo?._id)
                       }
@@ -587,7 +590,7 @@ function Page({ params }: any) {
                   )}
 
                   <button
-                    className="font-bold w-40 h-10 bg-gradient-to-b from-[#62C860] to-[#37C535] text-white text-center py-[10px] px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
+                    className="font-bold w-24 sm:w-40 h-8 sm:h-10 bg-gradient-to-b from-[#62C860] to-[#37C535] text-white text-center py-[3px] sm:py-[10px] px-[5px] sm:px-[40px] rounded-tl-[20px] rounded-br-[20px] rounded-tr-[5px] rounded-bl-[5px]"
                     onClick={handleMessage}
                   >
                     Message
@@ -617,89 +620,7 @@ function Page({ params }: any) {
                 ))}
               </div>
             </div>
-            {/* <div>
-              <p className="font-bold">Share via:</p>
-              <div className="flex justify-center items-center gap-8 mt-2">
-                <Image
-                  src={SVG.Facebook1}
-                  alt="Facebook"
-                  width={40}
-                  height={40}
-                />
-                <Image
-                  src={SVG.Instagram}
-                  alt="Instagram"
-                  width={40}
-                  height={40}
-                />
-                <Image src={SVG.X} alt="X" width={40} height={40} />
-                <Image
-                  src={SVG.GamefolioCoin}
-                  alt="GamefolioCoin"
-                  width={40}
-                  height={40}
-                />
-              </div>
-            </div> */}
           </div>
-
-          {/* Top Bar */}
-
-          {/* <div className="flex mx-3"> */}
-          {/* <div className="w-80 border-2 border-[#1C2C2E] rounded-lg p-2">
-              <h1 className="font-bold my-2">About Me:</h1>
-              <p className="font-light text-xs text-[#7C7F80]">
-                {profileInfoState?.profileUserInfo?.bio}
-              </p>
-              <h1 className="font-bold my-2">Connect</h1>
-              <div className="flex items-center gap-4 rounded-lg bg-[#162423] p-2 mt-2">
-                <Image
-                  className="rounded-xl w-10 h-10 object-cover"
-                  src={SVG.PlayStation}
-                  width={10}
-                  height={10}
-                  sizes="100vw"
-                  alt="Account Profile"
-                />
-                <p className="font-normal">Connected Succesfully</p>
-              </div>
-
-              <div className="flex items-center gap-4 rounded-lg bg-[#162423] p-2 mt-2">
-                <Image
-                  className="rounded-xl w-10 h-10 object-cover"
-                  src={SVG.Twitch}
-                  width={10}
-                  height={10}
-                  sizes="100vw"
-                  alt="Account Profile"
-                />
-                <p className="font-normal">Connected Succesfully</p>
-              </div>
-
-              <div className="flex items-center gap-4 rounded-lg bg-[#162423] p-2 mt-2">
-                <Image
-                  className="rounded-xl w-10 h-10 object-cover"
-                  src={SVG.Xbox}
-                  width={10}
-                  height={10}
-                  sizes="100vw"
-                  alt="Account Profile"
-                />
-                <p className="font-normal">Connected Succesfully</p>
-              </div>
-
-              <div className="flex items-center gap-4 rounded-lg bg-[#162423] p-2 mt-2">
-                <Image
-                  className="rounded-xl w-10 h-10 object-cover"
-                  src={SVG.Steam}
-                  width={10}
-                  height={10}
-                  sizes="100vw"
-                  alt="Account Profile"
-                />
-                <p className="font-normal">Connected Succesfully</p>
-              </div>
-            </div> */}
 
           <div className="w-full justify-center items-center h-screen">
             {/* Profile */}
