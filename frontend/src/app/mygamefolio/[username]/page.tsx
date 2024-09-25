@@ -113,8 +113,6 @@ function MyGamefolio({ params }: any) {
     isStoryModalOpen: false,
   });
 
-  console.log("hh: ", profileInfoState);
-
   const isBrowser = typeof window !== "undefined";
 
   const isDataFetching =
@@ -182,7 +180,7 @@ function MyGamefolio({ params }: any) {
   const isCurrentUserProfile =
     authState?.userData?.username === profileInfoState.profileUserInfo.username;
 
-  const backgroundImage = `url(${authState.userData.coverPicture})`;
+  const backgroundImage = `url(${profileInfoState.profileUserInfo.coverPicture})`;
 
   const handleSubmitUsernames = async ({
     playstation,
