@@ -1,9 +1,11 @@
 "use client";
 import { SVG } from "@/assets/SVG";
 import { IMAGES } from "@/assets/images";
+import { ROUTES } from "@/labels/routes";
+import { removeCookie, removeFromLocal } from "@/utils/localStorage";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import AddNew from "../Modals/AddNew";
@@ -32,6 +34,7 @@ function SideBar({ toggleSidebar, sidebarOpen }: SideBarProps) {
   const messageState = useSelector((state: any) => state.chat) || [];
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const router = useRouter();
 
   const isDataFetching =
     Object.keys(authState?.userData || {}).length === 0 || authState?.loading;
@@ -55,6 +58,16 @@ function SideBar({ toggleSidebar, sidebarOpen }: SideBarProps) {
 
   const isItemActive = (path: string) => {
     return currentRoute === path ? true : false;
+  };
+
+  // handle logout
+  const handleLogout = () => {
+    removeCookie("connect.sid", process.env.NEXT_PUBLIC_CONNECT_SID_DOMAIN);
+    removeCookie("gfoliotoken", process.env.NEXT_PUBLIC_GFOLIO_TOKEN_DOMAIN);
+    removeFromLocal("@token");
+    removeFromLocal("@userData");
+
+    router.replace(ROUTES.login);
   };
 
   return (
@@ -426,6 +439,48 @@ function SideBar({ toggleSidebar, sidebarOpen }: SideBarProps) {
                 </div>
               </div>
             )}
+            <div
+              className={`flex flex-col gap-4 ${
+                isDropdownOpen ? "my-14" : "my-4"
+              }`}
+            >
+              <Link
+                href="/account/settings/edit-profile"
+                className={`flex items-center p-2  text-base font-normal text-gray-900  dark:text-white bg-[#1C2C2E] py-[10px] px-[20px] rounded-full  hover:bg-[#162423] group `}
+              >
+                <Image
+                  width={20}
+                  height={20}
+                  className="justify-self-start"
+                  src={SVG.Setting}
+                  alt="Setting"
+                />
+
+                <div className="flex flex-row w-48 justify-between">
+                  <span className={`ml-5 font-semibold text-white `}>
+                    Setting
+                  </span>
+                </div>
+              </Link>
+              <button
+                onClick={handleLogout}
+                className={`flex items-center p-2   text-base font-normal text-gray-900  dark:text-white bg-[#1C2C2E] py-[10px] px-[20px] rounded-full `}
+              >
+                <Image
+                  width={20}
+                  height={20}
+                  className="justify-self-start"
+                  src={SVG.Logout}
+                  alt="Logout"
+                />
+
+                <div className="flex flex-row w-48 justify-between">
+                  <span className={`ml-5 font-semibold text-white `}>
+                    Logout
+                  </span>
+                </div>
+              </button>
+            </div>
           </div>
         </div>
       </aside>
