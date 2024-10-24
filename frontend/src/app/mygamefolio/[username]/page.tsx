@@ -351,7 +351,7 @@ function MyGamefolio({ params }: any) {
                     <ul>
                       <li>
                         <div
-                          className="font-normal cursor-pointer hover:opacity-80"
+                          className="text-white font-normal cursor-pointer hover:opacity-80"
                           onClick={() => {
                             copyGamefolio(window.location.href);
                           }}
@@ -363,7 +363,7 @@ function MyGamefolio({ params }: any) {
                       <li>
                         <div
                           onClick={() => handleModalToggle("isReportModalOpen")}
-                          className="font-normal cursor-pointer hover:opacity-80"
+                          className="text-white font-normal cursor-pointer hover:opacity-80"
                         >
                           Report
                         </div>
@@ -457,7 +457,7 @@ function MyGamefolio({ params }: any) {
                   <div className="relative flex items-center space-x-2 rounded-lg bg-[#162423] p-2 mt-2">
                     <Image
                       src={SVG.PlayStation}
-                      alt="Connect with Playstation"
+                      alt="Feature the player's ID"
                       width={10}
                       height={10}
                       className="rounded-xl w-10 h-10 object-cover"
@@ -467,7 +467,7 @@ function MyGamefolio({ params }: any) {
                       placeholder={
                         profileInfoState?.profileUserInfo?.socialUsernames?.find(
                           (social: any) => social.playstation
-                        )?.playstation || "Connect with Playstation"
+                        )?.playstation || "Feature the player's ID"
                       }
                       value={playstation}
                       onChange={(e) => setPlaystation(e.target.value)}
@@ -486,7 +486,7 @@ function MyGamefolio({ params }: any) {
                   <div className="relative flex items-center space-x-2 rounded-lg bg-[#162423] p-2 mt-2">
                     <Image
                       src={SVG.Twitch}
-                      alt="Connect with Twitch"
+                      alt="Feature the player's ID"
                       width={10}
                       height={10}
                       className="rounded-xl w-10 h-10 object-cover"
@@ -496,7 +496,7 @@ function MyGamefolio({ params }: any) {
                       placeholder={
                         profileInfoState?.profileUserInfo?.socialUsernames?.find(
                           (social: any) => social.twitch
-                        )?.twitch || "Connect with Twitch"
+                        )?.twitch || "Feature the player's ID"
                       }
                       value={twitch}
                       onChange={(e) => setTwitch(e.target.value)}
@@ -515,7 +515,7 @@ function MyGamefolio({ params }: any) {
                   <div className="relative flex items-center space-x-2 rounded-lg bg-[#162423] p-2 mt-2">
                     <Image
                       src={SVG.Xbox}
-                      alt="Connect with Xbox"
+                      alt="Feature the player's ID"
                       width={10}
                       height={10}
                       className="rounded-xl w-10 h-10 object-cover"
@@ -525,7 +525,7 @@ function MyGamefolio({ params }: any) {
                       placeholder={
                         profileInfoState?.profileUserInfo?.socialUsernames?.find(
                           (social: any) => social.xbox
-                        )?.xbox || "Connect with xbox"
+                        )?.xbox || "Feature the player's ID"
                       }
                       value={xbox}
                       onChange={(e) => setXbox(e.target.value)}
@@ -544,7 +544,7 @@ function MyGamefolio({ params }: any) {
                   <div className="relative flex items-center space-x-2 rounded-lg bg-[#162423] p-2 mt-2">
                     <Image
                       src={SVG.Steam}
-                      alt="Connect with Steam"
+                      alt="Feature the player's ID"
                       width={10}
                       height={10}
                       className="rounded-xl w-10 h-10 object-cover"
@@ -554,7 +554,7 @@ function MyGamefolio({ params }: any) {
                       placeholder={
                         profileInfoState?.profileUserInfo?.socialUsernames?.find(
                           (social: any) => social.steam
-                        )?.steam || "Connect with steam"
+                        )?.steam || "Feature the player's ID"
                       }
                       value={steam}
                       onChange={(e) => setSteam(e.target.value)}
@@ -573,7 +573,7 @@ function MyGamefolio({ params }: any) {
                   <div className="relative flex items-center space-x-2 rounded-lg bg-[#162423] p-2 mt-2">
                     <Image
                       src={SVG.kick}
-                      alt="Connect with kick"
+                      alt="Feature the player's ID"
                       width={10}
                       height={10}
                       className="rounded-xl w-10 h-10 object-cover"
@@ -583,7 +583,7 @@ function MyGamefolio({ params }: any) {
                       placeholder={
                         profileInfoState?.profileUserInfo?.socialUsernames?.find(
                           (social: any) => social.kick
-                        )?.kick || "Connect with kick"
+                        )?.kick || "Feature the player's ID"
                       }
                       value={kick}
                       onChange={(e) => setKick(e.target.value)}
