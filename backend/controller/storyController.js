@@ -33,7 +33,7 @@ const postStory = async (req, res) => {
 const getUserAllStories = async (req, res) => {
   const userID = req.body.userID; // Assuming userId is passed in the URL params
 
-  console.log("userID: ", userID);
+ 
 
   try {
     // Fetch all stories for the specified user ID
@@ -214,7 +214,7 @@ const updatePost = async (req, res) => {
 const deletePost = async (req, res) => {
   try {
     const { postID } = req.body;
-    console.log("pID: ", postID);
+ 
     const post = await Story.findByIdAndDelete(postID);
     if (!post) {
       return res
@@ -234,7 +234,7 @@ const createVideoReaction = async (req, res) => {
   try {
     const { postID, userID, reactionType } = req.body;
 
-    console.log({ postID, userID, reactionType });
+ 
 
     const post = await Story.findById(postID);
     if (!post) {
@@ -279,14 +279,14 @@ const deleteVideoReaction = async (req, res) => {
   try {
     const { postID, reactionID } = req.body;
 
-    console.log({ postID, reactionID });
+ 
     const post = await Story.findByIdAndUpdate(
       postID,
       { $pull: { reactions: { _id: reactionID } } },
       { new: true }
     );
 
-    console.log("deletepost: ", post);
+ 
 
     if (!post) {
       return res.status(404).json({ error: "Post or Reaction not found." });

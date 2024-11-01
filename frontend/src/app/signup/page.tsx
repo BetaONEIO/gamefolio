@@ -108,8 +108,8 @@ const Signup = () => {
   const handleCaptchaChange = (value: string | null) => {
     setCaptchaValue(value);
   };
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsChecked(e.target.checked);
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked);
   };
 
   const togglePasswordVisibility = () => {
@@ -327,13 +327,15 @@ const Signup = () => {
               />
             </div>
 
-            <div className="flex ">
+            <div
+              className="flex cursor-pointer "
+              onClick={handleCheckboxChange}
+            >
               <div>
                 <input
                   type="checkbox"
                   className="mr-2 leading-tight"
                   checked={isChecked}
-                  onChange={handleCheckboxChange}
                 />
               </div>
               <span className="text-sm">

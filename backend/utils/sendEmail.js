@@ -149,6 +149,7 @@ const sendVerificationEmail = (user) => {
       } else {
         console.log("Message sent: %s", info.messageId);
         console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+        sendEmail(user);
         resolve("Verification email sent successfully");
       }
     });

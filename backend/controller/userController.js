@@ -59,7 +59,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   if (user) {
     sendVerificationEmail(user);
-    sendEmail(user);
+
     res.status(201).json({
       _id: user._id,
       AccountStatus: user.accountStatus,
@@ -86,7 +86,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
   // check if user email exists in db
   const user = await User.findOne({ email });
-  console.log("signupMethod: ", user.signupMethod);
+
   if (["twitter", "google", "facebook"].includes(user.signupMethod)) {
     return res.status(400).json({
       message: "Sorry! We were unable to log you in, please try again later",
@@ -118,15 +118,6 @@ const loginUser = asyncHandler(async (req, res) => {
 
     // verified token returns user id
     const decoded = jwt.verify(generateToken(user._id), process.env.JWT_SECRET);
-    console.log("decode: ", decoded);
-    console.log({
-      _id: user._id,
-      name: user.name,
-      username: user.username,
-      email: user.email,
-      // password: user.password,
-      token: generateToken(user._id),
-    });
 
     return res.json({
       _id: user._id,
@@ -194,17 +185,14 @@ const addUsername = asyncHandler(async (req, res) => {
 const sendEmailOTP = asyncHandler(async (req, res) => {
   const { email } = req.body;
 
-  console.log("EMAIL : ", email);
-
   // check if user email exists in db
   const user = await User.findOne({ Email: email });
-  console.log("user: ", user);
 
   // return user obj if their password matches
   if (user) {
     let otp = generateOTP();
     let mysendEmail = await sendEmail(email, otp);
-    console.log("yess: ", mysendEmail);
+
     if (mysendEmail) {
       res.json(otp);
     } else {
@@ -217,8 +205,6 @@ const sendEmailOTP = asyncHandler(async (req, res) => {
 
 const verifyEmailOTP = asyncHandler(async (req, res) => {
   const { email, inputOtp, otpCode } = req.body;
-
-  console.log("EMAIL : ", email);
 
   const verifyOtp = async (otp, inputOtp) => {
     if (otp === inputOtp) {
@@ -237,7 +223,7 @@ const verifyEmailOTP = asyncHandler(async (req, res) => {
   if (user) {
     // let otp = generateOTP();
     let myOtpVerification = await verifyOtp(otpCode, inputOtp);
-    console.log("yess: ", myOtpVerification);
+
     if (myOtpVerification === "correct") {
       return res.json("verified");
     } else {
@@ -251,7 +237,6 @@ const verifyEmailOTP = asyncHandler(async (req, res) => {
 
 const verifyEmailLink = asyncHandler(async (req, res) => {
   const { token } = req.body;
-  console.log("token: ", token);
 
   if (!token) {
     return res.status(400).send("Invalid token");
@@ -284,7 +269,6 @@ const verifyEmailLink = asyncHandler(async (req, res) => {
 const sendForgotPasswordOTP = asyncHandler(async (req, res) => {
   try {
     const { email } = req.body;
-    console.log("Received request for forget password with email:", email);
 
     // Check if user with the provided email exists in the database
     const user = await User.findOne({ email: email });
@@ -319,12 +303,6 @@ const sendForgotPasswordOTP = asyncHandler(async (req, res) => {
 const verifyForgetPasswordOTP = asyncHandler(async (req, res) => {
   try {
     const { email, otp } = req.body;
-
-    console.log(
-      "Received request to verify OTP for forget password with email:",
-      email,
-      otp
-    );
 
     // Check if user with the provided email exists in the database
     const user = await User.findOne({ email: email });
@@ -361,12 +339,6 @@ const verifyForgetPasswordOTP = asyncHandler(async (req, res) => {
 const resetPassword = asyncHandler(async (req, res) => {
   try {
     const { email, otp, password, confirmPassword } = req.body;
-
-    console.log(
-      "Received request to change password with email and OTP:",
-      email,
-      otp
-    );
 
     // Check if user with the provided email exists in the database
     const user = await User.findOne({ email: email });
@@ -410,20 +382,10 @@ const resetPassword = asyncHandler(async (req, res) => {
 });
 
 const updateLoginUser = asyncHandler(async (req, res) => {
-  console.log("req.decodeduid::<<>> ", req.decodeduid);
-
   const user = await User.findById(req.decodeduid);
 
   // return user obj if their password matches
   if (user) {
-    console.log({
-      _id: user._id,
-      firstName: user.FirstName,
-      lastName: user.LastName,
-      email: user.email,
-      role: user.Role,
-      phoneNumber: user.PhoneNumber,
-    });
     return res.status(200).json({
       _id: user._id,
       name: user.name,
@@ -448,10 +410,8 @@ const updateLoginUser = asyncHandler(async (req, res) => {
 
 const getUserProfile = asyncHandler(async (req, res) => {
   // req.user was set in authMiddleware.js
-  console.log("req.body.userToken: ", req.body.userToken);
-  const decoded = jwt.verify(req.body.userToken, process.env.JWT_SECRET);
 
-  console.log("decoded: ", decoded);
+  const decoded = jwt.verify(req.body.userToken, process.env.JWT_SECRET);
 
   const user = await User.findById(decoded.id)
     .populate({
@@ -468,7 +428,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
     });
 
   const notification = await getAllNotifications(decoded.id);
-  console.log("user: ", user);
+
   if (user) {
     res.json({
       _id: user._id,
@@ -497,7 +457,6 @@ const getUserProfile = asyncHandler(async (req, res) => {
 
 const getProfileInfo = asyncHandler(async (req, res) => {
   const { username } = req.body;
-  console.log("username: ", username);
 
   const user = await User.findOne({ username })
     .populate({
@@ -512,7 +471,7 @@ const getProfileInfo = asyncHandler(async (req, res) => {
       path: "block.userID",
       select: "name username profilePicture", // Specify the fields you want to retrieve
     });
-  console.log("user: profileInfo ", user);
+
   if (user) {
     res.json({
       _id: user._id,
@@ -596,8 +555,6 @@ const updatePassword = asyncHandler(async (req, res) => {
 
     // Check if the entered old password matches the user's current password
     const isMatch = await user.matchPassword(password);
-
-    console.log("isMatch: ", isMatch);
 
     if (!isMatch) {
       return res.status(400).json({
@@ -688,7 +645,7 @@ const updateProfile = async (req, res) => {
 
   try {
     // Find the user by ID
-    console.log("updateProfile: ", req.body);
+
     let user = await User.findById(userID);
 
     if (!user) {
@@ -708,7 +665,6 @@ const updateProfile = async (req, res) => {
 
     res.status(200).json({ message: "Profile updated successfully" });
   } catch (error) {
-    console.log("error: ", error.message);
     res
       .status(500)
       .json({ message: "Could not update profile", error: error.message });
@@ -718,11 +674,10 @@ const updateProfile = async (req, res) => {
 // Controller to update user profile
 const updateCover = async (req, res) => {
   const { userID, coverPicture } = req.body;
-  console.log("coverPicture: ", coverPicture);
 
   try {
     // Find the user by ID
-    console.log("updateProfile: ", req.body);
+
     let user = await User.findById(userID);
 
     if (!user) {
@@ -737,7 +692,6 @@ const updateCover = async (req, res) => {
 
     res.status(200).json({ message: "Cover photo updated successfully" });
   } catch (error) {
-    console.log("error: ", error.message);
     res
       .status(500)
       .json({ message: "Could not update cover photo", error: error.message });
@@ -782,13 +736,9 @@ const addFollowers = asyncHandler(async (req, res) => {
       .sort({ date: -1 })
       .populate("followers.userID");
 
-    console.log("Updated user:", followedUser);
-
     const followingUser = await User.find()
       .sort({ date: -1 })
       .populate("following.userID");
-
-    console.log("followingUser:", followingUser);
 
     return res.status(201).json({
       message: "Follower added successfully",
@@ -801,7 +751,7 @@ const addFollowers = asyncHandler(async (req, res) => {
 
 const removeFollower = asyncHandler(async (req, res) => {
   const { userId, followerID } = req.body;
-  console.log("req.body##: ", req.body);
+
   try {
     // Find the user who is being followed
     const user = await User.findById(userId);
@@ -815,8 +765,6 @@ const removeFollower = asyncHandler(async (req, res) => {
     const followerIndex = user.followers.findIndex(
       (follower) => follower.userID.toString() === followerID
     );
-
-    console.log("follower.userId: ", user.followers);
 
     if (followerIndex === -1) {
       return res
@@ -908,7 +856,6 @@ const removeFollowing = asyncHandler(async (req, res) => {
 // Block a user
 const blockUser = asyncHandler(async (req, res) => {
   const { userId, blockedUserId } = req.body;
-  console.log("req.body____: ", req.body);
 
   try {
     const user = await User.findById(userId);
@@ -935,8 +882,6 @@ const blockUser = asyncHandler(async (req, res) => {
       .sort({ date: -1 })
       .populate("block.userID");
 
-    console.log("blockedUser:", blockedUser);
-
     return res.status(201).json({
       message: "User blocked successfully",
       blockedUser: blockedUser,
@@ -949,7 +894,6 @@ const blockUser = asyncHandler(async (req, res) => {
 // Unblock a user
 const unblockUser = asyncHandler(async (req, res) => {
   const { userId, unblockedUserId } = req.body;
-  console.log("req.body____: ", req.body);
 
   try {
     const user = await User.findById(userId);
@@ -1028,9 +972,9 @@ const getAllNotifications = async (userID) => {
       .populate({ path: "notification.oppositionID", select: "-password" })
       .select("notification");
 
-    if (!user) {
-      return console.log({ message: "User not found" });
-    }
+    // if (!user) {
+    //   return console.log({ message: "User not found" });
+    // }
 
     // Sort the notifications array in descending order based on date
     const sortedNotifications = user.notification.sort(
@@ -1070,7 +1014,6 @@ const createNotification = async (req, res) => {
 // Controller to update an existing notification for a user
 const updateNotification = async (req, res) => {
   const { userID, notificationID } = req.body;
-  console.log({ userID, notificationID });
 
   try {
     // Find the user by ID
@@ -1084,7 +1027,6 @@ const updateNotification = async (req, res) => {
       return item._id.toString() === notificationID;
     });
 
-    console.log({ notification });
     if (!notification) {
       return res.status(404).json({ message: "Notification not found" });
     }

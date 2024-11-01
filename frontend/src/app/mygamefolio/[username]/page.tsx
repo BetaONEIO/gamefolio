@@ -192,7 +192,7 @@ function MyGamefolio({ params }: any) {
       post?.userID?.username === profileInfoState.profileUserInfo.username
   );
 
-  console.log("user videos: ", postState);
+ 
 
   const isCurrentUserProfile =
     authState?.userData?.username === profileInfoState.profileUserInfo.username;

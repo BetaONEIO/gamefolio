@@ -172,7 +172,7 @@ const getFollowingPosts = async (req, res) => {
     // Calculate hasNextPage by checking if more posts are available
     const hasNextPage = skip + limit < totalPosts;
 
-    console.log({ length: posts.length, skip, hasNextPage, totalPosts });
+ 
 
     res.status(200).json({
       data: posts,
@@ -263,7 +263,7 @@ const createVideoReaction = async (req, res) => {
   try {
     const { postID, userID, reactionType } = req.body;
 
-    console.log({ postID, userID, reactionType });
+ 
 
     const post = await Posts.findById(postID);
     if (!post) {
@@ -297,7 +297,7 @@ const createVideoReaction = async (req, res) => {
       { new: true }
     );
 
-    console.log({ data: updatedPost });
+ 
 
     res.status(201).json({
       data: updatedPost,
@@ -317,14 +317,14 @@ const deleteVideoReaction = async (req, res) => {
   try {
     const { postID, reactionID } = req.body;
 
-    console.log({ postID, reactionID });
+ 
     const post = await Posts.findByIdAndUpdate(
       postID,
       { $pull: { reactions: { _id: reactionID } } },
       { new: true }
     );
 
-    console.log("deletepost: ", post);
+ 
 
     if (!post) {
       return res.status(404).json({ error: "Post or Reaction not found." });
@@ -589,7 +589,7 @@ const addBookmark = async (req, res) => {
   try {
     const { postID, userID, name, username, profilePicture, video } = req.body;
 
-    console.log({ hello: postID, hello: userID });
+ 
 
     const post = await Posts.findById(postID);
     if (!post) {
@@ -639,7 +639,7 @@ const getUserBookmark = async (req, res) => {
       .populate("userID", "name username profilePicture")
       .populate("comments.userID", "name username profilePicture");
 
-    console.log("userBookmarkedPosts: ", userBookmarkedPosts);
+ 
 
     if (!userBookmarkedPosts || userBookmarkedPosts?.length === 0) {
       return res

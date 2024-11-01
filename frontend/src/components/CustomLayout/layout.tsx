@@ -12,7 +12,7 @@ import Username from "../Modals/Username";
 const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const router = useRouter();
   const pathname = usePathname();
-
+  const cookies = getCookieValue("gfoliotoken");
   const authState = useSelector((state: any) => state.auth.userData) || [];
   const [showSidebar, setShowSidebar] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -30,9 +30,13 @@ const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
     }));
   };
 
-  const cookies = getCookieValue("gfoliotoken");
-  console.log("cookies: ", cookies);
-  console.log("authState: ", authState);
+  const shouldHideSidebar =
+    pathname.includes(ROUTES.mygamefolio) &&
+    !getFromLocal("@token") &&
+    !cookies;
+
+ 
+ 
 
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
@@ -42,7 +46,7 @@ const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
   };
   useEffect(() => {
     const fetchUserSession = async () => {
-      console.log("pathName: ", pathname, " route: ", ROUTES.mygamefolio);
+ 
 
       if (getFromLocal("@token") || cookies) {
         await dispatch(userSession(params));
@@ -85,18 +89,19 @@ const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
     setSidebarOpen(!sidebarOpen);
   };
 
-  console.log("modelState: ", modalState.isUsernameModalOpen);
+ 
 
   return (
     <div className="antialiased bg-[#091619]">
       {/* <!-- Sidebar --> */}
 
-      {showSidebar && (
+      {!shouldHideSidebar && (
         <SideBar toggleSidebar={toggleSidebar} sidebarOpen={sidebarOpen} />
       )}
+
       {/* Main Page */}
       <main
-        className={`${showSidebar && "md:ml-64"} h-auto`}
+        className={`${showSidebar && !shouldHideSidebar && "md:ml-64"} h-auto`}
         onClick={sidebarOpen ? toggleSidebar : undefined}
       >
         <div className="rounded-lg border-gray-600 h-fit overflow-y-auto  no-scrollbar">

@@ -22,7 +22,7 @@ import {
   updateDetailedPost,
 } from "@/store/slices/postSlice";
 import { getProfileInfo } from "@/store/slices/userSlice";
-import { copyToClipboard } from "@/utils/helpers";
+import { copyToClipboard, truncateText } from "@/utils/helpers";
 import { getCookieValue, getFromLocal } from "@/utils/localStorage";
 import axios from "axios";
 import Image from "next/image";
@@ -302,9 +302,9 @@ function Account() {
   };
 
   const handleUploadImage = async (e: any) => {
-    console.log("yess click");
+ 
     const file = e.target.files ? e.target.files[0] : null;
-    console.log("file: ", file);
+ 
     if (file) {
       setImage(file);
       try {
@@ -789,9 +789,10 @@ function Account() {
                             loading="lazy"
                           />
                           <div className="flex flex-col">
-                            <h1 className="w-[180px] sm:w-[220px] text-xs md:text-xs sm:text-xs font-semibold text-white hover:opacity-80">
-                              {item?.userID?.name.substring(0, 11)}
-                            </h1>
+                            <p className=" font-semibold text-white hover:opacity-80 ">
+                              {truncateText(item?.userID?.name, 8)}
+                            </p>
+
                             <p className="text-xs font-light text-gray-400">
                               {formatTimeAgo(item.date)}
                             </p>

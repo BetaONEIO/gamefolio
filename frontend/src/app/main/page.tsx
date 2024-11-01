@@ -380,8 +380,8 @@ function Main() {
   // Call removeGame function to filter out the game
   const filteredGames = removeGame(gameToRemove);
 
-  console.log("laoding: ", loading);
-  console.log("laoding: ", postState.followingVideos.length);
+ 
+ 
 
   return (
     <Layout>
