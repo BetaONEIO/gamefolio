@@ -485,7 +485,7 @@ function Account() {
             </div>
 
             <label htmlFor="dropzone-file">
-              <div className="flex w-8 h-8 md:w-fit md:h-fit p-1 md:px-2 items-center md:border-2 border-gray-50 rounded-xl gap-2 hover:opacity-80 cursor-pointer ">
+              <div className="flex w-8 h-8 md:w-fit md:h-fit p-1 md:px-2 items-center md:border-2 border-gray-50 rounded-xl gap-2 hover:opacity-80 cursor-pointer">
                 <Image
                   className="w-fit h-fit object-cover"
                   src={SVG.Camera2}
