@@ -10,7 +10,11 @@ import VideoDetails from "@/components/Modals/VideoDetails";
 import { toastError, toastSuccess } from "@/components/Toast/Toast";
 import { ROUTES } from "@/labels/routes";
 import { dispatch, useSelector } from "@/store";
-import { refreshPage, userSession } from "@/store/slices/authSlice";
+import {
+  updateCover,
+  refreshPage,
+  userSession,
+} from "@/store/slices/authSlice";
 import { getAllPostVideos, updateDetailedPost } from "@/store/slices/postSlice";
 import {
   followUser,
@@ -24,6 +28,9 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
+import { BASE_URL } from "@/services/api";
+import axios from "axios";
+import { useForm } from "react-hook-form";
 
 const CoverPhotoLoader = () => {
   return (
@@ -102,10 +109,12 @@ interface Usernames {
 }
 
 function MyGamefolio({ params }: any) {
-  const authState = useSelector((state: any) => state.auth) || [];
+  const authState = useSelector((state: any) => state.auth.userData) || [];
   const profileInfoState = useSelector((state: any) => state.user) || [];
   const postState = useSelector((state: any) => state.post) || [];
   const [isPrivateAccount, setIsPrivateAccount] = useState(false);
+  const [image, setImage] = useState<File | null>(null);
+  const [update, setUpdate] = useState<Boolean>(false);
   const [postID, setPostID] = useState("");
   const [playstation, setPlaystation] = useState("");
   const [twitch, setTwitch] = useState("");
@@ -113,6 +122,7 @@ function MyGamefolio({ params }: any) {
   const [steam, setSteam] = useState("");
   const [kick, setKick] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isDropdownCoverOpen, setIsDropdownCoverOpen] = useState(false);
   const [modalState, setModalState] = useState({
     isShareModalOpen: false,
     isFollowerModalOpen: false,
@@ -129,9 +139,17 @@ function MyGamefolio({ params }: any) {
     Object.keys(profileInfoState.profileUserInfo).length === 0 ||
     profileInfoState.loading;
 
-  // const userVideosLength = postState.videos?.filter(
-  //   (post: any) => post?.userID?._id === authState.userData._id
-  // );
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      coverPicture: "",
+    },
+  });
 
   const payload = {
     userToken: getFromLocal("@token") || getCookieValue("gfoliotoken"),
@@ -144,6 +162,12 @@ function MyGamefolio({ params }: any) {
     dispatch(getProfileInfo({ payload: params }));
     dispatch(getAllPostVideos());
   }, [postState.refresh]);
+
+  useEffect(() => {
+    if (update === true) {
+      handleSubmit(handleUpdateCover)();
+    }
+  }, [update === true]);
 
   useEffect(() => {
     setIsPrivateAccount(
@@ -172,6 +196,10 @@ function MyGamefolio({ params }: any) {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
+  const toggleDropdownCover = () => {
+    setIsDropdownCoverOpen(!isDropdownCoverOpen);
+  };
+
   const isItemActive = (path: string) => {
     return currentRoute === path ? true : false;
   };
@@ -192,7 +220,62 @@ function MyGamefolio({ params }: any) {
       post?.userID?.username === profileInfoState.profileUserInfo.username
   );
 
- 
+  const onUpdateCoverPicture = (value: string) => {
+    setValue("coverPicture", value);
+    setUpdate(true);
+  };
+
+  const handleUploadImage = async (e: any) => {
+    console.log("yess click");
+    const file = e.target.files ? e.target.files[0] : null;
+    console.log("file: ", file);
+    if (file) {
+      setImage(file);
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const response = await axios.post(
+          `${BASE_URL}/storage/image/upload`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        onUpdateCoverPicture(response.data.imageURL);
+        toastSuccess(response.data.message);
+      } catch (error) {
+        toastError(error);
+      }
+    }
+  };
+
+  const handleUpdateCover = (data: any) => {
+    const payload = {
+      userID: authState._id,
+      ...data,
+    };
+
+    const successCallback = (response: any) => {
+      toastSuccess(response);
+      setUpdate(false);
+    };
+
+    const errorCallback = (error: string) => {
+      toastError(error);
+      setUpdate(false);
+    };
+
+    const params = {
+      payload,
+      successCallback,
+      errorCallback,
+    };
+    dispatch(updateCover(params));
+  };
 
   const isCurrentUserProfile =
     authState?.userData?.username === profileInfoState.profileUserInfo.username;
@@ -360,14 +443,18 @@ function MyGamefolio({ params }: any) {
                         </div>
                       </li>
 
-                      <li>
-                        <div
-                          onClick={() => handleModalToggle("isReportModalOpen")}
-                          className="text-white font-normal cursor-pointer hover:opacity-80"
-                        >
-                          Report
-                        </div>
-                      </li>
+                      {!isCurrentUserProfile && (
+                        <li>
+                          <div
+                            onClick={() =>
+                              handleModalToggle("isReportModalOpen")
+                            }
+                            className="text-white font-normal cursor-pointer hover:opacity-80"
+                          >
+                            Report
+                          </div>
+                        </li>
+                      )}
                     </ul>
                   </div>
                 </div>
@@ -611,6 +698,67 @@ function MyGamefolio({ params }: any) {
           )}
 
           <div className="w-full lg:w-8/12 justify-center lg:justify-between items-center h-full mt-10 lg:mt-24">
+            <div className="flex flex-col gap-8 justify-center relative">
+              <div className="flex justify-end relative">
+                <button
+                  className="px-3 py-2 cursor-pointer hover:opacity-80"
+                  onClick={toggleDropdownCover}
+                >
+                  <Image
+                    src={SVG.Threedot}
+                    width={20}
+                    height={20}
+                    className="w-9 h-8 rounded-full"
+                    alt="account"
+                  />
+                </button>
+
+                {/* Dropdown */}
+                <div
+                  id="dropdown"
+                  className={`${
+                    isDropdownCoverOpen ? "block" : "hidden"
+                  } absolute z-10 top-full right-3 border-2 border-[#43DD4E] rounded-lg -mt-1 bg-[#091619] px-4`}
+                  style={{ width: "140px" }}
+                >
+                  {/* Dropdown arrow */}
+                  <div
+                    className="absolute top-[-10px] right-[10px]"
+                    style={{
+                      borderLeft: "5px solid transparent",
+                      borderRight: "5px solid transparent",
+                      borderBottom: `10px solid #43DD4E`,
+                    }}
+                  />
+                  <div />
+                  <ul>
+                    <li>
+                      <label htmlFor="dropzone-file">
+                        <div className="flex w-8 h-8 md:w-fit md:h-fit p-1 md:px-2 items-center gap-2 hover:opacity-80 cursor-pointer">
+                          <Image
+                            className="w-fit h-fit object-cover"
+                            src={SVG.Camera2}
+                            width={10}
+                            height={10}
+                            sizes="100vw"
+                            alt="Account Profile"
+                          />
+                          <p className="text-white text-xs lg:text-xs">
+                            Edit Coverphoto
+                          </p>
+                          <input
+                            id="dropzone-file"
+                            type="file"
+                            className="hidden"
+                            onChange={handleUploadImage}
+                          />
+                        </div>
+                      </label>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
             {/* header */}
             <div className="flex items-center">
               <div className="flex justify-between items-center w-full sm:mx-2 lg:mx-4 relative">
