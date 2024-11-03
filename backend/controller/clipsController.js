@@ -82,7 +82,7 @@ const updateClips = async (req, res) => {
 const deleteClip = async (req, res) => {
   try {
     const { clipID } = req.body;
-    console.log("pID: ", clipID);
+ 
     const clip = await Clips.findByIdAndDelete(clipID);
     if (!clip) {
       return res
@@ -101,7 +101,7 @@ const deleteClip = async (req, res) => {
 const createClipReaction = async (req, res) => {
   try {
     const { clipID, userID, reactionType } = req.body;
-    console.log({ clipID, userID, reactionType });
+ 
 
     const clip = await Clips.findById(clipID);
     if (!clip) {
@@ -146,14 +146,14 @@ const deleteClipReaction = async (req, res) => {
   try {
     const { clipID, reactionID } = req.body;
 
-    console.log({ clipID, reactionID });
+ 
     const clip = await Clips.findByIdAndUpdate(
       clipID,
       { $pull: { reactions: { _id: reactionID } } },
       { new: true }
     );
 
-    console.log("deleteclipreaction: ", clip);
+ 
 
     if (!clip) {
       return res.status(404).json({ error: "Clip or Reaction not found." });

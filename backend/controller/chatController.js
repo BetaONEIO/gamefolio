@@ -13,7 +13,7 @@ exports.startChatSession = async (req, res) => {
     res.status(200).json({ message: "Socket.io is running" });
   } catch (error) {
     res.status(401).json({ error });
-    // console.log(error);
+ 
   }
 };
 
@@ -31,7 +31,7 @@ exports.createChatMessage = async (req, res) => {
       roomID,
       isSocket = true,
     } = req.body;
-    console.log("chatController: ", req.body);
+ 
 
     let updatedChat;
     let theChat;
@@ -40,7 +40,7 @@ exports.createChatMessage = async (req, res) => {
       participants: { $all: [sender, receiver] },
     });
 
-    console.log("chat: server ", chat);
+ 
 
     if (chat) {
       chat.messages.push({
@@ -52,7 +52,7 @@ exports.createChatMessage = async (req, res) => {
       });
       updatedChat = await chat.save();
       theChat = await Chats.findById(updatedChat._id).populate("participants");
-      console.log("updated chat: ", updatedChat);
+ 
     } else {
       const newChat = new Chats({
         participants: [sender, receiver],
@@ -72,7 +72,7 @@ exports.createChatMessage = async (req, res) => {
 
       theChat = await Chats.findById(updatedChat._id).populate("participants");
 
-      console.log("updated chat: >>", theChat);
+ 
     }
 
     if (isSocket) {

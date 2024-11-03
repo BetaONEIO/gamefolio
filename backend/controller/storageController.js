@@ -28,8 +28,8 @@ const uploadVideo = async (req, res) => {
 
   var file = req.file;
   const musicName = req.body.music || "none";
-  console.log("file: ", file);
-  console.log("musicname: ", musicName);
+ 
+ 
 
   const s3VideoFileUpload = (file) => {
     const uniqueFileName = `${uuidv4()}-${file.originalname}`; // Generating a unique filename
@@ -47,7 +47,7 @@ const uploadVideo = async (req, res) => {
       const percentCompleted = Math.round(
         (progress.loaded / progress.total) * 100
       );
-      console.log(`Upload Progress : ${percentCompleted}%`);
+ 
       // You can emit this progress to clients using WebSocket or other mean
     });
 
@@ -56,7 +56,7 @@ const uploadVideo = async (req, res) => {
         throw err;
       }
       const cdnDataLocation = data.Location.replace(S3URL, CDNURL);
-      console.log(`File uploaded successfully. ${cdnDataLocation}`);
+ 
       return res.status(201).json({
         message: "File uploaded successfully",
         videoURL: cdnDataLocation,
@@ -72,7 +72,7 @@ const uploadVideo = async (req, res) => {
       .duration(videoDuration) // Set the duration dynamically
       .output(outputPath)
       .on("end", () => {
-        console.log("Audio added to video successfully.");
+ 
         s3VideoFileUpload({
           path: outputPath,
           originalname: file.originalname,
@@ -122,13 +122,13 @@ const uploadImage = async (req, res) => {
 
   const file = req.file;
   const imageName = req.body.imageName; // Assuming a field 'imageName' in the request body
-  console.log(imageName);
+ 
 
   const s3ImageFileUpload = (file) => {
     const uniqueFileName = `${uuidv4()}-${file.originalname}`; // Generating a unique filename
     const fileStream = fs.createReadStream(file.path);
 
-    console.log("uniqueFileName: ", uniqueFileName);
+ 
 
     const params = {
       Bucket: bucketName,
@@ -143,7 +143,7 @@ const uploadImage = async (req, res) => {
       const percentCompleted = Math.round(
         (progress.loaded / progress.total) * 100
       );
-      console.log(`Upload Progress: ${percentCompleted}%`);
+ 
       // You can emit this progress to clients using WebSocket or other means
     });
 
@@ -152,7 +152,7 @@ const uploadImage = async (req, res) => {
         throw err;
       }
       const cdnDataLocation = data.Location.replace(S3URL, CDNURL);
-      console.log(`File uploaded successfully. ${cdnDataLocation}`);
+ 
       return res.status(201).json({
         message: "File uploaded successfully",
         imageURL: cdnDataLocation,
